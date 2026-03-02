@@ -1,0 +1,80 @@
+# ==============================================================================
+# Motorcycle Dealer & Loyalty Management Platform — Root .editorconfig (T-301)
+# ==============================================================================
+root = true
+
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.sh]
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+[Dockerfile*]
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+[*.{ps1,psm1,psd1}]
+indent_style = space
+indent_size = 4
+
+[*.{js,mjs,cjs,json,yml,yaml,html,css}]
+indent_style = space
+indent_size = 2
+
+[*.{csproj,props,targets,sln,slnx,xml,config}]
+indent_style = space
+indent_size = 2
+
+[*.{cs,csx}]
+indent_style = space
+indent_size = 4
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_new_line_before_open_brace = all
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_prefer_braces = true:warning
+dotnet_nullable_context = enable
+
+# C# Naming Conventions (ADR-001 Clean Architecture)
+dotnet_naming_rule.interfaces_must_begin_with_i.severity = warning
+dotnet_naming_rule.interfaces_must_begin_with_i.symbols = interface_symbols
+dotnet_naming_rule.interfaces_must_begin_with_i.style = begins_with_i
+
+dotnet_naming_symbols.interface_symbols.applicable_kinds = interface
+dotnet_naming_symbols.interface_symbols.applicable_accessibilities = *
+
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+dotnet_naming_rule.types_and_members_must_be_pascal_case.severity = warning
+dotnet_naming_rule.types_and_members_must_be_pascal_case.symbols = public_symbols
+dotnet_naming_rule.types_and_members_must_be_pascal_case.style = pascal_case_style
+
+dotnet_naming_symbols.public_symbols.applicable_kinds = class, struct, record, enum, property, method, event, delegate
+dotnet_naming_symbols.public_symbols.applicable_accessibilities = public, internal, protected, protected_internal
+
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+dotnet_naming_rule.private_fields_camel_case_underscore.severity = suggestion
+dotnet_naming_rule.private_fields_camel_case_underscore.symbols = private_instance_fields
+dotnet_naming_rule.private_fields_camel_case_underscore.style = underscore_camel_case
+
+dotnet_naming_symbols.private_instance_fields.applicable_kinds = field
+dotnet_naming_symbols.private_instance_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_instance_fields.required_modifiers =
+
+dotnet_naming_style.underscore_camel_case.required_prefix = _
+dotnet_naming_style.underscore_camel_case.capitalization = camel_case
