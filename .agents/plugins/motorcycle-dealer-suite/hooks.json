@@ -1,0 +1,24 @@
+{
+  "motorcycle-dealer-governance": {
+    "enabled": true,
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "node ./hooks/session-start.mjs",
+        "timeout": 5
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./hooks/safety-guard.mjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
