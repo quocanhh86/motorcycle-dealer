@@ -1,0 +1,700 @@
+{
+  "schemaVersion": "2.3.0",
+  "generatedForPhase": 10,
+  "totalWbsTasks": 88,
+  "ruleBudgets": [
+    { "path": "AGENTS.md", "maxBytes": 24000 },
+    { "path": ".agents/rules/AGENTS.md", "maxBytes": 12000 },
+    { "path": ".agents/plugins/motorcycle-dealer-suite/rules/AGENTS.md", "maxBytes": 5000 },
+    { "path": "backend/AGENTS.md", "maxBytes": 8000 },
+    { "path": "frontend/AGENTS.md", "maxBytes": 6000 },
+    { "path": "mobile/AGENTS.md", "maxBytes": 8000 }
+  ],
+  "project": {
+    "name": "Motorcycle Dealer & Loyalty Management Platform",
+    "repository": "https://github.com/quocanhh86/motorcycle-dealer",
+    "timeline": "02/2026 - 08/2026",
+    "teamSize": 1,
+    "role": "Full-Stack Developer",
+    "backendStack": [
+      "C#",
+      "ASP.NET Core Web API (.NET 10 / net10.0)",
+      "Entity Framework Core 10",
+      "SignalR"
+    ],
+    "frontendStack": [
+      "AngularJS 1.8.3",
+      "@uirouter/angularjs",
+      "Chart.js 4",
+      "@microsoft/signalr"
+    ],
+    "mobileStack": [
+      "C# 13",
+      ".NET 10 MAUI (net10.0-android, API 26-35)",
+      "CommunityToolkit.Mvvm",
+      "SQLCipher (9-table WAL offline cache)",
+      "Microsoft.AspNetCore.SignalR.Client"
+    ],
+    "database": {
+      "dbms": "Microsoft SQL Server 2022",
+      "defaultLocalInstance": "(localdb)\\MSSQLLocalDB",
+      "dockerImage": "mcr.microsoft.com/mssql/server:2022-latest",
+      "databaseName": "MotorcycleDealerDb",
+      "defaultSchema": "dbo",
+      "normalForm": "3NF",
+      "tableCount": 27
+    },
+    "cleanArchitectureLayers": [
+      "MotorcycleDealer.Domain",
+      "MotorcycleDealer.Application",
+      "MotorcycleDealer.Infrastructure",
+      "MotorcycleDealer.WebApi"
+    ]
+  },
+  "phases": [
+    {
+      "phaseNumber": 1,
+      "phaseId": "Phase 1",
+      "name": "Engineering Documentation, Deep-Dive Specs, WBS & Word (.docx) Specification",
+      "taskRange": "T-101..T-112",
+      "taskCount": 12,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        "docs/**/*.md",
+        "docs/*.docx",
+        "docs/*.yaml",
+        "docs/**/*.yaml"
+      ],
+      "forbiddenPrefixes": [
+        ".agents/",
+        "backend/",
+        "frontend/",
+        "mobile/",
+        "docker-compose.yml",
+        "node_modules/"
+      ],
+      "exitGate": "Cross-doc Reader Testing pass + OpenAPI/UX/Module QA + .docx OpenXML validation + User sign-off"
+    },
+    {
+      "phaseNumber": 2,
+      "phaseId": "Phase 2",
+      "name": "Antigravity .agents/ Workspace Suite & MCP Integration",
+      "taskRange": "T-201..T-208",
+      "taskCount": 8,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        "docs/**/*.md",
+        "docs/*.docx",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**"
+      ],
+      "forbiddenPrefixes": [
+        "backend/",
+        "frontend/",
+        "mobile/",
+        "docker-compose.yml",
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "Plugin/skill JSON & frontmatter validation + MCP JSON-RPC stdio tests + script dry-runs + .docx sync"
+    },
+    {
+      "phaseNumber": 3,
+      "phaseId": "Phase 3",
+      "name": "Clean Architecture (.NET 10) & AngularJS 1.8 SPA Skeleton",
+      "taskRange": "T-301..T-308",
+      "taskCount": 8,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        ".config/**",
+        "docker-compose.yml",
+        "docs/**",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**",
+        "backend/**",
+        "frontend/**"
+      ],
+      "forbiddenPrefixes": [
+        "mobile/",
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "dotnet build & architecture inward-dependency tests green + AngularJS SPA shell boots + Docker Compose valid"
+    },
+    {
+      "phaseNumber": 4,
+      "phaseId": "Phase 4",
+      "name": "SQL Server 3NF Migrations, Seed Data & Granular JWT RBAC",
+      "taskRange": "T-401..T-409",
+      "taskCount": 9,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        ".config/**",
+        "docker-compose.yml",
+        "docs/**",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**",
+        "backend/**",
+        "frontend/**"
+      ],
+      "forbiddenPrefixes": [
+        "mobile/",
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "22-table MotorcycleDealerDb migration + 3-dealer seeder + 34-permission RBAC & IDealerScoped isolation integration tests pass"
+    },
+    {
+      "phaseNumber": 5,
+      "phaseId": "Phase 5",
+      "name": "Showroom VIN Sales, Customer Garage, Service Slot Booking & Automated VIN Reminder Worker",
+      "taskRange": "T-501..T-510",
+      "taskCount": 10,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        ".config/**",
+        "docker-compose.yml",
+        "docs/**",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**",
+        "backend/**",
+        "frontend/**"
+      ],
+      "forbiddenPrefixes": [
+        "mobile/",
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "Atomic VIN sale onboarding + parallel RowVersion slot race test + deduplicated VinMaintenanceReminderWorker test pass"
+    },
+    {
+      "phaseNumber": 6,
+      "phaseId": "Phase 6",
+      "name": "Loyalty & Rewards Engine + SignalR Real-Time Notifications",
+      "taskRange": "T-601..T-609",
+      "taskCount": 9,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        ".config/**",
+        "docker-compose.yml",
+        "docs/**",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**",
+        "backend/**",
+        "frontend/**"
+      ],
+      "forbiddenPrefixes": [
+        "mobile/",
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "Immutable PointLedgerEntries idempotency & 4-tier upgrade tests + live SignalR BookingCreated staff alert without refresh"
+    },
+    {
+      "phaseNumber": 7,
+      "phaseId": "Phase 7",
+      "name": "Admin Chart.js Analytics Dashboard, End-to-End QA & GitHub Release",
+      "taskRange": "T-701..T-708",
+      "taskCount": 8,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        ".config/**",
+        "docker-compose.yml",
+        "docs/**",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**",
+        "backend/**",
+        "frontend/**"
+      ],
+      "forbiddenPrefixes": [
+        "mobile/",
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "100% CV requirements E2E verified + OWASP API Top 10 audit + final .docx sync + v1.0.0 release tag ready"
+    },
+    {
+      "phaseNumber": 8,
+      "phaseId": "Phase 8",
+      "name": "v1.1 Showroom Test-Drives, OEM Spare-Parts, Itemized Invoices & Printable Receipts",
+      "taskRange": "T-801..T-808",
+      "taskCount": 8,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        ".config/**",
+        "docker-compose.yml",
+        "docs/**",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**",
+        "backend/**",
+        "frontend/**"
+      ],
+      "forbiddenPrefixes": [
+        "mobile/",
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "25-table v1.1 migration + 40-permission RBAC + TestDriveBookings SignalR + OEM SpareParts & ServiceInvoiceLineItems + Printable Receipts + 15R+6T quality loop + 183-day git schedule sync"
+    },
+    {
+      "phaseNumber": 9,
+      "phaseId": "Phase 9",
+      "name": "v1.2 Post-Service 5-Star CSAT Reviews, Bonus Loyalty Points & VIN Warranty Claims",
+      "taskRange": "T-901..T-908",
+      "taskCount": 8,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        ".config/**",
+        "docker-compose.yml",
+        "docs/**",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**",
+        "backend/**",
+        "frontend/**"
+      ],
+      "forbiddenPrefixes": [
+        "mobile/",
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "27-table v1.2 migration + 48-permission RBAC + 10-event SignalR + ServiceReviews (+25 AvailablePoints bonus) & WarrantyClaims (36m/30,000km) + 30-route SPA + 15R+6T quality loop + 183-day git schedule sync"
+    },
+    {
+      "phaseNumber": 10,
+      "phaseId": "Phase 10",
+      "name": "v1.3.0 — Native C# .NET 10 MAUI Android Field App",
+      "taskRange": "T-1001..T-1008",
+      "taskCount": 8,
+      "allowedGlobs": [
+        "REQUIREMENTS.md",
+        "README.md",
+        "AGENTS.md",
+        "TASKS.md",
+        "PROGRESS.md",
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        ".config/**",
+        "docker-compose.yml",
+        "docs/**",
+        "docs/*.yaml",
+        "docs/**/*.yaml",
+        ".agents/**",
+        "backend/**",
+        "frontend/**",
+        "mobile/**"
+      ],
+      "forbiddenPrefixes": [
+        "node_modules/",
+        ".agents/plugins/motorcycle-dealer-suite/skills/"
+      ],
+      "exitGate": "Native C# .NET 10 MAUI Android Field App (Mobile.Core net10.0 + Mobile.App net10.0-android + >=65 xUnit tests) + 48-permission RBAC & 10-event SignalR parity + encrypted 9-table SQLCipher WAL cache + WHPX Pixel_8_API_35 APK smoke + 15R+6T quality loop + 183-day git schedule sync"
+    }
+  ],
+  "supplementarySpecs": {
+    "contractsAndOperations": [
+      {
+        "path": "docs/openapi.v1.yaml",
+        "taskId": "T-110",
+        "title": "OpenAPI 3.1.0 REST & SignalR Webhook Contract",
+        "scope": "77 /api/v1/* paths, 10 SignalR webhooks, 48 x-required-permission codes, ISO 3779 VIN & RFC 7807 ProblemDetails schemas"
+      },
+      {
+        "path": "docs/TEST_PLAN.md",
+        "taskId": "T-110",
+        "title": "Master 75-Case QA & Verification Test Specification (TC-001..TC-075)",
+        "scope": "6 test levels covering Clean Architecture, domain & two-step floor loyalty math (+25 review bonus), RowVersion concurrency, 48-permission RBAC/IDOR, Dual-Page SignalR E2E, and Chrome DevTools memory/Postman monitors"
+      },
+      {
+        "path": "docs/RUNBOOK.md",
+        "taskId": "T-110",
+        "title": "Developer Setup, Operations & 5-Minute Live Interview Walkthrough Runbook",
+        "scope": ".NET 10 + SQL Server LocalDB/Docker + AngularJS 1.8 setup, 3-dealer/10-account demo credentials, sample ISO 3779 VINs/vouchers, and live recruiter walkthrough"
+      }
+    ],
+    "screenUxSpecs": [
+      {
+        "path": "docs/screens/DESIGN_SYSTEM_AND_NAVIGATION.md",
+        "taskId": "T-111",
+        "title": "Motorsport Enterprise Design System, Shared Components & 24-Screen / 30-Route Catalog",
+        "scope": "WCAG AA CSS custom properties, typography, status/tier badges, App Shell, SignalR notificationBell/drawer/toast stack, printableReceiptModal, shared directives/filters, and SCR-PUB-01..SCR-ADM-08 UI-Router state machine"
+      },
+      {
+        "path": "docs/screens/CUSTOMER_PORTAL_SCREENS.md",
+        "taskId": "T-111",
+        "title": "Public & Customer Portal Screen Specifications (SCR-PUB-01..03, SCR-CUS-01..07)",
+        "scope": "Desktop/mobile ASCII wireframes, $ctrl bindings, ISO 3779 VIN & monotonic odometer validation, 409 slot-conflict recovery, 5-star CSAT review modal (+25 pts), VIN Warranty portal, and live SignalR UI reactions"
+      },
+      {
+        "path": "docs/screens/STAFF_AND_ADMIN_SCREENS.md",
+        "taskId": "T-111",
+        "title": "Dealer Staff Workbench & Admin Portal Screen Specifications (SCR-STF-01..07, SCR-ADM-01..08)",
+        "scope": "Zero-refresh SignalR Kanban/Test-Drive/Warranty & CSAT workbenches, itemized spare-parts invoice calculator, showroom VIN checkout, slot capacity manager, 4 leak-free Chart.js v4 dashboards, and Quality & Warranty oversight studios"
+      }
+    ],
+    "verticalModuleBlueprints": [
+      {
+        "path": "docs/modules/MOD_01_AUTH_AND_RBAC.md",
+        "moduleId": "MOD-01",
+        "taskId": "T-112",
+        "title": "Identity, Rotating JWT Auth & Multi-Dealer Granular RBAC",
+        "requirements": ["FR-01"],
+        "adrs": ["ADR-001", "ADR-002", "ADR-006"]
+      },
+      {
+        "path": "docs/modules/MOD_02_SHOWROOM_AND_VIN_GARAGE.md",
+        "moduleId": "MOD-02",
+        "taskId": "T-112",
+        "title": "Dealer Network, Motorcycle Showroom, VIN Stock & Customer Garage",
+        "requirements": ["FR-02", "FR-03", "FR-05"],
+        "adrs": ["ADR-002", "ADR-003"]
+      },
+      {
+        "path": "docs/modules/MOD_03_SERVICE_BOOKING_AND_REMINDERS.md",
+        "moduleId": "MOD-03",
+        "taskId": "T-112",
+        "title": "Time-Slot Service Booking, Concurrency Control & Automated VIN Reminders",
+        "requirements": ["FR-04", "FR-06"],
+        "adrs": ["ADR-002", "ADR-004", "ADR-005"]
+      },
+      {
+        "path": "docs/modules/MOD_04_LOYALTY_TIERS_AND_VOUCHERS.md",
+        "moduleId": "MOD-04",
+        "taskId": "T-112",
+        "title": "Workshop Invoicing, Immutable Loyalty Ledger, Membership Tiers & Vouchers",
+        "requirements": ["FR-03", "FR-04", "FR-05", "FR-06", "FR-07"],
+        "adrs": ["ADR-001", "ADR-002", "ADR-003", "ADR-005", "ADR-006"]
+      },
+      {
+        "path": "docs/modules/MOD_05_SIGNALR_REALTIME_NOTIFICATIONS.md",
+        "moduleId": "MOD-05",
+        "taskId": "T-112",
+        "title": "SignalR Real-Time Hub, Dealer Group Isolation & Persistent Notification Inbox",
+        "requirements": ["FR-01", "FR-04", "FR-05", "FR-06"],
+        "adrs": ["ADR-001", "ADR-002", "ADR-004", "ADR-006"]
+      },
+      {
+        "path": "docs/modules/MOD_06_ADMIN_ANALYTICS_AND_REPORTING.md",
+        "moduleId": "MOD-06",
+        "taskId": "T-112",
+        "title": "Multi-Dealer Revenue & Booking Analytics Engine (Chart.js v4)",
+        "requirements": ["FR-01", "FR-02", "FR-04", "FR-05", "FR-07"],
+        "adrs": ["ADR-001", "ADR-002", "ADR-006"]
+      }
+    ]
+  },
+  "database": {
+    "boundedContexts": [
+      {
+        "id": 1,
+        "name": "Identity & RBAC",
+        "requirements": ["FR-01"],
+        "tables": ["Users", "Roles", "Permissions", "UserRoles", "RolePermissions", "RefreshTokens"]
+      },
+      {
+        "id": 2,
+        "name": "Dealers & Showroom Sales",
+        "requirements": ["FR-02", "FR-04", "FR-06", "FR-07"],
+        "tables": ["Dealers", "MotorcycleModels", "DealerInventories", "SalesOrders", "TestDriveBookings"]
+      },
+      {
+        "id": 3,
+        "name": "Customer Garage & VIN Reminders",
+        "requirements": ["FR-03", "FR-04", "FR-09"],
+        "tables": ["CustomerVehicles", "MaintenanceRules", "MaintenanceReminders", "WarrantyClaims"]
+      },
+      {
+        "id": 4,
+        "name": "Service Booking & Workshop Invoicing",
+        "requirements": ["FR-03", "FR-04", "FR-06", "FR-07", "FR-09"],
+        "tables": ["ServiceTimeSlots", "ServiceBookings", "ServiceInvoices", "SpareParts", "ServiceInvoiceLineItems", "ServiceReviews"]
+      },
+      {
+        "id": 5,
+        "name": "Loyalty, Tiers & Vouchers",
+        "requirements": ["FR-05", "FR-09"],
+        "tables": ["LoyaltyTiers", "LoyaltyAccounts", "PointLedgerEntries", "VoucherCatalogs", "CustomerVouchers"]
+      },
+      {
+        "id": 6,
+        "name": "Real-Time Notifications",
+        "requirements": ["FR-06", "FR-09"],
+        "tables": ["Notifications"]
+      }
+    ],
+    "dealerScopedTables": [
+      "DealerInventories",
+      "SalesOrders",
+      "ServiceTimeSlots",
+      "ServiceBookings",
+      "ServiceInvoices",
+      "TestDriveBookings",
+      "ServiceReviews",
+      "WarrantyClaims"
+    ],
+    "rowVersionTables": [
+      "DealerInventories",
+      "ServiceTimeSlots",
+      "ServiceBookings",
+      "LoyaltyAccounts",
+      "CustomerVouchers",
+      "TestDriveBookings",
+      "ServiceReviews",
+      "WarrantyClaims"
+    ],
+    "immutableTables": [
+      "SalesOrders",
+      "ServiceInvoices",
+      "ServiceInvoiceLineItems",
+      "PointLedgerEntries"
+    ],
+    "appendOnlyTables": [
+      "PointLedgerEntries"
+    ],
+    "softDeletableTables": [
+      "Users",
+      "Dealers",
+      "MotorcycleModels",
+      "CustomerVehicles",
+      "VoucherCatalogs",
+      "SpareParts"
+    ],
+    "tables": [
+      { "tableNumber": 1, "name": "Users", "boundedContext": "Identity & RBAC", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Nullable (DealerStaff only)", "rowVersion": false, "deletionPolicy": "Soft Delete (IsDeleted)", "traceability": ["FR-01", "ADR-002"] },
+      { "tableNumber": 2, "name": "Roles", "boundedContext": "Identity & RBAC", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No", "rowVersion": false, "deletionPolicy": "Protected System Seed", "traceability": ["FR-01", "ADR-001"] },
+      { "tableNumber": 3, "name": "Permissions", "boundedContext": "Identity & RBAC", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No", "rowVersion": false, "deletionPolicy": "Protected System Seed", "traceability": ["FR-01", "ADR-001"] },
+      { "tableNumber": 4, "name": "UserRoles", "boundedContext": "Identity & RBAC", "pk": "Composite (UserId, RoleId)", "dealerScoped": "No", "rowVersion": false, "deletionPolicy": "Hard Cascade on Revoke", "traceability": ["FR-01"] },
+      { "tableNumber": 5, "name": "RolePermissions", "boundedContext": "Identity & RBAC", "pk": "Composite (RoleId, PermissionId)", "dealerScoped": "No", "rowVersion": false, "deletionPolicy": "Hard Cascade on Revoke", "traceability": ["FR-01"] },
+      { "tableNumber": 6, "name": "RefreshTokens", "boundedContext": "Identity & RBAC", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No", "rowVersion": false, "deletionPolicy": "Revocation Timestamp + TTL Purge", "traceability": ["FR-01", "ADR-006"] },
+      { "tableNumber": 7, "name": "Dealers", "boundedContext": "Dealers & Showroom Sales", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Root Tenant (Id)", "rowVersion": false, "deletionPolicy": "Soft Delete (IsDeleted)", "traceability": ["FR-02", "ADR-002"] },
+      { "tableNumber": 8, "name": "MotorcycleModels", "boundedContext": "Dealers & Showroom Sales", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Catalog-wide)", "rowVersion": false, "deletionPolicy": "Soft Delete (IsDeleted)", "traceability": ["FR-02", "FR-03"] },
+      { "tableNumber": 9, "name": "DealerInventories", "boundedContext": "Dealers & Showroom Sales", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Required (NOT NULL)", "rowVersion": true, "deletionPolicy": "Status-Driven (StockStatus)", "traceability": ["FR-02", "ADR-002"] },
+      { "tableNumber": 10, "name": "SalesOrders", "boundedContext": "Dealers & Showroom Sales", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Required (NOT NULL)", "rowVersion": false, "deletionPolicy": "Immutable (Never Deleted)", "traceability": ["FR-02", "FR-05", "FR-07"] },
+      { "tableNumber": 11, "name": "CustomerVehicles", "boundedContext": "Customer Garage & VIN Reminders", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Customer-owned)", "rowVersion": false, "deletionPolicy": "Soft Delete (IsDeleted)", "traceability": ["FR-02", "FR-03", "FR-04"] },
+      { "tableNumber": 12, "name": "MaintenanceRules", "boundedContext": "Customer Garage & VIN Reminders", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Model-wide)", "rowVersion": false, "deletionPolicy": "IsActive Deactivation", "traceability": ["FR-03", "FR-04", "ADR-005"] },
+      { "tableNumber": 13, "name": "MaintenanceReminders", "boundedContext": "Customer Garage & VIN Reminders", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Vehicle-scoped)", "rowVersion": false, "deletionPolicy": "Immutable Audit Log", "traceability": ["FR-04", "ADR-005"] },
+      { "tableNumber": 14, "name": "ServiceTimeSlots", "boundedContext": "Service Booking & Workshop Invoicing", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Required (NOT NULL)", "rowVersion": true, "deletionPolicy": "IsBlocked Flag", "traceability": ["FR-04", "ADR-002"] },
+      { "tableNumber": 15, "name": "ServiceBookings", "boundedContext": "Service Booking & Workshop Invoicing", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Required (NOT NULL)", "rowVersion": true, "deletionPolicy": "Status-Driven (Cancelled)", "traceability": ["FR-04", "FR-06", "FR-07"] },
+      { "tableNumber": 16, "name": "ServiceInvoices", "boundedContext": "Service Booking & Workshop Invoicing", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Required (NOT NULL)", "rowVersion": false, "deletionPolicy": "Immutable (Never Deleted)", "traceability": ["FR-04", "FR-05", "FR-07"] },
+      { "tableNumber": 17, "name": "LoyaltyTiers", "boundedContext": "Loyalty, Tiers & Vouchers", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Platform-wide)", "rowVersion": false, "deletionPolicy": "IsActive Deactivation", "traceability": ["FR-05", "ADR-003"] },
+      { "tableNumber": 18, "name": "LoyaltyAccounts", "boundedContext": "Loyalty, Tiers & Vouchers", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Customer 1:1)", "rowVersion": true, "deletionPolicy": "Permanent Financial Account", "traceability": ["FR-05", "ADR-003"] },
+      { "tableNumber": 19, "name": "PointLedgerEntries", "boundedContext": "Loyalty, Tiers & Vouchers", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Account-scoped)", "rowVersion": false, "deletionPolicy": "Append-Only (Never Updated/Deleted)", "traceability": ["FR-05", "ADR-003"] },
+      { "tableNumber": 20, "name": "VoucherCatalogs", "boundedContext": "Loyalty, Tiers & Vouchers", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Platform-wide)", "rowVersion": false, "deletionPolicy": "Soft Delete (IsDeleted)", "traceability": ["FR-05"] },
+      { "tableNumber": 21, "name": "CustomerVouchers", "boundedContext": "Loyalty, Tiers & Vouchers", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Account-scoped)", "rowVersion": true, "deletionPolicy": "Status-Driven (Used/Expired)", "traceability": ["FR-04", "FR-05"] },
+      { "tableNumber": 22, "name": "Notifications", "boundedContext": "Real-Time Notifications", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Nullable (TargetDealerId)", "rowVersion": false, "deletionPolicy": "Read-State + Archival", "traceability": ["FR-06", "ADR-004"] },
+      { "tableNumber": 23, "name": "TestDriveBookings", "boundedContext": "Dealers & Showroom Sales", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Required (NOT NULL)", "rowVersion": true, "deletionPolicy": "Status-Driven (Cancelled/NoShow)", "traceability": ["FR-02", "FR-04", "FR-06", "ADR-002", "ADR-004", "ADR-005"] },
+      { "tableNumber": 24, "name": "SpareParts", "boundedContext": "Service Booking & Workshop Invoicing", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "No (Catalog-wide)", "rowVersion": false, "deletionPolicy": "Soft Delete (IsDeleted)", "traceability": ["FR-03", "FR-04", "FR-08", "ADR-001"] },
+      { "tableNumber": 25, "name": "ServiceInvoiceLineItems", "boundedContext": "Service Booking & Workshop Invoicing", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Via Parent ServiceInvoice", "rowVersion": false, "deletionPolicy": "Immutable (Never Updated/Deleted)", "traceability": ["FR-04", "FR-05", "FR-07", "FR-08", "ADR-003"] },
+      { "tableNumber": 26, "name": "ServiceReviews", "boundedContext": "Service Booking & Workshop Invoicing", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Required (NOT NULL)", "rowVersion": true, "deletionPolicy": "Permanent Customer CSAT Record", "traceability": ["FR-04", "FR-05", "FR-06", "FR-09", "ADR-002", "ADR-003", "ADR-004"] },
+      { "tableNumber": 27, "name": "WarrantyClaims", "boundedContext": "Customer Garage & VIN Reminders", "pk": "UNIQUEIDENTIFIER", "dealerScoped": "Required (NOT NULL)", "rowVersion": true, "deletionPolicy": "Status-Driven (Completed/Rejected)", "traceability": ["FR-03", "FR-06", "FR-09", "ADR-002", "ADR-004", "ADR-005"] }
+    ]
+  },
+  "rbac": {
+    "roles": ["Customer", "DealerStaff", "Admin"],
+    "dealerScopedRules": {
+      "interface": "IDealerScoped (Guid DealerId { get; })",
+      "scopedEntities": ["DealerInventories", "SalesOrders", "ServiceTimeSlots", "ServiceBookings", "ServiceInvoices", "TestDriveBookings", "ServiceReviews", "WarrantyClaims"],
+      "efCoreGlobalQueryFilter": "When CurrentUser.Role == 'DealerStaff', MotorcycleDealerDbContext automatically predicates e.DealerId == CurrentUser.DealerId; bypassed only for 'Admin'.",
+      "writeCommandGuard": "DealerStaff command handlers never trust client-supplied dealerId; mismatched dealerId fails with 403 Forbidden (FORBIDDEN_DEALER_SCOPE) and created rows bind DealerId = CurrentUser.DealerId server-side.",
+      "customerOwnershipRule": "Customer self-service endpoints (*.ViewOwn, *.RegisterOwn, *.CreateOwn, Bookings.Create, Bookings.CancelOwn, TestDrives.Create, TestDrives.CancelOwn, Loyalty.RedeemVoucher) bind CustomerId = CurrentUser.UserId from verified JWT sub claim."
+    },
+    "permissions": [
+      { "id": 1, "code": "Permissions.Showroom.View", "module": "Showroom", "boundedContext": "Showroom & Sales", "roles": ["Customer", "DealerStaff", "Admin"], "anonymousAllowed": true, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Also permitted anonymously on public catalog endpoints (GET /api/v1/motorcycles)." },
+      { "id": 2, "code": "Permissions.Showroom.ManageModels", "module": "Showroom", "boundedContext": "Showroom & Sales", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Create/update MotorcycleModels specs, pricing, and images." },
+      { "id": 3, "code": "Permissions.Inventories.ViewDealer", "module": "Inventories", "boundedContext": "Showroom & Sales", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "DealerStaff: own DealerId VIN stock; Admin: any dealer's stock." },
+      { "id": 4, "code": "Permissions.Inventories.ManageDealer", "module": "Inventories", "boundedContext": "Showroom & Sales", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "Intake new 17-char VIN units into DealerInventories (DealerStaff scoped to own DealerId)." },
+      { "id": 5, "code": "Permissions.SalesOrders.Create", "module": "SalesOrders", "boundedContext": "Showroom & Sales", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "Issue showroom SalesOrders, mark VIN sold, onboard CustomerVehicles, accrue points." },
+      { "id": 6, "code": "Permissions.SalesOrders.ViewOwn", "module": "SalesOrders", "boundedContext": "Showroom & Sales", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Customer views only SalesOrders where CustomerId == CurrentUser.UserId." },
+      { "id": 7, "code": "Permissions.SalesOrders.ViewDealer", "module": "SalesOrders", "boundedContext": "Showroom & Sales", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "DealerStaff: own DealerId sales orders; Admin: cross-dealer sales audit." },
+      { "id": 8, "code": "Permissions.Vehicles.ViewOwn", "module": "Vehicles", "boundedContext": "Customer VIN Garage", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "View motorcycles in CustomerVehicles owned by CurrentUser.UserId + schedule/reminders." },
+      { "id": 9, "code": "Permissions.Vehicles.RegisterOwn", "module": "Vehicles", "boundedContext": "Customer VIN Garage", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Register external 17-char VIN into own garage and update own odometer (CurrentMileageKm)." },
+      { "id": 10, "code": "Permissions.Vehicles.ViewDealer", "module": "Vehicles", "boundedContext": "Customer VIN Garage", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Lookup customer vehicle VIN, service history, and due milestones during workshop intake." },
+      { "id": 11, "code": "Permissions.Vehicles.ManageRules", "module": "Vehicles", "boundedContext": "Customer VIN Garage", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Configure OEM MaintenanceRules (IntervalKm, IntervalMonths, checklist) per model." },
+      { "id": 12, "code": "Permissions.TimeSlots.ViewAvailable", "module": "TimeSlots", "boundedContext": "Service Booking", "roles": ["Customer", "DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Query bookable ServiceTimeSlots (BookedCount < MaxCapacity) for a selected dealer and date." },
+      { "id": 13, "code": "Permissions.TimeSlots.ManageDealer", "module": "TimeSlots", "boundedContext": "Service Booking", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "Generate/adjust bay capacity (MaxCapacity) on ServiceTimeSlots (DealerStaff: own DealerId)." },
+      { "id": 14, "code": "Permissions.Bookings.Create", "module": "Bookings", "boundedContext": "Service Booking", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Book a maintenance appointment for an owned CustomerVehicle (VIN)." },
+      { "id": 15, "code": "Permissions.Bookings.CancelOwn", "module": "Bookings", "boundedContext": "Service Booking", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Cancel own Pending/Confirmed booking; releases slot capacity & reserved voucher." },
+      { "id": 16, "code": "Permissions.Bookings.ViewOwn", "module": "Bookings", "boundedContext": "Service Booking", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "View own ServiceBookings history and live status timeline." },
+      { "id": 17, "code": "Permissions.Bookings.ViewDealer", "module": "Bookings", "boundedContext": "Service Booking", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "DealerStaff: live workshop queue for own DealerId; Admin: cross-dealer bookings." },
+      { "id": 18, "code": "Permissions.Bookings.UpdateStatus", "module": "Bookings", "boundedContext": "Service Booking", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "Transition booking status (Confirmed, CheckedIn, InProgress, Cancelled, NoShow)." },
+      { "id": 19, "code": "Permissions.Invoices.CreateDealer", "module": "Invoices", "boundedContext": "Workshop Invoicing", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "Finalize ServiceInvoices, consume voucher, settle net spend, trigger Loyalty & Tier engine." },
+      { "id": 20, "code": "Permissions.Invoices.ViewOwn", "module": "Invoices", "boundedContext": "Workshop Invoicing", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "View itemized workshop ServiceInvoices for own bookings." },
+      { "id": 21, "code": "Permissions.Invoices.ViewDealer", "module": "Invoices", "boundedContext": "Workshop Invoicing", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "DealerStaff: own DealerId workshop invoices; Admin: cross-dealer invoice ledger." },
+      { "id": 22, "code": "Permissions.Loyalty.ViewOwn", "module": "Loyalty", "boundedContext": "Loyalty & Vouchers", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "View own LoyaltyAccounts summary, tier progress, PointLedgerEntries, and CustomerVouchers." },
+      { "id": 23, "code": "Permissions.Loyalty.RedeemVoucher", "module": "Loyalty", "boundedContext": "Loyalty & Vouchers", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Redeem AvailablePoints for a VoucherCatalogs item into CustomerVouchers." },
+      { "id": 24, "code": "Permissions.Loyalty.ViewDealerCustomer", "module": "Loyalty", "boundedContext": "Loyalty & Vouchers", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "View customer tier badge, multiplier, and eligible CustomerVouchers during sale/checkout." },
+      { "id": 25, "code": "Permissions.Loyalty.ManageTiers", "module": "Loyalty", "boundedContext": "Loyalty & Vouchers", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Manage LoyaltyTiers metadata/benefits (Bronze, Silver, Gold, Platinum)." },
+      { "id": 26, "code": "Permissions.Loyalty.ManageVoucherCatalog", "module": "Loyalty", "boundedContext": "Loyalty & Vouchers", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Create/update VoucherCatalogs (PointsCost, DiscountType, QuotaTotal, MinTierId)." },
+      { "id": 27, "code": "Permissions.Loyalty.AdjustPoints", "module": "Loyalty", "boundedContext": "Loyalty & Vouchers", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Record audited manual goodwill/dispute PointLedgerEntries with mandatory reason notes." },
+      { "id": 28, "code": "Permissions.Notifications.ViewOwn", "module": "Notifications", "boundedContext": "Notifications", "roles": ["Customer", "DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Read and mark-as-read personal notifications (RecipientUserId == CurrentUser.UserId)." },
+      { "id": 29, "code": "Permissions.Notifications.ViewDealer", "module": "Notifications", "boundedContext": "Notifications", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "View dealer-targeted booking feed notifications (TargetDealerId == DealerId)." },
+      { "id": 30, "code": "Permissions.Dealers.ViewPublic", "module": "Dealers", "boundedContext": "Platform & Admin", "roles": ["Customer", "DealerStaff", "Admin"], "anonymousAllowed": true, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Also permitted anonymously on public dealer locator (GET /api/v1/dealers)." },
+      { "id": 31, "code": "Permissions.Dealers.ManageAll", "module": "Dealers", "boundedContext": "Platform & Admin", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Create, update, or deactivate Dealers locations nationwide." },
+      { "id": 32, "code": "Permissions.Users.ManageStaff", "module": "Users", "boundedContext": "Platform & Admin", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Provision DealerStaff accounts, assign DealerId, or lock/unlock staff users." },
+      { "id": 33, "code": "Permissions.Analytics.ViewAllDealers", "module": "Analytics", "boundedContext": "Platform & Admin", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Access cross-dealer Chart.js revenue, booking, and loyalty analytics endpoints." },
+      { "id": 34, "code": "Permissions.Analytics.ExportReports", "module": "Analytics", "boundedContext": "Platform & Admin", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Export aggregated dealer revenue and booking datasets as CSV/JSON reports." },
+      { "id": 35, "code": "Permissions.TestDrives.Create", "module": "TestDrives", "boundedContext": "Showroom & Sales", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Book a showroom test-drive appointment for an active MotorcycleModel at an active Dealer." },
+      { "id": 36, "code": "Permissions.TestDrives.CancelOwn", "module": "TestDrives", "boundedContext": "Showroom & Sales", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Cancel own Requested/Confirmed test-drive booking." },
+      { "id": 37, "code": "Permissions.TestDrives.ViewOwn", "module": "TestDrives", "boundedContext": "Showroom & Sales", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "View own TestDriveBookings history and live status updates." },
+      { "id": 38, "code": "Permissions.TestDrives.ViewDealer", "module": "TestDrives", "boundedContext": "Showroom & Sales", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "DealerStaff: live test-drive schedule for own DealerId; Admin: cross-dealer test-drive bookings." },
+      { "id": 39, "code": "Permissions.TestDrives.UpdateStatus", "module": "TestDrives", "boundedContext": "Showroom & Sales", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "Assign demo VIN and transition test-drive status (Confirmed, Completed, Cancelled, NoShow)." },
+      { "id": 40, "code": "Permissions.SpareParts.ManageCatalog", "module": "SpareParts", "boundedContext": "Workshop Invoicing", "roles": ["Admin"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": false, "scopeRule": "Create/update OEM SpareParts catalog pricing, model compatibility, and active status." },
+      { "id": 41, "code": "Permissions.Reviews.CreateOwn", "module": "Reviews", "boundedContext": "Workshop Invoicing & CSAT", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "Submit 1-5 star CSAT ServiceReview on own settled ServiceInvoice and earn +25 AvailablePoints bonus." },
+      { "id": 42, "code": "Permissions.Reviews.ViewOwn", "module": "Reviews", "boundedContext": "Workshop Invoicing & CSAT", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "View own submitted ServiceReviews and official dealership responses." },
+      { "id": 43, "code": "Permissions.Reviews.ViewDealer", "module": "Reviews", "boundedContext": "Workshop Invoicing & CSAT", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "DealerStaff: view CSAT ServiceReviews for own DealerId; Admin: cross-dealer CSAT audit." },
+      { "id": 44, "code": "Permissions.Reviews.RespondDealer", "module": "Reviews", "boundedContext": "Workshop Invoicing & CSAT", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "Post official dealership response to a ServiceReview (RowVersion concurrency guarded)." },
+      { "id": 45, "code": "Permissions.Warranty.CreateOwn", "module": "Warranty", "boundedContext": "Customer VIN Garage & Warranty", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "File a VIN WarrantyClaim on an owned CustomerVehicle within 36m / 30,000km OEM coverage." },
+      { "id": 46, "code": "Permissions.Warranty.ViewOwn", "module": "Warranty", "boundedContext": "Customer VIN Garage & Warranty", "roles": ["Customer"], "anonymousAllowed": false, "dealerScoped": false, "ownerScoped": true, "scopeRule": "View own VIN WarrantyClaims status timeline, covered OEM parts, and resolution notes." },
+      { "id": 47, "code": "Permissions.Warranty.ViewDealer", "module": "Warranty", "boundedContext": "Customer VIN Garage & Warranty", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "DealerStaff: live VIN WarrantyClaims queue for own DealerId; Admin: cross-dealer warranty oversight." },
+      { "id": 48, "code": "Permissions.Warranty.ManageDealer", "module": "Warranty", "boundedContext": "Customer VIN Garage & Warranty", "roles": ["DealerStaff", "Admin"], "anonymousAllowed": false, "dealerScoped": true, "ownerScoped": false, "scopeRule": "Transition WarrantyClaim status (UnderReview, Approved, Completed, Rejected) and assign covered OEM SparePart." }
+    ]
+  },
+  "loyalty": {
+    "baseUnitVnd": 10000,
+    "formula": "PointsEarned = Math.floor(Math.floor(NetPaidAmount / 10000) * TierMultiplier)",
+    "csharpFormula": "(int)Math.Floor(Math.Floor(NetPaidAmount / 10_000m) * TierMultiplier)",
+    "preTransactionMultiplierRule": "PointsEarned uses the customer's active CurrentTier.PointsMultiplier at payment time; crossing higher tier thresholds upgrades CurrentTierId immediately for subsequent transactions.",
+    "redemptionRule": "Voucher redemption deducts AvailablePoints ONLY; LifetimeQualifyingPoints never decreases on voucher redemption.",
+    "reviewBonusRule": "Submitting a post-service CSAT ServiceReview awards +25 bonus points to AvailablePoints ONLY (LedgerTransactionType.ServiceReviewBonus); LifetimeQualifyingPoints is never modified by review bonuses.",
+    "idempotencyKeyPatterns": {
+      "salesOrderEarn": "SALES_ORDER:{SalesOrderId}:EARN",
+      "serviceInvoiceEarn": "SERVICE_INVOICE:{ServiceInvoiceId}:EARN",
+      "voucherRedeemSpend": "VOUCHER_REDEEM:{CustomerVoucherId}:SPEND",
+      "serviceReviewBonus": "SERVICE_REVIEW:{ServiceInvoiceId}:BONUS"
+    },
+    "tiers": [
+      { "code": "Bronze", "rankOrder": 1, "minQualifyingPoints": 0, "multiplier": 1.0 },
+      { "code": "Silver", "rankOrder": 2, "minQualifyingPoints": 500, "multiplier": 1.2 },
+      { "code": "Gold", "rankOrder": 3, "minQualifyingPoints": 2000, "multiplier": 1.5 },
+      { "code": "Platinum", "rankOrder": 4, "minQualifyingPoints": 5000, "multiplier": 2.0 }
+    ]
+  },
+  "signalr": {
+    "hubPath": "/hubs/notifications",
+    "hubContract": "NotificationHub : Hub<INotificationClient>",
+    "authHandshake": "JWT access_token query string extracted exclusively on /hubs/notifications; server-enforced group join on OnConnectedAsync",
+    "groups": [
+      "user-{userId}",
+      "dealer-{dealerId}",
+      "role-Admin"
+    ],
+    "reconnectScheduleMs": [0, 2000, 5000, 10000, 30000],
+    "events": [
+      { "name": "BookingCreated", "targetGroups": ["dealer-{dealerId}", "role-Admin"], "trigger": "Customer creates ServiceBookings", "spaAction": "Prepends highlighted booking card into DealerStaff Live Workbench + plays toast without page refresh" },
+      { "name": "BookingStatusChanged", "targetGroups": ["user-{customerId}", "dealer-{dealerId}"], "trigger": "Staff updates booking status or customer cancels", "spaAction": "Updates status badge in Customer Booking list & syncs peer DealerStaff tabs" },
+      { "name": "MaintenanceReminderTriggered", "targetGroups": ["user-{customerId}"], "trigger": "VinMaintenanceReminderWorker detects due milestone", "spaAction": "Displays due maintenance banner in Customer VIN Garage + increments bell counter" },
+      { "name": "LoyaltyPointsUpdated", "targetGroups": ["user-{customerId}"], "trigger": "SalesOrders, ServiceInvoices, Voucher redeem, or Admin adjustment", "spaAction": "Animates AvailablePoints & LifetimeQualifyingPoints balance in Customer Loyalty header" },
+      { "name": "TierUpgraded", "targetGroups": ["user-{customerId}"], "trigger": "LifetimeQualifyingPoints crosses Silver/Gold/Platinum threshold", "spaAction": "Displays Tier-Up celebration toast/modal with new multiplier" },
+      { "name": "TestDriveCreated", "targetGroups": ["dealer-{dealerId}", "role-Admin"], "trigger": "Customer creates TestDriveBookings", "spaAction": "Prepends incoming test-drive card into DealerStaff Test-Drives screen + plays toast without page refresh" },
+      { "name": "TestDriveStatusChanged", "targetGroups": ["user-{customerId}", "dealer-{dealerId}"], "trigger": "Staff confirms/completes/cancels test-drive or customer cancels", "spaAction": "Updates status badge & demo VIN in Customer Test-Drives list & syncs peer DealerStaff tabs without refresh" },
+      { "name": "ServiceReviewSubmitted", "targetGroups": ["dealer-{dealerId}", "role-Admin"], "trigger": "Customer submits 1-5 star ServiceReview on settled ServiceInvoice", "spaAction": "Prepends incoming CSAT review card into DealerStaff Warranty & Reviews desk + plays toast without page refresh" },
+      { "name": "WarrantyClaimCreated", "targetGroups": ["dealer-{dealerId}", "role-Admin"], "trigger": "Customer files VIN WarrantyClaim within 36m / 30,000km OEM coverage", "spaAction": "Prepends incoming VIN warranty claim into DealerStaff Warranty & Reviews desk + plays toast without page refresh" },
+      { "name": "WarrantyClaimStatusChanged", "targetGroups": ["user-{customerId}", "dealer-{dealerId}", "role-Admin"], "trigger": "Staff/Admin transitions WarrantyClaim status (UnderReview, Approved, Completed, Rejected)", "spaAction": "Updates warranty stepper, covered OEM part & resolution notes in Customer Warranty portal & syncs staff/admin tabs without refresh" }
+    ]
+  },
+  "mcpServers": {
+    "workspaceStdio": [
+      {
+        "name": "motorcycle-dealer-guardrails",
+        "configPath": ".agents/plugins/motorcycle-dealer-suite/mcp_config.json",
+        "scriptPath": ".agents/scripts/mcp-dealer-guardrails-server.mjs",
+        "tools": [
+          "check_phase_gate",
+          "lookup_rbac_permission",
+          "lookup_db_table_spec",
+          "calculate_loyalty_preview",
+          "get_wbs_tasks"
+        ]
+      },
+      {
+        "name": "sqlserver-localdb-inspector",
+        "configPath": ".agents/plugins/motorcycle-dealer-suite/mcp_config.json",
+        "scriptPath": ".agents/scripts/mcp-sqlserver-localdb-server.mjs",
+        "tools": [
+          "sqlserver_status",
+          "list_sqlserver_tables",
+          "inspect_sqlserver_schema",
+          "query_readonly_sql"
+        ]
+      }
+    ],
+    "global": [
+      "context7_context7",
+      "playwright",
+      "chrome-devtools-plugin_chrome-devtools",
+      "postman_postman",
+      "github",
+      "figma_figma",
+      "notion_notion"
+    ],
+    "doNotUseForProjectDb": {
+      "server": "dbhub",
+      "reason": "Global dbhub is bound to an external Oracle database from another project; always use workspace sqlserver-localdb-inspector for SQL Server MotorcycleDealerDb."
+    }
+  }
+}
