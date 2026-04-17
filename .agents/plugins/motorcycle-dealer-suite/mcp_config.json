@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "motorcycle-dealer-guardrails": {
+      "command": "node",
+      "args": [
+        "-e",
+        "const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');const c=[process.env.PLUGIN_ROOT&&path.resolve(process.env.PLUGIN_ROOT,'../../scripts/mcp-dealer-guardrails-server.mjs'),path.resolve('.agents/scripts/mcp-dealer-guardrails-server.mjs'),path.resolve('../../scripts/mcp-dealer-guardrails-server.mjs'),path.resolve('scripts/mcp-dealer-guardrails-server.mjs')].filter(Boolean).find(p=>fs.existsSync(p));if(!c){console.error('mcp-dealer-guardrails-server.mjs not found');process.exit(1);}import(pathToFileURL(c).href);"
+      ],
+      "env": {
+        "MCP_SERVER_ROLE": "guardrails"
+      }
+    },
+    "sqlserver-localdb-inspector": {
+      "command": "node",
+      "args": [
+        "-e",
+        "const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');const c=[process.env.PLUGIN_ROOT&&path.resolve(process.env.PLUGIN_ROOT,'../../scripts/mcp-sqlserver-localdb-server.mjs'),path.resolve('.agents/scripts/mcp-sqlserver-localdb-server.mjs'),path.resolve('../../scripts/mcp-sqlserver-localdb-server.mjs'),path.resolve('scripts/mcp-sqlserver-localdb-server.mjs')].filter(Boolean).find(p=>fs.existsSync(p));if(!c){console.error('mcp-sqlserver-localdb-server.mjs not found');process.exit(1);}import(pathToFileURL(c).href);"
+      ],
+      "env": {
+        "SQLSERVER_INSTANCE": "(localdb)\\MSSQLLocalDB",
+        "SQLSERVER_DATABASE": "MotorcycleDealerDb",
+        "DB_READONLY": "true"
+      }
+    }
+  }
+}
