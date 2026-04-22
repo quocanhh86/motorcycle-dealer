@@ -1,0 +1,111 @@
+# ==============================================================================
+# Motorcycle Dealer & Loyalty Management Platform — Docker Compose Stack (T-308)
+# Services:
+#   - sqlserver : Microsoft SQL Server 2022 (port 1433, named volume + healthcheck)
+#   - webapi    : ASP.NET Core 10 Clean Architecture API + SignalR Hub (port 5080 -> 8080)
+#   - frontend  : Decoupled AngularJS 1.8.3 SPA on Node 22 Alpine (port 4200 -> 4200)
+#
+# Usage:
+#   cp .env.example .env   # set SQLSERVER_SA_PASSWORD & Jwt__SigningKey for local Docker
+#   docker compose up --build -d
+# ==============================================================================
+
+name: motorcycle-dealer-platform
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: motorcycle-dealer-sqlserver
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "${SQLSERVER_SA_PASSWORD:-LocalDev_ChangeMe_2026!}"
+    ports:
+      - "${SQLSERVER_HOST_PORT:-1433}:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" || /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\""
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks:
+      - dealer_net
+
+  webapi:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: motorcycle-dealer-webapi
+    restart: unless-stopped
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT:-Development}"
+      ASPNETCORE_URLS: "http://+:8080"
+      ConnectionStrings__DefaultConnection: "${ConnectionStrings__DefaultConnection:-Server=sqlserver,1433;Database=MotorcycleDealerDb;User Id=sa;Password=${SQLSERVER_SA_PASSWORD:-LocalDev_ChangeMe_2026!};MultipleActiveResultSets=True;TrustServerCertificate=True;Encrypt=False}"
+      Jwt__Issuer: "${Jwt__Issuer:-MotorcycleDealer.WebApi}"
+      Jwt__Audience: "${Jwt__Audience:-MotorcycleDealer.Spa}"
+      Jwt__SigningKey: "${Jwt__SigningKey:-LocalDockerOnly_ReplaceViaEnv_32ByteJwtKey_2026!}"
+      Jwt__AccessTokenMinutes: "${Jwt__AccessTokenMinutes:-15}"
+      Jwt__RefreshTokenDays: "${Jwt__RefreshTokenDays:-7}"
+      Cors__AllowedOrigins__0: "${Cors__AllowedOrigins__0:-http://localhost:4200}"
+      Cors__AllowedOrigins__1: "${Cors__AllowedOrigins__1:-http://127.0.0.1:4200}"
+      MaintenanceReminderWorker__Enabled: "${MaintenanceReminderWorker__Enabled:-true}"
+      MaintenanceReminderWorker__SweepIntervalSeconds: "${MaintenanceReminderWorker__SweepIntervalSeconds:-900}"
+    ports:
+      - "${WEBAPI_HOST_PORT:-5080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+    networks:
+      - dealer_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: motorcycle-dealer-frontend
+    restart: unless-stopped
+    depends_on:
+      webapi:
+        condition: service_healthy
+    environment:
+      NODE_ENV: "production"
+      HOST: "0.0.0.0"
+      PORT: "4200"
+    ports:
+      - "${FRONTEND_HOST_PORT:-4200}:4200"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4200/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - dealer_net
+
+volumes:
+  sqlserver_data:
+    name: motorcycle_dealer_sqlserver_data
+
+networks:
+  dealer_net:
+    name: motorcycle_dealer_net
+    driver: bridge
