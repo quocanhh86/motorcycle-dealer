@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>MotorcycleDealer.Domain</RootNamespace>
+    <AssemblyName>MotorcycleDealer.Domain</AssemblyName>
+  </PropertyGroup>
+</Project>
