@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <RootNamespace>MotorcycleDealer.WebApi</RootNamespace>
+    <AssemblyName>MotorcycleDealer.WebApi</AssemblyName>
+    <UserSecretsId>MotorcycleDealer.WebApi-7f83b2c0-2026-4d19-9a01-dealerloyalty</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MotorcycleDealer.Application\MotorcycleDealer.Application.csproj" />
+    <ProjectReference Include="..\MotorcycleDealer.Infrastructure\MotorcycleDealer.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
+  </ItemGroup>
+</Project>
