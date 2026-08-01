@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi" ng-app="motorcycleDealerApp" ng-strict-di>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Apex Moto Loyalty — Motorcycle Dealer &amp; Loyalty Management Platform (AngularJS 1.8.3 Enterprise SPA)" />
+  <base href="/" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Apex Moto Loyalty — Motorcycle Dealer &amp; Workshop Platform</title>
+
+  <!-- Local Staged Typography & Phosphor Icon Weights (Zero External CDN Fragility) -->
+  <link rel="stylesheet" href="vendor/fonts/fonts.css" />
+  <link rel="stylesheet" href="vendor/phosphor/regular/style.css" />
+  <link rel="stylesheet" href="vendor/phosphor/fill/style.css" />
+  <link rel="stylesheet" href="vendor/phosphor/duotone/style.css" />
+
+  <!-- Atelier Showroom / Pit-Lane Design Tokens, GPU Motion & Application Shell -->
+  <link rel="stylesheet" href="styles/design-tokens.css" />
+  <link rel="stylesheet" href="styles/motion.css" />
+  <link rel="stylesheet" href="styles/app-shell.css" />
+</head>
+<body ng-cloak>
+  <ui-view></ui-view>
+
+  <!-- Local Staged Browser Vendor Bundles (Zero External CDN Fragility) -->
+  <script src="vendor/angular.min.js"></script>
+  <script src="vendor/angular-ui-router.min.js"></script>
+  <script src="vendor/chart.umd.js"></script>
+  <script src="vendor/signalr.min.js"></script>
+
+  <!-- Root Module, Environment Config & Canonical 30-Route UI-Router Tree -->
+  <script src="app/app.module.js"></script>
+  <script src="app/core/auth/permissions.constants.js"></script>
+  <script src="app/app.config.js"></script>
+  <script src="app/app.routes.js"></script>
+
+  <!-- Theme (Light Showroom / Dark Pit-Lane) & Bilingual i18n Core (vi-VN Default + en-US) -->
+  <script src="app/core/theme/theme.service.js"></script>
+  <script src="app/core/i18n/i18n.vi.js"></script>
+  <script src="app/core/i18n/i18n.en.js"></script>
+  <script src="app/core/i18n/i18n.service.js"></script>
+
+  <!-- Core Auth, Single-Flight 401 Refresh Queue, RFC 7807 Mapper, User Action Logger & SignalR Singleton -->
+  <script src="app/core/auth/auth.service.js"></script>
+  <script src="app/core/logging/user-action-logger.service.js"></script>
+  <script src="app/core/auth/auth.interceptor.js"></script>
+  <script src="app/core/auth/route-guard.run.js"></script>
+  <script src="app/core/logging/user-action-tracker.run.js"></script>
+  <script src="app/core/api/problem-details-mapper.service.js"></script>
+  <script src="app/core/api/dealer-api.service.js"></script>
+  <script src="app/core/realtime/signalr-client.service.js"></script>
+
+  <!-- Shared Presentation Filters, Cinematic UI Primitives, Directives, Shell & Leak-Free Chart.js v4 Wrapper -->
+  <script src="app/shared/translate.filter.js"></script>
+  <script src="app/shared/vnd-currency.filter.js"></script>
+  <script src="app/shared/utc-to-local.filter.js"></script>
+  <script src="app/shared/app-icon.component.js"></script>
+  <script src="app/shared/bike-image.component.js"></script>
+  <script src="app/shared/skeleton-loader.component.js"></script>
+  <script src="app/shared/empty-state.component.js"></script>
+  <script src="app/shared/error-retry-banner.component.js"></script>
+  <script src="app/shared/route-progress-bar.component.js"></script>
+  <script src="app/shared/kpi-counter.directive.js"></script>
+  <script src="app/shared/star-rating.component.js"></script>
+  <script src="app/shared/toast-container.component.js"></script>
+  <script src="app/shared/notification-bell.component.js"></script>
+  <script src="app/shared/activity-log-drawer.component.js"></script>
+  <script src="app/shared/app-shell.component.js"></script>
+  <script src="app/shared/printable-receipt-modal.component.js"></script>
+  <script src="app/shared/has-permission.directive.js"></script>
+  <script src="app/shared/vin-input.directive.js"></script>
+  <script src="app/shared/dealer-chart.component.js"></script>
+
+  <!-- Public Feature Screens (SCR-PUB-01 .. SCR-PUB-03) -->
+  <script src="app/features/public/showroom.component.js"></script>
+  <script src="app/features/public/login.component.js"></script>
+  <script src="app/features/public/register.component.js"></script>
+  <script src="app/features/public/forbidden.component.js"></script>
+
+  <!-- Customer Portal Feature Screens (SCR-CUS-01 .. SCR-CUS-07) -->
+  <script src="app/features/customer/dashboard.component.js"></script>
+  <script src="app/features/customer/garage.component.js"></script>
+  <script src="app/features/customer/booking-new.component.js"></script>
+  <script src="app/features/customer/bookings.component.js"></script>
+  <script src="app/features/customer/loyalty.component.js"></script>
+  <script src="app/features/customer/test-drives.component.js"></script>
+  <script src="app/features/customer/warranty.component.js"></script>
+
+  <!-- Dealer Staff Portal Feature Screens (SCR-STF-01 .. SCR-STF-07) -->
+  <script src="app/features/staff/workbench.component.js"></script>
+  <script src="app/features/staff/invoice-builder.component.js"></script>
+  <script src="app/features/staff/sales-desk.component.js"></script>
+  <script src="app/features/staff/time-slots.component.js"></script>
+  <script src="app/features/staff/customers.component.js"></script>
+  <script src="app/features/staff/test-drives.component.js"></script>
+  <script src="app/features/staff/warranty-reviews.component.js"></script>
+
+  <!-- Admin Executive HQ Feature Screens (SCR-ADM-01 .. SCR-ADM-08) -->
+  <script src="app/features/admin/analytics.component.js"></script>
+  <script src="app/features/admin/dealers.component.js"></script>
+  <script src="app/features/admin/staff.component.js"></script>
+  <script src="app/features/admin/models.component.js"></script>
+  <script src="app/features/admin/loyalty-tiers.component.js"></script>
+  <script src="app/features/admin/voucher-catalog.component.js"></script>
+  <script src="app/features/admin/spare-parts.component.js"></script>
+  <script src="app/features/admin/quality-warranty.component.js"></script>
+</body>
+</html>
