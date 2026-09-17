@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MotorcycleDealer.Mobile.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
+    xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    x:DataType="vm:AppShellViewModel"
+    FlyoutBehavior="Disabled"
+    Title="{Binding Loc.AppTitle}">
+
+    <!-- ====================================================================== -->
+    <!-- PUBLIC MODE (3 Bottom Tabs: //public/showroom, dealers, auth)          -->
+    <!-- ====================================================================== -->
+    <TabBar x:Name="PublicTabBar" Route="public" IsVisible="{Binding IsPublicVisible}">
+        <ShellContent
+            x:Name="TabShowroom"
+            Title="{Binding Loc.TabShowroom}"
+            Route="showroom"
+            ContentTemplate="{DataTemplate pub:ShowroomCatalogPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.Motorcycle}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabDealers"
+            Title="{Binding Loc.TabDealers}"
+            Route="dealers"
+            ContentTemplate="{DataTemplate pub:DealerLocatorPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.MapPin}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabSignIn"
+            Title="{Binding Loc.TabSignIn}"
+            Route="auth"
+            ContentTemplate="{DataTemplate pub:LoginRegisterPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.SignIn}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+    </TabBar>
+
+    <!-- ====================================================================== -->
+    <!-- CUSTOMER MODE (5 Bottom Tabs: //customer/home..warranty)               -->
+    <!-- ====================================================================== -->
+    <TabBar x:Name="CustomerTabBar" Route="customer" IsVisible="{Binding IsCustomerVisible}">
+        <ShellContent
+            x:Name="TabHome"
+            Title="{Binding Loc.TabHome}"
+            Route="home"
+            ContentTemplate="{DataTemplate cus:CustomerHomePage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.House}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabGarage"
+            Title="{Binding Loc.TabGarage}"
+            Route="garage"
+            ContentTemplate="{DataTemplate cus:VinGaragePage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.Garage}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabBook"
+            Title="{Binding Loc.TabBook}"
+            Route="bookings"
+            ContentTemplate="{DataTemplate cus:BookingWizardPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.CalendarPlus}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabLoyalty"
+            Title="{Binding Loc.TabLoyalty}"
+            Route="loyalty"
+            ContentTemplate="{DataTemplate cus:LoyaltyPassbookPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.Crown}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabWarranty"
+            Title="{Binding Loc.TabWarranty}"
+            Route="warranty"
+            ContentTemplate="{DataTemplate cus:CustomerWarrantyPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.ShieldCheck}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+    </TabBar>
+
+    <!-- ====================================================================== -->
+    <!-- DEALER STAFF MODE (5 Bottom Tabs: //staff/workbench..slots)            -->
+    <!-- ====================================================================== -->
+    <TabBar x:Name="StaffTabBar" Route="staff" IsVisible="{Binding IsStaffVisible}">
+        <ShellContent
+            x:Name="TabBayOps"
+            Title="{Binding Loc.TabBayOps}"
+            Route="workbench"
+            ContentTemplate="{DataTemplate stf:StaffWorkbenchPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.Wrench}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabVinSales"
+            Title="{Binding Loc.TabVinSales}"
+            Route="sales"
+            ContentTemplate="{DataTemplate stf:ShowroomVinSalesPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.Storefront}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabRides"
+            Title="{Binding Loc.TabRides}"
+            Route="test-drives"
+            ContentTemplate="{DataTemplate stf:StaffTestDrivePage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.SteeringWheel}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabQa"
+            Title="{Binding Loc.TabQa}"
+            Route="warranty-csat"
+            ContentTemplate="{DataTemplate stf:StaffWarrantyCsatPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.Star}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent
+            x:Name="TabSlots"
+            Title="{Binding Loc.TabSlots}"
+            Route="slots"
+            ContentTemplate="{DataTemplate stf:SlotCapacityPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.Clock}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+    </TabBar>
+
+    <!-- ====================================================================== -->
+    <!-- ADMIN WEB-ONLY GATE (//admin/web-notice)                               -->
+    <!-- ====================================================================== -->
+    <TabBar x:Name="AdminTabBar" Route="admin" IsVisible="{Binding IsAdminNoticeVisible}">
+        <ShellContent
+            x:Name="TabAdminHq"
+            Title="{Binding Loc.TabAdminHq}"
+            Route="web-notice"
+            ContentTemplate="{DataTemplate pub:AdminWebConsoleNoticePage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="Phosphor" Glyph="{x:Static icons:PhosphorIcons.ChartBar}" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+    </TabBar>
+
+</Shell>
