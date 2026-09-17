@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- ====================================================================== -->
+    <!-- Motorsport Enterprise Color Tokens (WCAG 2.1 Level AA Parity)          -->
+    <!-- Mirrors frontend/src/styles/design-tokens.css + Dark Pit-Lane Mode     -->
+    <!-- ====================================================================== -->
+
+    <!-- Brand Motorsport Crimson -->
+    <Color x:Key="BrandPrimary">#DC2626</Color>
+    <Color x:Key="BrandPrimaryPressed">#B91C1C</Color>
+    <Color x:Key="BrandPrimarySoft">#FEF2F2</Color>
+    <Color x:Key="BrandPrimarySoftDark">#450A0A</Color>
+    <Color x:Key="BrandPrimaryBorder">#FECACA</Color>
+    <Color x:Key="BrandPrimaryBorderDark">#7F1D1D</Color>
+    <Color x:Key="BrandOnSoft">#991B1B</Color>
+    <Color x:Key="BrandOnSoftDark">#FCA5A5</Color>
+
+    <!-- Carbon Slate Neutrals -->
+    <Color x:Key="Slate950">#020617</Color>
+    <Color x:Key="Slate900">#0F172A</Color>
+    <Color x:Key="Slate800">#1E293B</Color>
+    <Color x:Key="Slate700">#334155</Color>
+    <Color x:Key="Slate600">#475569</Color>
+    <Color x:Key="Slate500">#64748B</Color>
+    <Color x:Key="Slate400">#94A3B8</Color>
+    <Color x:Key="Slate300">#CBD5E1</Color>
+    <Color x:Key="Slate200">#E2E8F0</Color>
+    <Color x:Key="Slate100">#F1F5F9</Color>
+    <Color x:Key="Slate50">#F8FAFC</Color>
+    <Color x:Key="PureWhite">#FFFFFF</Color>
+
+    <!-- Adaptive Surfaces (Light Showroom <-> Dark Pit-Lane) -->
+    <Color x:Key="SurfaceAppLight">#F8FAFC</Color>
+    <Color x:Key="SurfaceCardLight">#FFFFFF</Color>
+    <Color x:Key="SurfaceSunkenLight">#F1F5F9</Color>
+    <Color x:Key="BorderSubtleLight">#E2E8F0</Color>
+    <Color x:Key="BorderStrongLight">#94A3B8</Color>
+
+    <Color x:Key="SurfaceAppDark">#020617</Color>
+    <Color x:Key="SurfaceCardDark">#0F172A</Color>
+    <Color x:Key="SurfaceSunkenDark">#1E293B</Color>
+    <Color x:Key="BorderSubtleDark">#334155</Color>
+    <Color x:Key="BorderStrongDark">#475569</Color>
+
+    <!-- Adaptive Text -->
+    <Color x:Key="TextPrimaryLight">#0F172A</Color>
+    <Color x:Key="TextSecondaryLight">#334155</Color>
+    <Color x:Key="TextMutedLight">#64748B</Color>
+
+    <Color x:Key="TextPrimaryDark">#F8FAFC</Color>
+    <Color x:Key="TextSecondaryDark">#CBD5E1</Color>
+    <Color x:Key="TextMutedDark">#94A3B8</Color>
+
+    <!-- Semantic Status Triplets (WCAG AA >= 4.5:1) -->
+    <Color x:Key="SuccessFg">#15803D</Color>
+    <Color x:Key="SuccessBg">#DCFCE7</Color>
+    <Color x:Key="SuccessBorder">#BBF7D0</Color>
+    <Color x:Key="SuccessAccent">#16A34A</Color>
+    <Color x:Key="SuccessFgDark">#86EFAC</Color>
+    <Color x:Key="SuccessBgDark">#052E16</Color>
+    <Color x:Key="SuccessBorderDark">#166534</Color>
+
+    <Color x:Key="WarningFg">#92400E</Color>
+    <Color x:Key="WarningBg">#FEF3C7</Color>
+    <Color x:Key="WarningBorder">#FDE68A</Color>
+    <Color x:Key="WarningAccent">#D97706</Color>
+    <Color x:Key="WarningFgDark">#FDE68A</Color>
+    <Color x:Key="WarningBgDark">#451A03</Color>
+    <Color x:Key="WarningBorderDark">#92400E</Color>
+
+    <Color x:Key="DangerFg">#991B1B</Color>
+    <Color x:Key="DangerBg">#FEE2E2</Color>
+    <Color x:Key="DangerBorder">#FECACA</Color>
+    <Color x:Key="DangerAccent">#DC2626</Color>
+    <Color x:Key="DangerFgDark">#FCA5A5</Color>
+    <Color x:Key="DangerBgDark">#450A0A</Color>
+    <Color x:Key="DangerBorderDark">#991B1B</Color>
+
+    <Color x:Key="InfoFg">#1E40AF</Color>
+    <Color x:Key="InfoBg">#DBEAFE</Color>
+    <Color x:Key="InfoBorder">#BFDBFE</Color>
+    <Color x:Key="InfoAccent">#2563EB</Color>
+    <Color x:Key="InfoFgDark">#93C5FD</Color>
+    <Color x:Key="InfoBgDark">#172554</Color>
+    <Color x:Key="InfoBorderDark">#1D4ED8</Color>
+
+    <Color x:Key="CheckedInFg">#155E75</Color>
+    <Color x:Key="CheckedInBg">#CFFAFE</Color>
+    <Color x:Key="CheckedInBorder">#A5F3FC</Color>
+    <Color x:Key="CheckedInFgDark">#67E8F9</Color>
+    <Color x:Key="CheckedInBgDark">#083344</Color>
+    <Color x:Key="CheckedInBorderDark">#155E75</Color>
+
+    <Color x:Key="InProgressFg">#1D4ED8</Color>
+    <Color x:Key="InProgressBg">#EFF6FF</Color>
+    <Color x:Key="InProgressBorder">#93C5FD</Color>
+    <Color x:Key="InProgressFgDark">#93C5FD</Color>
+    <Color x:Key="InProgressBgDark">#1E3A8A</Color>
+    <Color x:Key="InProgressBorderDark">#3B82F6</Color>
+
+    <!-- 4-Tier Loyalty Progression Metallics -->
+    <Color x:Key="TierBronzeFg">#78350F</Color>
+    <Color x:Key="TierBronzeBg">#FEF3C7</Color>
+    <Color x:Key="TierBronzeBorder">#F59E0B</Color>
+    <Color x:Key="TierBronzeAccent">#B45309</Color>
+
+    <Color x:Key="TierSilverFg">#1E293B</Color>
+    <Color x:Key="TierSilverBg">#E2E8F0</Color>
+    <Color x:Key="TierSilverBorder">#94A3B8</Color>
+    <Color x:Key="TierSilverAccent">#64748B</Color>
+
+    <Color x:Key="TierGoldFg">#713F12</Color>
+    <Color x:Key="TierGoldBg">#FEF9C3</Color>
+    <Color x:Key="TierGoldBorder">#EAB308</Color>
+    <Color x:Key="TierGoldAccent">#CA8A04</Color>
+
+    <Color x:Key="TierPlatinumFg">#0F172A</Color>
+    <Color x:Key="TierPlatinumBg">#E2E8F0</Color>
+    <Color x:Key="TierPlatinumBorder">#38BDF8</Color>
+    <Color x:Key="TierPlatinumAccent">#0284C7</Color>
+
+    <!-- Focus Ring & Shimmer -->
+    <Color x:Key="FocusRing">#2563EB</Color>
+    <Color x:Key="ShimmerBaseLight">#E2E8F0</Color>
+    <Color x:Key="ShimmerBaseDark">#1E293B</Color>
+
+</ResourceDictionary>

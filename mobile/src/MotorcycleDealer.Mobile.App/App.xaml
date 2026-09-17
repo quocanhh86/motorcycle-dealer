@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="MotorcycleDealer.Mobile.App.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:converters="clr-namespace:MotorcycleDealer.Mobile.App.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/MotorsportColors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/MotorsportStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <toolkit:InvertedBoolConverter x:Key="InvertedBool" />
+            <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsNotNullOrEmpty" />
+            <toolkit:IsNotNullConverter x:Key="IsNotNull" />
+            <converters:IsGreaterThanZeroConverter x:Key="IsGreaterThanZero" />
+            <converters:EqualsStringConverter x:Key="EqualsString" />
+            <converters:VndCurrencyConverter x:Key="VndCurrency" />
+            <converters:VietnamDateTimeConverter x:Key="VietnamDateTime" />
+            <converters:PointsDisplayConverter x:Key="PointsDisplay" />
+            <converters:BoolToChipBgConverter x:Key="BoolToChipBg" />
+            <converters:BoolToChipTextConverter x:Key="BoolToChipText" />
+            <converters:StringEqualsMultiConverter x:Key="StringEqualsMulti" />
+            <converters:HumanizeStatusConverter x:Key="HumanizeStatus" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
