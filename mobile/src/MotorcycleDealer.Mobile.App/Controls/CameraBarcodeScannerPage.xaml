@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Controls.CameraBarcodeScannerPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="Root"
+    x:DataType="controls:CameraBarcodeScannerPage"
+    Title="Scan VIN / QR"
+    BackgroundColor="{StaticResource Slate950}"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="16" RowSpacing="14">
+
+        <!-- Header Bar -->
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                <Label
+                    Text="{Binding Source={x:Reference Root}, Path=ScannerHeading}"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource Slate50}" />
+                <Label
+                    Text="{Binding Source={x:Reference Root}, Path=ScannerSubtitle}"
+                    FontSize="12"
+                    TextColor="{StaticResource Slate400}" />
+            </VerticalStackLayout>
+
+            <Button
+                Grid.Column="1"
+                Text="{Binding Source={x:Reference Root}, Path=TorchButtonText}"
+                Clicked="OnToggleTorchClicked"
+                Style="{StaticResource DarkCarbonButton}"
+                IsVisible="{Binding Source={x:Reference Root}, Path=IsCameraActive}" />
+
+            <Button
+                Grid.Column="2"
+                Text="Close"
+                Clicked="OnCancelClicked"
+                Style="{StaticResource DarkCarbonButton}" />
+        </Grid>
+
+        <!-- Camera Preview + Reticle OR Emulator/No-Camera Fallback Panel -->
+        <Border
+            Grid.Row="1"
+            BackgroundColor="{StaticResource Slate900}"
+            Stroke="{StaticResource Slate700}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12">
+            <Grid>
+                <ContentView
+                    x:Name="CameraHost"
+                    IsVisible="{Binding Source={x:Reference Root}, Path=IsCameraActive}"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill" />
+
+                <!-- Precision Target Reticle Overlay -->
+                <Border
+                    IsVisible="{Binding Source={x:Reference Root}, Path=IsCameraActive}"
+                    Stroke="{StaticResource BrandPrimary}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 10"
+                    BackgroundColor="Transparent"
+                    WidthRequest="260"
+                    HeightRequest="160"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    InputTransparent="True">
+                    <BoxView
+                        HeightRequest="2"
+                        Color="{StaticResource BrandPrimary}"
+                        Opacity="0.85"
+                        VerticalOptions="Center"
+                        Margin="10,0" />
+                </Border>
+
+                <!-- Graceful Fallback for Emulators / Denied Camera Permission -->
+                <VerticalStackLayout
+                    IsVisible="{Binding Source={x:Reference Root}, Path=ShowCameraFallback}"
+                    Spacing="12"
+                    Padding="24"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                    <Border
+                        BackgroundColor="{StaticResource BrandPrimarySoftDark}"
+                        Stroke="{StaticResource BrandPrimaryBorderDark}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="12,8"
+                        HorizontalOptions="Center">
+                        <Label
+                            Text="CAMERA UNAVAILABLE — MANUAL FALLBACK READY"
+                            FontFamily="Monospace"
+                            FontSize="11"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource BrandOnSoftDark}" />
+                    </Border>
+                    <Label
+                        Text="{Binding Source={x:Reference Root}, Path=CameraStatusMessage}"
+                        FontSize="13"
+                        TextColor="{StaticResource Slate300}"
+                        HorizontalTextAlignment="Center" />
+                    <Button
+                        Text="Retry Camera Permission"
+                        Clicked="OnEnableCameraClicked"
+                        Style="{StaticResource DarkCarbonButton}"
+                        HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!-- Instant Manual ISO-3779 17-Char VIN / QR Payload Fallback -->
+        <Border
+            Grid.Row="2"
+            BackgroundColor="{StaticResource Slate900}"
+            Stroke="{StaticResource Slate700}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12"
+            Padding="14">
+            <VerticalStackLayout Spacing="10">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label
+                        Text="Manual 17-Char ISO 3779 VIN / Voucher / QR Entry"
+                        FontSize="13"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Slate50}" />
+                    <Label
+                        Grid.Column="1"
+                        Text="{Binding Source={x:Reference Root}, Path=ManualCharCountText}"
+                        FontFamily="Monospace"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Slate300}" />
+                </Grid>
+
+                <Border
+                    BackgroundColor="{StaticResource Slate950}"
+                    Stroke="{StaticResource Slate700}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 6"
+                    Padding="10,2"
+                    MinimumHeightRequest="48">
+                    <Entry
+                        x:Name="ManualCodeEntry"
+                        Text="{Binding Source={x:Reference Root}, Path=ManualInput, Mode=TwoWay}"
+                        Placeholder="Enter 17-char VIN or QR code"
+                        FontFamily="Monospace"
+                        TextColor="{StaticResource Slate50}"
+                        PlaceholderColor="{StaticResource Slate500}"
+                        ClearButtonVisibility="WhileEditing"
+                        ReturnType="Done"
+                        Completed="OnManualSubmitClicked" />
+                </Border>
+
+                <Label
+                    Text="{Binding Source={x:Reference Root}, Path=ManualValidationHint}"
+                    FontSize="12"
+                    TextColor="{StaticResource WarningFgDark}"
+                    IsVisible="{Binding Source={x:Reference Root}, Path=HasValidationHint}" />
+
+                <Button
+                    Text="Apply Scanned / Manual Value"
+                    Clicked="OnManualSubmitClicked"
+                    Style="{StaticResource PrimaryButton}" />
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>

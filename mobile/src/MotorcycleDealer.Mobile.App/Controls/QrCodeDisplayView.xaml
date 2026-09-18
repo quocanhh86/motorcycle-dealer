@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="MotorcycleDealer.Mobile.App.Controls.QrCodeDisplayView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="Root"
+    x:DataType="controls:QrCodeDisplayView">
+
+    <Border
+        BackgroundColor="{StaticResource PureWhite}"
+        Stroke="{AppThemeBinding Light={StaticResource BorderStrongLight}, Dark={StaticResource BorderSubtleDark}}"
+        StrokeThickness="1"
+        StrokeShape="RoundRectangle 12"
+        Padding="14"
+        HorizontalOptions="Center">
+        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Label
+                Text="{Binding Source={x:Reference Root}, Path=Title}"
+                IsVisible="{Binding Source={x:Reference Root}, Path=HasTitle}"
+                FontSize="12"
+                FontAttributes="Bold"
+                TextColor="{StaticResource Slate700}"
+                HorizontalTextAlignment="Center" />
+
+            <GraphicsView
+                x:Name="QrGraphics"
+                WidthRequest="{Binding Source={x:Reference Root}, Path=QrSize}"
+                HeightRequest="{Binding Source={x:Reference Root}, Path=QrSize}"
+                HorizontalOptions="Center" />
+
+            <Border
+                BackgroundColor="{StaticResource Slate100}"
+                Stroke="{StaticResource Slate200}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 6"
+                Padding="10,5"
+                IsVisible="{Binding Source={x:Reference Root}, Path=HasCaption}">
+                <Label
+                    Text="{Binding Source={x:Reference Root}, Path=Caption}"
+                    FontFamily="Monospace"
+                    FontSize="12"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource Slate900}"
+                    HorizontalTextAlignment="Center" />
+            </Border>
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

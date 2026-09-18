@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Public.DealerLocatorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:DealerLocatorViewModel"
+    Title="Flagship Dealers">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadDealersCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="VIETNAM DEALERSHIP NETWORK" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="Flagship Service &amp; Showroom Hubs"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Slate50}" />
+                        <Label
+                            Text="Authorized OEM Showrooms &amp; Service Bays"
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Label
+                        Text="{Binding SyncAgeLabel, StringFormat='Offline directory ({0}).'}"
+                        FontSize="12"
+                        TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                </Border>
+
+                <!-- City Filter Chips -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout BindableLayout.ItemsSource="{Binding CityFilters}" Spacing="8" Padding="0,0,16,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button
+                                    Text="{Binding .}"
+                                    Style="{StaticResource ChipButton}"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectCityCommand, x:DataType=pub:DealerLocatorPage}"
+                                    CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                    <Binding Path="." />
+                                                    <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedCity" x:DataType="pub:DealerLocatorPage" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                            <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="132" />
+
+                <!-- Dealership Cards -->
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Dealers}" Spacing="12">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:DealerDto">
+                            <Border Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout Spacing="10">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label Text="{Binding Code}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                            <Label Text="{Binding Name}" Style="{StaticResource CardTitleLabel}" />
+                                            <Label Text="{Binding City}" Style="{StaticResource SecondaryLabel}" />
+                                        </VerticalStackLayout>
+                                        <controls:StatusBadgeView
+                                            Grid.Column="1"
+                                            Status="Active"
+                                            LabelOverride="{Binding AvailableVinCount, StringFormat='{0} VINs'}" />
+                                    </Grid>
+
+                                    <Label Text="{Binding Address}" Style="{StaticResource SecondaryLabel}" />
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        <Border Style="{StaticResource SunkenPanel}">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="HOURS" Style="{StaticResource CaptionLabel}" />
+                                                <Label
+                                                    Text="{Binding OperatingHoursDisplay}"
+                                                    Style="{StaticResource MonoCodeLabel}" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                        <Border Grid.Column="1" Style="{StaticResource SunkenPanel}">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="PHONE" Style="{StaticResource CaptionLabel}" />
+                                                <Label Text="{Binding PhoneNumber}" Style="{StaticResource MonoCodeLabel}" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        <Button
+                                            Text="Directions"
+                                            Style="{StaticResource PrimaryButton}"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenDirectionsCommand, x:DataType=pub:DealerLocatorPage}"
+                                            CommandParameter="{Binding .}" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Text="Call Branch"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.CallDealerCommand, x:DataType=pub:DealerLocatorPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
