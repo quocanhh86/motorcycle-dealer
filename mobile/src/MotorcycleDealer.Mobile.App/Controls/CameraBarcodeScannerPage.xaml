@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Controls.CameraBarcodeScannerPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="Root"
+    x:DataType="controls:CameraBarcodeScannerPage"
+    SafeAreaEdges="All"
+    Title="{Binding Source={x:Reference Root}, Path=Loc.ScannerPageTitle}"
+    BackgroundColor="{StaticResource Slate950}"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="16" RowSpacing="14">
+
+        <!-- Header Bar -->
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                <Label
+                    Text="{Binding Source={x:Reference Root}, Path=ScannerHeading}"
+                    FontFamily="SpaceGroteskBold"
+                    FontSize="18"
+                    TextColor="{StaticResource Slate50}" />
+                <Label
+                    Text="{Binding Source={x:Reference Root}, Path=ScannerSubtitle}"
+                    FontFamily="BeVietnamProRegular"
+                    FontSize="12"
+                    TextColor="{StaticResource Slate400}" />
+            </VerticalStackLayout>
+
+            <Button
+                Grid.Column="1"
+                Text="{Binding Source={x:Reference Root}, Path=TorchButtonText}"
+                Clicked="OnToggleTorchClicked"
+                Style="{StaticResource DarkCarbonButton}"
+                IsVisible="{Binding Source={x:Reference Root}, Path=IsCameraActive}" />
+
+            <Button
+                Grid.Column="2"
+                Text="{Binding Source={x:Reference Root}, Path=Loc.Common_Close}"
+                Clicked="OnCancelClicked"
+                Style="{StaticResource DarkCarbonButton}" />
+        </Grid>
+
+        <!-- Camera Preview + Reticle OR Emulator/No-Camera Fallback Panel -->
+        <Border
+            Grid.Row="1"
+            BackgroundColor="{StaticResource Slate900}"
+            Stroke="{StaticResource Slate700}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12">
+            <Grid>
+                <ContentView
+                    x:Name="CameraHost"
+                    IsVisible="{Binding Source={x:Reference Root}, Path=IsCameraActive}"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill" />
+
+                <!-- Precision Target Reticle Overlay -->
+                <Border
+                    IsVisible="{Binding Source={x:Reference Root}, Path=IsCameraActive}"
+                    Stroke="{StaticResource BrandPrimary}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 10"
+                    BackgroundColor="Transparent"
+                    WidthRequest="260"
+                    HeightRequest="160"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    InputTransparent="True">
+                    <BoxView
+                        HeightRequest="2"
+                        Color="{StaticResource BrandPrimary}"
+                        Opacity="0.85"
+                        VerticalOptions="Center"
+                        Margin="10,0" />
+                </Border>
+
+                <!-- Graceful Fallback for Emulators / Denied Camera Permission -->
+                <VerticalStackLayout
+                    IsVisible="{Binding Source={x:Reference Root}, Path=ShowCameraFallback}"
+                    Spacing="12"
+                    Padding="24"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                    <Label
+                        Text="{x:Static icons:PhosphorIcons.Camera}"
+                        FontFamily="Phosphor"
+                        FontSize="36"
+                        TextColor="{StaticResource BrandPrimary}"
+                        HorizontalTextAlignment="Center" />
+                    <Border
+                        BackgroundColor="{StaticResource BrandPrimarySoftDark}"
+                        Stroke="{StaticResource BrandPrimaryBorderDark}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="12,8"
+                        HorizontalOptions="Center">
+                        <Label
+                            Text="{Binding Source={x:Reference Root}, Path=Loc.ScannerCameraUnavailableTitle}"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="11"
+                            TextColor="{StaticResource BrandOnSoftDark}" />
+                    </Border>
+                    <Label
+                        Text="{Binding Source={x:Reference Root}, Path=CameraStatusMessage}"
+                        FontFamily="BeVietnamProRegular"
+                        FontSize="13"
+                        TextColor="{StaticResource Slate300}"
+                        HorizontalTextAlignment="Center" />
+                    <Button
+                        Text="{Binding Source={x:Reference Root}, Path=Loc.ScannerRetryPermissionCta}"
+                        Clicked="OnEnableCameraClicked"
+                        Style="{StaticResource DarkCarbonButton}"
+                        HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!-- Instant Manual ISO-3779 17-Char VIN / QR Payload Fallback -->
+        <Border
+            Grid.Row="2"
+            BackgroundColor="{StaticResource Slate900}"
+            Stroke="{StaticResource Slate700}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12"
+            Padding="14">
+            <VerticalStackLayout Spacing="10">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Label
+                        Text="{Binding Source={x:Reference Root}, Path=Loc.ScannerManualHeader}"
+                        FontFamily="BeVietnamProSemiBold"
+                        FontSize="13"
+                        TextColor="{StaticResource Slate50}" />
+                    <Label
+                        Grid.Column="1"
+                        Text="{Binding Source={x:Reference Root}, Path=ManualCharCountText}"
+                        FontFamily="JetBrainsMonoSemiBold"
+                        FontSize="12"
+                        TextColor="{StaticResource Slate300}" />
+                </Grid>
+
+                <Border
+                    BackgroundColor="{StaticResource Slate950}"
+                    Stroke="{StaticResource Slate700}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 6"
+                    Padding="10,2"
+                    MinimumHeightRequest="48">
+                    <Entry
+                        x:Name="ManualCodeEntry"
+                        Text="{Binding Source={x:Reference Root}, Path=ManualInput, Mode=TwoWay}"
+                        Placeholder="{Binding Source={x:Reference Root}, Path=Loc.ScannerManualPlaceholder}"
+                        FontFamily="JetBrainsMonoMedium"
+                        TextColor="{StaticResource Slate50}"
+                        PlaceholderColor="{StaticResource Slate500}"
+                        ClearButtonVisibility="WhileEditing"
+                        ReturnType="Done"
+                        Completed="OnManualSubmitClicked" />
+                </Border>
+
+                <Label
+                    Text="{Binding Source={x:Reference Root}, Path=ManualValidationHint}"
+                    FontFamily="BeVietnamProMedium"
+                    FontSize="12"
+                    TextColor="{StaticResource WarningFgDark}"
+                    IsVisible="{Binding Source={x:Reference Root}, Path=HasValidationHint}" />
+
+                <Button
+                    Text="{Binding Source={x:Reference Root}, Path=Loc.ScannerApplyCta}"
+                    Clicked="OnManualSubmitClicked"
+                    Style="{StaticResource PrimaryButton}" />
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>
