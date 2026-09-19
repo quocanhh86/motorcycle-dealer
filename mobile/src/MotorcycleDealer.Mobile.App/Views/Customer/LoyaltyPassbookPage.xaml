@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Customer.LoyaltyPassbookPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Customer;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:LoyaltyPassbookViewModel"
+    Title="Loyalty Passbook">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadPassbookCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Brushed Metallic 4-Tier Passbook Card -->
+                <controls:LoyaltyPassbookCardView
+                    MemberName="{Binding Wallet.CustomerFullName, FallbackValue='Loading profile...', TargetNullValue='Loading profile...'}"
+                    TierName="{Binding TierCode}"
+                    TierMultiplier="{Binding Wallet.PointsMultiplier, FallbackValue=1.00}"
+                    AvailablePoints="{Binding Wallet.AvailablePoints, FallbackValue=0}"
+                    LifetimeQualifyingPoints="{Binding Wallet.LifetimeQualifyingPoints, FallbackValue=0}"
+                    TierProgressRatio="{Binding TierProgressRatio}"
+                    NextTierHint="{Binding NextTierHint}"
+                    SyncCaption="{Binding SyncAgeLabel}" />
+
+                <Border Style="{StaticResource SunkenPanel}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Lifetime Qualifying Spend" Style="{StaticResource SecondaryLabel}" />
+                        <Label Grid.Column="1" Text="{Binding FormattedLifetimeSpent}" Style="{StaticResource MonoCodeLabel}" FontAttributes="Bold" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Label
+                        Text="{Binding SyncAgeLabel, StringFormat='Offline Passbook mode ({0}) — your Voucher QR codes remain scannable offline.'}"
+                        FontSize="12"
+                        TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Label
+                        Text="{Binding SuccessMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                </Border>
+
+                <!-- 4 Segmented Passbook Tabs -->
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="QR Wallet" Command="{Binding SelectSectionCommand}" CommandParameter="Vouchers" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedSection}" Value="Vouchers">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="1" Text="Store" Command="{Binding SelectSectionCommand}" CommandParameter="Store" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedSection}" Value="Store">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="2" Text="Ledger" Command="{Binding SelectSectionCommand}" CommandParameter="Ledger" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedSection}" Value="Ledger">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="3" Text="Receipts" Command="{Binding SelectSectionCommand}" CommandParameter="Receipts" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedSection}" Value="Receipts">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+
+                <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="120" />
+
+                <!-- SECTION 1: Offline-Accessible QR Voucher Wallet -->
+                <VerticalStackLayout
+                    Spacing="12"
+                    IsVisible="{Binding SelectedSection, Converter={StaticResource EqualsString}, ConverterParameter=Vouchers}">
+
+                    <Border Style="{StaticResource CardBorder}" IsVisible="{Binding SelectedVoucher, Converter={StaticResource IsNotNull}}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="COUNTER SCANNER QR (100% OFFLINE READY)" Style="{StaticResource EyebrowLabel}" />
+                            <controls:QrCodeDisplayView
+                                Payload="{Binding SelectedVoucherQrPayload}"
+                                Title="{Binding SelectedVoucher.Title}"
+                                Caption="{Binding SelectedVoucher.VoucherCode}" />
+                            <Label
+                                Text="{Binding SelectedVoucher.ExpiresAtUtc, Converter={StaticResource VietnamDateTime}, StringFormat='Expires: {0}'}"
+                                Style="{StaticResource CaptionLabel}"
+                                HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding MyVouchers}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:CustomerVoucherDto">
+                                <Border Style="{StaticResource CardBorder}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Text="{Binding VoucherCode}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <controls:StatusBadgeView Grid.Column="1" Status="{Binding EffectiveStatus}" />
+                                        </Grid>
+                                        <Label Text="{Binding Title}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding ApplicableScope, StringFormat='Scope: {0}'}" Style="{StaticResource SecondaryLabel}" />
+                                        <Button
+                                            Text="Display QR Code"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectVoucherForQrCommand, x:DataType=cus:LoyaltyPassbookPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- SECTION 2: Online Voucher Catalog Store -->
+                <VerticalStackLayout
+                    Spacing="10"
+                    IsVisible="{Binding SelectedSection, Converter={StaticResource EqualsString}, ConverterParameter=Store}">
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding VoucherStore}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:VoucherCatalogDto">
+                                <Border Style="{StaticResource CardBorder}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Text="{Binding Title}" Style="{StaticResource CardTitleLabel}" />
+                                            <controls:StatusBadgeView Grid.Column="1" Status="Info" LabelOverride="{Binding MinTierCode}" />
+                                        </Grid>
+                                        <Label Text="{Binding Description}" Style="{StaticResource SecondaryLabel}" />
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label
+                                                Text="{Binding PointsCost, Converter={StaticResource PointsDisplay}}"
+                                                Style="{StaticResource MonoValueBoldLabel}"
+                                                TextColor="{StaticResource BrandPrimary}"
+                                                VerticalTextAlignment="Center" />
+                                            <Button
+                                                Grid.Column="1"
+                                                Text="Redeem"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.RedeemVoucherCommand, x:DataType=cus:LoyaltyPassbookPage}"
+                                                CommandParameter="{Binding .}" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- SECTION 3: Immutable Append-Only PointLedgerEntries -->
+                <VerticalStackLayout
+                    Spacing="10"
+                    IsVisible="{Binding SelectedSection, Converter={StaticResource EqualsString}, ConverterParameter=Ledger}">
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding LedgerEntries}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:PointLedgerEntryDto">
+                                <Border Style="{StaticResource CardBorder}">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <VerticalStackLayout Spacing="3">
+                                            <Label Text="{Binding TransactionType}" Style="{StaticResource CardTitleLabel}" FontSize="14" />
+                                            <Label Text="{Binding Notes}" Style="{StaticResource SecondaryLabel}" />
+                                            <Label
+                                                Text="{Binding CreatedAtUtc, Converter={StaticResource VietnamDateTime}}"
+                                                Style="{StaticResource MonoCodeLabel}"
+                                                FontSize="11" />
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" Spacing="2">
+                                            <Label
+                                                Text="{Binding PointsDelta, Converter={StaticResource PointsDisplay}, ConverterParameter=signed}"
+                                                Style="{StaticResource MonoValueBoldLabel}"
+                                                HorizontalTextAlignment="End" />
+                                            <Label
+                                                Text="{Binding BalanceAfter, StringFormat='Bal: {0:N0}'}"
+                                                Style="{StaticResource CaptionLabel}"
+                                                HorizontalTextAlignment="End" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- SECTION 4: Immutable Showroom Sales Receipts -->
+                <VerticalStackLayout
+                    Spacing="10"
+                    IsVisible="{Binding SelectedSection, Converter={StaticResource EqualsString}, ConverterParameter=Receipts}">
+
+                    <Border Style="{StaticResource CardBorder}" IsVisible="{Binding ActiveSalesReceipt, Converter={StaticResource IsNotNull}}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="OFFICIAL SHOWROOM RECEIPT QR" Style="{StaticResource EyebrowLabel}" />
+                            <controls:QrCodeDisplayView
+                                Payload="{Binding ActiveReceiptQrPayload}"
+                                Title="{Binding ActiveSalesReceipt.ReceiptNumber}"
+                                Caption="{Binding ActiveSalesReceipt.VerificationCode}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding MySalesOrders}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:SalesOrderDto">
+                                <Border Style="{StaticResource CardBorder}">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Text="{Binding OrderNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding FinalAmount, Converter={StaticResource VndCurrency}}"
+                                                Style="{StaticResource MonoValueBoldLabel}"
+                                                TextColor="{StaticResource BrandPrimary}" />
+                                        </Grid>
+                                        <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding Vin, StringFormat='VIN: {0}'}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                        <Button
+                                            Text="View &amp; Share Sales Receipt"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.LoadAndShareSalesReceiptCommand, x:DataType=cus:LoyaltyPassbookPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

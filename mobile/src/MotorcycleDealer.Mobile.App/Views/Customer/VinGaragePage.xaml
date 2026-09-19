@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Customer.VinGaragePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Customer;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:VinGarageViewModel"
+    Title="Digital VIN Garage">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadGarageCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="ISO 3779 VEHICLE FLEET" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="My Digital VIN Garage"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Slate50}" />
+                        <Label
+                            Text="Track odometers, OEM maintenance milestones, and scan frame VINs."
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Label
+                        Text="{Binding SyncAgeLabel, StringFormat='Offline garage cache ({0}). Odometer updates queue automatically.'}"
+                        FontSize="12"
+                        TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Label
+                        Text="{Binding SuccessMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                </Border>
+
+                <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="116" />
+
+                <!-- Vehicle Fleet List -->
+                <Label Text="Registered Motorcycles" Style="{StaticResource SectionTitleLabel}" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Vehicles}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:CustomerVehicleDto">
+                            <Border Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout Spacing="8">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                            <Label Text="{Binding Vin}" Style="{StaticResource MonoCodeLabel}" FontAttributes="Bold" />
+                                        </VerticalStackLayout>
+                                        <controls:StatusBadgeView Grid.Column="1" Status="{Binding MaintenanceStatus}" />
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        <Border Style="{StaticResource SunkenPanel}">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="CURRENT ODOMETER" Style="{StaticResource CaptionLabel}" />
+                                                <Label
+                                                    Text="{Binding CurrentMileageKm, StringFormat='{0:N0} km'}"
+                                                    Style="{StaticResource MonoValueBoldLabel}" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                        <Border Grid.Column="1" Style="{StaticResource SunkenPanel}">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="NEXT MILESTONE" Style="{StaticResource CaptionLabel}" />
+                                                <Label
+                                                    Text="{Binding NextDueMileageKm, StringFormat='{0:N0} km'}"
+                                                    Style="{StaticResource MonoValueBoldLabel}" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </Grid>
+
+                                    <Button
+                                        Text="Select &amp; View Schedule"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.LoadVehicleScheduleCommand, x:DataType=cus:VinGaragePage}"
+                                        CommandParameter="{Binding .}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Selected Vehicle Odometer Update & Reminders -->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding SelectedVehicle, Converter={StaticResource IsNotNull}}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="ACTIVE VEHICLE ODOMETER &amp; REMINDERS" Style="{StaticResource EyebrowLabel}" />
+                        <Label Text="{Binding SelectedVehicle.MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                        <Label Text="{Binding SelectedVehicle.Vin}" Style="{StaticResource MonoCodeLabel}" />
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry
+                                    Text="{Binding UpdatedOdometerKm}"
+                                    Style="{StaticResource MonoEntry}"
+                                    Placeholder="New odometer (km)"
+                                    Keyboard="Numeric" />
+                            </Border>
+                            <Button
+                                Grid.Column="1"
+                                Text="Update km"
+                                Command="{Binding UpdateSelectedVehicleMileageCommand}"
+                                Style="{StaticResource PrimaryButton}" />
+                        </Grid>
+
+                        <Button
+                            Text="Book Service for This Motorcycle"
+                            Command="{Binding BookServiceForSelectedVehicleCommand}"
+                            Style="{StaticResource DarkCarbonButton}" />
+
+                        <!-- Active Reminders -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding SelectedVehicleReminders}" Spacing="8">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="dto:MaintenanceReminderDto">
+                                    <Border Style="{StaticResource SunkenPanel}">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="{Binding MilestoneName}" Style="{StaticResource CardTitleLabel}" FontSize="13" />
+                                                <Label
+                                                    Text="{Binding TargetMileageKm, StringFormat='Target: {0:N0} km'}"
+                                                    Style="{StaticResource MonoCodeLabel}"
+                                                    FontSize="12" />
+                                            </VerticalStackLayout>
+                                            <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Register External VIN Card -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label Text="REGISTER EXTERNAL VIN" Style="{StaticResource EyebrowLabel}" VerticalTextAlignment="Center" />
+                            <Label Grid.Column="1" Text="{Binding VinCounterLabel}" Style="{StaticResource MonoCodeLabel}" FontAttributes="Bold" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry
+                                    Text="{Binding NewVehicleVin}"
+                                    Style="{StaticResource MonoEntry}"
+                                    Placeholder="17-char ISO 3779 VIN"
+                                    MaxLength="17" />
+                            </Border>
+                            <Button
+                                Grid.Column="1"
+                                Text="Scan VIN"
+                                Command="{Binding ScanVinCommand}"
+                                Style="{StaticResource DarkCarbonButton}" />
+                        </Grid>
+
+                        <Label
+                            Text="{Binding VinValidationMessage}"
+                            Style="{StaticResource CaptionLabel}"
+                            IsVisible="{Binding VinValidationMessage, Converter={StaticResource IsNotNullOrEmpty}}" />
+
+                        <Label Text="Motorcycle Model" Style="{StaticResource CaptionLabel}" />
+                        <Border Style="{StaticResource InputContainer}">
+                            <Picker
+                                Title="Select Model"
+                                ItemsSource="{Binding AvailableModels}"
+                                SelectedItem="{Binding SelectedRegistrationModel}"
+                                ItemDisplayBinding="{Binding ModelName, x:DataType=dto:MotorcycleModelDto}" />
+                        </Border>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Odometer (km)" Style="{StaticResource CaptionLabel}" />
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding NewCurrentMileageKm}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="0"
+                                        Keyboard="Numeric" />
+                                </Border>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="License Plate" Style="{StaticResource CaptionLabel}" />
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding NewLicensePlate}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="License plate" />
+                                </Border>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <Border Style="{StaticResource InputContainer}">
+                            <Entry Text="{Binding NewColorName}" Placeholder="Vehicle color" />
+                        </Border>
+
+                        <Button
+                            Text="Register Vehicle to Garage"
+                            Command="{Binding RegisterExternalVehicleCommand}"
+                            Style="{StaticResource PrimaryButton}" />
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
