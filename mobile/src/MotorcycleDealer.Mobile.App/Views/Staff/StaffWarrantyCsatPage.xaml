@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.StaffWarrantyCsatPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:StaffWarrantyCsatViewModel"
+    Title="{Binding Loc.StaffQaPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadDeskCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16,16,16,24" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{Binding Loc.StaffQaEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="{Binding Loc.StaffQaTitle}"
+                            FontFamily="SpaceGroteskBold"
+                            FontSize="20"
+                            TextColor="{StaticResource Slate50}" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Border
+                                BackgroundColor="#14FFFFFF"
+                                Stroke="#2EFFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="12,10">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.97"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectTabCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                        CommandParameter="CSAT"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <VerticalStackLayout Spacing="4">
+                                    <Label
+                                        Text="{Binding Loc.StaffQaAvgCsatLabel}"
+                                        FontFamily="SpaceGroteskSemiBold"
+                                        FontSize="10"
+                                        TextColor="{StaticResource Slate300}" />
+                                    <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                        <Label
+                                            Text="{Binding AverageCsatRating, StringFormat='{0:0.00}'}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            FontSize="20"
+                                            TextColor="{StaticResource WarningFgDark}"
+                                            VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Star}"
+                                            FontFamily="PhosphorFill"
+                                            FontSize="18"
+                                            TextColor="#F59E0B"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border
+                                Grid.Column="1"
+                                BackgroundColor="#14FFFFFF"
+                                Stroke="#2EFFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="12,10">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.97"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectTabCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                        CommandParameter="CSAT"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <VerticalStackLayout Spacing="4">
+                                    <Label
+                                        Text="{Binding Loc.StaffQaUnansweredLabel}"
+                                        FontFamily="SpaceGroteskSemiBold"
+                                        FontSize="10"
+                                        TextColor="{StaticResource Slate300}" />
+                                    <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                        <Label
+                                            Text="{Binding UnansweredReviewCount}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            FontSize="20"
+                                            TextColor="{StaticResource DangerFgDark}"
+                                            VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.BellRinging}"
+                                            FontFamily="Phosphor"
+                                            FontSize="16"
+                                            TextColor="{StaticResource DangerFgDark}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadDeskCommand}" />
+
+                <!-- Segmented Switch: Warranty vs CSAT -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button
+                        Text="{Binding Loc.StaffQaTabWarranty}"
+                        Command="{Binding SelectTabCommand}"
+                        CommandParameter="Warranty"
+                        Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedTab}" Value="Warranty">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button
+                        Grid.Column="1"
+                        Text="{Binding Loc.StaffQaTabCsat}"
+                        Command="{Binding SelectTabCommand}"
+                        CommandParameter="CSAT"
+                        Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedTab}" Value="CSAT">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+
+                <!-- Multi-Variant Loading Skeletons -->
+                <controls:SkeletonLoaderView Variant="KpiBento" Count="1" IsVisible="{Binding IsBusy}" />
+                <controls:SkeletonLoaderView Variant="ListRow" Count="2" IsVisible="{Binding IsBusy}" />
+
+                <!-- TAB 1: Warranty Claims Adjudication -->
+                <VerticalStackLayout
+                    Spacing="12"
+                    IsVisible="{Binding SelectedTab, Converter={StaticResource EqualsString}, ConverterParameter=Warranty}">
+
+                    <Border Style="{StaticResource DoubleBezelOuter}">
+                        <Border Style="{StaticResource DoubleBezelInner}">
+                            <VerticalStackLayout Spacing="10">
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.ShieldCheck}"
+                                        FontFamily="Phosphor"
+                                        FontSize="15"
+                                        TextColor="{StaticResource BrandPrimary}"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        Text="{Binding Loc.StaffQaAdjudicationEyebrow}"
+                                        Style="{StaticResource EyebrowLabel}"
+                                        VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Picker
+                                        Title="{Binding Loc.StaffQaCoveredPartTitle}"
+                                        ItemsSource="{Binding SpareParts}"
+                                        SelectedItem="{Binding SelectedCoveredPart}"
+                                        ItemDisplayBinding="{Binding Name, x:DataType=dto:SparePartDto}" />
+                                </Border>
+                                <Label Text="{Binding Loc.StaffQaCoveredAmountLabel}" Style="{StaticResource CaptionLabel}" />
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry Text="{Binding CoveredAmountVnd}" Style="{StaticResource MonoEntry}" Placeholder="0" Keyboard="Numeric" />
+                                </Border>
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry Text="{Binding ResolutionNotesInput}" Placeholder="{Binding Loc.StaffQaResolutionPlaceholder}" />
+                                </Border>
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry Text="{Binding RejectionReasonInput}" Placeholder="{Binding Loc.StaffQaRejectionPlaceholder}" />
+                                </Border>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Border>
+
+                    <!-- Empty Warranty Queue State -->
+                    <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                        <controls:EmptyStateView
+                            IsVisible="True"
+                            IconGlyph="{x:Static icons:PhosphorIcons.ShieldCheck}"
+                            LottieFile="lottie_empty_garage.json"
+                            Title="{Binding Loc.StaffQaEmptyClaimsTitle}"
+                            Subtitle="{Binding Loc.Common_NoData}"
+                            ActionText="{Binding Loc.Common_Refresh}"
+                            ActionCommand="{Binding LoadDeskCommand}">
+                            <controls:EmptyStateView.Triggers>
+                                <DataTrigger
+                                    TargetType="controls:EmptyStateView"
+                                    Binding="{Binding WarrantyClaims.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                    Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </controls:EmptyStateView.Triggers>
+                        </controls:EmptyStateView>
+                    </Grid>
+
+                    <!-- Warranty Claim Cards with Studio Motorcycle Thumbnails -->
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding WarrantyClaims}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:WarrantyClaimDto">
+                                <Border Style="{StaticResource DoubleBezelOuter}">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                    </Border.Behaviors>
+                                    <Border Style="{StaticResource DoubleBezelInner}">
+                                        <VerticalStackLayout Spacing="8">
+                                            <Grid ColumnDefinitions="84,*" ColumnSpacing="12">
+                                                <Border
+                                                    Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 10"
+                                                    WidthRequest="84"
+                                                    HeightRequest="64"
+                                                    Padding="0"
+                                                    VerticalOptions="Center">
+                                                    <Image
+                                                        Source="{Binding ResolvedImageSource}"
+                                                        Aspect="AspectFill"
+                                                        WidthRequest="84"
+                                                        HeightRequest="64" />
+                                                </Border>
+                                                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                                                        <Label
+                                                            Text="{Binding ClaimNumber}"
+                                                            Style="{StaticResource MonoValueBoldLabel}"
+                                                            FontSize="13"
+                                                            VerticalTextAlignment="Center" />
+                                                        <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                                    </Grid>
+                                                    <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                                    <Label Style="{StaticResource MonoCodeLabel}" FontSize="11">
+                                                        <Label.FormattedText>
+                                                            <FormattedString>
+                                                                <Span
+                                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_VinLabel, x:DataType=loc:LocalizationService}"
+                                                                    FontFamily="JetBrainsMonoSemiBold" />
+                                                                <Span Text=": " />
+                                                                <Span Text="{Binding Vin}" />
+                                                            </FormattedString>
+                                                        </Label.FormattedText>
+                                                    </Label>
+                                                </VerticalStackLayout>
+                                            </Grid>
+
+                                            <Border Style="{StaticResource SunkenPanel}" Padding="10,6">
+                                                <HorizontalStackLayout Spacing="6">
+                                                    <Label
+                                                        Text="{x:Static icons:PhosphorIcons.WarningCircle}"
+                                                        FontFamily="Phosphor"
+                                                        FontSize="14"
+                                                        TextColor="{StaticResource BrandPrimary}"
+                                                        VerticalTextAlignment="Center" />
+                                                    <Label
+                                                        Text="{Binding LocalizedDefectCategory}"
+                                                        FontFamily="BeVietnamProSemiBold"
+                                                        FontSize="12"
+                                                        VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
+                                            </Border>
+
+                                            <Label Text="{Binding SymptomDescription}" Style="{StaticResource SecondaryLabel}" />
+
+                                            <FlexLayout
+                                                Direction="Row"
+                                                Wrap="Wrap"
+                                                AlignItems="Center"
+                                                JustifyContent="Start"
+                                                IsVisible="{Binding HasStaffActions}">
+                                                <Button
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffQaUnderReviewCta, x:DataType=loc:LocalizationService}"
+                                                    Margin="0,0,8,8"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    IsVisible="{Binding CanStaffStartReview}"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.MoveClaimUnderReviewCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                                    CommandParameter="{Binding .}" />
+                                                <Button
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffQaApproveCta, x:DataType=loc:LocalizationService}"
+                                                    Margin="0,0,8,8"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    IsVisible="{Binding CanStaffApprove}"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ApproveClaimCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                                    CommandParameter="{Binding .}" />
+                                                <Button
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffQaCompleteCta, x:DataType=loc:LocalizationService}"
+                                                    Margin="0,0,8,8"
+                                                    Style="{StaticResource DarkCarbonButton}"
+                                                    IsVisible="{Binding CanStaffComplete}"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.CompleteClaimCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                                    CommandParameter="{Binding .}" />
+                                                <Button
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffQaRejectCta, x:DataType=loc:LocalizationService}"
+                                                    Margin="0,0,8,8"
+                                                    Style="{StaticResource DangerOutlineButton}"
+                                                    IsVisible="{Binding CanStaffReject}"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.RejectClaimCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                                    CommandParameter="{Binding .}" />
+                                            </FlexLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- TAB 2: Customer CSAT Reviews & Official Branch Replies -->
+                <VerticalStackLayout
+                    Spacing="12"
+                    IsVisible="{Binding SelectedTab, Converter={StaticResource EqualsString}, ConverterParameter=CSAT}">
+
+                    <Border
+                        Style="{StaticResource DoubleBezelOuter}"
+                        IsVisible="{Binding SelectedReview, Converter={StaticResource IsNotNull}}">
+                        <Border Style="{StaticResource DoubleBezelInner}">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="{Binding Loc.StaffQaPostReplyEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                                <Label Text="{Binding ReplyingToHeading}" Style="{StaticResource CardTitleLabel}" />
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Editor
+                                        Text="{Binding StaffReviewReplyInput}"
+                                        Placeholder="{Binding Loc.StaffQaReplyPlaceholder}" />
+                                </Border>
+                                <Button
+                                    Text="{Binding Loc.StaffQaPublishReplyCta}"
+                                    Command="{Binding RespondToReviewCommand}"
+                                    Style="{StaticResource PrimaryButton}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Border>
+
+                    <!-- Empty CSAT Reviews State -->
+                    <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                        <controls:EmptyStateView
+                            IsVisible="True"
+                            IconGlyph="{x:Static icons:PhosphorIcons.Star}"
+                            LottieFile="lottie_empty_garage.json"
+                            Title="{Binding Loc.Common_NoData}"
+                            Subtitle="{Binding Loc.StaffQaTabCsat}"
+                            ActionText="{Binding Loc.Common_Refresh}"
+                            ActionCommand="{Binding LoadDeskCommand}">
+                            <controls:EmptyStateView.Triggers>
+                                <DataTrigger
+                                    TargetType="controls:EmptyStateView"
+                                    Binding="{Binding ServiceReviews.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                    Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </controls:EmptyStateView.Triggers>
+                        </controls:EmptyStateView>
+                    </Grid>
+
+                    <!-- CSAT Review Cards with Gold Phosphor Star Pill (Zero raw ★) -->
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding ServiceReviews}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:ServiceReviewDto">
+                                <Border Style="{StaticResource DoubleBezelOuter}">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                    </Border.Behaviors>
+                                    <Border Style="{StaticResource DoubleBezelInner}">
+                                        <VerticalStackLayout Spacing="8">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <Label
+                                                    Text="{Binding ReviewNumber}"
+                                                    Style="{StaticResource MonoValueBoldLabel}"
+                                                    FontSize="14"
+                                                    VerticalTextAlignment="Center" />
+                                                <Border
+                                                    Grid.Column="1"
+                                                    BackgroundColor="{AppThemeBinding Light={StaticResource SuccessBg}, Dark={StaticResource SuccessBgDark}}"
+                                                    Stroke="{AppThemeBinding Light={StaticResource SuccessBorder}, Dark={StaticResource SuccessBorderDark}}"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 6"
+                                                    Padding="8,4"
+                                                    VerticalOptions="Center">
+                                                    <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                                                        <Label
+                                                            Text="{x:Static icons:PhosphorIcons.Star}"
+                                                            FontFamily="PhosphorFill"
+                                                            FontSize="14"
+                                                            TextColor="#F59E0B"
+                                                            VerticalTextAlignment="Center" />
+                                                        <Label
+                                                            Text="{Binding RatingDisplay}"
+                                                            FontFamily="JetBrainsMonoSemiBold"
+                                                            FontSize="12"
+                                                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                                                            VerticalTextAlignment="Center" />
+                                                    </HorizontalStackLayout>
+                                                </Border>
+                                            </Grid>
+
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.User}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="14"
+                                                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
+                                                    VerticalTextAlignment="Center" />
+                                                <Label
+                                                    Text="{Binding CustomerFullName}"
+                                                    Style="{StaticResource CardTitleLabel}"
+                                                    VerticalTextAlignment="Center" />
+                                            </HorizontalStackLayout>
+
+                                            <Label Text="{Binding Comment}" Style="{StaticResource SecondaryLabel}" />
+
+                                            <Border
+                                                Style="{StaticResource SunkenPanel}"
+                                                Padding="10,8"
+                                                IsVisible="{Binding StaffResponse, Converter={StaticResource IsNotNullOrEmpty}}">
+                                                <VerticalStackLayout Spacing="3">
+                                                    <HorizontalStackLayout Spacing="5">
+                                                        <Label
+                                                            Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                                                            FontFamily="PhosphorFill"
+                                                            FontSize="13"
+                                                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                                                            VerticalTextAlignment="Center" />
+                                                        <Label
+                                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_Branch, x:DataType=loc:LocalizationService}"
+                                                            FontFamily="BeVietnamProSemiBold"
+                                                            FontSize="11"
+                                                            TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                            VerticalTextAlignment="Center" />
+                                                    </HorizontalStackLayout>
+                                                    <Label Text="{Binding StaffResponse}" Style="{StaticResource CaptionLabel}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+
+                                            <Button
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffQaSelectToReplyCta, x:DataType=loc:LocalizationService}"
+                                                Style="{StaticResource SecondaryButton}"
+                                                Clicked="OnSelectReviewClicked"
+                                                CommandParameter="{Binding .}" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

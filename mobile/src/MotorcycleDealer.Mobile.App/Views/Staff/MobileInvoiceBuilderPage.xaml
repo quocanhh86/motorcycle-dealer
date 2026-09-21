@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.MobileInvoiceBuilderPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:MobileInvoiceBuilderViewModel"
+    Title="{Binding Loc.InvoicePageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- Scrollable Builder Area -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16,16,16,24" Spacing="14">
+
+                <!-- Booking & Rider Tier Header -->
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="{Binding Loc.InvoiceEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="{Binding ActiveBooking.BookingNumber}"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="20"
+                            TextColor="{StaticResource Slate50}"
+                            IsVisible="{Binding ActiveBooking, Converter={StaticResource IsNotNull}}" />
+                        <Label
+                            Text="{Binding Loc.InvoiceLoadingBooking}"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="20"
+                            TextColor="{StaticResource Slate50}"
+                            IsVisible="True">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    TargetType="Label"
+                                    Binding="{Binding ActiveBooking, Converter={StaticResource IsNotNull}}"
+                                    Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label
+                            FontFamily="JetBrainsMonoMedium"
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}"
+                            IsVisible="{Binding ActiveBooking, Converter={StaticResource IsNotNull}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Loc.Common_VinLabel}" FontFamily="JetBrainsMonoSemiBold" />
+                                    <Span Text=": " />
+                                    <Span Text="{Binding ActiveBooking.Vin}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label
+                            Text="{Binding ActiveBooking.MotorcycleModelName}"
+                            FontFamily="BeVietnamProRegular"
+                            FontSize="13"
+                            TextColor="{StaticResource Slate300}"
+                            IsVisible="{Binding ActiveBooking, Converter={StaticResource IsNotNull}}" />
+                        <HorizontalStackLayout Spacing="8" Margin="0,2,0,0">
+                            <controls:StatusBadgeView Status="Info" LabelOverride="{Binding CustomerTierCode}" />
+                            <controls:StatusBadgeView Status="Active" LabelOverride="{Binding EarnMultiplierBadgeLabel}" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Multi-Variant Loading Skeletons (Previously missing on Invoice Builder!) -->
+                <controls:SkeletonLoaderView Variant="DetailHero" Count="1" IsVisible="{Binding IsBusy}" />
+                <controls:SkeletonLoaderView Variant="ListRow" Count="2" IsVisible="{Binding IsBusy}" />
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding Source={x:Reference PageRoot}, Path=RetryLoadCommand, x:DataType=stf:MobileInvoiceBuilderPage}" />
+
+                <!-- Base Labor, Odometer & Payment Method -->
+                <Border Style="{StaticResource DoubleBezelOuter}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.Wrench}"
+                                    FontFamily="Phosphor"
+                                    FontSize="15"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.InvoiceLaborSectionEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Loc.InvoiceBaseLaborLabel}" Style="{StaticResource CaptionLabel}" />
+                                    <Border Style="{StaticResource InputContainer}">
+                                        <Entry Text="{Binding BaseLaborAmountVnd}" Style="{StaticResource MonoEntry}" Keyboard="Numeric" />
+                                    </Border>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="{Binding Loc.InvoiceCompletionOdometerLabel}" Style="{StaticResource CaptionLabel}" />
+                                    <Border Style="{StaticResource InputContainer}">
+                                        <Entry Text="{Binding OdometerAtCompletionKm}" Style="{StaticResource MonoEntry}" Keyboard="Numeric" />
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Label Text="{Binding Loc.Common_PaymentMethod}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.Common_PaymentMethod}"
+                                    ItemsSource="{Binding PaymentMethods}"
+                                    SelectedItem="{Binding SelectedPaymentMethod}"
+                                    ItemDisplayBinding="{Binding ., Converter={StaticResource HumanizeStatus}, ConverterParameter=PaymentMethod, x:DataType=x:String}" />
+                            </Border>
+
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding WorkSummaryNotes}" Placeholder="{Binding Loc.InvoiceWorkSummaryPlaceholder}" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- OEM Spare Parts Picker -->
+                <Border Style="{StaticResource DoubleBezelOuter}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.Tag}"
+                                    FontFamily="Phosphor"
+                                    FontSize="15"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.InvoiceCompatiblePartsEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+
+                            <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                                <controls:EmptyStateView
+                                    IsVisible="True"
+                                    IconGlyph="{x:Static icons:PhosphorIcons.Wrench}"
+                                    LottieFile="lottie_empty_garage.json"
+                                    Title="{Binding Loc.Common_NoData}"
+                                    Subtitle="{Binding Loc.InvoiceCompatiblePartsEyebrow}"
+                                    ActionText="{Binding Loc.Common_Refresh}"
+                                    ActionCommand="{Binding Source={x:Reference PageRoot}, Path=RetryLoadCommand, x:DataType=stf:MobileInvoiceBuilderPage}">
+                                    <controls:EmptyStateView.Triggers>
+                                        <DataTrigger
+                                            TargetType="controls:EmptyStateView"
+                                            Binding="{Binding CompatibleSpareParts.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                            Value="True">
+                                            <Setter Property="IsVisible" Value="False" />
+                                        </DataTrigger>
+                                    </controls:EmptyStateView.Triggers>
+                                </controls:EmptyStateView>
+                            </Grid>
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding CompatibleSpareParts}" Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="dto:SparePartDto">
+                                        <Border Style="{StaticResource SunkenPanel}">
+                                            <Border.Behaviors>
+                                                <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                            </Border.Behaviors>
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                                    <Label Text="{Binding Name}" Style="{StaticResource CardTitleLabel}" FontSize="13" />
+                                                    <HorizontalStackLayout Spacing="8">
+                                                        <Label Text="{Binding PartCode}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                                        <Label Text="{Binding LocalizedCategory}" Style="{StaticResource CaptionLabel}" FontSize="11" />
+                                                    </HorizontalStackLayout>
+                                                    <Label
+                                                        Text="{Binding UnitPriceVnd, Converter={StaticResource VndCurrency}}"
+                                                        FontFamily="JetBrainsMonoSemiBold"
+                                                        FontSize="13"
+                                                        TextColor="{StaticResource BrandPrimary}" />
+                                                </VerticalStackLayout>
+                                                <Button
+                                                    Grid.Column="1"
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_AddShort, x:DataType=loc:LocalizationService}"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    VerticalOptions="Center"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.AddSparePartCommand, x:DataType=stf:MobileInvoiceBuilderPage}"
+                                                    CommandParameter="{Binding .}" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Draft Invoice Line Items -->
+                <Border
+                    Style="{StaticResource DoubleBezelOuter}"
+                    IsVisible="{Binding DraftLines.Count, Converter={StaticResource IsGreaterThanZero}}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="8">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.Receipt}"
+                                    FontFamily="Phosphor"
+                                    FontSize="15"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.InvoiceItemizedLinesEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding DraftLines}" Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:InvoiceLineDraft">
+                                        <Border Style="{StaticResource SunkenPanel}">
+                                            <VerticalStackLayout Spacing="6">
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                    <Label Text="{Binding Description}" Style="{StaticResource CardTitleLabel}" FontSize="13" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Text="{Binding FormattedLineTotal}"
+                                                        FontFamily="JetBrainsMonoSemiBold"
+                                                        FontSize="13" />
+                                                </Grid>
+                                                <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" ColumnSpacing="8">
+                                                    <Button
+                                                        Text="-"
+                                                        WidthRequest="48"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.DecrementLineQuantityCommand, x:DataType=stf:MobileInvoiceBuilderPage}"
+                                                        CommandParameter="{Binding .}" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Text="{Binding Quantity}"
+                                                        Style="{StaticResource MonoValueBoldLabel}"
+                                                        VerticalTextAlignment="Center"
+                                                        Padding="6,0" />
+                                                    <Button
+                                                        Grid.Column="2"
+                                                        Text="+"
+                                                        WidthRequest="48"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.IncrementLineQuantityCommand, x:DataType=stf:MobileInvoiceBuilderPage}"
+                                                        CommandParameter="{Binding .}" />
+                                                    <Button
+                                                        Grid.Column="4"
+                                                        Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_Remove, x:DataType=loc:LocalizationService}"
+                                                        Style="{StaticResource DangerOutlineButton}"
+                                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.RemoveLineCommand, x:DataType=stf:MobileInvoiceBuilderPage}"
+                                                        CommandParameter="{Binding .}" />
+                                                </Grid>
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Customer Voucher QR Scanner -->
+                <Border Style="{StaticResource DoubleBezelOuter}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.Ticket}"
+                                    FontFamily="Phosphor"
+                                    FontSize="15"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.InvoiceVoucherQrEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding VoucherCodeInput}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="{Binding Loc.InvoiceVoucherCodePlaceholder}" />
+                                </Border>
+                                <Button
+                                    Grid.Column="1"
+                                    Text="{Binding Loc.InvoiceScanQrCta}"
+                                    Command="{Binding ScanVoucherQrCommand}"
+                                    Style="{StaticResource DarkCarbonButton}" />
+                            </Grid>
+
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.InvoicePickVoucherTitle}"
+                                    ItemsSource="{Binding EligibleCustomerVouchers}"
+                                    SelectedItem="{Binding AppliedVoucher}"
+                                    ItemDisplayBinding="{Binding VoucherCode, x:DataType=dto:CustomerVoucherDto}" />
+                            </Border>
+
+                            <Button
+                                Text="{Binding Loc.InvoiceClearVoucherCta}"
+                                Command="{Binding ClearVoucherCommand}"
+                                Style="{StaticResource SecondaryButton}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Settled Official Receipt QR & Share -->
+                <Border
+                    Style="{StaticResource DoubleBezelOuter}"
+                    IsVisible="{Binding SettledInvoice, Converter={StaticResource IsNotNull}}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                <controls:LottieOrIconView
+                                    LottieFile="lottie_success_check.json"
+                                    FallbackGlyph="{x:Static icons:PhosphorIcons.CheckCircle}"
+                                    Size="36"
+                                    RepeatCount="0" />
+                                <Label
+                                    Text="{Binding Loc.InvoiceSettledReceiptEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                            <controls:QrCodeDisplayView
+                                Payload="{Binding SettledReceiptQrPayload}"
+                                Title="{Binding SettledInvoice.InvoiceNumber}"
+                                Caption="{Binding SettledInvoice.NetPaidAmount, Converter={StaticResource VndCurrency}}" />
+                            <Button
+                                Text="{Binding Loc.InvoiceShareReceiptCta}"
+                                Command="{Binding ShareSettledReceiptCommand}"
+                                Style="{StaticResource SecondaryButton}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Sticky Live Two-Step Floor Loyalty Preview & Settlement Footer (iOS/Android Safe Spacing) -->
+        <Border
+            Grid.Row="1"
+            BackgroundColor="{StaticResource Slate950}"
+            Stroke="{StaticResource Slate800}"
+            StrokeThickness="1"
+            Padding="16,12,16,20">
+            <VerticalStackLayout Spacing="8">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Label
+                        Text="{Binding Loc.InvoiceGrossDiscountLabel}"
+                        FontSize="12"
+                        TextColor="{StaticResource Slate400}" />
+                    <HorizontalStackLayout Grid.Column="1" Spacing="8">
+                        <Label
+                            Text="{Binding FormattedGrossAmount}"
+                            FontFamily="JetBrainsMonoMedium"
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}" />
+                        <Label
+                            Text="{Binding FormattedDiscountAmount, StringFormat='- {0}'}"
+                            FontFamily="JetBrainsMonoMedium"
+                            FontSize="12"
+                            TextColor="{StaticResource SuccessFgDark}" />
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            Text="{Binding Loc.InvoiceNetPaidLabel}"
+                            FontFamily="SpaceGroteskSemiBold"
+                            FontSize="10"
+                            TextColor="{StaticResource Slate400}" />
+                        <Label
+                            Text="{Binding FormattedNetPaidAmount}"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="20"
+                            TextColor="{StaticResource Slate50}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" HorizontalOptions="End" Spacing="2">
+                        <Label
+                            Text="{Binding PreviewPointsLabel}"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="18"
+                            TextColor="{StaticResource WarningFgDark}"
+                            HorizontalTextAlignment="End" />
+                        <Label
+                            Text="{Binding NextTierSummaryLabel}"
+                            FontSize="11"
+                            TextColor="{StaticResource Slate300}"
+                            HorizontalTextAlignment="End" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Tier Upgrade Callout with Phosphor ArrowRight + Lottie Sparkle (Zero ASCII ->) -->
+                <Border
+                    BackgroundColor="{StaticResource SuccessBgDark}"
+                    Stroke="{StaticResource SuccessBorderDark}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="10,6"
+                    IsVisible="{Binding PreviewTierUpgraded}">
+                    <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
+                        <controls:LottieOrIconView
+                            LottieFile="lottie_tier_sparkle.json"
+                            FallbackGlyph="{x:Static icons:PhosphorIcons.Crown}"
+                            Size="20"
+                            RepeatCount="0" />
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.ArrowRight}"
+                            FontFamily="Phosphor"
+                            FontSize="14"
+                            TextColor="{StaticResource SuccessFgDark}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Text="{Binding TierUpgradeBannerLabel}"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="11"
+                            TextColor="{StaticResource SuccessFgDark}"
+                            VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Tactile Editorial Pill Settlement CTA -->
+                <Border Style="{StaticResource PrimaryPillCta}">
+                    <Border.Behaviors>
+                        <toolkit:TouchBehavior
+                            PressedScale="0.97"
+                            PressedAnimationDuration="110"
+                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SettleInvoiceCommand, x:DataType=stf:MobileInvoiceBuilderPage}"
+                            ShouldMakeChildrenInputTransparent="True" />
+                    </Border.Behaviors>
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Label
+                            Text="{Binding Loc.InvoiceSettleCta}"
+                            FontFamily="BeVietnamProSemiBold"
+                            FontSize="14"
+                            TextColor="{StaticResource PureWhite}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                        <Border Grid.Column="1" Style="{StaticResource PrimaryPillCtaWell}">
+                            <Label
+                                Text="{x:Static icons:PhosphorIcons.ArrowRight}"
+                                FontFamily="Phosphor"
+                                FontSize="16"
+                                TextColor="{StaticResource PureWhite}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.ShowroomVinSalesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:ShowroomVinSalesViewModel"
+    Title="{Binding Loc.SalesPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadSalesDeskCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16,16,16,24" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding Loc.SalesEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="{Binding Loc.SalesTitle}"
+                            FontFamily="SpaceGroteskBold"
+                            FontSize="20"
+                            TextColor="{StaticResource Slate50}" />
+                        <Label
+                            Text="{Binding Loc.SalesSubtitle}"
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadSalesDeskCommand}" />
+
+                <!-- Complete VIN Sale Card -->
+                <Border Style="{StaticResource DoubleBezelOuter}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.Storefront}"
+                                    FontFamily="Phosphor"
+                                    FontSize="15"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.SalesCompleteSectionEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+
+                            <Label Text="{Binding Loc.SalesAvailableVinLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.SalesSelectAvailableVinTitle}"
+                                    ItemsSource="{Binding AvailableStock}"
+                                    SelectedItem="{Binding SelectedInventory}"
+                                    ItemDisplayBinding="{Binding Vin, x:DataType=dto:DealerInventoryDto}" />
+                            </Border>
+
+                            <!-- Selected VIN Unit Studio Thumbnail Preview -->
+                            <Border
+                                Style="{StaticResource SunkenPanel}"
+                                IsVisible="{Binding SelectedInventory, Converter={StaticResource IsNotNull}}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                </Border.Behaviors>
+                                <Grid ColumnDefinitions="92,*" ColumnSpacing="12">
+                                    <Border
+                                        Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 10"
+                                        WidthRequest="92"
+                                        HeightRequest="70"
+                                        Padding="0"
+                                        VerticalOptions="Center">
+                                        <Image
+                                            Source="{Binding SelectedInventory.ResolvedImageSource}"
+                                            Aspect="AspectFill"
+                                            WidthRequest="92"
+                                            HeightRequest="70" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                                        <Label
+                                            Text="{Binding SelectedInventory.MotorcycleModelName}"
+                                            Style="{StaticResource CardTitleLabel}"
+                                            FontSize="14" />
+                                        <Label
+                                            Text="{Binding SelectedInventory.ColorName}"
+                                            Style="{StaticResource CaptionLabel}" />
+                                        <Label
+                                            Text="{Binding SelectedInventory.ListedPrice, Converter={StaticResource VndCurrency}}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            FontSize="15"
+                                            TextColor="{StaticResource BrandPrimary}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry
+                                    Text="{Binding CustomerEmail}"
+                                    Placeholder="{Binding Loc.SalesBuyerEmailPlaceholder}"
+                                    Keyboard="Email" />
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding LicensePlate}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="{Binding Loc.SalesLicensePlatePlaceholder}" />
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding VoucherCode}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="{Binding Loc.SalesVoucherCodePlaceholder}" />
+                                </Border>
+                            </Grid>
+
+                            <Label Text="{Binding Loc.Common_PaymentMethod}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.Common_PaymentMethod}"
+                                    ItemsSource="{Binding PaymentMethods}"
+                                    SelectedItem="{Binding SelectedPaymentMethod}"
+                                    ItemDisplayBinding="{Binding ., Converter={StaticResource HumanizeStatus}, ConverterParameter=PaymentMethod, x:DataType=x:String}" />
+                            </Border>
+
+                            <!-- Editorial Tactile Pill CTA -->
+                            <Border Style="{StaticResource PrimaryPillCta}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.97"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.CompleteShowroomSaleCommand, x:DataType=stf:ShowroomVinSalesPage}"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <Label
+                                        Text="{Binding Loc.SalesCompleteSaleCta}"
+                                        FontFamily="BeVietnamProSemiBold"
+                                        FontSize="14"
+                                        TextColor="{StaticResource PureWhite}"
+                                        HorizontalTextAlignment="Center"
+                                        VerticalTextAlignment="Center" />
+                                    <Border Grid.Column="1" Style="{StaticResource PrimaryPillCtaWell}">
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.ArrowRight}"
+                                            FontFamily="Phosphor"
+                                            FontSize="16"
+                                            TextColor="{StaticResource PureWhite}"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Receive New VIN Stock Intake -->
+                <Border Style="{StaticResource DoubleBezelOuter}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.QrCode}"
+                                    FontFamily="Phosphor"
+                                    FontSize="15"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.SalesReceiveSectionEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding ReceiveVin}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="{Binding Loc.SalesReceiveVinPlaceholder}"
+                                        MaxLength="17" />
+                                </Border>
+                                <Button
+                                    Grid.Column="1"
+                                    Text="{Binding Loc.SalesScanVinCta}"
+                                    Command="{Binding ScanVinForReceiveCommand}"
+                                    Style="{StaticResource DarkCarbonButton}" />
+                            </Grid>
+
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.SalesReceiveModelTitle}"
+                                    ItemsSource="{Binding Models}"
+                                    SelectedItem="{Binding SelectedReceiveModel}"
+                                    ItemDisplayBinding="{Binding ModelName, x:DataType=dto:MotorcycleModelDto}" />
+                            </Border>
+
+                            <!-- Selected Intake Model Studio Thumbnail -->
+                            <Border
+                                Style="{StaticResource SunkenPanel}"
+                                IsVisible="{Binding SelectedReceiveModel, Converter={StaticResource IsNotNull}}">
+                                <Grid ColumnDefinitions="76,*" ColumnSpacing="10">
+                                    <Border
+                                        Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 8"
+                                        WidthRequest="76"
+                                        HeightRequest="56"
+                                        Padding="0"
+                                        VerticalOptions="Center">
+                                        <Image
+                                            Source="{Binding SelectedReceiveModel.ResolvedImageSource}"
+                                            Aspect="AspectFill"
+                                            WidthRequest="76"
+                                            HeightRequest="56" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                        <Label
+                                            Text="{Binding SelectedReceiveModel.ModelName}"
+                                            Style="{StaticResource CardTitleLabel}"
+                                            FontSize="13" />
+                                        <Label
+                                            Text="{Binding SelectedReceiveModel.ModelCode}"
+                                            Style="{StaticResource MonoCodeLabel}"
+                                            FontSize="11" />
+                                        <Label
+                                            Text="{Binding SelectedReceiveModel.BaseRetailPrice, Converter={StaticResource VndCurrency}}"
+                                            Style="{StaticResource CaptionLabel}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding ReceiveEngineNumber}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="{Binding Loc.SalesReceiveEnginePlaceholder}" />
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding ReceiveColorName}"
+                                        Placeholder="{Binding Loc.SalesReceiveColorPlaceholder}" />
+                                </Border>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding ReceiveManufactureYear}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="{Binding Loc.SalesReceiveYearPlaceholder}"
+                                        Keyboard="Numeric" />
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding ReceiveListedPrice}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="{Binding Loc.SalesReceivePricePlaceholder}"
+                                        Keyboard="Numeric" />
+                                </Border>
+                            </Grid>
+
+                            <Button
+                                Text="{Binding Loc.SalesReceiveVinCta}"
+                                Command="{Binding ReceiveVinIntoStockCommand}"
+                                Style="{StaticResource SecondaryButton}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Multi-Variant Loading Skeleton -->
+                <controls:SkeletonLoaderView Variant="ListRow" Count="2" IsVisible="{Binding IsBusy}" />
+
+                <!-- Recent Branch Sales Orders -->
+                <HorizontalStackLayout Spacing="8">
+                    <Label
+                        Text="{x:Static icons:PhosphorIcons.Receipt}"
+                        FontFamily="Phosphor"
+                        FontSize="18"
+                        TextColor="{StaticResource BrandPrimary}"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Text="{Binding Loc.SalesRecentOrdersTitle}"
+                        Style="{StaticResource SectionTitleLabel}"
+                        VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+
+                <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                    <controls:EmptyStateView
+                        IsVisible="True"
+                        IconGlyph="{x:Static icons:PhosphorIcons.Storefront}"
+                        LottieFile="lottie_empty_garage.json"
+                        Title="{Binding Loc.Common_NoData}"
+                        Subtitle="{Binding Loc.SalesRecentOrdersTitle}"
+                        ActionText="{Binding Loc.Common_Refresh}"
+                        ActionCommand="{Binding LoadSalesDeskCommand}">
+                        <controls:EmptyStateView.Triggers>
+                            <DataTrigger
+                                TargetType="controls:EmptyStateView"
+                                Binding="{Binding RecentSalesOrders.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                Value="True">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </controls:EmptyStateView.Triggers>
+                    </controls:EmptyStateView>
+                </Grid>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecentSalesOrders}" Spacing="12">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:SalesOrderDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                </Border.Behaviors>
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Text="{Binding OrderNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding FinalAmount, Converter={StaticResource VndCurrency}}"
+                                                Style="{StaticResource MonoValueBoldLabel}"
+                                                TextColor="{StaticResource BrandPrimary}" />
+                                        </Grid>
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.User}"
+                                                FontFamily="Phosphor"
+                                                FontSize="14"
+                                                TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Text="{Binding CustomerFullName}"
+                                                Style="{StaticResource CardTitleLabel}"
+                                                VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                        <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource SecondaryLabel}" />
+                                        <Label Style="{StaticResource MonoCodeLabel}" FontSize="12">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span
+                                                        Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_VinLabel, x:DataType=loc:LocalizationService}"
+                                                        FontFamily="JetBrainsMonoSemiBold" />
+                                                    <Span Text=": " />
+                                                    <Span Text="{Binding Vin}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Button
+                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=SalesShareReceiptCta, x:DataType=loc:LocalizationService}"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ShareSalesReceiptCommand, x:DataType=stf:ShowroomVinSalesPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
