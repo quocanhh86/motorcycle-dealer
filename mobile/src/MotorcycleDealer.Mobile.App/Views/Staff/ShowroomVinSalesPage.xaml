@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.ShowroomVinSalesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:ShowroomVinSalesViewModel"
+    Title="Showroom VIN Sales">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadSalesDeskCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="ATOMIC SALES ORDER &amp; AUTO-ONBOARDING" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="Showroom VIN Sales Desk"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Slate50}" />
+                        <Label
+                            Text="Completing a sale atomically marks the VIN Sold, onboards to Customer Garage &amp; awards points."
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Label
+                        Text="{Binding SuccessMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                </Border>
+
+                <!-- Complete VIN Sale Card -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="COMPLETE SHOWROOM SALE" Style="{StaticResource EyebrowLabel}" />
+
+                        <Label Text="Available Branch VIN Unit" Style="{StaticResource CaptionLabel}" />
+                        <Border Style="{StaticResource InputContainer}">
+                            <Picker
+                                Title="Select Available VIN"
+                                ItemsSource="{Binding AvailableStock}"
+                                SelectedItem="{Binding SelectedInventory}"
+                                ItemDisplayBinding="{Binding Vin, x:DataType=dto:DealerInventoryDto}" />
+                        </Border>
+
+                        <Border Style="{StaticResource SunkenPanel}" IsVisible="{Binding SelectedInventory, Converter={StaticResource IsNotNull}}">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="{Binding SelectedInventory.MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" FontSize="13" />
+                                    <Label Text="{Binding SelectedInventory.ColorName}" Style="{StaticResource CaptionLabel}" />
+                                </VerticalStackLayout>
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedInventory.ListedPrice, Converter={StaticResource VndCurrency}}"
+                                    Style="{StaticResource MonoValueBoldLabel}"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <Border Style="{StaticResource InputContainer}">
+                            <Entry Text="{Binding CustomerEmail}" Placeholder="Buyer registered email" Keyboard="Email" />
+                        </Border>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding LicensePlate}" Style="{StaticResource MonoEntry}" Placeholder="License Plate" />
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding VoucherCode}" Style="{StaticResource MonoEntry}" Placeholder="Voucher code" />
+                            </Border>
+                        </Grid>
+
+                        <Border Style="{StaticResource InputContainer}">
+                            <Picker ItemsSource="{Binding PaymentMethods}" SelectedItem="{Binding SelectedPaymentMethod}" />
+                        </Border>
+
+                        <Button
+                            Text="Complete Showroom VIN Sale"
+                            Command="{Binding CompleteShowroomSaleCommand}"
+                            Style="{StaticResource PrimaryButton}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Receive New VIN Stock Intake -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="RECEIVE NEW VIN INTO BRANCH STOCK" Style="{StaticResource EyebrowLabel}" />
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding ReceiveVin}" Style="{StaticResource MonoEntry}" Placeholder="17-char ISO 3779 VIN" MaxLength="17" />
+                            </Border>
+                            <Button
+                                Grid.Column="1"
+                                Text="Scan VIN"
+                                Command="{Binding ScanVinForReceiveCommand}"
+                                Style="{StaticResource DarkCarbonButton}" />
+                        </Grid>
+
+                        <Border Style="{StaticResource InputContainer}">
+                            <Picker
+                                Title="Motorcycle Model"
+                                ItemsSource="{Binding Models}"
+                                SelectedItem="{Binding SelectedReceiveModel}"
+                                ItemDisplayBinding="{Binding ModelName, x:DataType=dto:MotorcycleModelDto}" />
+                        </Border>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding ReceiveEngineNumber}" Style="{StaticResource MonoEntry}" Placeholder="Engine Number" />
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding ReceiveColorName}" Placeholder="Color Name" />
+                            </Border>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding ReceiveManufactureYear}" Style="{StaticResource MonoEntry}" Placeholder="Year" Keyboard="Numeric" />
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding ReceiveListedPrice}" Style="{StaticResource MonoEntry}" Placeholder="Listed VND" Keyboard="Numeric" />
+                            </Border>
+                        </Grid>
+
+                        <Button
+                            Text="Receive VIN Into Inventory"
+                            Command="{Binding ReceiveVinIntoStockCommand}"
+                            Style="{StaticResource SecondaryButton}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="104" />
+
+                <!-- Recent Branch Sales Orders -->
+                <Label Text="Recent Showroom Sales Orders" Style="{StaticResource SectionTitleLabel}" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecentSalesOrders}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:SalesOrderDto">
+                            <Border Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout Spacing="6">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="{Binding OrderNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Text="{Binding FinalAmount, Converter={StaticResource VndCurrency}}"
+                                            Style="{StaticResource MonoValueBoldLabel}"
+                                            TextColor="{StaticResource BrandPrimary}" />
+                                    </Grid>
+                                    <Label Text="{Binding CustomerFullName}" Style="{StaticResource CardTitleLabel}" />
+                                    <Label Text="{Binding Vin, StringFormat='VIN: {0}'}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                    <Button
+                                        Text="Share Official Sales Receipt"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ShareSalesReceiptCommand, x:DataType=stf:ShowroomVinSalesPage}"
+                                        CommandParameter="{Binding .}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
