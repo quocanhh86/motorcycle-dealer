@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.SlotCapacityPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:SlotCapacityViewModel"
+    Title="{Binding Loc.SlotsPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadSlotsCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16,16,16,24" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding Loc.SlotsEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="{Binding Loc.SlotsTitle}"
+                            FontFamily="SpaceGroteskBold"
+                            FontSize="20"
+                            TextColor="{StaticResource Slate50}" />
+                        <Label
+                            Text="{Binding Loc.SlotsSubtitle}"
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadSlotsCommand}" />
+
+                <!-- Rolling Generator Controls -->
+                <Border Style="{StaticResource DoubleBezelOuter}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.CalendarPlus}"
+                                    FontFamily="Phosphor"
+                                    FontSize="15"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.SlotsBatchGeneratorEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Loc.SlotsFromDateLabel}" Style="{StaticResource CaptionLabel}" />
+                                    <Border Style="{StaticResource InputContainer}">
+                                        <DatePicker x:Name="FromDatePicker" DateSelected="OnFromDateSelected" />
+                                    </Border>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="{Binding Loc.SlotsToDateLabel}" Style="{StaticResource CaptionLabel}" />
+                                    <Border Style="{StaticResource InputContainer}">
+                                        <DatePicker x:Name="ToDatePicker" DateSelected="OnToDateSelected" />
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Loc.SlotsDurationLabel}" Style="{StaticResource CaptionLabel}" />
+                                    <Border Style="{StaticResource InputContainer}">
+                                        <Entry Text="{Binding GenerateDurationMinutes}" Style="{StaticResource MonoEntry}" Keyboard="Numeric" />
+                                    </Border>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="{Binding Loc.SlotsBaysPerSlotLabel}" Style="{StaticResource CaptionLabel}" />
+                                    <Border Style="{StaticResource InputContainer}">
+                                        <Entry Text="{Binding GenerateMaxCapacity}" Style="{StaticResource MonoEntry}" Keyboard="Numeric" />
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button
+                                    Text="{Binding Loc.SlotsLoadCta}"
+                                    Command="{Binding LoadSlotsCommand}"
+                                    Style="{StaticResource SecondaryButton}" />
+                                <Button
+                                    Grid.Column="1"
+                                    Text="{Binding Loc.SlotsGenerateBatchCta}"
+                                    Command="{Binding GenerateRollingSlotsCommand}"
+                                    Style="{StaticResource PrimaryButton}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Multi-Variant Loading Skeleton -->
+                <controls:SkeletonLoaderView Variant="ListRow" Count="3" IsVisible="{Binding IsBusy}" />
+
+                <!-- Slot Capacity Cards -->
+                <HorizontalStackLayout Spacing="8">
+                    <Label
+                        Text="{x:Static icons:PhosphorIcons.Clock}"
+                        FontFamily="Phosphor"
+                        FontSize="18"
+                        TextColor="{StaticResource BrandPrimary}"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Text="{Binding Loc.SlotsActiveTitle}"
+                        Style="{StaticResource SectionTitleLabel}"
+                        VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+
+                <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                    <controls:EmptyStateView
+                        IsVisible="True"
+                        IconGlyph="{x:Static icons:PhosphorIcons.CalendarPlus}"
+                        LottieFile="lottie_empty_garage.json"
+                        Title="{Binding Loc.Common_NoData}"
+                        Subtitle="{Binding Loc.SlotsActiveTitle}"
+                        ActionText="{Binding Loc.SlotsGenerateBatchCta}"
+                        ActionCommand="{Binding GenerateRollingSlotsCommand}">
+                        <controls:EmptyStateView.Triggers>
+                            <DataTrigger
+                                TargetType="controls:EmptyStateView"
+                                Binding="{Binding Slots.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                Value="True">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </controls:EmptyStateView.Triggers>
+                    </controls:EmptyStateView>
+                </Grid>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Slots}" Spacing="12">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:ServiceTimeSlotDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                </Border.Behaviors>
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label
+                                                    Text="{Binding SlotDate, Converter={StaticResource VietnamDateTime}}"
+                                                    Style="{StaticResource MonoCodeLabel}"
+                                                    FontSize="12" />
+                                                <Label
+                                                    Text="{Binding TimeRangeDisplay}"
+                                                    Style="{StaticResource MonoValueBoldLabel}"
+                                                    FontSize="15" />
+                                            </VerticalStackLayout>
+                                            <controls:StatusBadgeView
+                                                Grid.Column="1"
+                                                Status="Available"
+                                                LabelOverride="{Binding FreeBadgeLabel}"
+                                                IsVisible="{Binding IsBlocked, Converter={StaticResource InvertedBool}}" />
+                                            <controls:StatusBadgeView
+                                                Grid.Column="1"
+                                                Status="Cancelled"
+                                                LabelOverride="{Binding Source={x:Static loc:LocalizationService.Current}, Path=SlotsBlockedBadge, x:DataType=loc:LocalizationService}"
+                                                IsVisible="{Binding IsBlocked}" />
+                                        </Grid>
+
+                                        <Label
+                                            Text="{Binding BookedRatioLabel}"
+                                            Style="{StaticResource SecondaryLabel}" />
+
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                            <Button
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=SlotsIncrementCapacityCta, x:DataType=loc:LocalizationService}"
+                                                Style="{StaticResource SecondaryButton}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.IncrementSlotCapacityCommand, x:DataType=stf:SlotCapacityPage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Grid.Column="1"
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=SlotsBlockReopenCta, x:DataType=loc:LocalizationService}"
+                                                Style="{StaticResource DarkCarbonButton}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleBlockSlotCommand, x:DataType=stf:SlotCapacityPage}"
+                                                CommandParameter="{Binding .}" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

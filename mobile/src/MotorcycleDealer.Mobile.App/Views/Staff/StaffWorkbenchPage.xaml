@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.StaffWorkbenchPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:StaffWorkbenchViewModel"
+    Title="{Binding Loc.StaffWorkbenchPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{Binding Loc.ToolbarAlerts}" Clicked="OnAlertsClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="Phosphor"
+                    Glyph="{x:Static icons:PhosphorIcons.Bell}"
+                    Color="{StaticResource Slate50}"
+                    Size="22" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="{Binding Loc.ToolbarSignOut}" Clicked="OnSignOutClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="Phosphor"
+                    Glyph="{x:Static icons:PhosphorIcons.SignOut}"
+                    Color="{StaticResource Slate50}"
+                    Size="22" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadWorkbenchCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16,16,16,24" Spacing="14">
+
+                <!-- Branch-Locked Pit-Lane Editorial Header with Workshop Bay Banner -->
+                <Border
+                    BackgroundColor="{StaticResource Slate950}"
+                    Stroke="{StaticResource Slate800}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="0">
+                    <VerticalStackLayout Spacing="0">
+                        <!-- Editorial Workshop Bay Hero Strip -->
+                        <Grid HeightRequest="120">
+                            <Image
+                                Source="hero_workshop_bay.jpg"
+                                Aspect="AspectFill"
+                                HeightRequest="120" />
+                            <BoxView>
+                                <BoxView.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#73020617" Offset="0.0" />
+                                        <GradientStop Color="#F2020617" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </BoxView.Background>
+                            </BoxView>
+                            <Grid RowDefinitions="Auto,*,Auto" Padding="14,12" RowSpacing="4">
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                    <Border
+                                        BackgroundColor="#CC020617"
+                                        Stroke="{StaticResource BrandPrimary}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 6"
+                                        Padding="8,3">
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.Pulse}"
+                                                FontFamily="Phosphor"
+                                                FontSize="12"
+                                                TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Text="{Binding Loc.StaffWorkbenchLiveTag}"
+                                                FontFamily="SpaceGroteskSemiBold"
+                                                FontSize="10"
+                                                CharacterSpacing="0.8"
+                                                TextColor="{StaticResource Slate50}"
+                                                VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                    </Border>
+                                    <Label
+                                        Grid.Column="2"
+                                        Text="{Binding SyncAgeLabel}"
+                                        FontFamily="JetBrainsMonoMedium"
+                                        FontSize="11"
+                                        TextColor="{StaticResource Slate300}"
+                                        VerticalTextAlignment="Center" />
+                                </Grid>
+
+                                <VerticalStackLayout Grid.Row="2" Spacing="2">
+                                    <Label
+                                        Text="{Binding Loc.StaffWorkbenchEyebrow}"
+                                        Style="{StaticResource EyebrowLabel}" />
+                                    <Label
+                                        Text="{Binding DealerHeaderLabel}"
+                                        FontFamily="SpaceGroteskBold"
+                                        FontSize="20"
+                                        TextColor="{StaticResource Slate50}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Quick Preferences (VI|EN & Theme) + Bento KPI Strip -->
+                        <VerticalStackLayout Padding="14,12,14,14" Spacing="10">
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <!-- 1-Tap VI | EN Language Toggle -->
+                                <Border
+                                    BackgroundColor="#1AFFFFFF"
+                                    Stroke="#33FFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 8"
+                                    MinimumHeightRequest="48"
+                                    Padding="12,8">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.97"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Translate}"
+                                            FontFamily="Phosphor"
+                                            FontSize="16"
+                                            TextColor="{StaticResource Slate50}"
+                                            VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{Binding LanguageToggleText}"
+                                            FontFamily="BeVietnamProSemiBold"
+                                            FontSize="13"
+                                            TextColor="{StaticResource Slate50}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                                <!-- 1-Tap Light / Dark Theme Toggle -->
+                                <Border
+                                    Grid.Column="1"
+                                    BackgroundColor="#1AFFFFFF"
+                                    Stroke="#33FFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 8"
+                                    MinimumHeightRequest="48"
+                                    Padding="12,8">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.97"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Moon}"
+                                            FontFamily="Phosphor"
+                                            FontSize="16"
+                                            TextColor="{StaticResource Slate50}"
+                                            VerticalTextAlignment="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsDarkTheme}" Value="True">
+                                                    <Setter Property="Text" Value="{x:Static icons:PhosphorIcons.Sun}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label
+                                            Text="{Binding ThemeToggleText}"
+                                            FontFamily="BeVietnamProSemiBold"
+                                            FontSize="13"
+                                            TextColor="{StaticResource Slate50}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
+
+                            <!-- Bento KPI Strip -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Border
+                                    BackgroundColor="#14FFFFFF"
+                                    Stroke="#2EFFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    Padding="12,10">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.97"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectLaneCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            CommandParameter="Pending"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <VerticalStackLayout Spacing="4">
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.Clock}"
+                                                FontFamily="Phosphor"
+                                                FontSize="14"
+                                                TextColor="{StaticResource WarningFgDark}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Text="{Binding Loc.StaffWorkbenchPendingKpi}"
+                                                FontFamily="SpaceGroteskSemiBold"
+                                                FontSize="10"
+                                                TextColor="{StaticResource Slate300}"
+                                                VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                        <Label
+                                            Text="{Binding PendingCount}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            FontSize="22"
+                                            TextColor="{StaticResource WarningFgDark}" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <Border
+                                    Grid.Column="1"
+                                    BackgroundColor="#14FFFFFF"
+                                    Stroke="#2EFFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    Padding="12,10">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.97"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectLaneCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            CommandParameter="InProgress"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <VerticalStackLayout Spacing="4">
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.Wrench}"
+                                                FontFamily="Phosphor"
+                                                FontSize="14"
+                                                TextColor="{StaticResource CheckedInFgDark}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Text="{Binding Loc.StaffWorkbenchActiveBayKpi}"
+                                                FontFamily="SpaceGroteskSemiBold"
+                                                FontSize="10"
+                                                TextColor="{StaticResource Slate300}"
+                                                VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                        <Label
+                                            Text="{Binding CheckedInOrInProgressCount}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            FontSize="22"
+                                            TextColor="{StaticResource CheckedInFgDark}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Offline SQLCipher Fallback Banner -->
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.WifiSlash}"
+                            FontFamily="Phosphor"
+                            FontSize="16"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Loc.Common_Offline}" FontFamily="BeVietnamProSemiBold" />
+                                    <Span Text=" · " />
+                                    <Span Text="{Binding SyncAgeLabel}" FontFamily="JetBrainsMonoMedium" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadWorkbenchCommand}" />
+
+                <!-- Search + Camera VIN/Booking QR Intake Trigger -->
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Border Style="{StaticResource InputContainer}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label
+                                Text="{x:Static icons:PhosphorIcons.MagnifyingGlass}"
+                                FontFamily="Phosphor"
+                                FontSize="18"
+                                TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                VerticalTextAlignment="Center" />
+                            <Entry
+                                Grid.Column="1"
+                                Text="{Binding SearchVinOrNumber}"
+                                Style="{StaticResource MonoEntry}"
+                                Placeholder="{Binding Loc.StaffWorkbenchSearchPlaceholder}" />
+                        </Grid>
+                    </Border>
+                    <Border
+                        Grid.Column="1"
+                        Style="{StaticResource PrimaryCtaTouchCard}">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedAnimationDuration="110"
+                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ScanForIntakeCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <HorizontalStackLayout Spacing="6" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Label
+                                Text="{x:Static icons:PhosphorIcons.QrCode}"
+                                FontFamily="Phosphor"
+                                FontSize="18"
+                                TextColor="{StaticResource PureWhite}"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                Text="{Binding Loc.StaffWorkbenchScanCta}"
+                                FontFamily="BeVietnamProSemiBold"
+                                FontSize="13"
+                                TextColor="{StaticResource PureWhite}"
+                                VerticalTextAlignment="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!-- Scanned Vehicle Intake Spotlight with Studio Motorcycle Thumbnail -->
+                <Border
+                    Style="{StaticResource DoubleBezelOuter}"
+                    IsVisible="{Binding ScannedIntakeVehicle, Converter={StaticResource IsNotNull}}">
+                    <Border.Behaviors>
+                        <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                    </Border.Behaviors>
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <Grid ColumnDefinitions="88,*" ColumnSpacing="12">
+                            <Border
+                                Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                WidthRequest="88"
+                                HeightRequest="68"
+                                Padding="0"
+                                VerticalOptions="Center">
+                                <Image
+                                    Source="{Binding ScannedIntakeVehicle.ResolvedImageSource}"
+                                    Aspect="AspectFill"
+                                    WidthRequest="88"
+                                    HeightRequest="68" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                                        FontFamily="PhosphorFill"
+                                        FontSize="14"
+                                        TextColor="{AppThemeBinding Light={StaticResource InfoFg}, Dark={StaticResource InfoFgDark}}"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        Text="{Binding Loc.StaffWorkbenchScannedIntakeTitle}"
+                                        Style="{StaticResource EyebrowLabel}"
+                                        TextColor="{AppThemeBinding Light={StaticResource InfoFg}, Dark={StaticResource InfoFgDark}}"
+                                        VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                                <Label
+                                    Text="{Binding ScannedIntakeVehicle.MotorcycleModelName}"
+                                    Style="{StaticResource CardTitleLabel}" />
+                                <Label Style="{StaticResource MonoCodeLabel}" FontSize="12">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Loc.Common_VinLabel}" FontFamily="JetBrainsMonoSemiBold" />
+                                            <Span Text=": " />
+                                            <Span Text="{Binding ScannedIntakeVehicle.Vin}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.User}"
+                                        FontFamily="Phosphor"
+                                        FontSize="13"
+                                        TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        Text="{Binding ScannedIntakeVehicle.CustomerFullName}"
+                                        Style="{StaticResource SecondaryLabel}"
+                                        VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <!-- Segmented Status Lanes -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout
+                        x:Name="LaneChipContainer"
+                        BindableLayout.ItemsSource="{Binding StatusLanes}"
+                        Spacing="8"
+                        Padding="0,0,16,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button
+                                    Text="{Binding ., Converter={StaticResource HumanizeStatus}, ConverterParameter=BookingStatus}"
+                                    Style="{StaticResource ChipButton}"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectLaneCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                    CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                    <Binding Path="." />
+                                                    <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedLane" x:DataType="stf:StaffWorkbenchPage" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                            <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <HorizontalStackLayout Spacing="6">
+                    <Label
+                        Text="{x:Static icons:PhosphorIcons.Info}"
+                        FontFamily="Phosphor"
+                        FontSize="14"
+                        TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Text="{Binding Loc.StaffWorkbenchSwipeTip}"
+                        Style="{StaticResource CaptionLabel}"
+                        VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+
+                <!-- Multi-Variant Loading Skeletons -->
+                <controls:SkeletonLoaderView Variant="KpiBento" Count="1" IsVisible="{Binding IsBusy}" />
+                <controls:SkeletonLoaderView Variant="ListRow" Count="3" IsVisible="{Binding IsBusy}" />
+
+                <!-- Empty Queue State -->
+                <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                    <controls:EmptyStateView
+                        IsVisible="True"
+                        IconGlyph="{x:Static icons:PhosphorIcons.Wrench}"
+                        LottieFile="lottie_empty_garage.json"
+                        Title="{Binding Loc.StaffWorkbenchEmptyTitle}"
+                        Subtitle="{Binding Loc.Common_NoData}"
+                        ActionText="{Binding Loc.Common_Refresh}"
+                        ActionCommand="{Binding LoadWorkbenchCommand}">
+                        <controls:EmptyStateView.Triggers>
+                            <DataTrigger
+                                TargetType="controls:EmptyStateView"
+                                Binding="{Binding FilteredBookings.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                Value="True">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </controls:EmptyStateView.Triggers>
+                    </controls:EmptyStateView>
+                </Grid>
+
+                <!-- Live Bay Queue Cards with SwipeView Bay Check-In & Double-Bezel Frame -->
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding FilteredBookings}" Spacing="12">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:BookingDto">
+                            <SwipeView IsEnabled="{Binding HasStaffActions}">
+                                <SwipeView.LeftItems>
+                                    <SwipeItems Mode="Reveal">
+                                        <SwipeItem
+                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffWorkbenchCheckInCta, x:DataType=loc:LocalizationService}"
+                                            BackgroundColor="#155E75"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SwipeCheckInBookingCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            CommandParameter="{Binding .}" />
+                                        <SwipeItem
+                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffWorkbenchStartBayCta, x:DataType=loc:LocalizationService}"
+                                            BackgroundColor="#5B21B6"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.StartServiceBayCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <SwipeView.RightItems>
+                                    <SwipeItems Mode="Reveal">
+                                        <SwipeItem
+                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffWorkbenchNoShowCta, x:DataType=loc:LocalizationService}"
+                                            BackgroundColor="#B91C1C"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.MarkNoShowCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Style="{StaticResource DoubleBezelOuter}">
+                                    <Border Style="{StaticResource DoubleBezelInner}">
+                                        <VerticalStackLayout Spacing="8">
+                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                                <Border
+                                                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceSunkenLight}, Dark={StaticResource SurfaceSunkenDark}}"
+                                                    Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 8"
+                                                    WidthRequest="32"
+                                                    HeightRequest="32"
+                                                    VerticalOptions="Center">
+                                                    <Label
+                                                        Text="{x:Static icons:PhosphorIcons.Motorcycle}"
+                                                        Style="{StaticResource PhosphorIconLabel}"
+                                                        FontSize="16"
+                                                        TextColor="{StaticResource BrandPrimary}" />
+                                                </Border>
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Text="{Binding BookingNumber}"
+                                                    Style="{StaticResource MonoValueBoldLabel}"
+                                                    FontSize="14"
+                                                    VerticalTextAlignment="Center" />
+                                                <controls:StatusBadgeView Grid.Column="2" Status="{Binding Status}" />
+                                            </Grid>
+
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.User}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="14"
+                                                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
+                                                    VerticalTextAlignment="Center" />
+                                                <Label
+                                                    Text="{Binding CustomerFullName}"
+                                                    Style="{StaticResource CardTitleLabel}"
+                                                    VerticalTextAlignment="Center" />
+                                            </HorizontalStackLayout>
+
+                                            <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource SecondaryLabel}" />
+
+                                            <Label Style="{StaticResource MonoCodeLabel}" FontSize="12">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span
+                                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_VinLabel, x:DataType=loc:LocalizationService}"
+                                                            FontFamily="JetBrainsMonoSemiBold" />
+                                                        <Span Text=": " />
+                                                        <Span Text="{Binding Vin}" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+
+                                            <HorizontalStackLayout Spacing="10">
+                                                <HorizontalStackLayout Spacing="4">
+                                                    <Label
+                                                        Text="{x:Static icons:PhosphorIcons.CalendarCheck}"
+                                                        FontFamily="Phosphor"
+                                                        FontSize="13"
+                                                        TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                        VerticalTextAlignment="Center" />
+                                                    <Label
+                                                        Text="{Binding SlotDate, Converter={StaticResource VietnamDateTime}}"
+                                                        Style="{StaticResource MonoCodeLabel}"
+                                                        FontSize="12"
+                                                        VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
+                                                <HorizontalStackLayout Spacing="4">
+                                                    <Label
+                                                        Text="{x:Static icons:PhosphorIcons.Clock}"
+                                                        FontFamily="Phosphor"
+                                                        FontSize="13"
+                                                        TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                        VerticalTextAlignment="Center" />
+                                                    <Label
+                                                        Text="{Binding ShortStartTime}"
+                                                        Style="{StaticResource MonoCodeLabel}"
+                                                        FontSize="12"
+                                                        VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
+                                                <Label
+                                                    Text="{Binding FormattedServiceType}"
+                                                    Style="{StaticResource CaptionLabel}"
+                                                    VerticalTextAlignment="Center" />
+                                            </HorizontalStackLayout>
+
+                                            <FlexLayout
+                                                Direction="Row"
+                                                Wrap="Wrap"
+                                                AlignItems="Center"
+                                                JustifyContent="Start"
+                                                IsVisible="{Binding HasStaffActions}">
+                                                <Button
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffWorkbenchCheckInCta, x:DataType=loc:LocalizationService}"
+                                                    Margin="0,0,8,6"
+                                                    MinimumWidthRequest="104"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    IsVisible="{Binding CanStaffCheckIn}"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SwipeCheckInBookingCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                                    CommandParameter="{Binding .}" />
+                                                <Button
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffWorkbenchStartBayCta, x:DataType=loc:LocalizationService}"
+                                                    Margin="0,0,8,6"
+                                                    MinimumWidthRequest="104"
+                                                    Style="{StaticResource DarkCarbonButton}"
+                                                    IsVisible="{Binding CanStaffStartBay}"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.StartServiceBayCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                                    CommandParameter="{Binding .}" />
+                                                <Button
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=StaffWorkbenchInvoiceCta, x:DataType=loc:LocalizationService}"
+                                                    Margin="0,0,8,6"
+                                                    MinimumWidthRequest="104"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    IsVisible="{Binding CanStaffInvoice}"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenInvoiceBuilderCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                                    CommandParameter="{Binding .}" />
+                                            </FlexLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

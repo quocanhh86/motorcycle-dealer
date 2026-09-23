@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Public.DealerLocatorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:DealerLocatorViewModel"
+    Title="{Binding Loc.DealerPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadDealersCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Carbon Dealership Network Header -->
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="{Binding Loc.DealerEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                            <Label
+                                Text="{Binding Loc.DealerTitle}"
+                                FontFamily="SpaceGroteskBold"
+                                FontSize="20"
+                                TextColor="{StaticResource Slate50}" />
+                            <Label
+                                Text="{Binding Loc.DealerSubtitle}"
+                                FontSize="12"
+                                TextColor="{StaticResource Slate300}" />
+                        </VerticalStackLayout>
+                        <Border
+                            Grid.Column="1"
+                            BackgroundColor="{StaticResource Slate800}"
+                            Stroke="{StaticResource Slate700}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            WidthRequest="44"
+                            HeightRequest="44"
+                            VerticalOptions="Center">
+                            <Label
+                                Text="{x:Static icons:PhosphorIcons.MapPin}"
+                                FontFamily="Phosphor"
+                                FontSize="22"
+                                TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Offline Directory Banner -->
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.WifiSlash}"
+                            FontFamily="Phosphor"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding OfflineDirectoryBannerText}"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Error Retry Banner -->
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadDealersCommand}" />
+
+                <!-- City Filter Chips -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout BindableLayout.ItemsSource="{Binding CityFilters}" Spacing="8" Padding="0,0,16,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button
+                                    Text="{Binding ., Converter={StaticResource HumanizeStatus}}"
+                                    Style="{StaticResource ChipButton}"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectCityCommand, x:DataType=pub:DealerLocatorPage}"
+                                    CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                    <Binding Path="." />
+                                                    <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedCity" x:DataType="pub:DealerLocatorPage" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                            <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- Multi-Variant Loading Skeleton -->
+                <controls:SkeletonLoaderView
+                    Variant="ListRow"
+                    Count="3"
+                    IsVisible="{Binding IsBusy}" />
+
+                <!-- Empty State -->
+                <controls:EmptyStateView
+                    IsVisible="{Binding Dealers.Count, Converter={StaticResource EqualsString}, ConverterParameter=0}"
+                    IconGlyph="{x:Static icons:PhosphorIcons.MapPin}"
+                    LottieFile="lottie_empty_garage.json"
+                    Title="{Binding Loc.DealerEmptyTitle}"
+                    Subtitle="{Binding Loc.DealerEmptyDesc}"
+                    ActionText="{Binding Loc.Common_Refresh}"
+                    ActionCommand="{Binding LoadDealersCommand}">
+                    <controls:EmptyStateView.Triggers>
+                        <DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </controls:EmptyStateView.Triggers>
+                </controls:EmptyStateView>
+
+                <!-- Dealership Cards (Double-Bezel Frame) -->
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Dealers}" Spacing="12">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:DealerDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="{Binding Code}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                                <Label Text="{Binding Name}" Style="{StaticResource CardTitleLabel}" />
+                                                <Label Text="{Binding City}" Style="{StaticResource SecondaryLabel}" />
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="End">
+                                                <controls:StatusBadgeView Status="Active" />
+                                                <Border Style="{StaticResource SunkenPanel}" Padding="8,4">
+                                                    <HorizontalStackLayout Spacing="4" HorizontalOptions="Center">
+                                                        <Label
+                                                            Text="{Binding AvailableVinCount}"
+                                                            Style="{StaticResource MonoCodeLabel}"
+                                                            FontFamily="JetBrainsMonoSemiBold"
+                                                            FontSize="12" />
+                                                        <Label
+                                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Qty_Vin, x:DataType=loc:LocalizationService}"
+                                                            Style="{StaticResource CaptionLabel}"
+                                                            FontSize="11" />
+                                                    </HorizontalStackLayout>
+                                                </Border>
+                                            </VerticalStackLayout>
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.MapPin}"
+                                                FontFamily="Phosphor"
+                                                FontSize="15"
+                                                TextColor="{StaticResource BrandPrimary}"
+                                                VerticalTextAlignment="Start" />
+                                            <Label Grid.Column="1" Text="{Binding Address}" Style="{StaticResource SecondaryLabel}" />
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                            <Border Style="{StaticResource SunkenPanel}">
+                                                <VerticalStackLayout Spacing="2">
+                                                    <HorizontalStackLayout Spacing="4">
+                                                        <Label
+                                                            Text="{x:Static icons:PhosphorIcons.Clock}"
+                                                            FontFamily="Phosphor"
+                                                            FontSize="13"
+                                                            TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                            VerticalTextAlignment="Center" />
+                                                        <Label
+                                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=DealerHoursLabel, x:DataType=loc:LocalizationService}"
+                                                            Style="{StaticResource CaptionLabel}" />
+                                                    </HorizontalStackLayout>
+                                                    <Label
+                                                        Text="{Binding OperatingHoursDisplay}"
+                                                        Style="{StaticResource MonoCodeLabel}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+                                            <Border Grid.Column="1" Style="{StaticResource SunkenPanel}">
+                                                <VerticalStackLayout Spacing="2">
+                                                    <HorizontalStackLayout Spacing="4">
+                                                        <Label
+                                                            Text="{x:Static icons:PhosphorIcons.Phone}"
+                                                            FontFamily="Phosphor"
+                                                            FontSize="13"
+                                                            TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                            VerticalTextAlignment="Center" />
+                                                        <Label
+                                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=DealerPhoneLabel, x:DataType=loc:LocalizationService}"
+                                                            Style="{StaticResource CaptionLabel}" />
+                                                    </HorizontalStackLayout>
+                                                    <Label Text="{Binding PhoneNumber}" Style="{StaticResource MonoCodeLabel}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                            <Border x:Name="DirectionsCard" Style="{StaticResource PrimaryCtaTouchCard}">
+                                                <Border.Behaviors>
+                                                    <toolkit:TouchBehavior
+                                                        PressedScale="0.97"
+                                                        PressedOpacity="0.90"
+                                                        PressedAnimationDuration="110"
+                                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenDirectionsCommand, x:DataType=pub:DealerLocatorPage}"
+                                                        CommandParameter="{Binding Source={x:Reference DirectionsCard}, Path=BindingContext, x:DataType=Border}"
+                                                        ShouldMakeChildrenInputTransparent="True" />
+                                                </Border.Behaviors>
+                                                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
+                                                    <Label
+                                                        Text="{x:Static icons:PhosphorIcons.MapPin}"
+                                                        FontFamily="Phosphor"
+                                                        FontSize="16"
+                                                        TextColor="{StaticResource PureWhite}"
+                                                        VerticalTextAlignment="Center" />
+                                                    <Label
+                                                        Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=DealerDirectionsCta, x:DataType=loc:LocalizationService}"
+                                                        FontFamily="BeVietnamProSemiBold"
+                                                        FontSize="14"
+                                                        TextColor="{StaticResource PureWhite}"
+                                                        VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
+                                            </Border>
+                                            <Border x:Name="CallCard" Grid.Column="1" Style="{StaticResource SecondaryTouchCard}">
+                                                <Border.Behaviors>
+                                                    <toolkit:TouchBehavior
+                                                        PressedScale="0.97"
+                                                        PressedOpacity="0.88"
+                                                        PressedAnimationDuration="110"
+                                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.CallDealerCommand, x:DataType=pub:DealerLocatorPage}"
+                                                        CommandParameter="{Binding Source={x:Reference CallCard}, Path=BindingContext, x:DataType=Border}"
+                                                        ShouldMakeChildrenInputTransparent="True" />
+                                                </Border.Behaviors>
+                                                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
+                                                    <Label
+                                                        Text="{x:Static icons:PhosphorIcons.Phone}"
+                                                        FontFamily="Phosphor"
+                                                        FontSize="16"
+                                                        TextColor="{StaticResource BrandPrimary}"
+                                                        VerticalTextAlignment="Center" />
+                                                    <Label
+                                                        Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=DealerCallCta, x:DataType=loc:LocalizationService}"
+                                                        FontFamily="BeVietnamProSemiBold"
+                                                        FontSize="14"
+                                                        VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
+                                            </Border>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

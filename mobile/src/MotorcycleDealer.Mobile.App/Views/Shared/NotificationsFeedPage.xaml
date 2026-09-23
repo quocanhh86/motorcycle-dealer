@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Shared.NotificationsFeedPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:logging="clr-namespace:MotorcycleDealer.Mobile.Core.Logging;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:shared="clr-namespace:MotorcycleDealer.Mobile.App.Views.Shared"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:NotificationsFeedViewModel"
+    Title="{Binding Loc.NotifPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadNotificationsCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16,16,16,24" Spacing="14">
+
+                <!-- Carbon Realtime Feed & Preferences Header -->
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="{Binding Loc.NotifEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                                <Label
+                                    Text="{Binding UnreadHeaderLabel}"
+                                    FontFamily="SpaceGroteskBold"
+                                    FontSize="20"
+                                    TextColor="{StaticResource Slate50}" />
+                            </VerticalStackLayout>
+                            <Button
+                                Grid.Column="1"
+                                Text="{Binding Loc.NotifMarkAllReadCta}"
+                                IsVisible="{Binding IsAlertsSection}"
+                                Command="{Binding MarkAllReadCommand}"
+                                Style="{StaticResource DarkCarbonButton}"
+                                VerticalOptions="Center" />
+                            <Button
+                                Grid.Column="1"
+                                Text="{Binding Loc.NotifSyncLogsCta}"
+                                IsVisible="{Binding IsLogsSection}"
+                                Command="{Binding SyncAndRefreshLogsCommand}"
+                                Style="{StaticResource DarkCarbonButton}"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- 1-Tap VI | EN Language & Light/Dark Theme Toggles -->
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <Border
+                                BackgroundColor="#1AFFFFFF"
+                                Stroke="#33FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                MinimumHeightRequest="48"
+                                Padding="12,8">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.97"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=shared:NotificationsFeedPage}"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.Translate}"
+                                        FontFamily="Phosphor"
+                                        FontSize="16"
+                                        TextColor="{StaticResource Slate50}"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        Text="{Binding LanguageToggleText}"
+                                        FontFamily="BeVietnamProSemiBold"
+                                        FontSize="13"
+                                        TextColor="{StaticResource Slate50}"
+                                        VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+
+                            <Border
+                                Grid.Column="1"
+                                BackgroundColor="#1AFFFFFF"
+                                Stroke="#33FFFFFF"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                MinimumHeightRequest="48"
+                                Padding="12,8">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.97"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=shared:NotificationsFeedPage}"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.Moon}"
+                                        FontFamily="Phosphor"
+                                        FontSize="16"
+                                        TextColor="{StaticResource Slate50}"
+                                        VerticalTextAlignment="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsDarkTheme}" Value="True">
+                                                <Setter Property="Text" Value="{x:Static icons:PhosphorIcons.Sun}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label
+                                        Text="{Binding ThemeToggleText}"
+                                        FontFamily="BeVietnamProSemiBold"
+                                        FontSize="13"
+                                        TextColor="{StaticResource Slate50}"
+                                        VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Mode Switcher: SignalR Alerts vs Correlated User Activity Logs -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button
+                        Text="{Binding Loc.NotifAlertsFeedTab}"
+                        Command="{Binding SelectSectionCommand}"
+                        CommandParameter="Alerts"
+                        Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsAlertsSection}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button
+                        Grid.Column="1"
+                        Text="{Binding Loc.NotifActivityLogsTab}"
+                        Command="{Binding SelectSectionCommand}"
+                        CommandParameter="Logs"
+                        Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsLogsSection}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.WifiSlash}"
+                            FontFamily="Phosphor"
+                            FontSize="16"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding Loc.NotifOfflineNotice}"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadNotificationsCommand}" />
+
+                <!-- ALERTS SECTION -->
+                <VerticalStackLayout IsVisible="{Binding IsAlertsSection}" Spacing="14">
+                    <Border Style="{StaticResource DoubleBezelOuter}">
+                        <Border Style="{StaticResource DoubleBezelInner}">
+                            <VerticalStackLayout Spacing="10">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <Label Text="{Binding Loc.NotifUnreadOnlyLabel}" VerticalTextAlignment="Center" />
+                                    <Switch Grid.Column="1" IsToggled="{Binding UnreadOnly}" Toggled="OnFilterToggled" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" IsVisible="{Binding CanFilterDealerFeed}">
+                                    <Label Text="{Binding Loc.NotifDealerFeedOnlyLabel}" VerticalTextAlignment="Center" />
+                                    <Switch Grid.Column="1" IsToggled="{Binding DealerFeedOnly}" Toggled="OnFilterToggled" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Border>
+
+                    <controls:SkeletonLoaderView Variant="ListRow" Count="3" IsVisible="{Binding IsBusy}" />
+
+                    <!-- Empty Alerts State -->
+                    <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                        <controls:EmptyStateView
+                            IsVisible="True"
+                            IconGlyph="{x:Static icons:PhosphorIcons.Bell}"
+                            LottieFile="lottie_empty_garage.json"
+                            Title="{Binding Loc.Common_NoData}"
+                            Subtitle="{Binding Loc.NotifAlertsFeedTab}"
+                            ActionText="{Binding Loc.Common_Refresh}"
+                            ActionCommand="{Binding LoadNotificationsCommand}">
+                            <controls:EmptyStateView.Triggers>
+                                <DataTrigger
+                                    TargetType="controls:EmptyStateView"
+                                    Binding="{Binding Notifications.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                    Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </controls:EmptyStateView.Triggers>
+                        </controls:EmptyStateView>
+                    </Grid>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Notifications}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:NotificationDto">
+                                <Border Style="{StaticResource DoubleBezelOuter}">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                    </Border.Behaviors>
+                                    <Border Style="{StaticResource DoubleBezelInner}">
+                                        <VerticalStackLayout Spacing="8">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <controls:StatusBadgeView Status="Info" LabelOverride="{Binding LocalizedEventType}" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Text="{Binding OccurredAtUtc, Converter={StaticResource VietnamDateTime}}"
+                                                    Style="{StaticResource MonoCodeLabel}"
+                                                    FontSize="11"
+                                                    VerticalTextAlignment="Center" />
+                                            </Grid>
+
+                                            <Label Text="{Binding Title}" Style="{StaticResource CardTitleLabel}" />
+                                            <Label Text="{Binding Message}" Style="{StaticResource SecondaryLabel}" />
+
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" IsVisible="{Binding IsRead, Converter={StaticResource InvertedBool}}">
+                                                <controls:StatusBadgeView
+                                                    Status="Pending"
+                                                    LabelOverride="{Binding Source={x:Static loc:LocalizationService.Current}, Path=NotifUnreadBadge, x:DataType=loc:LocalizationService}" />
+                                                <Button
+                                                    Grid.Column="1"
+                                                    Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=NotifMarkReadCta, x:DataType=loc:LocalizationService}"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.MarkReadCommand, x:DataType=shared:NotificationsFeedPage}"
+                                                    CommandParameter="{Binding .}" />
+                                            </Grid>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- LIVE USER ACTIVITY LOGS SECTION (Android / iOS + Correlated Server Trail) -->
+                <VerticalStackLayout IsVisible="{Binding IsLogsSection}" Spacing="12">
+                    <Border Style="{StaticResource DoubleBezelOuter}">
+                        <Border Style="{StaticResource DoubleBezelInner}">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <VerticalStackLayout Spacing="3" VerticalOptions="Center">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Pulse}"
+                                            FontFamily="Phosphor"
+                                            FontSize="14"
+                                            TextColor="{StaticResource BrandPrimary}"
+                                            VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{Binding Loc.NotifAuditTrailEyebrow}"
+                                            Style="{StaticResource EyebrowLabel}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding ActivityLogSummary}" Style="{StaticResource SecondaryLabel}" />
+                                </VerticalStackLayout>
+                                <Button
+                                    Grid.Column="1"
+                                    Text="{Binding LogSourceToggleLabel}"
+                                    Command="{Binding ToggleLogSourceCommand}"
+                                    Style="{StaticResource SecondaryButton}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </Border>
+
+                    <controls:SkeletonLoaderView Variant="ListRow" Count="3" IsVisible="{Binding IsBusy}" />
+
+                    <!-- Empty Activity Logs State -->
+                    <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                        <controls:EmptyStateView
+                            IsVisible="True"
+                            IconGlyph="{x:Static icons:PhosphorIcons.List}"
+                            LottieFile="lottie_empty_garage.json"
+                            Title="{Binding Loc.Common_NoData}"
+                            Subtitle="{Binding Loc.NotifAuditTrailEyebrow}"
+                            ActionText="{Binding Loc.NotifSyncLogsCta}"
+                            ActionCommand="{Binding SyncAndRefreshLogsCommand}">
+                            <controls:EmptyStateView.Triggers>
+                                <DataTrigger
+                                    TargetType="controls:EmptyStateView"
+                                    Binding="{Binding ActivityLogs.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                    Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </controls:EmptyStateView.Triggers>
+                        </controls:EmptyStateView>
+                    </Grid>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding ActivityLogs}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="logging:UserActionLogDto">
+                                <Border Style="{StaticResource DoubleBezelOuter}">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                    </Border.Behaviors>
+                                    <Border Style="{StaticResource DoubleBezelInner}">
+                                        <VerticalStackLayout Spacing="6">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <controls:StatusBadgeView Status="{Binding Outcome}" LabelOverride="{Binding SourceBadge}" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Text="{Binding TimestampUtc, Converter={StaticResource VietnamDateTime}}"
+                                                    Style="{StaticResource MonoCodeLabel}"
+                                                    FontSize="11"
+                                                    VerticalTextAlignment="Center" />
+                                            </Grid>
+                                            <Label Text="{Binding Action}" Style="{StaticResource CardTitleLabel}" />
+                                            <Label Text="{Binding DetailSummary}" Style="{StaticResource SecondaryLabel}" />
+                                            <Label Text="{Binding CorrelationCaption}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

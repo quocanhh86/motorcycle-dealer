@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.StaffTestDrivePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:StaffTestDriveViewModel"
+    Title="{Binding Loc.TestDrivePageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadTestDrivesCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16,16,16,24" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding Loc.TestDriveEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="{Binding Loc.TestDriveTitle}"
+                            FontFamily="SpaceGroteskBold"
+                            FontSize="20"
+                            TextColor="{StaticResource Slate50}" />
+                        <Label
+                            Text="{Binding Loc.TestDriveSubtitle}"
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadTestDrivesCommand}" />
+
+                <!-- Status Filter Chips -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout
+                        x:Name="StatusFilterContainer"
+                        BindableLayout.ItemsSource="{Binding StatusFilters}"
+                        Spacing="8"
+                        Padding="0,0,16,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button
+                                    Text="{Binding ., Converter={StaticResource HumanizeStatus}, ConverterParameter=TestDriveStatus}"
+                                    Style="{StaticResource ChipButton}"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectStatusFilterCommand, x:DataType=stf:StaffTestDrivePage}"
+                                    CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                    <Binding Path="." />
+                                                    <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedStatusFilter" x:DataType="stf:StaffTestDrivePage" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                            <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- Demo VIN Selector & Staff Notes -->
+                <Border Style="{StaticResource DoubleBezelOuter}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.SteeringWheel}"
+                                    FontFamily="Phosphor"
+                                    FontSize="15"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.TestDriveDemoControlsEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.TestDrivePickDemoTitle}"
+                                    ItemsSource="{Binding DemoUnits}"
+                                    SelectedItem="{Binding SelectedDemoInventory}"
+                                    ItemDisplayBinding="{Binding Vin, x:DataType=dto:DealerInventoryDto}" />
+                            </Border>
+
+                            <!-- Selected Demo VIN Studio Thumbnail -->
+                            <Border
+                                Style="{StaticResource SunkenPanel}"
+                                IsVisible="{Binding SelectedDemoInventory, Converter={StaticResource IsNotNull}}">
+                                <Grid ColumnDefinitions="76,*" ColumnSpacing="10">
+                                    <Border
+                                        Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 8"
+                                        WidthRequest="76"
+                                        HeightRequest="56"
+                                        Padding="0"
+                                        VerticalOptions="Center">
+                                        <Image
+                                            Source="{Binding SelectedDemoInventory.ResolvedImageSource}"
+                                            Aspect="AspectFill"
+                                            WidthRequest="76"
+                                            HeightRequest="56" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                        <Label
+                                            Text="{Binding SelectedDemoInventory.MotorcycleModelName}"
+                                            Style="{StaticResource CardTitleLabel}"
+                                            FontSize="13" />
+                                        <Label
+                                            Text="{Binding SelectedDemoInventory.Vin}"
+                                            Style="{StaticResource MonoCodeLabel}"
+                                            FontSize="11" />
+                                        <Label
+                                            Text="{Binding SelectedDemoInventory.ColorName}"
+                                            Style="{StaticResource CaptionLabel}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry
+                                    Text="{Binding StaffNotesInput}"
+                                    Placeholder="{Binding Loc.TestDriveStaffNotesPlaceholder}" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Multi-Variant Loading Skeleton -->
+                <controls:SkeletonLoaderView Variant="ListRow" Count="3" IsVisible="{Binding IsBusy}" />
+
+                <!-- Empty State -->
+                <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBool}}">
+                    <controls:EmptyStateView
+                        IsVisible="True"
+                        IconGlyph="{x:Static icons:PhosphorIcons.SteeringWheel}"
+                        LottieFile="lottie_empty_garage.json"
+                        Title="{Binding Loc.TestDriveEmptyTitle}"
+                        Subtitle="{Binding Loc.TestDriveSubtitle}"
+                        ActionText="{Binding Loc.Common_Refresh}"
+                        ActionCommand="{Binding LoadTestDrivesCommand}">
+                        <controls:EmptyStateView.Triggers>
+                            <DataTrigger
+                                TargetType="controls:EmptyStateView"
+                                Binding="{Binding TestDrives.Count, Converter={StaticResource IsGreaterThanZero}}"
+                                Value="True">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </controls:EmptyStateView.Triggers>
+                    </controls:EmptyStateView>
+                </Grid>
+
+                <!-- Test-Drive Booking Cards with Studio Motorcycle Thumbnails -->
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding TestDrives}" Spacing="12">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:TestDriveBookingDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
+                                </Border.Behaviors>
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="84,*" ColumnSpacing="12">
+                                            <Border
+                                                Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 10"
+                                                WidthRequest="84"
+                                                HeightRequest="64"
+                                                Padding="0"
+                                                VerticalOptions="Center">
+                                                <Image
+                                                    Source="{Binding ResolvedImageSource}"
+                                                    Aspect="AspectFill"
+                                                    WidthRequest="84"
+                                                    HeightRequest="64" />
+                                            </Border>
+                                            <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                                                    <Label
+                                                        Text="{Binding BookingNumber}"
+                                                        Style="{StaticResource MonoValueBoldLabel}"
+                                                        FontSize="13"
+                                                        VerticalTextAlignment="Center" />
+                                                    <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                                </Grid>
+                                                <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                                <HorizontalStackLayout Spacing="6">
+                                                    <Label
+                                                        Text="{x:Static icons:PhosphorIcons.User}"
+                                                        FontFamily="Phosphor"
+                                                        FontSize="13"
+                                                        TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
+                                                        VerticalTextAlignment="Center" />
+                                                    <Label
+                                                        Text="{Binding CustomerFullName}"
+                                                        Style="{StaticResource SecondaryLabel}"
+                                                        VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Grid>
+
+                                        <HorizontalStackLayout Spacing="10">
+                                            <HorizontalStackLayout Spacing="4">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.CalendarCheck}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="13"
+                                                    TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                    VerticalTextAlignment="Center" />
+                                                <Label
+                                                    Text="{Binding PreferredDate, Converter={StaticResource VietnamDateTime}}"
+                                                    Style="{StaticResource MonoCodeLabel}"
+                                                    FontSize="12"
+                                                    VerticalTextAlignment="Center" />
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout Spacing="4">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.Clock}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="13"
+                                                    TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                    VerticalTextAlignment="Center" />
+                                                <Label
+                                                    Text="{Binding ShortStartTime}"
+                                                    Style="{StaticResource MonoCodeLabel}"
+                                                    FontSize="12"
+                                                    VerticalTextAlignment="Center" />
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout Spacing="4">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.Phone}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="13"
+                                                    TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                    VerticalTextAlignment="Center" />
+                                                <Label
+                                                    Text="{Binding ContactPhone}"
+                                                    Style="{StaticResource MonoCodeLabel}"
+                                                    FontSize="12"
+                                                    VerticalTextAlignment="Center" />
+                                            </HorizontalStackLayout>
+                                        </HorizontalStackLayout>
+
+                                        <Border
+                                            Style="{StaticResource SunkenPanel}"
+                                            Padding="10,6"
+                                            IsVisible="{Binding AssignedVin, Converter={StaticResource IsNotNullOrEmpty}}">
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.SteeringWheel}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="14"
+                                                    TextColor="{StaticResource BrandPrimary}"
+                                                    VerticalTextAlignment="Center" />
+                                                <Label Style="{StaticResource MonoCodeLabel}" FontSize="12" VerticalTextAlignment="Center">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span
+                                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_VinLabel, x:DataType=loc:LocalizationService}"
+                                                                FontFamily="JetBrainsMonoSemiBold" />
+                                                            <Span Text=": " />
+                                                            <Span Text="{Binding AssignedVin}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </HorizontalStackLayout>
+                                        </Border>
+
+                                        <FlexLayout
+                                            Direction="Row"
+                                            Wrap="Wrap"
+                                            AlignItems="Center"
+                                            JustifyContent="Start"
+                                            IsVisible="{Binding HasStaffActions}">
+                                            <Button
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=TestDriveConfirmCta, x:DataType=loc:LocalizationService}"
+                                                Margin="0,0,8,6"
+                                                MinimumWidthRequest="104"
+                                                Style="{StaticResource PrimaryButton}"
+                                                IsVisible="{Binding CanStaffConfirm}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ConfirmTestDriveCommand, x:DataType=stf:StaffTestDrivePage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=TestDriveCompleteCta, x:DataType=loc:LocalizationService}"
+                                                Margin="0,0,8,6"
+                                                MinimumWidthRequest="104"
+                                                Style="{StaticResource DarkCarbonButton}"
+                                                IsVisible="{Binding CanStaffComplete}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.CompleteTestDriveCommand, x:DataType=stf:StaffTestDrivePage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=TestDriveCancelCta, x:DataType=loc:LocalizationService}"
+                                                Margin="0,0,8,6"
+                                                MinimumWidthRequest="104"
+                                                Style="{StaticResource DangerOutlineButton}"
+                                                IsVisible="{Binding CanStaffCancel}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.CancelTestDriveCommand, x:DataType=stf:StaffTestDrivePage}"
+                                                CommandParameter="{Binding .}" />
+                                        </FlexLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

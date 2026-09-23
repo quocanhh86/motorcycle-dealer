@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Customer.BookingWizardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Customer;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:BookingWizardViewModel"
+    Title="{Binding Loc.BookingPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadWizardDataCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Editorial Workshop Bay Hero Banner -->
+                <Border
+                    BackgroundColor="{StaticResource Slate950}"
+                    Stroke="{StaticResource Slate800}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="0">
+                    <Grid HeightRequest="142">
+                        <Image
+                            Source="{Binding HeroWorkshopImageSource}"
+                            Aspect="AspectFill"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                        <BoxView>
+                            <BoxView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#BF020617" Offset="0.0" />
+                                    <GradientStop Color="#F0020617" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </BoxView.Background>
+                        </BoxView>
+                        <VerticalStackLayout Padding="16" Spacing="4" VerticalOptions="End">
+                            <Label Text="{Binding Loc.BookingEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                            <Label
+                                Text="{Binding Loc.BookingTitle}"
+                                FontFamily="SpaceGroteskBold"
+                                FontSize="20"
+                                TextColor="{StaticResource Slate50}" />
+                            <Label
+                                Text="{Binding Loc.BookingSubtitle}"
+                                FontSize="12"
+                                TextColor="{StaticResource Slate300}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- 409 RowVersion Slot Conflict Recovery Sheet -->
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasSlotConflict}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.WarningCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="22"
+                            TextColor="{AppThemeBinding Light={StaticResource DangerAccent}, Dark={StaticResource DangerAccentDark}}"
+                            VerticalTextAlignment="Start" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label
+                                Text="{Binding Loc.BookingConflictBannerTitle}"
+                                FontFamily="JetBrainsMonoSemiBold"
+                                FontSize="11"
+                                TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                            <Label
+                                Text="{Binding ConflictRecoveryMessage}"
+                                FontSize="13"
+                                TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Success Banner with Lottie Check -->
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <controls:LottieOrIconView
+                            LottieFile="lottie_success_check.json"
+                            FallbackGlyph="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FallbackColor="{StaticResource SuccessAccent}"
+                            Size="28"
+                            RepeatCount="0" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Error Retry Banner -->
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadWizardDataCommand}" />
+
+                <!-- 3-Step Navigation Strip -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <Button Text="{Binding Loc.BookingStep1Chip}" Clicked="OnStep1Clicked" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding CurrentStep}" Value="1">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="1" Text="{Binding Loc.BookingStep2Chip}" Clicked="OnStep2Clicked" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding CurrentStep}" Value="2">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="2" Text="{Binding Loc.BookingStep3Chip}" Clicked="OnStep3Clicked" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding CurrentStep}" Value="3">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+
+                <!-- STEP 1: Vehicle, Dealership & Service Type -->
+                <Border Style="{StaticResource DoubleBezelOuter}" IsVisible="{Binding CurrentStep, Converter={StaticResource EqualsString}, ConverterParameter=1}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="{Binding Loc.BookingStep1Header}" Style="{StaticResource EyebrowLabel}" />
+
+                            <!-- Selected Vehicle Studio Preview Strip -->
+                            <Border Style="{StaticResource SunkenPanel}" IsVisible="{Binding SelectedVehicle, Converter={StaticResource IsNotNull}}">
+                                <Grid ColumnDefinitions="96,*" ColumnSpacing="10">
+                                    <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="0">
+                                        <Image
+                                            Source="{Binding SelectedVehicleImageSource}"
+                                            Aspect="AspectFill"
+                                            WidthRequest="96"
+                                            HeightRequest="68" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding SelectedVehicle.MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" FontSize="14" />
+                                        <Label Text="{Binding SelectedVehicle.Vin}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                        <Label Text="{Binding SelectedVehicle.CurrentMileageKm, StringFormat='{0:N0} km'}" Style="{StaticResource CaptionLabel}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+
+                            <Label Text="{Binding Loc.BookingVehicleLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.BookingSelectVehicleTitle}"
+                                    ItemsSource="{Binding Vehicles}"
+                                    SelectedItem="{Binding SelectedVehicle}"
+                                    ItemDisplayBinding="{Binding Vin, x:DataType=dto:CustomerVehicleDto}" />
+                            </Border>
+
+                            <Label Text="{Binding Loc.BookingDealerLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.BookingSelectDealerTitle}"
+                                    ItemsSource="{Binding Dealers}"
+                                    SelectedItem="{Binding SelectedDealer}"
+                                    ItemDisplayBinding="{Binding Name, x:DataType=dto:DealerDto}"
+                                    SelectedIndexChanged="OnDealerChanged" />
+                            </Border>
+
+                            <Label Text="{Binding Loc.BookingServiceTypeLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.BookingServiceTypeTitle}"
+                                    ItemsSource="{Binding ServiceTypes}"
+                                    SelectedItem="{Binding SelectedServiceType}"
+                                    ItemDisplayBinding="{Binding ., Converter={StaticResource HumanizeStatus}, ConverterParameter=ServiceType, x:DataType=x:String}" />
+                            </Border>
+
+                            <Label Text="{Binding Loc.Common_CurrentOdometerKm}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding OdometerAtBookingKm}" Style="{StaticResource MonoEntry}" Keyboard="Numeric" />
+                            </Border>
+
+                            <Button Text="{Binding Loc.BookingNextChooseSlotCta}" Clicked="OnStep2Clicked" Style="{StaticResource PrimaryButton}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- STEP 2: Date & RowVersion Protected Bay Slot Grid -->
+                <Border Style="{StaticResource DoubleBezelOuter}" IsVisible="{Binding CurrentStep, Converter={StaticResource EqualsString}, ConverterParameter=2}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="{Binding Loc.BookingStep2Header}" Style="{StaticResource EyebrowLabel}" />
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Border Style="{StaticResource InputContainer}">
+                                    <DatePicker x:Name="SlotDatePicker" DateSelected="OnSlotDateSelected" />
+                                </Border>
+                                <Button
+                                    Grid.Column="1"
+                                    Text="{Binding Loc.Common_Refresh}"
+                                    Command="{Binding LoadAvailableSlotsCommand}"
+                                    Style="{StaticResource SecondaryButton}" />
+                            </Grid>
+
+                            <Label Text="{Binding Loc.BookingSelectOpenBayLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.BookingAvailableSlotsTitle}"
+                                    ItemsSource="{Binding AvailableSlots}"
+                                    SelectedItem="{Binding SelectedSlot}"
+                                    ItemDisplayBinding="{Binding TimeRangeDisplay, x:DataType=dto:ServiceTimeSlotDto}" />
+                            </Border>
+
+                            <controls:SkeletonLoaderView
+                                Variant="ListRow"
+                                Count="2"
+                                IsVisible="{Binding IsBusy}" />
+
+                            <controls:EmptyStateView
+                                IsVisible="{Binding AvailableSlots.Count, Converter={StaticResource EqualsString}, ConverterParameter=0}"
+                                IconGlyph="{x:Static icons:PhosphorIcons.Clock}"
+                                LottieFile="lottie_empty_garage.json"
+                                Title="{Binding Loc.Common_NoData}"
+                                Subtitle="{Binding Loc.BookingSelectOpenBayLabel}"
+                                ActionText="{Binding Loc.Common_Refresh}"
+                                ActionCommand="{Binding LoadAvailableSlotsCommand}">
+                                <controls:EmptyStateView.Triggers>
+                                    <DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding IsBusy}" Value="True">
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </DataTrigger>
+                                </controls:EmptyStateView.Triggers>
+                            </controls:EmptyStateView>
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding AvailableSlots}" Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="dto:ServiceTimeSlotDto">
+                                        <Border Style="{StaticResource SunkenPanel}">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <VerticalStackLayout Spacing="2">
+                                                    <Label
+                                                        Text="{Binding TimeRangeDisplay}"
+                                                        Style="{StaticResource MonoValueBoldLabel}"
+                                                        FontSize="14" />
+                                                    <Label
+                                                        Text="{Binding OpenBaysLabel}"
+                                                        Style="{StaticResource CaptionLabel}" />
+                                                </VerticalStackLayout>
+                                                <controls:StatusBadgeView Grid.Column="1" Status="Available" LabelOverride="{Binding FreeBadgeLabel}" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button Text="{Binding Loc.Common_Back}" Clicked="OnStep1Clicked" Style="{StaticResource SecondaryButton}" />
+                                <Button Grid.Column="1" Text="{Binding Loc.BookingNextReviewCta}" Clicked="OnStep3Clicked" Style="{StaticResource PrimaryButton}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- STEP 3: Optional Voucher, Notes & Atomic Confirm -->
+                <Border Style="{StaticResource DoubleBezelOuter}" IsVisible="{Binding CurrentStep, Converter={StaticResource EqualsString}, ConverterParameter=3}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="{Binding Loc.BookingStep3Header}" Style="{StaticResource EyebrowLabel}" />
+
+                            <Label Text="{Binding Loc.BookingReserveVoucherLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.BookingNoVoucherTitle}"
+                                    ItemsSource="{Binding EligibleVouchers}"
+                                    SelectedItem="{Binding SelectedVoucher}"
+                                    ItemDisplayBinding="{Binding VoucherCode, x:DataType=dto:CustomerVoucherDto}" />
+                            </Border>
+
+                            <Label Text="{Binding Loc.BookingNotesLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Editor Text="{Binding ReportedNotes}" Placeholder="{Binding Loc.BookingNotesPlaceholder}" />
+                            </Border>
+
+                            <controls:SkeletonLoaderView
+                                Variant="ListRow"
+                                Count="1"
+                                IsVisible="{Binding IsBusy}" />
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button Text="{Binding Loc.Common_Back}" Clicked="OnStep2Clicked" Style="{StaticResource SecondaryButton}" />
+                                <Button
+                                    Grid.Column="1"
+                                    Text="{Binding Loc.BookingConfirmCta}"
+                                    Command="{Binding ConfirmBookingCommand}"
+                                    Style="{StaticResource PrimaryButton}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- My Bookings List -->
+                <Label Text="{Binding Loc.BookingMyBookingsTitle}" Style="{StaticResource SectionTitleLabel}" />
+
+                <controls:SkeletonLoaderView
+                    Variant="ListRow"
+                    Count="2"
+                    IsVisible="{Binding IsBusy}" />
+
+                <controls:EmptyStateView
+                    IsVisible="{Binding MyBookings.Count, Converter={StaticResource EqualsString}, ConverterParameter=0}"
+                    IconGlyph="{x:Static icons:PhosphorIcons.CalendarCheck}"
+                    LottieFile="lottie_empty_garage.json"
+                    Title="{Binding Loc.BookingEmptyTitle}"
+                    Subtitle="{Binding Loc.HomeEmptyBookingsDesc}">
+                    <controls:EmptyStateView.Triggers>
+                        <DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </controls:EmptyStateView.Triggers>
+                </controls:EmptyStateView>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding MyBookings}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:BookingDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Text="{Binding BookingNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                        </Grid>
+                                        <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding DealerName}" Style="{StaticResource SecondaryLabel}" />
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="{Binding SlotDate, Converter={StaticResource VietnamDateTime}}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                            <Label Text="{Binding ShortStartTime}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                            <Label Text="{Binding FormattedServiceType}" Style="{StaticResource CaptionLabel}" VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                        <Button
+                                            Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=BookingCancelCta, x:DataType=loc:LocalizationService}"
+                                            Style="{StaticResource DangerOutlineButton}"
+                                            IsVisible="{Binding CanCustomerCancel}"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.CancelBookingCommand, x:DataType=cus:BookingWizardPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Completed Invoices: Receipt Share & +25 Pts 5-Star CSAT Review -->
+                <Label Text="{Binding Loc.BookingCompletedReceiptsTitle}" Style="{StaticResource SectionTitleLabel}" />
+
+                <controls:EmptyStateView
+                    IsVisible="{Binding MyServiceInvoices.Count, Converter={StaticResource EqualsString}, ConverterParameter=0}"
+                    IconGlyph="{x:Static icons:PhosphorIcons.Receipt}"
+                    LottieFile="lottie_empty_garage.json"
+                    Title="{Binding Loc.Common_NoData}"
+                    Subtitle="{Binding Loc.BookingCompletedReceiptsTitle}">
+                    <controls:EmptyStateView.Triggers>
+                        <DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </controls:EmptyStateView.Triggers>
+                </controls:EmptyStateView>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding MyServiceInvoices}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:ServiceInvoiceDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Text="{Binding InvoiceNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding NetPaidAmount, Converter={StaticResource VndCurrency}}"
+                                                Style="{StaticResource MonoValueBoldLabel}"
+                                                TextColor="{StaticResource BrandPrimary}" />
+                                        </Grid>
+                                        <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding PointsEarned, Converter={StaticResource PointsDisplay}, ConverterParameter=signed}" Style="{StaticResource MonoCodeLabel}" />
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                            <Button
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=BookingShareReceiptCta, x:DataType=loc:LocalizationService}"
+                                                Style="{StaticResource SecondaryButton}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.LoadAndShareServiceReceiptCommand, x:DataType=cus:BookingWizardPage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Grid.Column="1"
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=BookingRateCsatCta, x:DataType=loc:LocalizationService}"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Clicked="OnPickInvoiceForReviewClicked"
+                                                CommandParameter="{Binding .}" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Offline Verifiable Receipt QR Preview -->
+                <Border Style="{StaticResource DoubleBezelOuter}" IsVisible="{Binding ActiveServiceReceipt, Converter={StaticResource IsNotNull}}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="{Binding Loc.BookingImmutableReceiptQrEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                            <controls:QrCodeDisplayView
+                                Payload="{Binding ReceiptQrPayload}"
+                                Title="{Binding ActiveServiceReceipt.ReceiptNumber}"
+                                Caption="{Binding ActiveServiceReceipt.VerificationCode}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- +25 AvailablePoints 5-Star CSAT Review Composer (Phosphor Star Vector Icons) -->
+                <Border Style="{StaticResource DoubleBezelOuter}" IsVisible="{Binding SelectedInvoiceForReview, Converter={StaticResource IsNotNull}}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="{Binding Loc.BookingCsatEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                            <Label Text="{Binding RatingInvoiceHeading}" Style="{StaticResource CardTitleLabel}" />
+
+                            <!-- Crisp Interactive 5-Star Rating Strip (Zero Unicode Star Hacks) -->
+                            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="6">
+                                <!-- Star 1 -->
+                                <Border Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="1">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.93"
+                                            PressedOpacity="0.88"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=SetRatingCommand, x:DataType=cus:BookingWizardPage}"
+                                            CommandParameter="1"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding ReviewRating}" Value="1">
+                                            <Setter Property="Stroke" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BrandPrimarySoft}, Dark={StaticResource BrandPrimarySoftDark}}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <HorizontalStackLayout Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label Text="1" Style="{StaticResource MonoCodeLabel}" FontFamily="JetBrainsMonoSemiBold" VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Star}"
+                                            FontFamily="PhosphorFill"
+                                            FontSize="16"
+                                            TextColor="{StaticResource WarningAccentDark}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                                <!-- Star 2 -->
+                                <Border Grid.Column="1" Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="2">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.93"
+                                            PressedOpacity="0.88"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=SetRatingCommand, x:DataType=cus:BookingWizardPage}"
+                                            CommandParameter="2"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding ReviewRating}" Value="2">
+                                            <Setter Property="Stroke" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BrandPrimarySoft}, Dark={StaticResource BrandPrimarySoftDark}}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <HorizontalStackLayout Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label Text="2" Style="{StaticResource MonoCodeLabel}" FontFamily="JetBrainsMonoSemiBold" VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Star}"
+                                            FontFamily="PhosphorFill"
+                                            FontSize="16"
+                                            TextColor="{StaticResource WarningAccentDark}"
+                                            VerticalTextAlignment="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding ReviewRating}" Value="1">
+                                                    <Setter Property="FontFamily" Value="Phosphor" />
+                                                    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                                <!-- Star 3 -->
+                                <Border Grid.Column="2" Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="3">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.93"
+                                            PressedOpacity="0.88"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=SetRatingCommand, x:DataType=cus:BookingWizardPage}"
+                                            CommandParameter="3"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding ReviewRating}" Value="3">
+                                            <Setter Property="Stroke" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BrandPrimarySoft}, Dark={StaticResource BrandPrimarySoftDark}}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <HorizontalStackLayout Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label Text="3" Style="{StaticResource MonoCodeLabel}" FontFamily="JetBrainsMonoSemiBold" VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Star}"
+                                            FontFamily="PhosphorFill"
+                                            FontSize="16"
+                                            TextColor="{StaticResource WarningAccentDark}"
+                                            VerticalTextAlignment="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding ReviewRating}" Value="1">
+                                                    <Setter Property="FontFamily" Value="Phosphor" />
+                                                    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label" Binding="{Binding ReviewRating}" Value="2">
+                                                    <Setter Property="FontFamily" Value="Phosphor" />
+                                                    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                                <!-- Star 4 -->
+                                <Border Grid.Column="3" Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="4">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.93"
+                                            PressedOpacity="0.88"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=SetRatingCommand, x:DataType=cus:BookingWizardPage}"
+                                            CommandParameter="4"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding ReviewRating}" Value="4">
+                                            <Setter Property="Stroke" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BrandPrimarySoft}, Dark={StaticResource BrandPrimarySoftDark}}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <HorizontalStackLayout Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label Text="4" Style="{StaticResource MonoCodeLabel}" FontFamily="JetBrainsMonoSemiBold" VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Star}"
+                                            FontFamily="Phosphor"
+                                            FontSize="16"
+                                            TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                            VerticalTextAlignment="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding ReviewRating}" Value="4">
+                                                    <Setter Property="FontFamily" Value="PhosphorFill" />
+                                                    <Setter Property="TextColor" Value="{StaticResource WarningAccentDark}" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label" Binding="{Binding ReviewRating}" Value="5">
+                                                    <Setter Property="FontFamily" Value="PhosphorFill" />
+                                                    <Setter Property="TextColor" Value="{StaticResource WarningAccentDark}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                                <!-- Star 5 -->
+                                <Border Grid.Column="4" Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="5">
+                                    <Border.Behaviors>
+                                        <toolkit:TouchBehavior
+                                            PressedScale="0.93"
+                                            PressedOpacity="0.88"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=SetRatingCommand, x:DataType=cus:BookingWizardPage}"
+                                            CommandParameter="5"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding ReviewRating}" Value="5">
+                                            <Setter Property="Stroke" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BrandPrimarySoft}, Dark={StaticResource BrandPrimarySoftDark}}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <HorizontalStackLayout Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label Text="5" Style="{StaticResource MonoCodeLabel}" FontFamily="JetBrainsMonoSemiBold" VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Star}"
+                                            FontFamily="Phosphor"
+                                            FontSize="16"
+                                            TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                            VerticalTextAlignment="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding ReviewRating}" Value="5">
+                                                    <Setter Property="FontFamily" Value="PhosphorFill" />
+                                                    <Setter Property="TextColor" Value="{StaticResource WarningAccentDark}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
+
+                            <Label
+                                Text="{Binding SelectedRatingLabel}"
+                                Style="{StaticResource MonoCodeLabel}"
+                                FontFamily="JetBrainsMonoSemiBold" />
+
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding ReviewQualityTags}" Placeholder="{Binding Loc.BookingQualityTagsPlaceholder}" />
+                            </Border>
+
+                            <Border Style="{StaticResource InputContainer}">
+                                <Editor Text="{Binding ReviewComment}" Placeholder="{Binding Loc.BookingReviewCommentPlaceholder}" />
+                            </Border>
+
+                            <Button
+                                Text="{Binding Loc.BookingSubmitCsatCta}"
+                                Command="{Binding SubmitCsatReviewCommand}"
+                                Style="{StaticResource PrimaryButton}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
