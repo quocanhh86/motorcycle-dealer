@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MotorcycleDealer.Mobile.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
+    xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    x:DataType="vm:AppShellViewModel"
+    FlyoutBehavior="Disabled"
+    Title="Apex Moto">
+
+    <!-- ====================================================================== -->
+    <!-- PUBLIC MODE (3 Bottom Tabs: //public/showroom, dealers, auth)          -->
+    <!-- ====================================================================== -->
+    <TabBar x:Name="PublicTabBar" Route="public" IsVisible="{Binding IsPublicVisible}">
+        <ShellContent
+            Title="Showroom"
+            Route="showroom"
+            ContentTemplate="{DataTemplate pub:ShowroomCatalogPage}" />
+        <ShellContent
+            Title="Dealers"
+            Route="dealers"
+            ContentTemplate="{DataTemplate pub:DealerLocatorPage}" />
+        <ShellContent
+            Title="Sign In"
+            Route="auth"
+            ContentTemplate="{DataTemplate pub:LoginRegisterPage}" />
+    </TabBar>
+
+    <!-- ====================================================================== -->
+    <!-- CUSTOMER MODE (5 Bottom Tabs: //customer/home..warranty)               -->
+    <!-- ====================================================================== -->
+    <TabBar x:Name="CustomerTabBar" Route="customer" IsVisible="{Binding IsCustomerVisible}">
+        <ShellContent
+            Title="Home"
+            Route="home"
+            ContentTemplate="{DataTemplate cus:CustomerHomePage}" />
+        <ShellContent
+            Title="Garage"
+            Route="garage"
+            ContentTemplate="{DataTemplate cus:VinGaragePage}" />
+        <ShellContent
+            Title="Book"
+            Route="bookings"
+            ContentTemplate="{DataTemplate cus:BookingWizardPage}" />
+        <ShellContent
+            Title="Loyalty"
+            Route="loyalty"
+            ContentTemplate="{DataTemplate cus:LoyaltyPassbookPage}" />
+        <ShellContent
+            Title="Warranty"
+            Route="warranty"
+            ContentTemplate="{DataTemplate cus:CustomerWarrantyPage}" />
+    </TabBar>
+
+    <!-- ====================================================================== -->
+    <!-- DEALER STAFF MODE (5 Bottom Tabs: //staff/workbench..slots)            -->
+    <!-- ====================================================================== -->
+    <TabBar x:Name="StaffTabBar" Route="staff" IsVisible="{Binding IsStaffVisible}">
+        <ShellContent
+            Title="Bay Ops"
+            Route="workbench"
+            ContentTemplate="{DataTemplate stf:StaffWorkbenchPage}" />
+        <ShellContent
+            Title="VIN Sales"
+            Route="sales"
+            ContentTemplate="{DataTemplate stf:ShowroomVinSalesPage}" />
+        <ShellContent
+            Title="Rides"
+            Route="test-drives"
+            ContentTemplate="{DataTemplate stf:StaffTestDrivePage}" />
+        <ShellContent
+            Title="QA"
+            Route="warranty-csat"
+            ContentTemplate="{DataTemplate stf:StaffWarrantyCsatPage}" />
+        <ShellContent
+            Title="Slots"
+            Route="slots"
+            ContentTemplate="{DataTemplate stf:SlotCapacityPage}" />
+    </TabBar>
+
+    <!-- ====================================================================== -->
+    <!-- ADMIN WEB-ONLY GATE (//admin/web-notice)                               -->
+    <!-- ====================================================================== -->
+    <TabBar x:Name="AdminTabBar" Route="admin" IsVisible="{Binding IsAdminNoticeVisible}">
+        <ShellContent
+            Title="Admin HQ"
+            Route="web-notice"
+            ContentTemplate="{DataTemplate pub:AdminWebConsoleNoticePage}" />
+    </TabBar>
+
+</Shell>

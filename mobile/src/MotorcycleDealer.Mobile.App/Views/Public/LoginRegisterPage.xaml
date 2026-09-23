@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Public.LoginRegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:DataType="vm:LoginRegisterViewModel"
+    Title="Sign In">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+
+            <!-- Motorsport Cockpit Brand Banner -->
+            <Border Style="{StaticResource CarbonHeaderCard}">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="APEX MOTO FIELD PLATFORM · v1.3.0" Style="{StaticResource EyebrowLabel}" />
+                    <Label
+                        Text="Rider &amp; Dealer Staff Access"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Slate50}" />
+                    <Label
+                        Text="JWT Hardware Keystore · Single-Flight Token Rotation · SQLCipher Offline Cache"
+                        FontSize="12"
+                        TextColor="{StaticResource Slate300}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Status Banners -->
+            <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                <Label
+                    Text="{Binding ErrorMessage}"
+                    FontSize="13"
+                    TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+            </Border>
+
+            <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                <Label
+                    Text="{Binding SuccessMessage}"
+                    FontSize="13"
+                    TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}" />
+            </Border>
+
+            <!-- Auth Form Card -->
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="{Binding SubmitButtonText}" Style="{StaticResource SectionTitleLabel}" />
+
+                    <VerticalStackLayout Spacing="6" IsVisible="{Binding IsRegisterMode}">
+                        <Label Text="Full Name" Style="{StaticResource CaptionLabel}" />
+                        <Border Style="{StaticResource InputContainer}">
+                            <Entry Text="{Binding FullName}" Placeholder="Full name" />
+                        </Border>
+
+                        <Label Text="Phone Number" Style="{StaticResource CaptionLabel}" />
+                        <Border Style="{StaticResource InputContainer}">
+                            <Entry Text="{Binding PhoneNumber}" Placeholder="Phone number" Keyboard="Telephone" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label Text="Email" Style="{StaticResource CaptionLabel}" />
+                    <Border Style="{StaticResource InputContainer}">
+                        <Entry
+                            Text="{Binding Email}"
+                            Placeholder="Email address"
+                            Keyboard="Email">
+                            <Entry.Behaviors>
+                                <toolkit:EmailValidationBehavior
+                                    x:Name="EmailValidator"
+                                    Flags="ValidateOnValueChanged"
+                                    ValidStyle="{StaticResource ValidEmailEntryStyle}"
+                                    InvalidStyle="{StaticResource InvalidEmailEntryStyle}" />
+                            </Entry.Behaviors>
+                        </Entry>
+                    </Border>
+                    <Label
+                        Text="Enter a valid email address"
+                        FontSize="12"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}"
+                        IsVisible="{Binding Source={x:Reference EmailValidator}, Path=IsNotValid, x:DataType=toolkit:EmailValidationBehavior}">
+                        <Label.Triggers>
+                            <DataTrigger
+                                TargetType="Label"
+                                Binding="{Binding Email, Converter={StaticResource IsNotNullOrEmpty}}"
+                                Value="False">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Text="Password" Style="{StaticResource CaptionLabel}" />
+                    <Border Style="{StaticResource InputContainer}">
+                        <Entry
+                            Text="{Binding Password}"
+                            Placeholder="Enter password"
+                            IsPassword="True" />
+                    </Border>
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+
+                    <Button
+                        Text="{Binding SubmitButtonText}"
+                        Command="{Binding SubmitCommand}"
+                        Style="{StaticResource PrimaryButton}" />
+
+                    <Button
+                        Text="{Binding ModeSwitchText}"
+                        Command="{Binding ToggleModeCommand}"
+                        Style="{StaticResource SecondaryButton}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Collapsible Backend API Endpoint & Health Check -->
+            <Border Style="{StaticResource CardBorder}">
+                <toolkit:Expander IsExpanded="False">
+                    <toolkit:Expander.Header>
+                        <Grid ColumnDefinitions="*,Auto" MinimumHeightRequest="44" Padding="0,2">
+                            <Label
+                                Text="Backend API Endpoint &amp; Health Check ▾"
+                                Style="{StaticResource EyebrowLabel}"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                Grid.Column="1"
+                                Text="CONFIG"
+                                Style="{StaticResource MonoCodeLabel}"
+                                FontSize="11"
+                                TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                VerticalTextAlignment="Center" />
+                        </Grid>
+                    </toolkit:Expander.Header>
+                    <toolkit:Expander.Content>
+                        <VerticalStackLayout Spacing="10" Padding="0,12,0,0">
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry
+                                    Text="{Binding ApiBaseUrl}"
+                                    Style="{StaticResource MonoEntry}"
+                                    Placeholder="http://10.0.2.2:5080"
+                                    Keyboard="Url" />
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button
+                                    Text="Emulator 10.0.2.2"
+                                    Command="{Binding UseEmulatorEndpointCommand}"
+                                    Style="{StaticResource ChipButton}" />
+                                <Button
+                                    Grid.Column="1"
+                                    Text="ADB Localhost"
+                                    Command="{Binding UseAdbLocalhostEndpointCommand}"
+                                    Style="{StaticResource ChipButton}" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button
+                                    Text="Save Endpoint"
+                                    Command="{Binding SaveApiBaseUrlCommand}"
+                                    Style="{StaticResource SecondaryButton}" />
+                                <Button
+                                    Grid.Column="1"
+                                    Text="Test /health"
+                                    Command="{Binding TestApiHealthCommand}"
+                                    Style="{StaticResource DarkCarbonButton}" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8" IsVisible="{Binding HealthStatusMessage, Converter={StaticResource IsNotNullOrEmpty}}">
+                                <controls:StatusBadgeView Status="Healthy" LabelOverride="API PROBE" VerticalOptions="Start" IsVisible="{Binding IsApiHealthy}" />
+                                <controls:StatusBadgeView Status="Offline" LabelOverride="UNREACHABLE" VerticalOptions="Start" IsVisible="{Binding IsApiHealthy, Converter={StaticResource InvertedBool}}" />
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding HealthStatusMessage}"
+                                    Style="{StaticResource MonoCodeLabel}"
+                                    LineBreakMode="WordWrap"
+                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </toolkit:Expander.Content>
+                </toolkit:Expander>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

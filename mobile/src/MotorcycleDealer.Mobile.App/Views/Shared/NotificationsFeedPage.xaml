@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Shared.NotificationsFeedPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:logging="clr-namespace:MotorcycleDealer.Mobile.Core.Logging;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:shared="clr-namespace:MotorcycleDealer.Mobile.App.Views.Shared"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:NotificationsFeedViewModel"
+    Title="Notifications &amp; Logs">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadNotificationsCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="SIGNALR 10-EVENT FEED &amp; USER AUDIT LOGS" Style="{StaticResource EyebrowLabel}" />
+                            <Label
+                                Text="{Binding UnreadCount, StringFormat='{0} Unread Alerts'}"
+                                FontSize="20"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource Slate50}" />
+                        </VerticalStackLayout>
+                        <Button
+                            Grid.Column="1"
+                            Text="Mark All Read"
+                            IsVisible="{Binding IsAlertsSection}"
+                            Command="{Binding MarkAllReadCommand}"
+                            Style="{StaticResource DarkCarbonButton}"
+                            VerticalOptions="Center" />
+                        <Button
+                            Grid.Column="1"
+                            Text="Sync Logs"
+                            IsVisible="{Binding IsLogsSection}"
+                            Command="{Binding SyncAndRefreshLogsCommand}"
+                            Style="{StaticResource DarkCarbonButton}"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Mode Switcher: SignalR Alerts vs Correlated User Activity Logs -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button
+                        Text="Alerts Feed"
+                        Command="{Binding SelectSectionCommand}"
+                        CommandParameter="Alerts"
+                        Style="{StaticResource PrimaryButton}" />
+                    <Button
+                        Grid.Column="1"
+                        Text="Activity Logs"
+                        Command="{Binding SelectSectionCommand}"
+                        CommandParameter="Logs"
+                        Style="{StaticResource SecondaryButton}" />
+                </Grid>
+
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Label
+                        Text="Offline mode: read actions and activity logs are buffered locally and sync automatically when online."
+                        FontSize="12"
+                        TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Label
+                        Text="{Binding SuccessMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                </Border>
+
+                <!-- ALERTS SECTION -->
+                <VerticalStackLayout IsVisible="{Binding IsAlertsSection}" Spacing="14">
+                    <Border Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Unread notifications only" VerticalTextAlignment="Center" />
+                                <Switch Grid.Column="1" IsToggled="{Binding UnreadOnly}" Toggled="OnFilterToggled" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding CanFilterDealerFeed}">
+                                <Label Text="Branch-wide dealer alerts only" VerticalTextAlignment="Center" />
+                                <Switch Grid.Column="1" IsToggled="{Binding DealerFeedOnly}" Toggled="OnFilterToggled" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="96" />
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Notifications}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:NotificationDto">
+                                <Border Style="{StaticResource CardBorder}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <controls:StatusBadgeView Status="Info" LabelOverride="{Binding EventType}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding OccurredAtUtc, Converter={StaticResource VietnamDateTime}}"
+                                                Style="{StaticResource MonoCodeLabel}"
+                                                FontSize="11"
+                                                VerticalTextAlignment="Center" />
+                                        </Grid>
+
+                                        <Label Text="{Binding Title}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding Message}" Style="{StaticResource SecondaryLabel}" />
+
+                                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding IsRead, Converter={StaticResource InvertedBool}}">
+                                            <controls:StatusBadgeView Status="Pending" LabelOverride="UNREAD" />
+                                            <Button
+                                                Grid.Column="1"
+                                                Text="Mark Read"
+                                                Style="{StaticResource SecondaryButton}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.MarkReadCommand, x:DataType=shared:NotificationsFeedPage}"
+                                                CommandParameter="{Binding .}" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- LIVE USER ACTIVITY LOGS SECTION (Android / iOS + Correlated Server Trail) -->
+                <VerticalStackLayout IsVisible="{Binding IsLogsSection}" Spacing="12">
+                    <Border Style="{StaticResource CardBorder}">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="LIVE USER ACTION AUDIT TRAIL" Style="{StaticResource EyebrowLabel}" />
+                                <Label Text="{Binding ActivityLogSummary}" Style="{StaticResource SecondaryLabel}" />
+                            </VerticalStackLayout>
+                            <Button
+                                Grid.Column="1"
+                                Text="{Binding LogSourceToggleLabel}"
+                                Command="{Binding ToggleLogSourceCommand}"
+                                Style="{StaticResource SecondaryButton}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="96" />
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding ActivityLogs}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="logging:UserActionLogDto">
+                                <Border Style="{StaticResource CardBorder}">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <controls:StatusBadgeView Status="{Binding Outcome}" LabelOverride="{Binding SourceBadge}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding TimestampUtc, Converter={StaticResource VietnamDateTime}}"
+                                                Style="{StaticResource MonoCodeLabel}"
+                                                FontSize="11"
+                                                VerticalTextAlignment="Center" />
+                                        </Grid>
+                                        <Label Text="{Binding Action}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding DetailSummary}" Style="{StaticResource SecondaryLabel}" />
+                                        <Label Text="{Binding CorrelationCaption}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

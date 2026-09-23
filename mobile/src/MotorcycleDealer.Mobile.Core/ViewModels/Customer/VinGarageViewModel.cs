@@ -1,0 +1,381 @@
+using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using FluentValidation;
+using MotorcycleDealer.Mobile.Core.Api;
+using MotorcycleDealer.Mobile.Core.Contracts;
+using MotorcycleDealer.Mobile.Core.Domain;
+using MotorcycleDealer.Mobile.Core.Messaging;
+using MotorcycleDealer.Mobile.Core.Persistence;
+using MotorcycleDealer.Mobile.Core.Realtime;
+using MotorcycleDealer.Mobile.Core.Security;
+using MotorcycleDealer.Mobile.Core.Validation;
+
+namespace MotorcycleDealer.Mobile.Core.ViewModels.Customer;
+
+public sealed partial class VinGarageViewModel : MobileViewModelBase, IDisposable
+{
+    private readonly IDealerMobileApiClient _apiClient;
+    private readonly IMobileOfflineDb _offlineDb;
+    private readonly MobileSessionState _sessionState;
+    private readonly IConnectivityMonitor _connectivityMonitor;
+    private readonly IOfflineOutboxSyncService _outboxSyncService;
+    private readonly INavigationService _navigationService;
+    private readonly IHapticService _hapticService;
+    private readonly IMainThreadDispatcher _mainThreadDispatcher;
+    private readonly IValidator<RegisterVehicleInput> _registerVehicleValidator;
+    private readonly IMessenger _messenger;
+    private readonly IUserFeedbackService _feedbackService;
+
+    public VinGarageViewModel(
+        IDealerMobileApiClient apiClient,
+        IMobileOfflineDb offlineDb,
+        MobileSessionState sessionState,
+        IConnectivityMonitor connectivityMonitor,
+        IOfflineOutboxSyncService outboxSyncService,
+        INavigationService navigationService,
+        IHapticService hapticService,
+        IMainThreadDispatcher mainThreadDispatcher,
+        IValidator<RegisterVehicleInput> registerVehicleValidator,
+        IMessenger messenger,
+        IUserFeedbackService feedbackService)
+    {
+        _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
+        _offlineDb = offlineDb ?? throw new ArgumentNullException(nameof(offlineDb));
+        _sessionState = sessionState ?? throw new ArgumentNullException(nameof(sessionState));
+        _connectivityMonitor = connectivityMonitor ?? throw new ArgumentNullException(nameof(connectivityMonitor));
+        _outboxSyncService = outboxSyncService ?? throw new ArgumentNullException(nameof(outboxSyncService));
+        _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+        _hapticService = hapticService ?? throw new ArgumentNullException(nameof(hapticService));
+        _mainThreadDispatcher = mainThreadDispatcher ?? throw new ArgumentNullException(nameof(mainThreadDispatcher));
+        _registerVehicleValidator = registerVehicleValidator ?? throw new ArgumentNullException(nameof(registerVehicleValidator));
+        _messenger = messenger ?? throw new ArgumentNullException(nameof(messenger));
+        _feedbackService = feedbackService ?? throw new ArgumentNullException(nameof(feedbackService));
+
+        NewVehicleVin = string.Empty;
+        NewLicensePlate = string.Empty;
+        NewColorName = string.Empty;
+        VinCounterLabel = "0/17";
+        VinValidationMessage = string.Empty;
+
+        _messenger.Register<VinGarageViewModel, BookingMutatedMessage>(this, static (r, _) => r.TriggerCrossTabRefresh());
+    }
+
+    public ObservableCollection<CustomerVehicleDto> Vehicles { get; } = [];
+    public ObservableCollection<MotorcycleModelDto> AvailableModels { get; } = [];
+    public ObservableCollection<MaintenanceReminderDto> SelectedVehicleReminders { get; } = [];
+
+    [ObservableProperty]
+    public partial CustomerVehicleDto? SelectedVehicle { get; set; }
+
+    [ObservableProperty]
+    public partial VehicleMaintenanceScheduleDto? SelectedSchedule { get; set; }
+
+    [ObservableProperty]
+    public partial string NewVehicleVin { get; set; }
+
+    [ObservableProperty]
+    public partial MotorcycleModelDto? SelectedRegistrationModel { get; set; }
+
+    [ObservableProperty]
+    public partial int NewCurrentMileageKm { get; set; }
+
+    [ObservableProperty]
+    public partial string NewLicensePlate { get; set; }
+
+    [ObservableProperty]
+    public partial string NewColorName { get; set; }
+
+    [ObservableProperty]
+    public partial string VinCounterLabel { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsVinValid { get; set; }
+
+    [ObservableProperty]
+    public partial string VinValidationMessage { get; set; }
+
+    [ObservableProperty]
+    public partial int UpdatedOdometerKm { get; set; }
+
+    partial void OnNewVehicleVinChanged(string value)
+    {
+        var sanitized = Iso3779VinValidator.SanitizeLiveInput(value);
+        if (!string.Equals(sanitized, value, StringComparison.Ordinal))
+        {
+            NewVehicleVin = sanitized;
+            return;
+        }
+
+        var check = Iso3779VinValidator.Validate(sanitized);
+        VinCounterLabel = Iso3779VinValidator.FormatLiveCounter(sanitized);
+        IsVinValid = check.IsValid;
+        VinValidationMessage = check.IsValid ? "Valid ISO 3779 VIN" : (check.ErrorMessage ?? string.Empty);
+    }
+
+    [RelayCommand]
+    public async Task LoadGarageAsync()
+    {
+        if (IsBusy)
+        {
+            return;
+        }
+
+        IsBusy = true;
+        ClearMessages();
+        var scope = _sessionState.OwnerScopeKey;
+
+        try
+        {
+            var vehiclesTask = _apiClient.ListMyVehiclesAsync();
+            var modelsTask = _apiClient.ListMotorcyclesAsync(pageNumber: 1, pageSize: 50);
+            await Task.WhenAll(vehiclesTask, modelsTask).ConfigureAwait(false);
+
+            IReadOnlyList<CustomerVehicleDto> vehicles;
+            if (vehiclesTask.Result.IsSuccess && vehiclesTask.Result.Data is not null)
+            {
+                vehicles = vehiclesTask.Result.Data;
+                await _offlineDb.SaveCustomerVehiclesAsync(scope, vehicles).ConfigureAwait(false);
+                IsOfflineBannerVisible = false;
+                SyncAgeLabel = VietnamFormatting.FormatSyncAge(DateTimeOffset.UtcNow);
+            }
+            else
+            {
+                vehicles = await _offlineDb.GetCachedCustomerVehiclesAsync(scope).ConfigureAwait(false);
+                var sync = await _offlineDb.GetSyncStateAsync(scope, "vehicles").ConfigureAwait(false);
+                IsOfflineBannerVisible = true;
+                SyncAgeLabel = VietnamFormatting.FormatSyncAge(sync?.LastSyncedUtc);
+            }
+
+            IReadOnlyList<MotorcycleModelDto> models = modelsTask.Result.IsSuccess && modelsTask.Result.Data is not null
+                ? modelsTask.Result.Data
+                : await _offlineDb.GetCachedMotorcycleModelsAsync().ConfigureAwait(false);
+
+            await _mainThreadDispatcher.InvokeOnMainThreadAsync(() =>
+            {
+                Vehicles.Clear();
+                foreach (var v in vehicles)
+                {
+                    Vehicles.Add(v);
+                }
+
+                AvailableModels.Clear();
+                foreach (var m in models)
+                {
+                    AvailableModels.Add(m);
+                }
+
+                if (SelectedRegistrationModel is null && models.Count > 0)
+                {
+                    SelectedRegistrationModel = models[0];
+                }
+
+                if (SelectedVehicle is null && vehicles.Count > 0)
+                {
+                    SelectedVehicle = vehicles[0];
+                    UpdatedOdometerKm = vehicles[0].CurrentMileageKm;
+                }
+
+                return Task.CompletedTask;
+            }).ConfigureAwait(false);
+
+            if (SelectedVehicle is not null)
+            {
+                await LoadVehicleScheduleAsync(SelectedVehicle).ConfigureAwait(false);
+            }
+        }
+        finally
+        {
+            IsBusy = false;
+            IsRefreshing = false;
+        }
+    }
+
+    [RelayCommand]
+    public async Task LoadVehicleScheduleAsync(CustomerVehicleDto? vehicle)
+    {
+        if (vehicle is null)
+        {
+            return;
+        }
+
+        SelectedVehicle = vehicle;
+        UpdatedOdometerKm = vehicle.CurrentMileageKm;
+
+        var result = await _apiClient.GetVehicleMaintenanceScheduleAsync(vehicle.Id).ConfigureAwait(false);
+        if (result.IsSuccess && result.Data is not null)
+        {
+            await _mainThreadDispatcher.InvokeOnMainThreadAsync(() =>
+            {
+                SelectedSchedule = result.Data;
+                SelectedVehicleReminders.Clear();
+                foreach (var r in result.Data.Reminders)
+                {
+                    SelectedVehicleReminders.Add(r);
+                }
+
+                return Task.CompletedTask;
+            }).ConfigureAwait(false);
+        }
+    }
+
+    [RelayCommand]
+    private async Task ScanVinAsync()
+    {
+        var raw = await _navigationService.RequestBarcodeScanAsync("Scan 17-Character Chassis VIN").ConfigureAwait(false);
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return;
+        }
+
+        var parsed = DealerQrPayloadParser.Parse(raw);
+        NewVehicleVin = parsed.Kind == QrPayloadKind.Vin && !string.IsNullOrWhiteSpace(parsed.Vin)
+            ? parsed.Vin
+            : Iso3779VinValidator.SanitizeLiveInput(raw);
+        _hapticService.Perform(HapticKind.Success);
+    }
+
+    [RelayCommand]
+    public async Task RegisterExternalVehicleAsync()
+    {
+        ClearMessages();
+        var input = new RegisterVehicleInput(
+            Vin: NewVehicleVin,
+            MotorcycleModelId: SelectedRegistrationModel?.Id ?? Guid.Empty,
+            CurrentMileageKm: NewCurrentMileageKm,
+            LicensePlate: NewLicensePlate,
+            ColorName: NewColorName);
+
+        var validation = _registerVehicleValidator.Validate(input);
+        if (!validation.IsValid)
+        {
+            ErrorMessage = validation.Errors[0].ErrorMessage;
+            _hapticService.Perform(HapticKind.Warning);
+            return;
+        }
+
+        var normalizedVin = Iso3779VinValidator.Validate(NewVehicleVin).NormalizedVin;
+        IsBusy = true;
+        try
+        {
+            var result = await _apiClient.RegisterExternalVehicleAsync(new RegisterExternalVehicleRequest
+            {
+                Vin = normalizedVin,
+                MotorcycleModelId = SelectedRegistrationModel!.Id,
+                CurrentMileageKm = NewCurrentMileageKm,
+                LastServiceMileageKm = NewCurrentMileageKm,
+                LicensePlate = string.IsNullOrWhiteSpace(NewLicensePlate) ? null : NewLicensePlate.Trim(),
+                ColorName = string.IsNullOrWhiteSpace(NewColorName) ? null : NewColorName.Trim()
+            }).ConfigureAwait(false);
+
+            if (!result.IsSuccess || result.Data is null)
+            {
+                ErrorMessage = result.ErrorMessage;
+                _hapticService.Perform(HapticKind.Warning);
+                return;
+            }
+
+            NewVehicleVin = string.Empty;
+            NewLicensePlate = string.Empty;
+            NewColorName = string.Empty;
+            NewCurrentMileageKm = 0;
+            SuccessMessage = $"Vehicle {result.Data.Vin} added to your Digital VIN Garage.";
+            _hapticService.Perform(HapticKind.Success);
+            _messenger.Send(new VehicleMutatedMessage(result.Data.Vin));
+            await _feedbackService.ShowToastAsync($"Vehicle {result.Data.Vin} registered!").ConfigureAwait(false);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+
+        await LoadGarageAsync().ConfigureAwait(false);
+    }
+
+    [RelayCommand]
+    public async Task UpdateSelectedVehicleMileageAsync()
+    {
+        if (SelectedVehicle is null)
+        {
+            return;
+        }
+
+        ClearMessages();
+        if (UpdatedOdometerKm < SelectedVehicle.CurrentMileageKm)
+        {
+            ErrorMessage = $"Odometer cannot move backward below {VietnamFormatting.FormatMileageKm(SelectedVehicle.CurrentMileageKm)}.";
+            return;
+        }
+
+        if (!_connectivityMonitor.IsConnected)
+        {
+            await _outboxSyncService.EnqueueVehicleMileageUpdateAsync(
+                _sessionState.OwnerScopeKey,
+                SelectedVehicle.Id,
+                UpdatedOdometerKm).ConfigureAwait(false);
+            SuccessMessage = "Offline: odometer update queued for automatic sync.";
+            await _feedbackService.ShowSnackbarAsync(SuccessMessage).ConfigureAwait(false);
+            return;
+        }
+
+        var result = await _apiClient.UpdateVehicleMileageAsync(
+            SelectedVehicle.Id,
+            new UpdateVehicleMileageRequest
+            {
+                CurrentMileageKm = UpdatedOdometerKm,
+                NewMileageKm = UpdatedOdometerKm
+            }).ConfigureAwait(false);
+
+        if (result.IsSuccess && result.Data is not null)
+        {
+            SelectedVehicle = result.Data;
+            SuccessMessage = $"Odometer updated to {VietnamFormatting.FormatMileageKm(result.Data.CurrentMileageKm)}.";
+            _hapticService.Perform(HapticKind.Success);
+            _messenger.Send(new VehicleMutatedMessage(result.Data.Vin));
+            await _feedbackService.ShowToastAsync(SuccessMessage).ConfigureAwait(false);
+            await LoadGarageAsync().ConfigureAwait(false);
+        }
+        else if (result.IsNetworkError)
+        {
+            await _outboxSyncService.EnqueueVehicleMileageUpdateAsync(
+                _sessionState.OwnerScopeKey,
+                SelectedVehicle.Id,
+                UpdatedOdometerKm).ConfigureAwait(false);
+            SuccessMessage = "Connection dropped: odometer update queued for sync.";
+            await _feedbackService.ShowSnackbarAsync(SuccessMessage).ConfigureAwait(false);
+        }
+        else
+        {
+            ErrorMessage = result.ErrorMessage;
+        }
+    }
+
+    [RelayCommand]
+    private Task BookServiceForSelectedVehicleAsync()
+    {
+        var parameters = SelectedVehicle is not null
+            ? new Dictionary<string, object> { ["vehicleId"] = SelectedVehicle.Id.ToString("D") }
+            : null;
+        return _navigationService.GoToAsync(MobileRoutes.BookingWizard, parameters);
+    }
+
+    private async void TriggerCrossTabRefresh()
+    {
+        if (!_sessionState.IsAuthenticated || !_sessionState.IsCustomer || IsBusy)
+        {
+            return;
+        }
+
+        try
+        {
+            await LoadGarageAsync().ConfigureAwait(false);
+        }
+        catch
+        {
+            // Prevent unobserved exception on background cross-tab sync.
+        }
+    }
+
+    public void Dispose() => _messenger.UnregisterAll(this);
+}

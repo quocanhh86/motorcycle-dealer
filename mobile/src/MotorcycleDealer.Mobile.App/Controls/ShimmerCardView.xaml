@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="MotorcycleDealer.Mobile.App.Controls.ShimmerCardView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="Root"
+    x:DataType="controls:ShimmerCardView">
+
+    <Border Style="{StaticResource CardBorder}" HeightRequest="{Binding Source={x:Reference Root}, Path=CardHeight}">
+        <VerticalStackLayout x:Name="PulseContainer" Spacing="10" VerticalOptions="Center">
+            <BoxView
+                HeightRequest="14"
+                WidthRequest="130"
+                HorizontalOptions="Start"
+                CornerRadius="4"
+                Color="{AppThemeBinding Light={StaticResource ShimmerBaseLight}, Dark={StaticResource ShimmerBaseDark}}" />
+            <BoxView
+                HeightRequest="18"
+                HorizontalOptions="Fill"
+                CornerRadius="4"
+                Color="{AppThemeBinding Light={StaticResource ShimmerBaseLight}, Dark={StaticResource ShimmerBaseDark}}" />
+            <BoxView
+                HeightRequest="12"
+                WidthRequest="210"
+                HorizontalOptions="Start"
+                CornerRadius="4"
+                Color="{AppThemeBinding Light={StaticResource ShimmerBaseLight}, Dark={StaticResource ShimmerBaseDark}}" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.StaffWorkbenchPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:StaffWorkbenchViewModel"
+    Title="Live Bay Workbench">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Alerts" Clicked="OnAlertsClicked" />
+        <ToolbarItem Text="Sign Out" Clicked="OnSignOutClicked" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadWorkbenchCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Branch-Locked Pit-Lane Header -->
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label Text="DEALER-SCOPED WORKSHOP OPS" Style="{StaticResource EyebrowLabel}" VerticalTextAlignment="Center" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding SyncAgeLabel}"
+                                FontFamily="Monospace"
+                                FontSize="11"
+                                TextColor="{StaticResource Slate400}"
+                                VerticalTextAlignment="Center" />
+                        </Grid>
+                        <Label
+                            Text="{Binding DealerHeaderLabel}"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Slate50}" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Border BackgroundColor="#1AFFFFFF" Stroke="#2EFFFFFF" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="10,8">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="PENDING / CONFIRMED" FontSize="10" FontAttributes="Bold" TextColor="#CBD5E1" />
+                                    <Label Text="{Binding PendingCount}" FontFamily="Monospace" FontSize="20" FontAttributes="Bold" TextColor="#FDE68A" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" Stroke="#2EFFFFFF" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="10,8">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="ACTIVE IN BAY" FontSize="10" FontAttributes="Bold" TextColor="#CBD5E1" />
+                                    <Label Text="{Binding CheckedInOrInProgressCount}" FontFamily="Monospace" FontSize="20" FontAttributes="Bold" TextColor="#67E8F9" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Label
+                        Text="{Binding SuccessMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                </Border>
+
+                <!-- Search + Camera VIN/Booking QR Intake Trigger -->
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Border Style="{StaticResource InputContainer}">
+                        <Entry
+                            Text="{Binding SearchVinOrNumber}"
+                            Style="{StaticResource MonoEntry}"
+                            Placeholder="Filter by VIN, booking number, or rider" />
+                    </Border>
+                    <Button
+                        Grid.Column="1"
+                        Text="Scan VIN/QR"
+                        Command="{Binding ScanForIntakeCommand}"
+                        Style="{StaticResource PrimaryButton}" />
+                </Grid>
+
+                <!-- Scanned Vehicle Intake Spotlight -->
+                <Border Style="{StaticResource AlertInfoBanner}" IsVisible="{Binding ScannedIntakeVehicle, Converter={StaticResource IsNotNull}}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="SCANNED VIN INTAKE MATCH" FontSize="11" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource InfoFg}, Dark={StaticResource InfoFgDark}}" />
+                        <Label Text="{Binding ScannedIntakeVehicle.MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                        <Label Text="{Binding ScannedIntakeVehicle.Vin, StringFormat='VIN: {0}'}" Style="{StaticResource MonoCodeLabel}" />
+                        <Label Text="{Binding ScannedIntakeVehicle.CustomerFullName, StringFormat='Rider: {0}'}" Style="{StaticResource SecondaryLabel}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Segmented Status Lanes -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout BindableLayout.ItemsSource="{Binding StatusLanes}" Spacing="8" Padding="0,0,16,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button
+                                    Text="{Binding ., Converter={StaticResource HumanizeStatus}}"
+                                    Style="{StaticResource ChipButton}"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectLaneCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                    CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                    <Binding Path="." />
+                                                    <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedLane" x:DataType="stf:StaffWorkbenchPage" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                            <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <Label Text="Tip: Swipe right on active cards for instant Bay Check-In" Style="{StaticResource CaptionLabel}" />
+
+                <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="128" />
+
+                <!-- Live Bay Queue Cards with SwipeView Bay Check-In -->
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding FilteredBookings}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:BookingDto">
+                            <SwipeView IsEnabled="{Binding HasStaffActions}">
+                                <SwipeView.LeftItems>
+                                    <SwipeItems Mode="Reveal">
+                                        <SwipeItem
+                                            Text="Check In"
+                                            BackgroundColor="#155E75"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SwipeCheckInBookingCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            CommandParameter="{Binding .}" />
+                                        <SwipeItem
+                                            Text="Start Bay"
+                                            BackgroundColor="#1D4ED8"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.StartServiceBayCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <SwipeView.RightItems>
+                                    <SwipeItems Mode="Reveal">
+                                        <SwipeItem
+                                            Text="No-Show"
+                                            BackgroundColor="#B91C1C"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.MarkNoShowCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Style="{StaticResource CardBorder}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Text="{Binding BookingNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                        </Grid>
+
+                                        <Label Text="{Binding CustomerFullName}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource SecondaryLabel}" />
+                                        <Label Text="{Binding Vin, StringFormat='VIN: {0}'}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="{Binding SlotDate, Converter={StaticResource VietnamDateTime}}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                            <Label Text="{Binding ShortStartTime}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                            <Label Text="{Binding FormattedServiceType}" Style="{StaticResource CaptionLabel}" VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout Spacing="8" IsVisible="{Binding HasStaffActions}">
+                                            <Button
+                                                Text="Check In"
+                                                MinimumWidthRequest="104"
+                                                Style="{StaticResource SecondaryButton}"
+                                                IsVisible="{Binding CanStaffCheckIn}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SwipeCheckInBookingCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Text="Start Bay"
+                                                MinimumWidthRequest="104"
+                                                Style="{StaticResource DarkCarbonButton}"
+                                                IsVisible="{Binding CanStaffStartBay}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.StartServiceBayCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Text="Invoice"
+                                                MinimumWidthRequest="104"
+                                                Style="{StaticResource PrimaryButton}"
+                                                IsVisible="{Binding CanStaffInvoice}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenInvoiceBuilderCommand, x:DataType=stf:StaffWorkbenchPage}"
+                                                CommandParameter="{Binding .}" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

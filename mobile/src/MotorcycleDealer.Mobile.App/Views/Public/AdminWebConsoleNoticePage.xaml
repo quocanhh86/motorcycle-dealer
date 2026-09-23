@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Public.AdminWebConsoleNoticePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:DataType="vm:AdminWebConsoleNoticeViewModel"
+    Title="Admin Web Console">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="18" VerticalOptions="Center">
+
+            <Border Style="{StaticResource CarbonHeaderCard}">
+                <VerticalStackLayout Spacing="10">
+                    <controls:StatusBadgeView Status="Info" LabelOverride="PLATFORM ADMIN · 32 PERMISSIONS" />
+                    <Label
+                        Text="Web Admin Console Required"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Slate50}" />
+                    <Label
+                        Text="{Binding AdminEmail, StringFormat='Signed in as {0}'}"
+                        FontFamily="Monospace"
+                        FontSize="12"
+                        TextColor="{StaticResource Slate300}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Why is Admin routed to Web HQ?" Style="{StaticResource SectionTitleLabel}" />
+                    <Label Text="{Binding NoticeDescription}" Style="{StaticResource SecondaryLabel}" />
+
+                    <Border Style="{StaticResource SunkenPanel}">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="DESKTOP WEB CONSOLE URL" Style="{StaticResource CaptionLabel}" />
+                            <Label Text="{Binding WebConsoleUrl}" Style="{StaticResource MonoCodeLabel}" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Button
+                        Text="Open Web Admin Console"
+                        Command="{Binding OpenWebConsoleCommand}"
+                        Style="{StaticResource PrimaryButton}" />
+
+                    <Button
+                        Text="Sign Out &amp; Switch to Rider / Staff Account"
+                        Command="{Binding SignOutAndSwitchAccountCommand}"
+                        Style="{StaticResource SecondaryButton}" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Customer.CustomerHomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Customer;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:CustomerHomeViewModel"
+    Title="Rider Home">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Alerts" Command="{Binding OpenNotificationsCommand}" />
+        <ToolbarItem Text="Sign Out" Clicked="OnSignOutClicked" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadDashboardCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Hero Greeting & Realtime Status -->
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label Text="RIDER FIELD COCKPIT" Style="{StaticResource EyebrowLabel}" VerticalTextAlignment="Center" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding SyncAgeLabel}"
+                                FontFamily="Monospace"
+                                FontSize="11"
+                                TextColor="{StaticResource Slate400}"
+                                VerticalTextAlignment="Center" />
+                        </Grid>
+                        <Label
+                            Text="{Binding GreetingTitle}"
+                            FontSize="22"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Slate50}" />
+                        <HorizontalStackLayout Spacing="8">
+                            <controls:StatusBadgeView Status="Info" LabelOverride="{Binding TierCode}" />
+                            <controls:StatusBadgeView Status="Active" LabelOverride="{Binding TierMultiplierLabel}" />
+                            <controls:StatusBadgeView
+                                Status="Pending"
+                                LabelOverride="{Binding UnreadNotificationsCount, StringFormat='{0} Unread'}"
+                                IsVisible="{Binding UnreadNotificationsCount, Converter={StaticResource IsGreaterThanZero}}" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Offline SQLCipher Fallback Banner -->
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Label
+                        Text="{Binding SyncAgeLabel, StringFormat='Offline mode — displaying encrypted SQLCipher cache ({0}).'}"
+                        FontSize="12"
+                        TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}" />
+                </Border>
+
+                <!-- Maintenance Reminder Alert Strip -->
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding DueSoonVehicleCount, Converter={StaticResource IsGreaterThanZero}}">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                            <Label
+                                Text="VIN MAINTENANCE DUE"
+                                FontSize="11"
+                                FontAttributes="Bold"
+                                TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                            <Label
+                                Text="{Binding DueSoonAlertMessage}"
+                                FontSize="13"
+                                TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                        </VerticalStackLayout>
+                        <Button
+                            Grid.Column="1"
+                            Text="Book Now"
+                            Command="{Binding OpenBookingWizardCommand}"
+                            Style="{StaticResource PrimaryButton}" />
+                    </Grid>
+                </Border>
+
+                <!-- Passbook Snapshot Card -->
+                <controls:LoyaltyPassbookCardView
+                    MemberName="{Binding Wallet.CustomerFullName, FallbackValue='Loading profile...', TargetNullValue='Loading profile...'}"
+                    TierName="{Binding TierCode}"
+                    TierMultiplier="{Binding Wallet.PointsMultiplier, FallbackValue=1.00}"
+                    AvailablePoints="{Binding Wallet.AvailablePoints, FallbackValue=0}"
+                    LifetimeQualifyingPoints="{Binding Wallet.LifetimeQualifyingPoints, FallbackValue=0}"
+                    TierProgressRatio="{Binding TierProgressRatio}"
+                    NextTierHint="{Binding NextTierHint}"
+                    SyncCaption="{Binding SyncAgeLabel}" />
+
+                <!-- 2x2 Tactile Quick Launch Action Cards (CommunityToolkit.Maui TouchBehavior) -->
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                    <Border Style="{StaticResource SecondaryTouchCard}" SemanticProperties.Description="VIN Garage">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedOpacity="0.88"
+                                Command="{Binding OpenGarageCommand}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <Label
+                            Text="VIN Garage"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource PrimaryCtaTouchCard}" SemanticProperties.Description="Book Service">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedOpacity="0.88"
+                                Command="{Binding OpenBookingWizardCommand}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <Label
+                            Text="Book Service"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            TextColor="{StaticResource PureWhite}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                    </Border>
+                    <Border Grid.Row="1" Style="{StaticResource SecondaryTouchCard}" SemanticProperties.Description="Passbook and QR">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedOpacity="0.88"
+                                Command="{Binding OpenLoyaltyPassbookCommand}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <Label
+                            Text="Passbook &amp; QR"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource SecondaryTouchCard}" SemanticProperties.Description="VIN Warranty">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedOpacity="0.88"
+                                Command="{Binding OpenWarrantyCommand}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <Label
+                            Text="VIN Warranty"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                    </Border>
+                </Grid>
+
+                <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="110" />
+
+                <!-- Upcoming Workshop Bookings -->
+                <Label
+                    Text="Upcoming Service Bookings"
+                    Style="{StaticResource SectionTitleLabel}"
+                    IsVisible="{Binding UpcomingBookings.Count, Converter={StaticResource IsGreaterThanZero}}" />
+                <VerticalStackLayout
+                    BindableLayout.ItemsSource="{Binding UpcomingBookings}"
+                    Spacing="10"
+                    IsVisible="{Binding UpcomingBookings.Count, Converter={StaticResource IsGreaterThanZero}}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:BookingDto">
+                            <Border Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout Spacing="6">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <Label Text="{Binding BookingNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                        <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                    </Grid>
+                                    <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                    <Label Text="{Binding Vin, StringFormat='VIN: {0}'}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                    <Label Text="{Binding DealerName}" Style="{StaticResource SecondaryLabel}" />
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Label Text="{Binding SlotDate, Converter={StaticResource VietnamDateTime}}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                        <Label Text="{Binding ShortStartTime}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                        <Label Text="{Binding FormattedServiceType}" Style="{StaticResource CaptionLabel}" VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Upcoming Test Drives -->
+                <Label
+                    Text="Scheduled Test Rides"
+                    Style="{StaticResource SectionTitleLabel}"
+                    IsVisible="{Binding UpcomingTestDrives.Count, Converter={StaticResource IsGreaterThanZero}}" />
+                <VerticalStackLayout
+                    BindableLayout.ItemsSource="{Binding UpcomingTestDrives}"
+                    Spacing="10"
+                    IsVisible="{Binding UpcomingTestDrives.Count, Converter={StaticResource IsGreaterThanZero}}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:TestDriveBookingDto">
+                            <Border Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout Spacing="6">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <Label Text="{Binding BookingNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                        <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                    </Grid>
+                                    <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                    <Label Text="{Binding DealerName}" Style="{StaticResource SecondaryLabel}" />
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{Binding PreferredDate, Converter={StaticResource VietnamDateTime}}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                        <Label Text="{Binding ShortStartTime}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

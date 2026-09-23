@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Public.ShowroomCatalogPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:ShowroomCatalogViewModel"
+    Title="Apex Moto Showroom">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadCatalogCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Carbon Motorsport Header -->
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="APEX MOTO FLAGSHIP LINEUP" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="Motorcycle Showroom"
+                            FontSize="22"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Slate50}" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label
+                                Text="{Binding ShowroomSummarySubtitle}"
+                                FontSize="12"
+                                TextColor="{StaticResource Slate300}"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding SyncAgeLabel}"
+                                FontFamily="Monospace"
+                                FontSize="11"
+                                TextColor="{StaticResource Slate400}"
+                                VerticalTextAlignment="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Offline SQLCipher Fallback Banner -->
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Label
+                        Text="{Binding SyncAgeLabel, StringFormat='Offline catalog mode ({0}). Live stock refreshes when connected.'}"
+                        FontSize="12"
+                        TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}" />
+                </Border>
+
+                <!-- Error Banner -->
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                </Border>
+
+                <!-- Search Bar -->
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Border Style="{StaticResource InputContainer}">
+                        <Entry
+                            Text="{Binding SearchText}"
+                            Placeholder="Search brand, model or code..."
+                            ReturnType="Search"
+                            Completed="OnSearchCompleted" />
+                    </Border>
+                    <Button
+                        Grid.Column="1"
+                        Text="Search"
+                        Command="{Binding LoadCatalogCommand}"
+                        Style="{StaticResource PrimaryButton}" />
+                </Grid>
+
+                <!-- Category Filter Chips -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout BindableLayout.ItemsSource="{Binding CategoryFilters}" Spacing="8" Padding="0,0,16,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button
+                                    Text="{Binding .}"
+                                    Style="{StaticResource ChipButton}"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectCategoryCommand, x:DataType=pub:ShowroomCatalogPage}"
+                                    CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                    <Binding Path="." />
+                                                    <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedCategory" x:DataType="pub:ShowroomCatalogPage" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                            <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- Loading Shimmer -->
+                <VerticalStackLayout IsVisible="{Binding IsBusy}" Spacing="10">
+                    <controls:ShimmerCardView CardHeight="120" />
+                    <controls:ShimmerCardView CardHeight="120" />
+                </VerticalStackLayout>
+
+                <!-- Selected Model Spotlight Card -->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding SelectedModel, Converter={StaticResource IsNotNull}}">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="SELECTED MODEL SPEC" Style="{StaticResource EyebrowLabel}" />
+                                <Label
+                                    Text="{Binding SelectedModel.ModelName}"
+                                    Style="{StaticResource PageTitleLabel}" />
+                                <Label
+                                    Text="{Binding SelectedModel.Brand, StringFormat='{0} · OEM Certified'}"
+                                    Style="{StaticResource SecondaryLabel}" />
+                            </VerticalStackLayout>
+                            <controls:StatusBadgeView
+                                Grid.Column="1"
+                                Status="Available"
+                                LabelOverride="{Binding SelectedModel.AvailableStockCount, StringFormat='{0} IN STOCK'}" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="1.55*,*,*" ColumnSpacing="8">
+                            <Border Style="{StaticResource SunkenPanel}">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="RETAIL" Style="{StaticResource CaptionLabel}" />
+                                    <Label
+                                        Text="{Binding SelectedModel.BaseRetailPrice, Converter={StaticResource VndCurrency}}"
+                                        Style="{StaticResource MonoCodeLabel}"
+                                        FontAttributes="Bold"
+                                        LineBreakMode="NoWrap" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource SunkenPanel}">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="ENGINE" Style="{StaticResource CaptionLabel}" />
+                                    <Label
+                                        Text="{Binding SelectedModel.EngineDisplacementCc, StringFormat='{0} cc'}"
+                                        Style="{StaticResource MonoCodeLabel}"
+                                        FontAttributes="Bold" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Column="2" Style="{StaticResource SunkenPanel}">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="WARRANTY" Style="{StaticResource CaptionLabel}" />
+                                    <Label
+                                        Text="{Binding SelectedModel.WarrantyMonths, StringFormat='{0}m OEM'}"
+                                        Style="{StaticResource MonoCodeLabel}"
+                                        FontAttributes="Bold" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+
+                        <!-- Collapsible OEM Coverage & Live Branch Stock Breakdown -->
+                        <Border Style="{StaticResource SunkenPanel}">
+                            <toolkit:Expander IsExpanded="True">
+                                <toolkit:Expander.Header>
+                                    <Grid ColumnDefinitions="*,Auto" MinimumHeightRequest="36">
+                                        <Label
+                                            Text="OEM Coverage &amp; Branch Stock Breakdown ▾"
+                                            Style="{StaticResource EyebrowLabel}"
+                                            VerticalTextAlignment="Center" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Text="LIVE"
+                                            Style="{StaticResource MonoCodeLabel}"
+                                            FontSize="11"
+                                            TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                            VerticalTextAlignment="Center" />
+                                    </Grid>
+                                </toolkit:Expander.Header>
+                                <toolkit:Expander.Content>
+                                    <VerticalStackLayout Spacing="8" Padding="0,8,0,0">
+                                        <Label
+                                            Text="{Binding SelectedModel.WarrantyMonths, StringFormat='OEM factory coverage: {0} months across active dealership branches.'}"
+                                            Style="{StaticResource CaptionLabel}" />
+                                        <VerticalStackLayout
+                                            BindableLayout.ItemsSource="{Binding SelectedModel.DealerStockBreakdown}"
+                                            Spacing="6">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="dto:DealerModelStockSummaryDto">
+                                                    <Grid ColumnDefinitions="*,Auto">
+                                                        <Label Text="{Binding DealerName}" Style="{StaticResource SecondaryLabel}" />
+                                                        <Label
+                                                            Grid.Column="1"
+                                                            Text="{Binding UnitsLabel}"
+                                                            Style="{StaticResource MonoCodeLabel}"
+                                                            FontAttributes="Bold" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </toolkit:Expander.Content>
+                            </toolkit:Expander>
+                        </Border>
+
+                        <!-- Tactile Primary CTA (CommunityToolkit.Maui TouchBehavior) -->
+                        <Border
+                            Style="{StaticResource PrimaryCtaTouchCard}"
+                            SemanticProperties.Description="Book Test Drive or Service">
+                            <Border.Behaviors>
+                                <toolkit:TouchBehavior
+                                    PressedScale="0.97"
+                                    PressedOpacity="0.88"
+                                    Command="{Binding BookTestDriveForSelectedModelCommand}"
+                                    ShouldMakeChildrenInputTransparent="True" />
+                            </Border.Behaviors>
+                            <Label
+                                Text="Book Test Drive or Service"
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                TextColor="{StaticResource PureWhite}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Showroom Model Cards -->
+                <Label Text="Available Models" Style="{StaticResource SectionTitleLabel}" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Models}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:MotorcycleModelDto">
+                            <Border Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout Spacing="8">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label Text="{Binding ModelCode}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                            <Label Text="{Binding ModelName}" Style="{StaticResource CardTitleLabel}" />
+                                            <Label Text="{Binding Brand}" Style="{StaticResource SecondaryLabel}" />
+                                        </VerticalStackLayout>
+                                        <controls:StatusBadgeView Grid.Column="1" Status="Info" LabelOverride="{Binding Category}" />
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <Label
+                                            Text="{Binding BaseRetailPrice, Converter={StaticResource VndCurrency}}"
+                                            Style="{StaticResource MonoValueBoldLabel}"
+                                            TextColor="{StaticResource BrandPrimary}"
+                                            VerticalTextAlignment="Center" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Text="Inspect"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectModelCommand, x:DataType=pub:ShowroomCatalogPage}"
+                                            CommandParameter="{Binding .}" />
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

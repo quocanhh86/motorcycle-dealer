@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Staff.StaffWarrantyCsatPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Staff;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="PageRoot"
+    x:DataType="vm:StaffWarrantyCsatViewModel"
+    Title="Warranty &amp; CSAT">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadDeskCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="BRANCH QUALITY &amp; OEM WARRANTY DESK" Style="{StaticResource EyebrowLabel}" />
+                        <Label
+                            Text="Warranty Adjudication &amp; CSAT"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Slate50}" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Border BackgroundColor="#1AFFFFFF" Stroke="#2EFFFFFF" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="10,8">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="AVG CSAT RATING" FontSize="10" FontAttributes="Bold" TextColor="#CBD5E1" />
+                                    <Label Text="{Binding AverageCsatRating, StringFormat='{0:0.00} ★'}" FontFamily="Monospace" FontSize="18" FontAttributes="Bold" TextColor="#FDE68A" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Column="1" BackgroundColor="#1AFFFFFF" Stroke="#2EFFFFFF" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="10,8">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="UNANSWERED REVIEWS" FontSize="10" FontAttributes="Bold" TextColor="#CBD5E1" />
+                                    <Label Text="{Binding UnansweredReviewCount}" FontFamily="Monospace" FontSize="18" FontAttributes="Bold" TextColor="#FCA5A5" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Label
+                        Text="{Binding SuccessMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}" />
+                </Border>
+
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding HasError}">
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                </Border>
+
+                <!-- Segmented Switch: Warranty vs CSAT -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button Text="Warranty Claims" Command="{Binding SelectTabCommand}" CommandParameter="Warranty" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedTab}" Value="Warranty">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="1" Text="CSAT Reviews" Command="{Binding SelectTabCommand}" CommandParameter="CSAT" Style="{StaticResource ChipButton}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedTab}" Value="CSAT">
+                                <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+
+                <controls:ShimmerCardView IsVisible="{Binding IsBusy}" CardHeight="116" />
+
+                <!-- TAB 1: Warranty Claims Adjudication -->
+                <VerticalStackLayout
+                    Spacing="12"
+                    IsVisible="{Binding SelectedTab, Converter={StaticResource EqualsString}, ConverterParameter=Warranty}">
+
+                    <Border Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="OEM PART COVERAGE &amp; ADJUDICATION NOTES" Style="{StaticResource EyebrowLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="Covered OEM Spare Part (Optional)"
+                                    ItemsSource="{Binding SpareParts}"
+                                    SelectedItem="{Binding SelectedCoveredPart}"
+                                    ItemDisplayBinding="{Binding Name, x:DataType=dto:SparePartDto}" />
+                            </Border>
+                            <Label Text="Covered Amount (VND)" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding CoveredAmountVnd}" Style="{StaticResource MonoEntry}" Placeholder="0" Keyboard="Numeric" />
+                            </Border>
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding ResolutionNotesInput}" Placeholder="Resolution notes..." />
+                            </Border>
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding RejectionReasonInput}" Placeholder="Rejection reason (if rejecting)..." />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding WarrantyClaims}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:WarrantyClaimDto">
+                                <Border Style="{StaticResource CardBorder}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Text="{Binding ClaimNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                        </Grid>
+                                        <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding Vin, StringFormat='VIN: {0}'}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                        <Label Text="{Binding DefectCategory, StringFormat='Defect: {0}'}" Style="{StaticResource SecondaryLabel}" />
+                                        <Label Text="{Binding SymptomDescription}" Style="{StaticResource SecondaryLabel}" />
+
+                                        <FlexLayout Direction="Row" Wrap="Wrap" AlignItems="Center" JustifyContent="Start" IsVisible="{Binding HasStaffActions}">
+                                            <Button
+                                                Text="Under Review"
+                                                Margin="0,0,8,8"
+                                                Style="{StaticResource SecondaryButton}"
+                                                IsVisible="{Binding CanStaffStartReview}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.MoveClaimUnderReviewCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Text="Approve"
+                                                Margin="0,0,8,8"
+                                                Style="{StaticResource PrimaryButton}"
+                                                IsVisible="{Binding CanStaffApprove}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ApproveClaimCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Text="Complete"
+                                                Margin="0,0,8,8"
+                                                Style="{StaticResource DarkCarbonButton}"
+                                                IsVisible="{Binding CanStaffComplete}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.CompleteClaimCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                                CommandParameter="{Binding .}" />
+                                            <Button
+                                                Text="Reject"
+                                                Margin="0,0,8,8"
+                                                Style="{StaticResource DangerOutlineButton}"
+                                                IsVisible="{Binding CanStaffReject}"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.RejectClaimCommand, x:DataType=stf:StaffWarrantyCsatPage}"
+                                                CommandParameter="{Binding .}" />
+                                        </FlexLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- TAB 2: Customer CSAT Reviews & Official Branch Replies -->
+                <VerticalStackLayout
+                    Spacing="12"
+                    IsVisible="{Binding SelectedTab, Converter={StaticResource EqualsString}, ConverterParameter=CSAT}">
+
+                    <Border Style="{StaticResource CardBorder}" IsVisible="{Binding SelectedReview, Converter={StaticResource IsNotNull}}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="POST OFFICIAL BRANCH REPLY" Style="{StaticResource EyebrowLabel}" />
+                            <Label Text="{Binding SelectedReview.ReviewNumber, StringFormat='Replying to {0}'}" Style="{StaticResource CardTitleLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Editor Text="{Binding StaffReviewReplyInput}" Placeholder="Thank the rider and address their feedback..." />
+                            </Border>
+                            <Button
+                                Text="Publish Official Reply"
+                                Command="{Binding RespondToReviewCommand}"
+                                Style="{StaticResource PrimaryButton}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding ServiceReviews}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:ServiceReviewDto">
+                                <Border Style="{StaticResource CardBorder}">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Text="{Binding ReviewNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <controls:StatusBadgeView Grid.Column="1" Status="Completed" LabelOverride="{Binding Rating, StringFormat='{0} ★ CSAT'}" />
+                                        </Grid>
+                                        <Label Text="{Binding CustomerFullName}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Text="{Binding Comment}" Style="{StaticResource SecondaryLabel}" />
+                                        <Label
+                                            Text="{Binding StaffResponse, StringFormat='Branch Reply: {0}'}"
+                                            Style="{StaticResource CaptionLabel}"
+                                            IsVisible="{Binding StaffResponse, Converter={StaticResource IsNotNullOrEmpty}}" />
+                                        <Button
+                                            Text="Select to Reply"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Clicked="OnSelectReviewClicked"
+                                            CommandParameter="{Binding .}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
