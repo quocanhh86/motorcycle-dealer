@@ -1,0 +1,194 @@
+/* ==========================================================================
+ * Cinematic Motion Architecture (8/10 GPU-Only Transform & Opacity System)
+ * Strict 60fps Compositor Rules + Full prefers-reduced-motion Accessibility
+ * ========================================================================== */
+:root {
+  /* Motion Duration Scale */
+  --dur-instant: 90ms;
+  --dur-fast: 140ms;
+  --dur-normal: 190ms;
+  --dur-emphasis: 220ms;
+  --dur-sheet: 300ms;
+  --dur-pulse: 600ms;
+  --dur-sheen: 750ms;
+
+  /* Physics-Inspired Easing Curves */
+  --ease-expo: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* --- GPU-Only Keyframes (transform & opacity ONLY) --- */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0.2;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes viewEnter {
+  from {
+    opacity: 0.35;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes modalSpringIn {
+  from {
+    opacity: 0.35;
+    transform: translate3d(0, 10px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes drawerSlideIn {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translate3d(28px, 0, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes shimmerSweep {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+/* 2-Cycle Live SignalR Arrival Highlight (600ms x 2) */
+@keyframes signalrRingPulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.78;
+    transform: scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Diagonal Metallic Specular Sweep across Loyalty Passbook (750ms) */
+@keyframes passbookSheen {
+  0% {
+    opacity: 0;
+    transform: translate3d(-135%, 0, 0) skewX(-24deg);
+  }
+  20% {
+    opacity: 0.55;
+  }
+  80% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(235%, 0, 0) skewX(-24deg);
+  }
+}
+
+@keyframes routeProgressIndeterminate {
+  0% {
+    transform: translate3d(-100%, 0, 0) scaleX(0.35);
+  }
+  50% {
+    transform: translate3d(20%, 0, 0) scaleX(0.65);
+  }
+  100% {
+    transform: translate3d(115%, 0, 0) scaleX(0.35);
+  }
+}
+
+@keyframes spinSmooth {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Declarative Motion Utility Classes --- */
+.view-enter {
+  animation: viewEnter var(--dur-emphasis) var(--ease-expo) both;
+}
+
+.fade-slide-up {
+  animation: fadeSlideUp var(--dur-emphasis) var(--ease-spring) both;
+}
+
+/* Deterministic List Stagger capped at 5 items (max 175ms delay) */
+.stagger-item {
+  animation: fadeSlideUp var(--dur-emphasis) var(--ease-spring) both;
+  animation-delay: calc(min(var(--i, 0), 5) * 35ms);
+}
+
+.motion-modal {
+  animation: modalSpringIn 180ms var(--ease-spring) both;
+}
+
+.motion-drawer {
+  animation: drawerSlideIn var(--dur-sheet) var(--ease-expo) both;
+}
+
+.motion-toast {
+  animation: toastSlideIn var(--dur-normal) var(--ease-spring) both;
+}
+
+.is-signalr-pulse {
+  animation: signalrRingPulse var(--dur-pulse) var(--ease-standard) 2;
+}
+
+.spin-smooth {
+  animation: spinSmooth 900ms linear infinite;
+}
+
+/* --- Strict Reduced-Motion Compliance (WCAG 2.3.3) --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .stagger-item {
+    animation-delay: 0ms !important;
+  }
+
+  .atelier-hero-bg {
+    transform: none !important;
+  }
+}
