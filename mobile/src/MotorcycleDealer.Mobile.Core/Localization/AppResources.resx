@@ -1,0 +1,2447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>Apex Moto</value>
+  </data>
+  <data name="AppBrandName" xml:space="preserve">
+    <value>APEX MOTO LOYALTY</value>
+  </data>
+  <data name="AppBrandTagline" xml:space="preserve">
+    <value>Motorcycle Dealer &amp; Loyalty Platform</value>
+  </data>
+  <data name="LangToggleLabel" xml:space="preserve">
+    <value>VI | EN</value>
+  </data>
+  <data name="LangVietnameseShort" xml:space="preserve">
+    <value>VI</value>
+  </data>
+  <data name="LangEnglishShort" xml:space="preserve">
+    <value>EN</value>
+  </data>
+  <data name="ThemeLightLabel" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ThemeDarkLabel" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ToolbarAlerts" xml:space="preserve">
+    <value>Alerts</value>
+  </data>
+  <data name="ToolbarSignOut" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="ToolbarTheme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ToolbarLanguage" xml:space="preserve">
+    <value>VI | EN</value>
+  </data>
+  <data name="TabShowroom" xml:space="preserve">
+    <value>Showroom</value>
+  </data>
+  <data name="TabDealers" xml:space="preserve">
+    <value>Dealers</value>
+  </data>
+  <data name="TabSignIn" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="TabHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="TabGarage" xml:space="preserve">
+    <value>Garage</value>
+  </data>
+  <data name="TabBook" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="TabLoyalty" xml:space="preserve">
+    <value>Loyalty</value>
+  </data>
+  <data name="TabWarranty" xml:space="preserve">
+    <value>Warranty</value>
+  </data>
+  <data name="TabBayOps" xml:space="preserve">
+    <value>Bay Ops</value>
+  </data>
+  <data name="TabVinSales" xml:space="preserve">
+    <value>VIN Sales</value>
+  </data>
+  <data name="TabRides" xml:space="preserve">
+    <value>Rides</value>
+  </data>
+  <data name="TabQa" xml:space="preserve">
+    <value>QA</value>
+  </data>
+  <data name="TabSlots" xml:space="preserve">
+    <value>Slots</value>
+  </data>
+  <data name="TabAdminHq" xml:space="preserve">
+    <value>Admin HQ</value>
+  </data>
+  <data name="ShellGuestRider" xml:space="preserve">
+    <value>Guest Rider</value>
+  </data>
+  <data name="ShellRolePublic" xml:space="preserve">
+    <value>Public Showroom</value>
+  </data>
+  <data name="ShellRoleCustomerTier" xml:space="preserve">
+    <value>{0} Rider</value>
+  </data>
+  <data name="ShellRoleDealerStaff" xml:space="preserve">
+    <value>Dealer Staff</value>
+  </data>
+  <data name="ShellRoleAdminWeb" xml:space="preserve">
+    <value>Admin (Web Console)</value>
+  </data>
+  <data name="ShellRealtimeLive" xml:space="preserve">
+    <value>Live</value>
+  </data>
+  <data name="ShellRealtimeConnecting" xml:space="preserve">
+    <value>Connecting...</value>
+  </data>
+  <data name="ShellRealtimeReconnecting" xml:space="preserve">
+    <value>Reconnecting...</value>
+  </data>
+  <data name="ShellRealtimeOffline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Common_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Common_Saving" xml:space="preserve">
+    <value>Saving...</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Common_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Common_Complete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="Common_Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Common_Retry" xml:space="preserve">
+    <value>Try Again</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Common_Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Common_ClearFilters" xml:space="preserve">
+    <value>Clear Filters</value>
+  </data>
+  <data name="Common_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Common_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Common_Inspect" xml:space="preserve">
+    <value>Inspect</value>
+  </data>
+  <data name="Common_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Common_AddShort" xml:space="preserve">
+    <value>+ Add</value>
+  </data>
+  <data name="Common_Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="Common_Scan" xml:space="preserve">
+    <value>Scan</value>
+  </data>
+  <data name="Common_Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Common_NoData" xml:space="preserve">
+    <value>No records to display</value>
+  </data>
+  <data name="Common_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Common_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Common_Live" xml:space="preserve">
+    <value>LIVE</value>
+  </data>
+  <data name="Common_Optional" xml:space="preserve">
+    <value>Optional</value>
+  </data>
+  <data name="Common_Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="Common_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Common_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Common_VinLabel" xml:space="preserve">
+    <value>VIN</value>
+  </data>
+  <data name="Common_VinPrefixed" xml:space="preserve">
+    <value>VIN: {0}</value>
+  </data>
+  <data name="Common_RiderPrefixed" xml:space="preserve">
+    <value>Rider: {0}</value>
+  </data>
+  <data name="Common_Model" xml:space="preserve">
+    <value>Motorcycle Model</value>
+  </data>
+  <data name="Common_Dealer" xml:space="preserve">
+    <value>Dealership</value>
+  </data>
+  <data name="Common_Branch" xml:space="preserve">
+    <value>Dealership Branch</value>
+  </data>
+  <data name="Common_OdometerKm" xml:space="preserve">
+    <value>Odometer (km)</value>
+  </data>
+  <data name="Common_CurrentOdometerKm" xml:space="preserve">
+    <value>Current Odometer (km)</value>
+  </data>
+  <data name="Common_LicensePlate" xml:space="preserve">
+    <value>License Plate</value>
+  </data>
+  <data name="Common_Color" xml:space="preserve">
+    <value>Vehicle Color</value>
+  </data>
+  <data name="Common_PaymentMethod" xml:space="preserve">
+    <value>Payment Method</value>
+  </data>
+  <data name="Common_PointsShort" xml:space="preserve">
+    <value>pts</value>
+  </data>
+  <data name="Common_VndShort" xml:space="preserve">
+    <value>VND</value>
+  </data>
+  <data name="Common_RatingOutOfFive" xml:space="preserve">
+    <value>{0} / 5</value>
+  </data>
+  <data name="Common_RatingScore" xml:space="preserve">
+    <value>{0:0.00} / 5</value>
+  </data>
+  <data name="Common_JustNow" xml:space="preserve">
+    <value>Just now</value>
+  </data>
+  <data name="Common_NeverSynced" xml:space="preserve">
+    <value>Never synced</value>
+  </data>
+  <data name="Common_SyncedJustNow" xml:space="preserve">
+    <value>Synced just now</value>
+  </data>
+  <data name="Common_SyncedAgoFormat" xml:space="preserve">
+    <value>Synced {0}</value>
+  </data>
+  <data name="Common_MinutesAgo" xml:space="preserve">
+    <value>{0}m ago</value>
+  </data>
+  <data name="Common_HoursAgo" xml:space="preserve">
+    <value>{0}h ago</value>
+  </data>
+  <data name="Common_DaysAgo" xml:space="preserve">
+    <value>{0}d ago</value>
+  </data>
+  <data name="Common_SyncedMinutesAgo" xml:space="preserve">
+    <value>Synced {0}m ago</value>
+  </data>
+  <data name="Common_SyncedHoursAgo" xml:space="preserve">
+    <value>Synced {0}h ago</value>
+  </data>
+  <data name="Common_SyncedDaysAgo" xml:space="preserve">
+    <value>Synced {0}d ago</value>
+  </data>
+  <data name="Common_OfflineCacheToast" xml:space="preserve">
+    <value>Offline cache active ({0}).</value>
+  </data>
+  <data name="Common_FactoryStandard" xml:space="preserve">
+    <value>Factory Standard</value>
+  </data>
+  <data name="Common_Dash" xml:space="preserve">
+    <value>—</value>
+  </data>
+  <data name="Qty_Model" xml:space="preserve">
+    <value>model</value>
+  </data>
+  <data name="Qty_Branch" xml:space="preserve">
+    <value>branch</value>
+  </data>
+  <data name="Qty_Bay" xml:space="preserve">
+    <value>bay</value>
+  </data>
+  <data name="Qty_Unit" xml:space="preserve">
+    <value>unit</value>
+  </data>
+  <data name="Qty_Motorcycle" xml:space="preserve">
+    <value>motorcycle</value>
+  </data>
+  <data name="Qty_Vin" xml:space="preserve">
+    <value>VIN</value>
+  </data>
+  <data name="Qty_Slot" xml:space="preserve">
+    <value>slot</value>
+  </data>
+  <data name="Qty_Alert" xml:space="preserve">
+    <value>alert</value>
+  </data>
+  <data name="Qty_Event" xml:space="preserve">
+    <value>event</value>
+  </data>
+  <data name="Qty_Day" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="Qty_Month" xml:space="preserve">
+    <value>month</value>
+  </data>
+  <data name="ShowroomPageTitle" xml:space="preserve">
+    <value>Apex Moto Showroom</value>
+  </data>
+  <data name="ShowroomEyebrow" xml:space="preserve">
+    <value>APEX MOTO FLAGSHIP LINEUP</value>
+  </data>
+  <data name="ShowroomTitle" xml:space="preserve">
+    <value>Motorcycle Showroom</value>
+  </data>
+  <data name="ShowroomSubtitleAcrossBranches" xml:space="preserve">
+    <value>{0} across {1}</value>
+  </data>
+  <data name="ShowroomSubtitleAvailable" xml:space="preserve">
+    <value>{0} available</value>
+  </data>
+  <data name="ShowroomOfflineBanner" xml:space="preserve">
+    <value>Offline catalog mode ({0}). Live stock refreshes when connected.</value>
+  </data>
+  <data name="ShowroomSearchPlaceholder" xml:space="preserve">
+    <value>Search brand, model or code...</value>
+  </data>
+  <data name="ShowroomSelectedSpecEyebrow" xml:space="preserve">
+    <value>SELECTED MODEL SPEC</value>
+  </data>
+  <data name="ShowroomOemCertified" xml:space="preserve">
+    <value>{0} · OEM Certified</value>
+  </data>
+  <data name="ShowroomInStockBadge" xml:space="preserve">
+    <value>{0} IN STOCK</value>
+  </data>
+  <data name="ShowroomOutOfStockBadge" xml:space="preserve">
+    <value>OUT OF STOCK</value>
+  </data>
+  <data name="ShowroomRetailLabel" xml:space="preserve">
+    <value>RETAIL</value>
+  </data>
+  <data name="ShowroomEngineLabel" xml:space="preserve">
+    <value>ENGINE</value>
+  </data>
+  <data name="ShowroomWarrantyLabel" xml:space="preserve">
+    <value>WARRANTY</value>
+  </data>
+  <data name="ShowroomEngineCcFormat" xml:space="preserve">
+    <value>{0} cc</value>
+  </data>
+  <data name="ShowroomWarrantyMonthsFormat" xml:space="preserve">
+    <value>{0}m OEM</value>
+  </data>
+  <data name="ShowroomOemExpanderHeader" xml:space="preserve">
+    <value>OEM Coverage &amp; Branch Stock Breakdown</value>
+  </data>
+  <data name="ShowroomOemCoverageDetail" xml:space="preserve">
+    <value>OEM factory coverage: {0} months across active dealership branches.</value>
+  </data>
+  <data name="ShowroomBookCta" xml:space="preserve">
+    <value>Book Test Drive or Service</value>
+  </data>
+  <data name="ShowroomAvailableModelsTitle" xml:space="preserve">
+    <value>Available Models</value>
+  </data>
+  <data name="ShowroomEmptyTitle" xml:space="preserve">
+    <value>No matching motorcycles</value>
+  </data>
+  <data name="ShowroomEmptyDesc" xml:space="preserve">
+    <value>Try clearing category filters or search keywords to browse all models.</value>
+  </data>
+  <data name="ShowroomStockUnitsLabel" xml:space="preserve">
+    <value>{0} in stock</value>
+  </data>
+  <data name="ShowroomHeroCaption" xml:space="preserve">
+    <value>Authorized OEM Showrooms &amp; Workshop Care</value>
+  </data>
+  <data name="DealerPageTitle" xml:space="preserve">
+    <value>Flagship Dealers</value>
+  </data>
+  <data name="DealerEyebrow" xml:space="preserve">
+    <value>VIETNAM DEALERSHIP NETWORK</value>
+  </data>
+  <data name="DealerTitle" xml:space="preserve">
+    <value>Flagship Service &amp; Showroom Hubs</value>
+  </data>
+  <data name="DealerSubtitle" xml:space="preserve">
+    <value>Authorized OEM Showrooms &amp; Service Bays</value>
+  </data>
+  <data name="DealerOfflineBanner" xml:space="preserve">
+    <value>Offline directory ({0}).</value>
+  </data>
+  <data name="DealerVinsBadge" xml:space="preserve">
+    <value>{0} VINs</value>
+  </data>
+  <data name="DealerHoursLabel" xml:space="preserve">
+    <value>HOURS</value>
+  </data>
+  <data name="DealerPhoneLabel" xml:space="preserve">
+    <value>PHONE</value>
+  </data>
+  <data name="DealerDirectionsCta" xml:space="preserve">
+    <value>Directions</value>
+  </data>
+  <data name="DealerCallCta" xml:space="preserve">
+    <value>Call Branch</value>
+  </data>
+  <data name="DealerEmptyTitle" xml:space="preserve">
+    <value>No dealerships found</value>
+  </data>
+  <data name="DealerEmptyDesc" xml:space="preserve">
+    <value>Select another city or pull to refresh the dealership directory.</value>
+  </data>
+  <data name="DealerSlotCapacityFormat" xml:space="preserve">
+    <value>{0} bays / slot</value>
+  </data>
+  <data name="AuthPageTitle" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="AuthEyebrow" xml:space="preserve">
+    <value>APEX MOTO FIELD PLATFORM · v1.4</value>
+  </data>
+  <data name="AuthTitle" xml:space="preserve">
+    <value>Rider &amp; Dealer Staff Access</value>
+  </data>
+  <data name="AuthSubtitle" xml:space="preserve">
+    <value>Hardware Keystore JWT · Single-Flight Rotation · SQLCipher Offline Cache</value>
+  </data>
+  <data name="AuthSignInCta" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="AuthCreateAccountCta" xml:space="preserve">
+    <value>Create Rider Account</value>
+  </data>
+  <data name="AuthSwitchToSignIn" xml:space="preserve">
+    <value>Already have an account? Sign In</value>
+  </data>
+  <data name="AuthSwitchToRegister" xml:space="preserve">
+    <value>New rider? Create Account</value>
+  </data>
+  <data name="AuthFullNameLabel" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="AuthFullNamePlaceholder" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="AuthPhoneLabel" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="AuthPhonePlaceholder" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="AuthEmailLabel" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="AuthEmailPlaceholder" xml:space="preserve">
+    <value>Email address</value>
+  </data>
+  <data name="AuthEmailInvalidHint" xml:space="preserve">
+    <value>Enter a valid email address</value>
+  </data>
+  <data name="AuthPasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="AuthPasswordPlaceholder" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="AuthPasswordRulesHint" xml:space="preserve">
+    <value>At least 8 chars with uppercase, lowercase, digit &amp; special symbol.</value>
+  </data>
+  <data name="AuthEndpointExpanderHeader" xml:space="preserve">
+    <value>Backend API Endpoint &amp; Health Check</value>
+  </data>
+  <data name="AuthConfigBadge" xml:space="preserve">
+    <value>CONFIG</value>
+  </data>
+  <data name="AuthEndpointPlaceholder" xml:space="preserve">
+    <value>http://10.0.2.2:5080</value>
+  </data>
+  <data name="AuthEmulatorPresetCta" xml:space="preserve">
+    <value>Emulator 10.0.2.2</value>
+  </data>
+  <data name="AuthAdbLocalhostPresetCta" xml:space="preserve">
+    <value>ADB Localhost</value>
+  </data>
+  <data name="AuthSaveEndpointCta" xml:space="preserve">
+    <value>Save Endpoint</value>
+  </data>
+  <data name="AuthTestHealthCta" xml:space="preserve">
+    <value>Test /health</value>
+  </data>
+  <data name="AuthApiProbeBadge" xml:space="preserve">
+    <value>API PROBE</value>
+  </data>
+  <data name="AuthUnreachableBadge" xml:space="preserve">
+    <value>UNREACHABLE</value>
+  </data>
+  <data name="AuthInvalidEndpointError" xml:space="preserve">
+    <value>Enter a valid http:// or https:// API base URL (e.g. http://10.0.2.2:5080).</value>
+  </data>
+  <data name="AuthEndpointUpdated" xml:space="preserve">
+    <value>API endpoint updated to {0}</value>
+  </data>
+  <data name="AuthHealthOkFormat" xml:space="preserve">
+    <value>{0} · {1}</value>
+  </data>
+  <data name="AuthRegisterSuccessToast" xml:space="preserve">
+    <value>Account created — welcome, {0}!</value>
+  </data>
+  <data name="AuthLoginSuccessToast" xml:space="preserve">
+    <value>Signed in as {0}</value>
+  </data>
+  <data name="AuthStaffDealerUnassignedError" xml:space="preserve">
+    <value>DealerStaff account is not bound to an active dealership branch.</value>
+  </data>
+  <data name="AuthSecurityNotice" xml:space="preserve">
+    <value>Sign in with your registered Customer or DealerStaff credentials.</value>
+  </data>
+  <data name="AdminNoticePageTitle" xml:space="preserve">
+    <value>Admin Web Console</value>
+  </data>
+  <data name="AdminNoticeBadge" xml:space="preserve">
+    <value>PLATFORM ADMIN · 32 PERMISSIONS</value>
+  </data>
+  <data name="AdminNoticeTitle" xml:space="preserve">
+    <value>Web Admin Console Required</value>
+  </data>
+  <data name="AdminNoticeSignedInAs" xml:space="preserve">
+    <value>Signed in as {0}</value>
+  </data>
+  <data name="AdminNoticeWhyTitle" xml:space="preserve">
+    <value>Why is Admin routed to Web HQ?</value>
+  </data>
+  <data name="AdminNoticeDescription" xml:space="preserve">
+    <value>Platform Admin governance (Chart.js multi-dealer analytics, dealer provisioning, loyalty tier rules, and OEM catalogs) is optimized for the desktop Web Admin Console.</value>
+  </data>
+  <data name="AdminNoticeDesktopUrlLabel" xml:space="preserve">
+    <value>DESKTOP WEB CONSOLE URL</value>
+  </data>
+  <data name="AdminNoticeOpenWebCta" xml:space="preserve">
+    <value>Open Web Admin Console</value>
+  </data>
+  <data name="AdminNoticeSwitchAccountCta" xml:space="preserve">
+    <value>Sign Out &amp; Switch to Rider / Staff Account</value>
+  </data>
+  <data name="AdminNoticeMobileBoundaryNote" xml:space="preserve">
+    <value>Mobile app is dedicated to Customer Riders and Branch DealerStaff.</value>
+  </data>
+  <data name="HomePageTitle" xml:space="preserve">
+    <value>Rider Home</value>
+  </data>
+  <data name="HomeEyebrow" xml:space="preserve">
+    <value>RIDER FIELD COCKPIT</value>
+  </data>
+  <data name="HomeWelcomeBack" xml:space="preserve">
+    <value>Welcome back</value>
+  </data>
+  <data name="HomeHelloUser" xml:space="preserve">
+    <value>Hello, {0}</value>
+  </data>
+  <data name="HomeUnreadBadgeFormat" xml:space="preserve">
+    <value>{0} Unread</value>
+  </data>
+  <data name="HomeOfflineBanner" xml:space="preserve">
+    <value>Offline mode — displaying encrypted SQLCipher cache ({0}).</value>
+  </data>
+  <data name="HomeMaintenanceDueEyebrow" xml:space="preserve">
+    <value>VIN MAINTENANCE DUE</value>
+  </data>
+  <data name="HomeDueSoonSingle" xml:space="preserve">
+    <value>{0} needs periodic service soon.</value>
+  </data>
+  <data name="HomeDueSoonPlural" xml:space="preserve">
+    <value>{0} need periodic service soon.</value>
+  </data>
+  <data name="HomeBookNowCta" xml:space="preserve">
+    <value>Book Now</value>
+  </data>
+  <data name="HomeTileGarage" xml:space="preserve">
+    <value>VIN Garage</value>
+  </data>
+  <data name="HomeTileBookService" xml:space="preserve">
+    <value>Book Service</value>
+  </data>
+  <data name="HomeTilePassbook" xml:space="preserve">
+    <value>Passbook &amp; QR</value>
+  </data>
+  <data name="HomeTileWarranty" xml:space="preserve">
+    <value>VIN Warranty</value>
+  </data>
+  <data name="HomeUpcomingBookingsTitle" xml:space="preserve">
+    <value>Upcoming Service Bookings</value>
+  </data>
+  <data name="HomeScheduledTestDrivesTitle" xml:space="preserve">
+    <value>Scheduled Test Rides</value>
+  </data>
+  <data name="HomeEmptyBookingsTitle" xml:space="preserve">
+    <value>No upcoming workshop bookings</value>
+  </data>
+  <data name="HomeEmptyBookingsDesc" xml:space="preserve">
+    <value>Schedule periodic OEM maintenance to protect your 36-month warranty.</value>
+  </data>
+  <data name="HomeEmptyTestDrivesTitle" xml:space="preserve">
+    <value>No scheduled test rides</value>
+  </data>
+  <data name="HomeEmptyTestDrivesDesc" xml:space="preserve">
+    <value>Pick a flagship motorcycle in Showroom to schedule a guided ride.</value>
+  </data>
+  <data name="HomeSignInOnlineTierHint" xml:space="preserve">
+    <value>Sign in online to sync tier status</value>
+  </data>
+  <data name="HomeQuickActionsTitle" xml:space="preserve">
+    <value>Quick Actions</value>
+  </data>
+  <data name="HomeGaragePreviewTitle" xml:space="preserve">
+    <value>My VIN Vehicles</value>
+  </data>
+  <data name="HomeViewAllCta" xml:space="preserve">
+    <value>View All</value>
+  </data>
+  <data name="GaragePageTitle" xml:space="preserve">
+    <value>Digital VIN Garage</value>
+  </data>
+  <data name="GarageEyebrow" xml:space="preserve">
+    <value>ISO 3779 VEHICLE FLEET</value>
+  </data>
+  <data name="GarageTitle" xml:space="preserve">
+    <value>My Digital VIN Garage</value>
+  </data>
+  <data name="GarageSubtitle" xml:space="preserve">
+    <value>Track odometers, OEM maintenance milestones, and scan frame VINs.</value>
+  </data>
+  <data name="GarageOfflineBanner" xml:space="preserve">
+    <value>Offline garage cache ({0}). Odometer updates queue automatically.</value>
+  </data>
+  <data name="GarageRegisteredTitle" xml:space="preserve">
+    <value>Registered Motorcycles</value>
+  </data>
+  <data name="GarageCurrentOdometerLabel" xml:space="preserve">
+    <value>CURRENT ODOMETER</value>
+  </data>
+  <data name="GarageNextMilestoneLabel" xml:space="preserve">
+    <value>NEXT MILESTONE</value>
+  </data>
+  <data name="GarageKmFormat" xml:space="preserve">
+    <value>{0:N0} km</value>
+  </data>
+  <data name="GarageSelectScheduleCta" xml:space="preserve">
+    <value>Select &amp; View Schedule</value>
+  </data>
+  <data name="GarageActiveOdometerEyebrow" xml:space="preserve">
+    <value>ACTIVE VEHICLE ODOMETER &amp; REMINDERS</value>
+  </data>
+  <data name="GarageNewOdometerPlaceholder" xml:space="preserve">
+    <value>New odometer (km)</value>
+  </data>
+  <data name="GarageUpdateKmCta" xml:space="preserve">
+    <value>Update km</value>
+  </data>
+  <data name="GarageBookForVehicleCta" xml:space="preserve">
+    <value>Book Service for This Motorcycle</value>
+  </data>
+  <data name="GarageTargetMileageFormat" xml:space="preserve">
+    <value>Target: {0:N0} km</value>
+  </data>
+  <data name="GarageRegisterExternalEyebrow" xml:space="preserve">
+    <value>REGISTER EXTERNAL VIN</value>
+  </data>
+  <data name="GarageVinPlaceholder" xml:space="preserve">
+    <value>17-char ISO 3779 VIN</value>
+  </data>
+  <data name="GarageScanVinCta" xml:space="preserve">
+    <value>Scan VIN</value>
+  </data>
+  <data name="GarageSelectModelTitle" xml:space="preserve">
+    <value>Select Model</value>
+  </data>
+  <data name="GarageLicensePlatePlaceholder" xml:space="preserve">
+    <value>License plate</value>
+  </data>
+  <data name="GarageColorPlaceholder" xml:space="preserve">
+    <value>Vehicle color</value>
+  </data>
+  <data name="GarageRegisterCta" xml:space="preserve">
+    <value>Register Vehicle to Garage</value>
+  </data>
+  <data name="GarageValidVinMessage" xml:space="preserve">
+    <value>Valid ISO 3779 VIN</value>
+  </data>
+  <data name="GarageScanPromptTitle" xml:space="preserve">
+    <value>Scan 17-Character Chassis VIN</value>
+  </data>
+  <data name="GarageVehicleAddedSuccess" xml:space="preserve">
+    <value>Vehicle {0} added to your Digital VIN Garage.</value>
+  </data>
+  <data name="GarageVehicleRegisteredToast" xml:space="preserve">
+    <value>Vehicle {0} registered!</value>
+  </data>
+  <data name="GarageOdometerRegressionError" xml:space="preserve">
+    <value>Odometer cannot move backward below {0}.</value>
+  </data>
+  <data name="GarageOdometerQueuedOffline" xml:space="preserve">
+    <value>Offline: odometer update queued for automatic sync.</value>
+  </data>
+  <data name="GarageOdometerUpdated" xml:space="preserve">
+    <value>Odometer updated to {0}.</value>
+  </data>
+  <data name="GarageOdometerQueuedDropped" xml:space="preserve">
+    <value>Connection dropped: odometer update queued for sync.</value>
+  </data>
+  <data name="GarageEmptyTitle" xml:space="preserve">
+    <value>Your VIN Garage is empty</value>
+  </data>
+  <data name="GarageEmptyDesc" xml:space="preserve">
+    <value>Motorcycles bought at our showrooms onboard automatically, or scan an external 17-char VIN.</value>
+  </data>
+  <data name="BookingPageTitle" xml:space="preserve">
+    <value>Book &amp; Service</value>
+  </data>
+  <data name="BookingEyebrow" xml:space="preserve">
+    <value>CONCURRENCY-SAFE BAY BOOKING · ROWVERSION</value>
+  </data>
+  <data name="BookingTitle" xml:space="preserve">
+    <value>3-Step Service Wizard</value>
+  </data>
+  <data name="BookingSubtitle" xml:space="preserve">
+    <value>Book workshop bays, recover 409 slot races, rate +25 pts CSAT, and share receipts.</value>
+  </data>
+  <data name="BookingConflictBannerTitle" xml:space="preserve">
+    <value>409 SLOT CAPACITY CONFLICT — AUTO-RELOADED</value>
+  </data>
+  <data name="BookingStep1Chip" xml:space="preserve">
+    <value>1. Vehicle</value>
+  </data>
+  <data name="BookingStep2Chip" xml:space="preserve">
+    <value>2. Bay Slot</value>
+  </data>
+  <data name="BookingStep3Chip" xml:space="preserve">
+    <value>3. Confirm</value>
+  </data>
+  <data name="BookingStep1Header" xml:space="preserve">
+    <value>STEP 1 OF 3 — VEHICLE &amp; BRANCH</value>
+  </data>
+  <data name="BookingStep2Header" xml:space="preserve">
+    <value>STEP 2 OF 3 — LIVE BAY AVAILABILITY</value>
+  </data>
+  <data name="BookingStep3Header" xml:space="preserve">
+    <value>STEP 3 OF 3 — VOUCHER &amp; CONFIRM</value>
+  </data>
+  <data name="BookingVehicleLabel" xml:space="preserve">
+    <value>Vehicle (VIN)</value>
+  </data>
+  <data name="BookingSelectVehicleTitle" xml:space="preserve">
+    <value>Select Motorcycle</value>
+  </data>
+  <data name="BookingDealerLabel" xml:space="preserve">
+    <value>Dealership Branch</value>
+  </data>
+  <data name="BookingSelectDealerTitle" xml:space="preserve">
+    <value>Select Dealer</value>
+  </data>
+  <data name="BookingServiceTypeLabel" xml:space="preserve">
+    <value>Service Type</value>
+  </data>
+  <data name="BookingServiceTypeTitle" xml:space="preserve">
+    <value>Service Type</value>
+  </data>
+  <data name="BookingNextChooseSlotCta" xml:space="preserve">
+    <value>Next: Choose Bay Slot</value>
+  </data>
+  <data name="BookingSelectOpenBayLabel" xml:space="preserve">
+    <value>Select Open Workshop Bay</value>
+  </data>
+  <data name="BookingAvailableSlotsTitle" xml:space="preserve">
+    <value>Available Bay Slots</value>
+  </data>
+  <data name="BookingNextReviewCta" xml:space="preserve">
+    <value>Next: Review</value>
+  </data>
+  <data name="BookingReserveVoucherLabel" xml:space="preserve">
+    <value>Reserve Service Voucher (Optional)</value>
+  </data>
+  <data name="BookingNoVoucherTitle" xml:space="preserve">
+    <value>No voucher attached</value>
+  </data>
+  <data name="BookingNotesLabel" xml:space="preserve">
+    <value>Reported Notes / Symptoms</value>
+  </data>
+  <data name="BookingNotesPlaceholder" xml:space="preserve">
+    <value>Describe requested service or symptoms</value>
+  </data>
+  <data name="BookingConfirmCta" xml:space="preserve">
+    <value>Confirm Booking</value>
+  </data>
+  <data name="BookingMyBookingsTitle" xml:space="preserve">
+    <value>My Workshop Bookings</value>
+  </data>
+  <data name="BookingCancelCta" xml:space="preserve">
+    <value>Cancel Booking</value>
+  </data>
+  <data name="BookingCompletedReceiptsTitle" xml:space="preserve">
+    <value>Completed Service Receipts &amp; +25 Pts CSAT</value>
+  </data>
+  <data name="BookingShareReceiptCta" xml:space="preserve">
+    <value>Share Receipt</value>
+  </data>
+  <data name="BookingRateCsatCta" xml:space="preserve">
+    <value>Rate +25 Pts</value>
+  </data>
+  <data name="BookingImmutableReceiptQrEyebrow" xml:space="preserve">
+    <value>IMMUTABLE SERVICE RECEIPT QR</value>
+  </data>
+  <data name="BookingCsatEyebrow" xml:space="preserve">
+    <value>5-STAR CSAT REVIEW · +25 AVAILABLE POINTS</value>
+  </data>
+  <data name="BookingRatingInvoiceFormat" xml:space="preserve">
+    <value>Rating Invoice {0}</value>
+  </data>
+  <data name="BookingSelectedRatingFormat" xml:space="preserve">
+    <value>Selected Rating: {0} / 5 Stars</value>
+  </data>
+  <data name="BookingQualityTagsPlaceholder" xml:space="preserve">
+    <value>Optional comma-separated quality tags</value>
+  </data>
+  <data name="BookingReviewCommentPlaceholder" xml:space="preserve">
+    <value>Share your workshop bay experience...</value>
+  </data>
+  <data name="BookingSubmitCsatCta" xml:space="preserve">
+    <value>Submit CSAT Review (+25 Pts)</value>
+  </data>
+  <data name="BookingOnlineRequiredError" xml:space="preserve">
+    <value>Service bay booking requires a live online connection to lock bay capacity.</value>
+  </data>
+  <data name="BookingSelectRequiredError" xml:space="preserve">
+    <value>Please choose a vehicle, dealership, and available service bay slot.</value>
+  </data>
+  <data name="BookingSlotConflictRecovery" xml:space="preserve">
+    <value>That bay slot was just claimed by another rider. Live availability has been refreshed — choose the next open slot.</value>
+  </data>
+  <data name="BookingSlotConflictSnackbar" xml:space="preserve">
+    <value>Slot just filled — live bay availability refreshed.</value>
+  </data>
+  <data name="BookingConfirmedSuccess" xml:space="preserve">
+    <value>Booking {0} confirmed for {1} ({2}).</value>
+  </data>
+  <data name="BookingConfirmedToast" xml:space="preserve">
+    <value>Booking {0} confirmed!</value>
+  </data>
+  <data name="BookingCancelledReasonDefault" xml:space="preserve">
+    <value>Cancelled by customer via mobile app.</value>
+  </data>
+  <data name="BookingCancelledSuccess" xml:space="preserve">
+    <value>Booking {0} cancelled.</value>
+  </data>
+  <data name="BookingSelectInvoiceToRateError" xml:space="preserve">
+    <value>Select a completed service invoice to rate.</value>
+  </data>
+  <data name="BookingCsatQueuedOffline" xml:space="preserve">
+    <value>Offline: your CSAT review (+25 pts bonus) is queued and will submit automatically once online.</value>
+  </data>
+  <data name="BookingCsatSubmittedSuccess" xml:space="preserve">
+    <value>Thank you! Review {0} submitted — +{1} AvailablePoints awarded.</value>
+  </data>
+  <data name="BookingCsatSubmittedSnackbar" xml:space="preserve">
+    <value>Review submitted! +{0} pts awarded.</value>
+  </data>
+  <data name="BookingCsatQueuedDropped" xml:space="preserve">
+    <value>Connection dropped: CSAT review queued for automatic sync.</value>
+  </data>
+  <data name="BookingSelectTestDriveError" xml:space="preserve">
+    <value>Select a dealer and motorcycle model for your test-drive.</value>
+  </data>
+  <data name="BookingTestDriveRequestedSuccess" xml:space="preserve">
+    <value>Test-drive {0} requested at {1}.</value>
+  </data>
+  <data name="BookingTestDriveRequestedToast" xml:space="preserve">
+    <value>Test-drive {0} requested!</value>
+  </data>
+  <data name="BookingReceiptShareTitle" xml:space="preserve">
+    <value>Service Receipt {0}</value>
+  </data>
+  <data name="BookingReceiptShareBody" xml:space="preserve">
+    <value>Receipt {0}
+Dealer: {1}
+VIN: {2} ({3})
+Net Paid: {4}
+Loyalty Earned: +{5} pts ({6})
+Verify Hash: {7}</value>
+  </data>
+  <data name="BookingSlotOpenBaysFormat" xml:space="preserve">
+    <value>{0} open</value>
+  </data>
+  <data name="BookingSlotBookedRatioFormat" xml:space="preserve">
+    <value>Booked: {0} / {1} bays · RowVersion</value>
+  </data>
+  <data name="BookingSlotFreeBadgeFormat" xml:space="preserve">
+    <value>{0} OPEN</value>
+  </data>
+  <data name="BookingEmptyTitle" xml:space="preserve">
+    <value>No workshop bookings yet</value>
+  </data>
+  <data name="LoyaltyPageTitle" xml:space="preserve">
+    <value>Loyalty Passbook</value>
+  </data>
+  <data name="LoyaltyPassbookEyebrow" xml:space="preserve">
+    <value>APEX MOTO PASSBOOK</value>
+  </data>
+  <data name="LoyaltySpendableBalance" xml:space="preserve">
+    <value>SPENDABLE BALANCE</value>
+  </data>
+  <data name="LoyaltyQualifyingLifetime" xml:space="preserve">
+    <value>QUALIFYING LIFETIME</value>
+  </data>
+  <data name="LoyaltyLifetimeSpendLabel" xml:space="preserve">
+    <value>Lifetime Qualifying Spend</value>
+  </data>
+  <data name="LoyaltyOfflineBanner" xml:space="preserve">
+    <value>Offline Passbook mode ({0}) — your Voucher QR codes remain scannable offline.</value>
+  </data>
+  <data name="LoyaltyTabVouchers" xml:space="preserve">
+    <value>QR Wallet</value>
+  </data>
+  <data name="LoyaltyTabStore" xml:space="preserve">
+    <value>Store</value>
+  </data>
+  <data name="LoyaltyTabLedger" xml:space="preserve">
+    <value>Ledger</value>
+  </data>
+  <data name="LoyaltyTabReceipts" xml:space="preserve">
+    <value>Receipts</value>
+  </data>
+  <data name="LoyaltyCounterQrEyebrow" xml:space="preserve">
+    <value>COUNTER SCANNER QR (100% OFFLINE READY)</value>
+  </data>
+  <data name="LoyaltyExpiresFormat" xml:space="preserve">
+    <value>Expires: {0}</value>
+  </data>
+  <data name="LoyaltyScopeFormat" xml:space="preserve">
+    <value>Scope: {0}</value>
+  </data>
+  <data name="LoyaltyDisplayQrCta" xml:space="preserve">
+    <value>Display QR Code</value>
+  </data>
+  <data name="LoyaltyRedeemCta" xml:space="preserve">
+    <value>Redeem</value>
+  </data>
+  <data name="LoyaltyBalancePrefix" xml:space="preserve">
+    <value>Bal: {0:N0}</value>
+  </data>
+  <data name="LoyaltySalesReceiptQrEyebrow" xml:space="preserve">
+    <value>OFFICIAL SHOWROOM RECEIPT QR</value>
+  </data>
+  <data name="LoyaltyShareSalesReceiptCta" xml:space="preserve">
+    <value>View &amp; Share Sales Receipt</value>
+  </data>
+  <data name="LoyaltySyncingTiers" xml:space="preserve">
+    <value>Syncing membership tiers...</value>
+  </data>
+  <data name="LoyaltyTopTierUnlocked" xml:space="preserve">
+    <value>Top tier unlocked</value>
+  </data>
+  <data name="LoyaltyNextTierHintFormat" xml:space="preserve">
+    <value>{0} qualifying pts to {1} ({2}x)</value>
+  </data>
+  <data name="LoyaltyRedeemOnlineRequired" xml:space="preserve">
+    <value>Voucher redemption requires a live connection to protect your loyalty balance.</value>
+  </data>
+  <data name="LoyaltyVoucherRedeemedSuccess" xml:space="preserve">
+    <value>Redeemed {0}! Ready for counter QR scan.</value>
+  </data>
+  <data name="LoyaltyVoucherRedeemedSnackbar" xml:space="preserve">
+    <value>Voucher {0} redeemed! Ready for QR scan.</value>
+  </data>
+  <data name="LoyaltySalesReceiptShareTitle" xml:space="preserve">
+    <value>Sales Receipt {0}</value>
+  </data>
+  <data name="LoyaltySalesReceiptShareBody" xml:space="preserve">
+    <value>Sales Receipt {0}
+Dealer: {1}
+Model: {2} · VIN {3}
+Final Paid: {4}
+Points Earned: +{5} pts ({6})
+Verify Hash: {7}</value>
+  </data>
+  <data name="LoyaltyEmptyVouchersTitle" xml:space="preserve">
+    <value>No redeemed vouchers yet</value>
+  </data>
+  <data name="LoyaltyEmptyVouchersDesc" xml:space="preserve">
+    <value>Redeem available points in Store to unlock counter-scannable discount QRs.</value>
+  </data>
+  <data name="LoyaltyEmptyLedgerTitle" xml:space="preserve">
+    <value>No point transactions yet</value>
+  </data>
+  <data name="LoyaltyEmptyLedgerDesc" xml:space="preserve">
+    <value>Points credit automatically on completed showroom orders, workshop invoices, and CSAT reviews.</value>
+  </data>
+  <data name="LoyaltyEmptyReceiptsTitle" xml:space="preserve">
+    <value>No showroom purchase receipts</value>
+  </data>
+  <data name="LoyaltyEmptyStoreTitle" xml:space="preserve">
+    <value>No vouchers currently open</value>
+  </data>
+  <data name="LoyaltyFormulaCaption" xml:space="preserve">
+    <value>10,000 VND net spend = 1 base pt x Tier Multiplier</value>
+  </data>
+  <data name="LoyaltyTierPillFormat" xml:space="preserve">
+    <value>{0} · {1:0.00}x</value>
+  </data>
+  <data name="WarrantyPageTitle" xml:space="preserve">
+    <value>VIN Warranty</value>
+  </data>
+  <data name="WarrantyEyebrow" xml:space="preserve">
+    <value>OEM VIN WARRANTY COVERAGE</value>
+  </data>
+  <data name="WarrantyTitle" xml:space="preserve">
+    <value>VIN Warranty Claims</value>
+  </data>
+  <data name="WarrantySubtitle" xml:space="preserve">
+    <value>File defect claims directly to any flagship dealership and track real-time adjudication.</value>
+  </data>
+  <data name="WarrantyFileClaimEyebrow" xml:space="preserve">
+    <value>FILE OEM WARRANTY CLAIM</value>
+  </data>
+  <data name="WarrantyCoveredBadge" xml:space="preserve">
+    <value>OEM COVERED</value>
+  </data>
+  <data name="WarrantyOutOfLimitBadge" xml:space="preserve">
+    <value>OUT OF LIMIT</value>
+  </data>
+  <data name="WarrantySelectVehiclePrompt" xml:space="preserve">
+    <value>Select a registered motorcycle to check its OEM warranty coverage.</value>
+  </data>
+  <data name="WarrantyCheckingCatalog" xml:space="preserve">
+    <value>Checking OEM warranty coverage from motorcycle catalog...</value>
+  </data>
+  <data name="WarrantyEligibleFormat" xml:space="preserve">
+    <value>Eligible · Valid until {0} &amp; {1} ({2}m OEM)</value>
+  </data>
+  <data name="WarrantyOutsideLimitFormat" xml:space="preserve">
+    <value>Outside OEM limit ({0}m / {1})</value>
+  </data>
+  <data name="WarrantyVehicleLabel" xml:space="preserve">
+    <value>Vehicle (VIN)</value>
+  </data>
+  <data name="WarrantySelectVehicleTitle" xml:space="preserve">
+    <value>Select Vehicle</value>
+  </data>
+  <data name="WarrantyDealerLabel" xml:space="preserve">
+    <value>Servicing Dealership</value>
+  </data>
+  <data name="WarrantySelectDealerTitle" xml:space="preserve">
+    <value>Select Branch</value>
+  </data>
+  <data name="WarrantyDefectCategoryLabel" xml:space="preserve">
+    <value>Defect Category</value>
+  </data>
+  <data name="WarrantySymptomLabel" xml:space="preserve">
+    <value>Defect Symptom Description (min 10 chars)</value>
+  </data>
+  <data name="WarrantySymptomPlaceholder" xml:space="preserve">
+    <value>Describe fault symptoms, warning lights, or abnormal noise...</value>
+  </data>
+  <data name="WarrantySubmitCta" xml:space="preserve">
+    <value>Submit VIN Warranty Claim</value>
+  </data>
+  <data name="WarrantySubmittedTitle" xml:space="preserve">
+    <value>Submitted Warranty Claims</value>
+  </data>
+  <data name="WarrantyCategoryPrefixed" xml:space="preserve">
+    <value>Category: {0}</value>
+  </data>
+  <data name="WarrantyCoveredAmountLabel" xml:space="preserve">
+    <value>OEM Covered Amount</value>
+  </data>
+  <data name="WarrantyResolutionPrefixed" xml:space="preserve">
+    <value>Resolution: {0}</value>
+  </data>
+  <data name="WarrantyRejectedPrefixed" xml:space="preserve">
+    <value>Rejected: {0}</value>
+  </data>
+  <data name="WarrantyQueuedOffline" xml:space="preserve">
+    <value>Offline: VIN warranty claim queued and will submit automatically once online.</value>
+  </data>
+  <data name="WarrantySubmittedSuccess" xml:space="preserve">
+    <value>Warranty claim {0} submitted to {1}.</value>
+  </data>
+  <data name="WarrantySubmittedToast" xml:space="preserve">
+    <value>Warranty claim {0} submitted!</value>
+  </data>
+  <data name="WarrantyQueuedDropped" xml:space="preserve">
+    <value>Connection lost: warranty claim queued for sync.</value>
+  </data>
+  <data name="WarrantyEmptyTitle" xml:space="preserve">
+    <value>No warranty claims filed</value>
+  </data>
+  <data name="StaffWorkbenchPageTitle" xml:space="preserve">
+    <value>Live Bay Workbench</value>
+  </data>
+  <data name="StaffWorkbenchEyebrow" xml:space="preserve">
+    <value>DEALER-SCOPED WORKSHOP OPS</value>
+  </data>
+  <data name="StaffWorkbenchDefaultHeader" xml:space="preserve">
+    <value>Dealer Workbench</value>
+  </data>
+  <data name="StaffWorkbenchPendingKpi" xml:space="preserve">
+    <value>PENDING / CONFIRMED</value>
+  </data>
+  <data name="StaffWorkbenchActiveBayKpi" xml:space="preserve">
+    <value>ACTIVE IN BAY</value>
+  </data>
+  <data name="StaffWorkbenchSearchPlaceholder" xml:space="preserve">
+    <value>Filter by VIN, booking number, or rider</value>
+  </data>
+  <data name="StaffWorkbenchScanCta" xml:space="preserve">
+    <value>Scan VIN/QR</value>
+  </data>
+  <data name="StaffWorkbenchScannedIntakeTitle" xml:space="preserve">
+    <value>SCANNED VIN INTAKE MATCH</value>
+  </data>
+  <data name="StaffWorkbenchSwipeTip" xml:space="preserve">
+    <value>Tip: Swipe right on active cards for instant Bay Check-In</value>
+  </data>
+  <data name="StaffWorkbenchCheckInCta" xml:space="preserve">
+    <value>Check In</value>
+  </data>
+  <data name="StaffWorkbenchStartBayCta" xml:space="preserve">
+    <value>Start Bay</value>
+  </data>
+  <data name="StaffWorkbenchNoShowCta" xml:space="preserve">
+    <value>No-Show</value>
+  </data>
+  <data name="StaffWorkbenchInvoiceCta" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="StaffWorkbenchScanPrompt" xml:space="preserve">
+    <value>Scan VIN Sticker or Booking QR</value>
+  </data>
+  <data name="StaffWorkbenchBookingLocated" xml:space="preserve">
+    <value>Booking {0} located ({1}).</value>
+  </data>
+  <data name="StaffWorkbenchBookingLoaded" xml:space="preserve">
+    <value>Loaded booking {0}.</value>
+  </data>
+  <data name="StaffWorkbenchBookingQrNotFound" xml:space="preserve">
+    <value>Booking QR not found in your dealership queue.</value>
+  </data>
+  <data name="StaffWorkbenchVinIntakeMatched" xml:space="preserve">
+    <value>VIN intake matched: {0} ({1}).</value>
+  </data>
+  <data name="StaffWorkbenchFilteredByVin" xml:space="preserve">
+    <value>Filtered workbench by VIN {0}.</value>
+  </data>
+  <data name="StaffWorkbenchUnrecognizedBarcode" xml:space="preserve">
+    <value>Unrecognized barcode/QR payload. Scan a 17-char VIN or Booking QR.</value>
+  </data>
+  <data name="StaffWorkbenchConflictError" xml:space="preserve">
+    <value>This booking was updated by another staff member. Refreshing bay queue...</value>
+  </data>
+  <data name="StaffWorkbenchConflictSnackbar" xml:space="preserve">
+    <value>Booking updated elsewhere — refreshing bay queue.</value>
+  </data>
+  <data name="StaffWorkbenchStatusMoved" xml:space="preserve">
+    <value>Booking {0} moved to {1}.</value>
+  </data>
+  <data name="StaffWorkbenchStatusToast" xml:space="preserve">
+    <value>Booking {0}: {1}</value>
+  </data>
+  <data name="StaffWorkbenchEmptyTitle" xml:space="preserve">
+    <value>No appointments in this lane</value>
+  </data>
+  <data name="StaffWorkbenchConfirmCta" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="StaffWorkbenchAllLane" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="StaffWorkbenchLiveTag" xml:space="preserve">
+    <value>LIVE SIGNALR</value>
+  </data>
+  <data name="InvoicePageTitle" xml:space="preserve">
+    <value>Settle Workshop Invoice</value>
+  </data>
+  <data name="InvoiceEyebrow" xml:space="preserve">
+    <value>ATOMIC IMMUTABLE INVOICE SETTLEMENT</value>
+  </data>
+  <data name="InvoiceLoadingBooking" xml:space="preserve">
+    <value>Loading Booking...</value>
+  </data>
+  <data name="InvoiceEarnMultiplierBadge" xml:space="preserve">
+    <value>{0:0.00}x Earn</value>
+  </data>
+  <data name="InvoiceLaborSectionEyebrow" xml:space="preserve">
+    <value>WORKSHOP LABOR &amp; COMPLETION</value>
+  </data>
+  <data name="InvoiceBaseLaborLabel" xml:space="preserve">
+    <value>Base Labor (VND)</value>
+  </data>
+  <data name="InvoiceCompletionOdometerLabel" xml:space="preserve">
+    <value>Completion Odometer</value>
+  </data>
+  <data name="InvoiceWorkSummaryPlaceholder" xml:space="preserve">
+    <value>Work summary notes...</value>
+  </data>
+  <data name="InvoiceCompatiblePartsEyebrow" xml:space="preserve">
+    <value>COMPATIBLE OEM SPARE PARTS</value>
+  </data>
+  <data name="InvoiceItemizedLinesEyebrow" xml:space="preserve">
+    <value>ITEMIZED SERVICE INVOICE LINES</value>
+  </data>
+  <data name="InvoiceVoucherQrEyebrow" xml:space="preserve">
+    <value>CUSTOMER VOUCHER QR</value>
+  </data>
+  <data name="InvoiceVoucherCodePlaceholder" xml:space="preserve">
+    <value>Scan QR or enter voucher code</value>
+  </data>
+  <data name="InvoiceScanQrCta" xml:space="preserve">
+    <value>Scan QR</value>
+  </data>
+  <data name="InvoicePickVoucherTitle" xml:space="preserve">
+    <value>Pick eligible customer voucher</value>
+  </data>
+  <data name="InvoiceClearVoucherCta" xml:space="preserve">
+    <value>Clear Attached Voucher</value>
+  </data>
+  <data name="InvoiceSettledReceiptEyebrow" xml:space="preserve">
+    <value>INVOICE SETTLED — VERIFIABLE RECEIPT</value>
+  </data>
+  <data name="InvoiceShareReceiptCta" xml:space="preserve">
+    <value>Share Official Service Receipt</value>
+  </data>
+  <data name="InvoiceGrossDiscountLabel" xml:space="preserve">
+    <value>Gross / Discount</value>
+  </data>
+  <data name="InvoiceDiscountFormat" xml:space="preserve">
+    <value>- {0}</value>
+  </data>
+  <data name="InvoiceNetPaidLabel" xml:space="preserve">
+    <value>NET PAID (TWO-STEP FLOOR)</value>
+  </data>
+  <data name="InvoicePreviewPointsFormat" xml:space="preserve">
+    <value>+{0:N0} pts</value>
+  </data>
+  <data name="InvoiceNextTierFormat" xml:space="preserve">
+    <value>Next Tier: {0}</value>
+  </data>
+  <data name="InvoiceTierUpgradeFormat" xml:space="preserve">
+    <value>TIER UPGRADE TRIGGERED: {0}!</value>
+  </data>
+  <data name="InvoiceSettleCta" xml:space="preserve">
+    <value>Settle Immutable Invoice</value>
+  </data>
+  <data name="InvoiceDefaultLaborDesc" xml:space="preserve">
+    <value>Periodic Workshop Labor</value>
+  </data>
+  <data name="InvoiceLaborValidationError" xml:space="preserve">
+    <value>Enter a labor description and positive VND price.</value>
+  </data>
+  <data name="InvoiceScanVoucherPrompt" xml:space="preserve">
+    <value>Scan Customer Voucher QR</value>
+  </data>
+  <data name="InvoiceVoucherAppliedToast" xml:space="preserve">
+    <value>Voucher {0} applied.</value>
+  </data>
+  <data name="InvoiceInvalidVoucherQrError" xml:space="preserve">
+    <value>Scanned QR is not a valid dealer://voucher/v1 payload.</value>
+  </data>
+  <data name="InvoiceVoucherAttachedSuccess" xml:space="preserve">
+    <value>Voucher {0} attached to invoice.</value>
+  </data>
+  <data name="InvoiceNoBookingError" xml:space="preserve">
+    <value>No active workshop booking loaded.</value>
+  </data>
+  <data name="InvoiceEmptyAmountError" xml:space="preserve">
+    <value>Add at least one spare part or positive labor charge before settling.</value>
+  </data>
+  <data name="InvoiceSettledSuccess" xml:space="preserve">
+    <value>Invoice {0} settled! Awarded +{1} pts ({2}).</value>
+  </data>
+  <data name="InvoiceSettledSnackbar" xml:space="preserve">
+    <value>Invoice {0} settled (+{1} pts).</value>
+  </data>
+  <data name="InvoiceShareFallbackBody" xml:space="preserve">
+    <value>Invoice {0}
+VIN: {1}
+Net Paid: {2}
+Points Earned: +{3} pts</value>
+  </data>
+  <data name="InvoiceShareReceiptBody" xml:space="preserve">
+    <value>Receipt {0}
+VIN: {1}
+Net Paid: {2}
+Points Earned: +{3} pts
+Hash: {4}</value>
+  </data>
+  <data name="SalesPageTitle" xml:space="preserve">
+    <value>Showroom VIN Sales</value>
+  </data>
+  <data name="SalesEyebrow" xml:space="preserve">
+    <value>ATOMIC SALES ORDER &amp; AUTO-ONBOARDING</value>
+  </data>
+  <data name="SalesTitle" xml:space="preserve">
+    <value>Showroom VIN Sales Desk</value>
+  </data>
+  <data name="SalesSubtitle" xml:space="preserve">
+    <value>Completing a sale atomically marks the VIN Sold, onboards to Customer Garage &amp; awards points.</value>
+  </data>
+  <data name="SalesCompleteSectionEyebrow" xml:space="preserve">
+    <value>COMPLETE SHOWROOM SALE</value>
+  </data>
+  <data name="SalesAvailableVinLabel" xml:space="preserve">
+    <value>Available Branch VIN Unit</value>
+  </data>
+  <data name="SalesSelectAvailableVinTitle" xml:space="preserve">
+    <value>Select Available VIN</value>
+  </data>
+  <data name="SalesBuyerEmailPlaceholder" xml:space="preserve">
+    <value>Buyer registered email</value>
+  </data>
+  <data name="SalesLicensePlatePlaceholder" xml:space="preserve">
+    <value>License Plate</value>
+  </data>
+  <data name="SalesVoucherCodePlaceholder" xml:space="preserve">
+    <value>Voucher code</value>
+  </data>
+  <data name="SalesCompleteSaleCta" xml:space="preserve">
+    <value>Complete Showroom VIN Sale</value>
+  </data>
+  <data name="SalesReceiveSectionEyebrow" xml:space="preserve">
+    <value>RECEIVE NEW VIN INTO BRANCH STOCK</value>
+  </data>
+  <data name="SalesReceiveVinPlaceholder" xml:space="preserve">
+    <value>17-char ISO 3779 VIN</value>
+  </data>
+  <data name="SalesScanVinCta" xml:space="preserve">
+    <value>Scan VIN</value>
+  </data>
+  <data name="SalesReceiveModelTitle" xml:space="preserve">
+    <value>Motorcycle Model</value>
+  </data>
+  <data name="SalesReceiveEnginePlaceholder" xml:space="preserve">
+    <value>Engine Number</value>
+  </data>
+  <data name="SalesReceiveColorPlaceholder" xml:space="preserve">
+    <value>Color Name</value>
+  </data>
+  <data name="SalesReceiveYearPlaceholder" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="SalesReceivePricePlaceholder" xml:space="preserve">
+    <value>Listed VND</value>
+  </data>
+  <data name="SalesReceiveVinCta" xml:space="preserve">
+    <value>Receive VIN Into Inventory</value>
+  </data>
+  <data name="SalesRecentOrdersTitle" xml:space="preserve">
+    <value>Recent Showroom Sales Orders</value>
+  </data>
+  <data name="SalesShareReceiptCta" xml:space="preserve">
+    <value>Share Official Sales Receipt</value>
+  </data>
+  <data name="SalesScanIntakePrompt" xml:space="preserve">
+    <value>Scan VIN Sticker for Stock Intake</value>
+  </data>
+  <data name="SalesModelEngineRequiredError" xml:space="preserve">
+    <value>Model and engine number are required.</value>
+  </data>
+  <data name="SalesVinReceivedSuccess" xml:space="preserve">
+    <value>VIN {0} received into showroom inventory.</value>
+  </data>
+  <data name="SalesVinReceivedToast" xml:space="preserve">
+    <value>VIN {0} added to showroom stock.</value>
+  </data>
+  <data name="SalesOrderCompletedSuccess" xml:space="preserve">
+    <value>Order {0} completed! VIN {1} onboarded to customer garage (+{2} pts).</value>
+  </data>
+  <data name="SalesOrderCompletedSnackbar" xml:space="preserve">
+    <value>Sale {0} completed! +{1} pts awarded.</value>
+  </data>
+  <data name="SalesReceiptShareBody" xml:space="preserve">
+    <value>Sales Receipt {0}
+Dealer: {1}
+Customer: {2}
+Vehicle: {3} · VIN {4}
+Final Paid: {5}
+Loyalty Earned: +{6} pts ({7})
+Verify Hash: {8}</value>
+  </data>
+  <data name="SlotsPageTitle" xml:space="preserve">
+    <value>Bay Capacity</value>
+  </data>
+  <data name="SlotsEyebrow" xml:space="preserve">
+    <value>ROWVERSION SERVICE BAY CAPACITY</value>
+  </data>
+  <data name="SlotsTitle" xml:space="preserve">
+    <value>Workshop Time-Slot Planner</value>
+  </data>
+  <data name="SlotsSubtitle" xml:space="preserve">
+    <value>Generate rolling 7-day bay schedules, adjust capacity, or block bays for maintenance.</value>
+  </data>
+  <data name="SlotsBatchGeneratorEyebrow" xml:space="preserve">
+    <value>BATCH BAY GENERATOR</value>
+  </data>
+  <data name="SlotsFromDateLabel" xml:space="preserve">
+    <value>From Date</value>
+  </data>
+  <data name="SlotsToDateLabel" xml:space="preserve">
+    <value>To Date</value>
+  </data>
+  <data name="SlotsDurationLabel" xml:space="preserve">
+    <value>Slot Duration (min)</value>
+  </data>
+  <data name="SlotsBaysPerSlotLabel" xml:space="preserve">
+    <value>Bays per Slot</value>
+  </data>
+  <data name="SlotsLoadCta" xml:space="preserve">
+    <value>Load Slots</value>
+  </data>
+  <data name="SlotsGenerateBatchCta" xml:space="preserve">
+    <value>Generate Batch</value>
+  </data>
+  <data name="SlotsActiveTitle" xml:space="preserve">
+    <value>Active Branch Time Slots</value>
+  </data>
+  <data name="SlotsBlockedBadge" xml:space="preserve">
+    <value>BLOCKED</value>
+  </data>
+  <data name="SlotsIncrementCapacityCta" xml:space="preserve">
+    <value>+1 Bay Capacity</value>
+  </data>
+  <data name="SlotsBlockReopenCta" xml:space="preserve">
+    <value>Block / Reopen</value>
+  </data>
+  <data name="SlotsGeneratedSuccess" xml:space="preserve">
+    <value>Generated {0} workshop bay slots.</value>
+  </data>
+  <data name="SlotsBlockedSuccess" xml:space="preserve">
+    <value>Slot {0} blocked for maintenance.</value>
+  </data>
+  <data name="SlotsReopenedSuccess" xml:space="preserve">
+    <value>Slot {0} reopened ({1} free).</value>
+  </data>
+  <data name="SlotsCapacityUpdatedSuccess" xml:space="preserve">
+    <value>Bay capacity updated to {0}.</value>
+  </data>
+  <data name="TestDrivePageTitle" xml:space="preserve">
+    <value>Test-Drive Queue</value>
+  </data>
+  <data name="TestDriveEyebrow" xml:space="preserve">
+    <value>DEMO VIN FLEET &amp; ROWVERSION LOCK</value>
+  </data>
+  <data name="TestDriveTitle" xml:space="preserve">
+    <value>Showroom Test-Drive Queue</value>
+  </data>
+  <data name="TestDriveSubtitle" xml:space="preserve">
+    <value>Assign available demo VINs, confirm ride windows, and complete showroom trials.</value>
+  </data>
+  <data name="TestDriveDemoControlsEyebrow" xml:space="preserve">
+    <value>DEMO VIN ASSIGNMENT CONTROLS</value>
+  </data>
+  <data name="TestDrivePickDemoTitle" xml:space="preserve">
+    <value>Pick Available Demo VIN</value>
+  </data>
+  <data name="TestDriveStaffNotesPlaceholder" xml:space="preserve">
+    <value>Staff handoff or cancellation notes...</value>
+  </data>
+  <data name="TestDriveAssignedDemoPrefixed" xml:space="preserve">
+    <value>Assigned Demo VIN: {0}</value>
+  </data>
+  <data name="TestDriveConfirmCta" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="TestDriveCompleteCta" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="TestDriveCancelCta" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="TestDriveCancelledReasonDefault" xml:space="preserve">
+    <value>Cancelled by dealer staff.</value>
+  </data>
+  <data name="TestDriveUpdatedSuccess" xml:space="preserve">
+    <value>Test-drive {0} updated to {1}.</value>
+  </data>
+  <data name="TestDriveUpdatedToast" xml:space="preserve">
+    <value>Test-drive {0}: {1}</value>
+  </data>
+  <data name="TestDriveEmptyTitle" xml:space="preserve">
+    <value>No test-drive requests</value>
+  </data>
+  <data name="StaffQaPageTitle" xml:space="preserve">
+    <value>Warranty &amp; CSAT</value>
+  </data>
+  <data name="StaffQaEyebrow" xml:space="preserve">
+    <value>BRANCH QUALITY &amp; OEM WARRANTY DESK</value>
+  </data>
+  <data name="StaffQaTitle" xml:space="preserve">
+    <value>Warranty Adjudication &amp; CSAT</value>
+  </data>
+  <data name="StaffQaAvgCsatLabel" xml:space="preserve">
+    <value>AVG CSAT RATING</value>
+  </data>
+  <data name="StaffQaUnansweredLabel" xml:space="preserve">
+    <value>UNANSWERED REVIEWS</value>
+  </data>
+  <data name="StaffQaTabWarranty" xml:space="preserve">
+    <value>Warranty Claims</value>
+  </data>
+  <data name="StaffQaTabCsat" xml:space="preserve">
+    <value>CSAT Reviews</value>
+  </data>
+  <data name="StaffQaAdjudicationEyebrow" xml:space="preserve">
+    <value>OEM PART COVERAGE &amp; ADJUDICATION NOTES</value>
+  </data>
+  <data name="StaffQaCoveredPartTitle" xml:space="preserve">
+    <value>Covered OEM Spare Part (Optional)</value>
+  </data>
+  <data name="StaffQaCoveredAmountLabel" xml:space="preserve">
+    <value>Covered Amount (VND)</value>
+  </data>
+  <data name="StaffQaResolutionPlaceholder" xml:space="preserve">
+    <value>Resolution notes...</value>
+  </data>
+  <data name="StaffQaRejectionPlaceholder" xml:space="preserve">
+    <value>Rejection reason (if rejecting)...</value>
+  </data>
+  <data name="StaffQaDefectPrefixed" xml:space="preserve">
+    <value>Defect: {0}</value>
+  </data>
+  <data name="StaffQaUnderReviewCta" xml:space="preserve">
+    <value>Under Review</value>
+  </data>
+  <data name="StaffQaApproveCta" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="StaffQaCompleteCta" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="StaffQaRejectCta" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="StaffQaPostReplyEyebrow" xml:space="preserve">
+    <value>POST OFFICIAL BRANCH REPLY</value>
+  </data>
+  <data name="StaffQaReplyingToFormat" xml:space="preserve">
+    <value>Replying to {0}</value>
+  </data>
+  <data name="StaffQaReplyPlaceholder" xml:space="preserve">
+    <value>Thank the rider and address their feedback...</value>
+  </data>
+  <data name="StaffQaPublishReplyCta" xml:space="preserve">
+    <value>Publish Official Reply</value>
+  </data>
+  <data name="StaffQaCsatRatingBadge" xml:space="preserve">
+    <value>{0}/5 CSAT</value>
+  </data>
+  <data name="StaffQaBranchReplyPrefixed" xml:space="preserve">
+    <value>Branch Reply: {0}</value>
+  </data>
+  <data name="StaffQaSelectToReplyCta" xml:space="preserve">
+    <value>Select to Reply</value>
+  </data>
+  <data name="StaffQaSelectReviewError" xml:space="preserve">
+    <value>Select a customer review to respond.</value>
+  </data>
+  <data name="StaffQaReplyMinLengthError" xml:space="preserve">
+    <value>Staff response must be at least 5 characters.</value>
+  </data>
+  <data name="StaffQaReplyPostedSuccess" xml:space="preserve">
+    <value>Official reply posted to review {0}.</value>
+  </data>
+  <data name="StaffQaReplyPostedToast" xml:space="preserve">
+    <value>Reply posted to {0}.</value>
+  </data>
+  <data name="StaffQaDefaultRejectionReason" xml:space="preserve">
+    <value>Outside OEM defect warranty criteria.</value>
+  </data>
+  <data name="StaffQaClaimUpdatedSuccess" xml:space="preserve">
+    <value>Claim {0} updated to {1}.</value>
+  </data>
+  <data name="StaffQaClaimUpdatedToast" xml:space="preserve">
+    <value>Claim {0}: {1}</value>
+  </data>
+  <data name="StaffQaEmptyClaimsTitle" xml:space="preserve">
+    <value>No warranty claims in branch queue</value>
+  </data>
+  <data name="NotifPageTitle" xml:space="preserve">
+    <value>Notifications &amp; Logs</value>
+  </data>
+  <data name="NotifEyebrow" xml:space="preserve">
+    <value>SIGNALR 10-EVENT FEED &amp; USER AUDIT LOGS</value>
+  </data>
+  <data name="NotifUnreadAlertsFormat" xml:space="preserve">
+    <value>{0} Unread Alerts</value>
+  </data>
+  <data name="NotifMarkAllReadCta" xml:space="preserve">
+    <value>Mark All Read</value>
+  </data>
+  <data name="NotifSyncLogsCta" xml:space="preserve">
+    <value>Sync Logs</value>
+  </data>
+  <data name="NotifAlertsFeedTab" xml:space="preserve">
+    <value>Alerts Feed</value>
+  </data>
+  <data name="NotifActivityLogsTab" xml:space="preserve">
+    <value>Activity Logs</value>
+  </data>
+  <data name="NotifOfflineNotice" xml:space="preserve">
+    <value>Offline mode: read actions and activity logs are buffered locally and sync automatically when online.</value>
+  </data>
+  <data name="NotifUnreadOnlyLabel" xml:space="preserve">
+    <value>Unread notifications only</value>
+  </data>
+  <data name="NotifDealerFeedOnlyLabel" xml:space="preserve">
+    <value>Branch-wide dealer alerts only</value>
+  </data>
+  <data name="NotifUnreadBadge" xml:space="preserve">
+    <value>UNREAD</value>
+  </data>
+  <data name="NotifMarkReadCta" xml:space="preserve">
+    <value>Mark Read</value>
+  </data>
+  <data name="NotifAuditTrailEyebrow" xml:space="preserve">
+    <value>LIVE USER ACTION AUDIT TRAIL</value>
+  </data>
+  <data name="NotifDefaultLogSummary" xml:space="preserve">
+    <value>On-device + Server correlated trail</value>
+  </data>
+  <data name="NotifSourceServerMobile" xml:space="preserve">
+    <value>Source: Server + Mobile</value>
+  </data>
+  <data name="NotifSourceLocalDevice" xml:space="preserve">
+    <value>Source: On-Device Local</value>
+  </data>
+  <data name="NotifLocalLogsSummaryFormat" xml:space="preserve">
+    <value>{0} local events · {1} · Session {2}</value>
+  </data>
+  <data name="NotifServerLogsSummaryFormat" xml:space="preserve">
+    <value>{0} correlated events across Server, Web &amp; Mobile</value>
+  </data>
+  <data name="NotifLogsSyncedSuccess" xml:space="preserve">
+    <value>Activity logs synchronized with server.</value>
+  </data>
+  <data name="NotifMarkedReadLocal" xml:space="preserve">
+    <value>Marked read locally. Will sync when online.</value>
+  </data>
+  <data name="NotifMarkedReadQueued" xml:space="preserve">
+    <value>Queued read status for sync.</value>
+  </data>
+  <data name="NotifAllMarkedReadLocal" xml:space="preserve">
+    <value>All marked read locally. Will sync when online.</value>
+  </data>
+  <data name="NotifAllMarkedReadSuccess" xml:space="preserve">
+    <value>All notifications marked as read.</value>
+  </data>
+  <data name="NotifAllMarkedReadQueued" xml:space="preserve">
+    <value>Queued mark-all-read for sync.</value>
+  </data>
+  <data name="ScannerPageTitle" xml:space="preserve">
+    <value>Scan VIN / QR</value>
+  </data>
+  <data name="ScannerDefaultHeading" xml:space="preserve">
+    <value>Scan VIN or QR Code</value>
+  </data>
+  <data name="ScannerStrictVinSubtitle" xml:space="preserve">
+    <value>ISO 3779 17-char chassis VIN (excludes I, O, Q)</value>
+  </data>
+  <data name="ScannerMultiCodeSubtitle" xml:space="preserve">
+    <value>ISO 3779 VIN barcode · Voucher QR · Booking Check-In QR</value>
+  </data>
+  <data name="ScannerTorchOff" xml:space="preserve">
+    <value>Torch</value>
+  </data>
+  <data name="ScannerTorchOn" xml:space="preserve">
+    <value>Torch On</value>
+  </data>
+  <data name="ScannerCameraUnavailableTitle" xml:space="preserve">
+    <value>CAMERA UNAVAILABLE — MANUAL FALLBACK READY</value>
+  </data>
+  <data name="ScannerCameraPermissionDenied" xml:space="preserve">
+    <value>Camera permission denied or emulator has no camera. Enter the 17-char VIN or QR payload below.</value>
+  </data>
+  <data name="ScannerRetryPermissionCta" xml:space="preserve">
+    <value>Retry Camera Permission</value>
+  </data>
+  <data name="ScannerManualHeader" xml:space="preserve">
+    <value>Manual 17-Char ISO 3779 VIN / Voucher / QR Entry</value>
+  </data>
+  <data name="ScannerManualPlaceholder" xml:space="preserve">
+    <value>Enter 17-char VIN or QR code</value>
+  </data>
+  <data name="ScannerApplyCta" xml:space="preserve">
+    <value>Apply Scanned / Manual Value</value>
+  </data>
+  <data name="ScannerManualHintVin" xml:space="preserve">
+    <value>Enter exactly 17 characters (A-Z excluding I, O, Q, and 0-9).</value>
+  </data>
+  <data name="ScannerManualHintGeneral" xml:space="preserve">
+    <value>Supports 17-char VIN, dealer://voucher/v1, dealer://booking/v1, or RCP-* hashes.</value>
+  </data>
+  <data name="QrOfflineReadyCaption" xml:space="preserve">
+    <value>100% offline verifiable QR</value>
+  </data>
+  <data name="SignalR_BookingCreated_Title" xml:space="preserve">
+    <value>New Booking {0}</value>
+  </data>
+  <data name="SignalR_BookingCreated_Body" xml:space="preserve">
+    <value>{0} booked {1} ({2}) for {3}.</value>
+  </data>
+  <data name="SignalR_BookingStatusChanged_Title" xml:space="preserve">
+    <value>Booking {0} — {1}</value>
+  </data>
+  <data name="SignalR_BookingStatusChanged_Body" xml:space="preserve">
+    <value>{0} updated your booking from {1} to {2}.</value>
+  </data>
+  <data name="SignalR_MaintenanceReminder_Title" xml:space="preserve">
+    <value>Maintenance Due: {0}</value>
+  </data>
+  <data name="SignalR_MaintenanceReminder_Body" xml:space="preserve">
+    <value>{0} ({1}) reached {2} / target {3}.</value>
+  </data>
+  <data name="SignalR_LoyaltyPointsUpdated_Title" xml:space="preserve">
+    <value>Loyalty Points {0}</value>
+  </data>
+  <data name="SignalR_LoyaltyPointsUpdated_Body" xml:space="preserve">
+    <value>Ref {0}: Available balance is now {1}.</value>
+  </data>
+  <data name="SignalR_TierUpgraded_Title" xml:space="preserve">
+    <value>Tier Upgraded to {0}!</value>
+  </data>
+  <data name="SignalR_TierUpgraded_Body" xml:space="preserve">
+    <value>Congratulations! Your earn multiplier is now {0:0.00}x (from {1} to {2}).</value>
+  </data>
+  <data name="SignalR_TestDriveCreated_Title" xml:space="preserve">
+    <value>New Test-Drive {0}</value>
+  </data>
+  <data name="SignalR_TestDriveCreated_Body" xml:space="preserve">
+    <value>{0} requested {1} on {2}.</value>
+  </data>
+  <data name="SignalR_TestDriveStatusChanged_Title" xml:space="preserve">
+    <value>Test-Drive {0} — {1}</value>
+  </data>
+  <data name="SignalR_TestDriveStatusChanged_Body" xml:space="preserve">
+    <value>{0} updated your {1} test-drive to {2}.</value>
+  </data>
+  <data name="SignalR_ServiceReviewSubmitted_Title" xml:space="preserve">
+    <value>New {0}/5 CSAT Review ({1})</value>
+  </data>
+  <data name="SignalR_ServiceReviewSubmitted_Body" xml:space="preserve">
+    <value>{0} rated invoice {1} ({2}).</value>
+  </data>
+  <data name="SignalR_WarrantyClaimCreated_Title" xml:space="preserve">
+    <value>New Warranty Claim {0}</value>
+  </data>
+  <data name="SignalR_WarrantyClaimCreated_Body" xml:space="preserve">
+    <value>{0} filed a {1} claim for {2} ({3}).</value>
+  </data>
+  <data name="SignalR_WarrantyClaimStatusChanged_Title" xml:space="preserve">
+    <value>Warranty {0} — {1}</value>
+  </data>
+  <data name="SignalR_WarrantyClaimStatusChanged_Body" xml:space="preserve">
+    <value>{0} updated claim for {1} to {2} (Covered: {3}).</value>
+  </data>
+  <data name="Val_EmailRequired" xml:space="preserve">
+    <value>Email address is required.</value>
+  </data>
+  <data name="Val_EmailMaxLength" xml:space="preserve">
+    <value>Email address must not exceed 256 characters.</value>
+  </data>
+  <data name="Val_EmailInvalid" xml:space="preserve">
+    <value>Enter a valid email address.</value>
+  </data>
+  <data name="Val_PasswordRequired" xml:space="preserve">
+    <value>Password is required.</value>
+  </data>
+  <data name="Val_PasswordMinLength" xml:space="preserve">
+    <value>Password must be at least 8 characters long.</value>
+  </data>
+  <data name="Val_PasswordMaxLength" xml:space="preserve">
+    <value>Password must not exceed 128 characters.</value>
+  </data>
+  <data name="Val_PasswordComplexity" xml:space="preserve">
+    <value>Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.</value>
+  </data>
+  <data name="Val_FullNameRequired" xml:space="preserve">
+    <value>Full name is required.</value>
+  </data>
+  <data name="Val_FullNameMinLength" xml:space="preserve">
+    <value>Full name must be at least 2 characters long.</value>
+  </data>
+  <data name="Val_FullNameMaxLength" xml:space="preserve">
+    <value>Full name must not exceed 150 characters.</value>
+  </data>
+  <data name="Val_PhoneRequired" xml:space="preserve">
+    <value>Vietnam phone number is required.</value>
+  </data>
+  <data name="Val_PhoneMaxLength" xml:space="preserve">
+    <value>Phone number must not exceed 20 characters.</value>
+  </data>
+  <data name="Val_PhoneInvalid" xml:space="preserve">
+    <value>Phone number must contain 9 to 15 digits (optional leading &apos;+&apos;).</value>
+  </data>
+  <data name="Val_VinRequired" xml:space="preserve">
+    <value>VIN must be exactly 17 uppercase alphanumeric characters (ISO 3779).</value>
+  </data>
+  <data name="Val_VinLength" xml:space="preserve">
+    <value>VIN must be exactly {0} characters long ({1}/{0}).</value>
+  </data>
+  <data name="Val_VinForbiddenChar" xml:space="preserve">
+    <value>VIN contains ISO 3779 forbidden character &apos;{0}&apos; at position {1} (I, O, and Q are prohibited).</value>
+  </data>
+  <data name="Val_VinInvalidFormat" xml:space="preserve">
+    <value>VIN must contain only uppercase ASCII letters A-Z (excluding I, O, Q) and digits 0-9.</value>
+  </data>
+  <data name="Val_VinInvalidFallback" xml:space="preserve">
+    <value>Invalid 17-character ISO 3779 VIN.</value>
+  </data>
+  <data name="Val_ModelRequired" xml:space="preserve">
+    <value>Select a motorcycle model.</value>
+  </data>
+  <data name="Val_MileageNonNegative" xml:space="preserve">
+    <value>Current mileage cannot be negative.</value>
+  </data>
+  <data name="Val_MileageMax" xml:space="preserve">
+    <value>Current mileage cannot exceed 1,000,000 km.</value>
+  </data>
+  <data name="Val_LicensePlateMinLength" xml:space="preserve">
+    <value>License plate must be at least 4 characters long when supplied.</value>
+  </data>
+  <data name="Val_LicensePlateMaxLength" xml:space="preserve">
+    <value>License plate must not exceed 20 characters.</value>
+  </data>
+  <data name="Val_ColorNameMaxLength" xml:space="preserve">
+    <value>Color name must not exceed 60 characters.</value>
+  </data>
+  <data name="Val_VehicleRequired" xml:space="preserve">
+    <value>Select a registered motorcycle.</value>
+  </data>
+  <data name="Val_DealerRequired" xml:space="preserve">
+    <value>Select a servicing dealership.</value>
+  </data>
+  <data name="Val_ClaimOdometerNonNegative" xml:space="preserve">
+    <value>Odometer mileage cannot be negative.</value>
+  </data>
+  <data name="Val_ClaimOdometerMax" xml:space="preserve">
+    <value>Odometer mileage cannot exceed 1,000,000 km.</value>
+  </data>
+  <data name="Val_DefectCategoryRequired" xml:space="preserve">
+    <value>Select a defect category.</value>
+  </data>
+  <data name="Val_DefectCategoryInvalid" xml:space="preserve">
+    <value>Defect category must be a valid OEM warranty category.</value>
+  </data>
+  <data name="Val_SymptomRequired" xml:space="preserve">
+    <value>Please describe the defect symptom (at least 10 characters).</value>
+  </data>
+  <data name="Val_SymptomMinLength" xml:space="preserve">
+    <value>Defect symptom description must be at least {0} characters.</value>
+  </data>
+  <data name="Val_SymptomMaxLength" xml:space="preserve">
+    <value>Defect symptom description must not exceed {0} characters.</value>
+  </data>
+  <data name="Val_InventoryRequired" xml:space="preserve">
+    <value>Select an Available VIN unit from your dealership inventory.</value>
+  </data>
+  <data name="Val_BuyerEmailRequired" xml:space="preserve">
+    <value>Enter the buyer&apos;s registered email address.</value>
+  </data>
+  <data name="Val_BuyerEmailMaxLength" xml:space="preserve">
+    <value>Buyer email must not exceed 256 characters.</value>
+  </data>
+  <data name="Val_BuyerEmailInvalid" xml:space="preserve">
+    <value>Enter a valid buyer email address.</value>
+  </data>
+  <data name="Val_PaymentMethodRequired" xml:space="preserve">
+    <value>Select a payment method.</value>
+  </data>
+  <data name="Val_PaymentMethodInvalid" xml:space="preserve">
+    <value>Payment method must be one of: BankTransfer, Cash, Card, EWallet, Installment.</value>
+  </data>
+  <data name="Val_VoucherCodeMaxLength" xml:space="preserve">
+    <value>Voucher code must not exceed 32 characters.</value>
+  </data>
+  <data name="Val_SaleNotesMaxLength" xml:space="preserve">
+    <value>Sale notes must not exceed 500 characters.</value>
+  </data>
+  <data name="Enum_BookingStatus_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Enum_BookingStatus_Confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="Enum_BookingStatus_CheckedIn" xml:space="preserve">
+    <value>Checked In</value>
+  </data>
+  <data name="Enum_BookingStatus_InProgress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="Enum_BookingStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Enum_BookingStatus_Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Enum_BookingStatus_NoShow" xml:space="preserve">
+    <value>No-Show</value>
+  </data>
+  <data name="Enum_StockStatus_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Enum_StockStatus_Reserved" xml:space="preserve">
+    <value>Reserved</value>
+  </data>
+  <data name="Enum_StockStatus_Sold" xml:space="preserve">
+    <value>Sold</value>
+  </data>
+  <data name="Enum_StockStatus_Transferred" xml:space="preserve">
+    <value>Transferred</value>
+  </data>
+  <data name="Enum_VoucherStatus_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Enum_VoucherStatus_ReservedOnBooking" xml:space="preserve">
+    <value>Reserved on Booking</value>
+  </data>
+  <data name="Enum_VoucherStatus_Used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="Enum_VoucherStatus_Expired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="Enum_LedgerType_SalesOrderEarn" xml:space="preserve">
+    <value>Showroom Sale Earn</value>
+  </data>
+  <data name="Enum_LedgerType_ServiceInvoiceEarn" xml:space="preserve">
+    <value>Workshop Service Earn</value>
+  </data>
+  <data name="Enum_LedgerType_VoucherRedeem" xml:space="preserve">
+    <value>Voucher Redemption</value>
+  </data>
+  <data name="Enum_LedgerType_VoucherExpireRefund" xml:space="preserve">
+    <value>Voucher Refund</value>
+  </data>
+  <data name="Enum_LedgerType_AdminAdjustment" xml:space="preserve">
+    <value>Admin Adjustment</value>
+  </data>
+  <data name="Enum_LedgerType_WelcomeBonus" xml:space="preserve">
+    <value>Welcome Bonus</value>
+  </data>
+  <data name="Enum_LedgerType_ServiceReviewBonus" xml:space="preserve">
+    <value>CSAT Review Bonus (+25)</value>
+  </data>
+  <data name="Enum_LoyaltyTier_Bronze" xml:space="preserve">
+    <value>Bronze</value>
+  </data>
+  <data name="Enum_LoyaltyTier_Silver" xml:space="preserve">
+    <value>Silver</value>
+  </data>
+  <data name="Enum_LoyaltyTier_Gold" xml:space="preserve">
+    <value>Gold</value>
+  </data>
+  <data name="Enum_LoyaltyTier_Platinum" xml:space="preserve">
+    <value>Platinum</value>
+  </data>
+  <data name="Enum_NotificationEvent_BookingCreated" xml:space="preserve">
+    <value>New Booking</value>
+  </data>
+  <data name="Enum_NotificationEvent_BookingStatusChanged" xml:space="preserve">
+    <value>Booking Status</value>
+  </data>
+  <data name="Enum_NotificationEvent_MaintenanceReminderTriggered" xml:space="preserve">
+    <value>VIN Reminder</value>
+  </data>
+  <data name="Enum_NotificationEvent_LoyaltyPointsUpdated" xml:space="preserve">
+    <value>Points Updated</value>
+  </data>
+  <data name="Enum_NotificationEvent_TierUpgraded" xml:space="preserve">
+    <value>Tier Upgraded</value>
+  </data>
+  <data name="Enum_NotificationEvent_SalesOrderCompleted" xml:space="preserve">
+    <value>Sale Completed</value>
+  </data>
+  <data name="Enum_NotificationEvent_VoucherRedeemed" xml:space="preserve">
+    <value>Voucher Redeemed</value>
+  </data>
+  <data name="Enum_NotificationEvent_TestDriveCreated" xml:space="preserve">
+    <value>New Test Drive</value>
+  </data>
+  <data name="Enum_NotificationEvent_TestDriveStatusChanged" xml:space="preserve">
+    <value>Test-Drive Status</value>
+  </data>
+  <data name="Enum_NotificationEvent_ServiceReviewSubmitted" xml:space="preserve">
+    <value>New CSAT Review</value>
+  </data>
+  <data name="Enum_NotificationEvent_WarrantyClaimCreated" xml:space="preserve">
+    <value>New Warranty Claim</value>
+  </data>
+  <data name="Enum_NotificationEvent_WarrantyClaimStatusChanged" xml:space="preserve">
+    <value>Warranty Status</value>
+  </data>
+  <data name="Enum_ReminderStatus_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Enum_ReminderStatus_Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="Enum_ReminderStatus_Booked" xml:space="preserve">
+    <value>Booked</value>
+  </data>
+  <data name="Enum_ReminderStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Enum_ReminderStatus_Dismissed" xml:space="preserve">
+    <value>Dismissed</value>
+  </data>
+  <data name="Enum_ReminderStatus_Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="Enum_SalesOrderStatus_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Enum_SalesOrderStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Enum_SalesOrderStatus_Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Enum_SparePartCategory_EngineOil" xml:space="preserve">
+    <value>Engine Oil</value>
+  </data>
+  <data name="Enum_SparePartCategory_Filter" xml:space="preserve">
+    <value>Air &amp; Oil Filters</value>
+  </data>
+  <data name="Enum_SparePartCategory_Brakes" xml:space="preserve">
+    <value>Braking System</value>
+  </data>
+  <data name="Enum_SparePartCategory_Transmission" xml:space="preserve">
+    <value>Transmission &amp; Drive</value>
+  </data>
+  <data name="Enum_SparePartCategory_Tires" xml:space="preserve">
+    <value>Tires &amp; Wheels</value>
+  </data>
+  <data name="Enum_SparePartCategory_Electrical" xml:space="preserve">
+    <value>Electrical &amp; Battery</value>
+  </data>
+  <data name="Enum_SparePartCategory_Accessory" xml:space="preserve">
+    <value>OEM Accessories</value>
+  </data>
+  <data name="Enum_TestDriveStatus_Requested" xml:space="preserve">
+    <value>Requested</value>
+  </data>
+  <data name="Enum_TestDriveStatus_Confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="Enum_TestDriveStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Enum_TestDriveStatus_Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Enum_TestDriveStatus_NoShow" xml:space="preserve">
+    <value>No-Show</value>
+  </data>
+  <data name="Enum_UserRole_Customer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="Enum_UserRole_DealerStaff" xml:space="preserve">
+    <value>Dealer Staff</value>
+  </data>
+  <data name="Enum_UserRole_Admin" xml:space="preserve">
+    <value>Admin HQ</value>
+  </data>
+  <data name="Enum_DiscountType_FixedAmount" xml:space="preserve">
+    <value>Fixed Amount</value>
+  </data>
+  <data name="Enum_DiscountType_Percentage" xml:space="preserve">
+    <value>Percentage</value>
+  </data>
+  <data name="Enum_WarrantyStatus_Submitted" xml:space="preserve">
+    <value>Submitted</value>
+  </data>
+  <data name="Enum_WarrantyStatus_UnderReview" xml:space="preserve">
+    <value>Under Review</value>
+  </data>
+  <data name="Enum_WarrantyStatus_Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Enum_WarrantyStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Enum_WarrantyStatus_Rejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="Enum_WarrantyDefect_Engine" xml:space="preserve">
+    <value>Engine &amp; Cooling</value>
+  </data>
+  <data name="Enum_WarrantyDefect_Transmission" xml:space="preserve">
+    <value>Transmission, Clutch &amp; CVT</value>
+  </data>
+  <data name="Enum_WarrantyDefect_Electrical" xml:space="preserve">
+    <value>Electrical, ECU &amp; ABS Sensor</value>
+  </data>
+  <data name="Enum_WarrantyDefect_BrakesAndSuspension" xml:space="preserve">
+    <value>Brakes &amp; Suspension</value>
+  </data>
+  <data name="Enum_WarrantyDefect_FrameAndPaint" xml:space="preserve">
+    <value>Chassis Frame &amp; Factory Paint</value>
+  </data>
+  <data name="Enum_WarrantyDefect_ExhaustAndFuel" xml:space="preserve">
+    <value>PGM-FI Fuel &amp; Exhaust</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_All" xml:space="preserve">
+    <value>All Categories</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Scooter" xml:space="preserve">
+    <value>Scooter</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Underbone" xml:space="preserve">
+    <value>Underbone</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Sport" xml:space="preserve">
+    <value>Sport</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Naked" xml:space="preserve">
+    <value>Naked</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Adventure" xml:space="preserve">
+    <value>Adventure</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Cruiser" xml:space="preserve">
+    <value>Cruiser</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Electric" xml:space="preserve">
+    <value>Electric</value>
+  </data>
+  <data name="Enum_ServiceType_PeriodicMaintenance" xml:space="preserve">
+    <value>Periodic OEM Maintenance</value>
+  </data>
+  <data name="Enum_ServiceType_WarrantyRepair" xml:space="preserve">
+    <value>OEM Warranty Repair</value>
+  </data>
+  <data name="Enum_ServiceType_GeneralRepair" xml:space="preserve">
+    <value>General Repair</value>
+  </data>
+  <data name="Enum_ServiceType_Inspection" xml:space="preserve">
+    <value>Multi-Point Inspection</value>
+  </data>
+  <data name="Enum_ServiceType_OilAndTire" xml:space="preserve">
+    <value>Oil &amp; Tire Service</value>
+  </data>
+  <data name="Enum_ServiceType_OilChange" xml:space="preserve">
+    <value>Oil Change &amp; Express Check</value>
+  </data>
+  <data name="Enum_ServiceType_WarrantyInspection" xml:space="preserve">
+    <value>OEM Warranty Inspection</value>
+  </data>
+  <data name="Enum_ServiceType_TireAndBrakeService" xml:space="preserve">
+    <value>Tire &amp; Brake Service</value>
+  </data>
+  <data name="Enum_ServiceType_DiagnosticCheck" xml:space="preserve">
+    <value>ECU Diagnostic Check</value>
+  </data>
+  <data name="Enum_PaymentMethod_BankTransfer" xml:space="preserve">
+    <value>Bank Transfer</value>
+  </data>
+  <data name="Enum_PaymentMethod_Cash" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="Enum_PaymentMethod_Card" xml:space="preserve">
+    <value>Card</value>
+  </data>
+  <data name="Enum_PaymentMethod_EWallet" xml:space="preserve">
+    <value>E-Wallet</value>
+  </data>
+  <data name="Enum_PaymentMethod_QrPay" xml:space="preserve">
+    <value>QR Pay</value>
+  </data>
+  <data name="Enum_PaymentMethod_Installment" xml:space="preserve">
+    <value>Installment</value>
+  </data>
+  <data name="Enum_MaintenanceStatus_Upcoming" xml:space="preserve">
+    <value>On Schedule</value>
+  </data>
+  <data name="Enum_MaintenanceStatus_DueSoon" xml:space="preserve">
+    <value>Due Soon</value>
+  </data>
+  <data name="Enum_MaintenanceStatus_Overdue" xml:space="preserve">
+    <value>Overdue</value>
+  </data>
+  <data name="Enum_SignalRStatus_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Enum_SignalRStatus_Connecting" xml:space="preserve">
+    <value>Connecting</value>
+  </data>
+  <data name="Enum_SignalRStatus_Reconnecting" xml:space="preserve">
+    <value>Reconnecting</value>
+  </data>
+  <data name="Enum_SignalRStatus_Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="Enum_SignalRStatus_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Enum_SignalRStatus_Unavailable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="Enum_ApplicableScope_ServiceOnly" xml:space="preserve">
+    <value>Workshop Service Only</value>
+  </data>
+  <data name="Enum_ApplicableScope_ShowroomOnly" xml:space="preserve">
+    <value>Showroom Purchase Only</value>
+  </data>
+  <data name="Enum_ApplicableScope_Both" xml:space="preserve">
+    <value>Showroom &amp; Workshop</value>
+  </data>
+  <data name="Enum_InvoiceItemType_Part" xml:space="preserve">
+    <value>Part</value>
+  </data>
+  <data name="Enum_InvoiceItemType_Labor" xml:space="preserve">
+    <value>Labor</value>
+  </data>
+  <data name="Enum_InvoiceItemType_Motorcycle" xml:space="preserve">
+    <value>Motorcycle</value>
+  </data>
+  <data name="Enum_InvoiceItemType_Fee" xml:space="preserve">
+    <value>Fee</value>
+  </data>
+  <data name="Enum_RegistrationSource_ShowroomSale" xml:space="preserve">
+    <value>Showroom Sale</value>
+  </data>
+  <data name="Enum_RegistrationSource_DealerPurchase" xml:space="preserve">
+    <value>Showroom Sale</value>
+  </data>
+  <data name="Enum_RegistrationSource_ExternalManual" xml:space="preserve">
+    <value>External VIN</value>
+  </data>
+  <data name="Enum_StatusBadge_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Enum_StatusBadge_Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="Enum_StatusBadge_Healthy" xml:space="preserve">
+    <value>Healthy</value>
+  </data>
+  <data name="Enum_StatusBadge_Blocked" xml:space="preserve">
+    <value>Blocked</value>
+  </data>
+  <data name="Enum_StatusBadge_InCoverage" xml:space="preserve">
+    <value>OEM Covered</value>
+  </data>
+  <data name="Enum_StatusBadge_OutOfCoverage" xml:space="preserve">
+    <value>Out of Limit</value>
+  </data>
+  <data name="Enum_StatusBadge_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Enum_StatusBadge_Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Enum_StatusBadge_Denied" xml:space="preserve">
+    <value>Denied</value>
+  </data>
+  <data name="Enum_StatusBadge_ClientError" xml:space="preserve">
+    <value>Client Error</value>
+  </data>
+  <data name="Err_VALIDATION_FAILED" xml:space="preserve">
+    <value>One or more fields failed validation. Please review highlighted inputs.</value>
+  </data>
+  <data name="Err_UNAUTHORIZED" xml:space="preserve">
+    <value>Authentication required or invalid token. Please sign in again.</value>
+  </data>
+  <data name="Err_TOKEN_EXPIRED" xml:space="preserve">
+    <value>Your session token has expired. Please sign in again.</value>
+  </data>
+  <data name="Err_INVALID_REFRESH_TOKEN" xml:space="preserve">
+    <value>Refresh token is invalid or has been revoked.</value>
+  </data>
+  <data name="Err_REFRESH_TOKEN_REUSE_DETECTED" xml:space="preserve">
+    <value>Suspicious session replay detected. Your session was revoked for security.</value>
+  </data>
+  <data name="Err_REFRESH_TOKEN_REUSE" xml:space="preserve">
+    <value>Suspicious session replay detected. Your session was revoked for security.</value>
+  </data>
+  <data name="Err_REFRESH_TOKEN_MISSING" xml:space="preserve">
+    <value>Session refresh token is missing. Please sign in again.</value>
+  </data>
+  <data name="Err_INVALID_CREDENTIALS" xml:space="preserve">
+    <value>Invalid email address or password.</value>
+  </data>
+  <data name="Err_ACCOUNT_LOCKED" xml:space="preserve">
+    <value>This account is locked or deactivated. Please contact an administrator.</value>
+  </data>
+  <data name="Err_STAFF_DEALER_UNASSIGNED" xml:space="preserve">
+    <value>Staff account is not assigned to an active dealership branch.</value>
+  </data>
+  <data name="Err_ADMIN_WEB_CONSOLE_ONLY" xml:space="preserve">
+    <value>Platform Admin analytics, dealer provisioning, and catalog governance are available on the Web Admin Console.</value>
+  </data>
+  <data name="Err_UNSUPPORTED_ROLE" xml:space="preserve">
+    <value>Unsupported role &apos;{0}&apos;.</value>
+  </data>
+  <data name="Err_FORBIDDEN_PERMISSION" xml:space="preserve">
+    <value>You do not hold the required permission for this action.</value>
+  </data>
+  <data name="Err_FORBIDDEN_DEALER_SCOPE" xml:space="preserve">
+    <value>Access to another dealership branch is strictly forbidden.</value>
+  </data>
+  <data name="Err_FORBIDDEN_RESOURCE_OWNER" xml:space="preserve">
+    <value>You can only view or modify records you own.</value>
+  </data>
+  <data name="Err_RESOURCE_NOT_FOUND" xml:space="preserve">
+    <value>The requested record could not be found.</value>
+  </data>
+  <data name="Err_CONCURRENCY_CONFLICT" xml:space="preserve">
+    <value>This record was modified by another session. Refresh and try again.</value>
+  </data>
+  <data name="Err_SLOT_CAPACITY_EXHAUSTED" xml:space="preserve">
+    <value>The selected workshop time slot just reached full capacity. Please pick another window.</value>
+  </data>
+  <data name="Err_SLOT_CAPACITY_CONFLICT" xml:space="preserve">
+    <value>The selected workshop time slot just reached full capacity. Please pick another window.</value>
+  </data>
+  <data name="Err_TEST_DRIVE_SLOT_FULL" xml:space="preserve">
+    <value>This test-drive window is full. Please choose another time slot.</value>
+  </data>
+  <data name="Err_TEST_DRIVE_OVERLAP" xml:space="preserve">
+    <value>You already have an overlapping test-drive appointment.</value>
+  </data>
+  <data name="Err_DUPLICATE_VIN" xml:space="preserve">
+    <value>This 17-character VIN is already registered on the platform.</value>
+  </data>
+  <data name="Err_DUPLICATE_PART_CODE" xml:space="preserve">
+    <value>This OEM spare-part SKU code already exists.</value>
+  </data>
+  <data name="Err_INVOICE_ALREADY_ISSUED" xml:space="preserve">
+    <value>A service invoice has already been finalized for this booking.</value>
+  </data>
+  <data name="Err_INSUFFICIENT_LOYALTY_POINTS" xml:space="preserve">
+    <value>Insufficient available loyalty points for this operation.</value>
+  </data>
+  <data name="Err_INSUFFICIENT_POINTS" xml:space="preserve">
+    <value>Insufficient available loyalty points to redeem this reward.</value>
+  </data>
+  <data name="Err_VOUCHER_INELIGIBLE" xml:space="preserve">
+    <value>Selected voucher does not meet eligibility criteria for this order.</value>
+  </data>
+  <data name="Err_VOUCHER_QUOTA_EXHAUSTED" xml:space="preserve">
+    <value>This voucher campaign has reached its redemption quota.</value>
+  </data>
+  <data name="Err_VOUCHER_NOT_AVAILABLE" xml:space="preserve">
+    <value>This voucher is no longer available or has already been redeemed.</value>
+  </data>
+  <data name="Err_SPARE_PART_INCOMPATIBLE" xml:space="preserve">
+    <value>Selected OEM spare part is not compatible with this motorcycle model.</value>
+  </data>
+  <data name="Err_SPARE_PART_INACTIVE" xml:space="preserve">
+    <value>Selected OEM spare part is inactive and cannot be billed.</value>
+  </data>
+  <data name="Err_INVALID_STATUS_TRANSITION" xml:space="preserve">
+    <value>Requested status transition is not valid from the current state.</value>
+  </data>
+  <data name="Err_ODOMETER_REGRESSION" xml:space="preserve">
+    <value>New odometer reading cannot be lower than the previously recorded mileage.</value>
+  </data>
+  <data name="Err_ODOMETER_CANNOT_DECREASE" xml:space="preserve">
+    <value>New odometer reading cannot be lower than the previously recorded mileage.</value>
+  </data>
+  <data name="Err_REVIEW_ALREADY_SUBMITTED" xml:space="preserve">
+    <value>A CSAT review has already been submitted for this invoice.</value>
+  </data>
+  <data name="Err_DUPLICATE_SERVICE_REVIEW" xml:space="preserve">
+    <value>A CSAT review has already been submitted for this invoice.</value>
+  </data>
+  <data name="Err_WARRANTY_COVERAGE_EXPIRED" xml:space="preserve">
+    <value>Vehicle exceeds OEM warranty coverage limits (36 months or 30,000 km).</value>
+  </data>
+  <data name="Err_ACTIVE_WARRANTY_CLAIM_EXISTS" xml:space="preserve">
+    <value>An open warranty claim already exists for this vehicle.</value>
+  </data>
+  <data name="Err_TIER_REQUIREMENT_NOT_MET" xml:space="preserve">
+    <value>Your current membership tier does not meet the minimum requirement.</value>
+  </data>
+  <data name="Err_RATE_LIMIT_EXCEEDED" xml:space="preserve">
+    <value>Too many requests in a short period. Please wait a moment and retry.</value>
+  </data>
+  <data name="Err_NETWORK_OFFLINE" xml:space="preserve">
+    <value>Unable to reach the server. Check your network connection or API endpoint.</value>
+  </data>
+  <data name="Err_DATABASE_UNAVAILABLE" xml:space="preserve">
+    <value>The platform database is temporarily unavailable. Please try again shortly.</value>
+  </data>
+  <data name="Err_INVALID_JSON_PAYLOAD" xml:space="preserve">
+    <value>The server returned an unexpected response format. Please try again.</value>
+  </data>
+  <data name="Err_INTERNAL_SERVER_ERROR" xml:space="preserve">
+    <value>An unexpected platform error occurred. Reference traceId for support.</value>
+  </data>
+  <data name="Err_REQUEST_FAILED" xml:space="preserve">
+    <value>The request could not be completed. Please try again.</value>
+  </data>
+  <data name="Err_DUPLICATE_EMAIL" xml:space="preserve">
+    <value>This email address is already registered.</value>
+  </data>
+  <data name="Err_DUPLICATE_PHONE" xml:space="preserve">
+    <value>This phone number is already registered.</value>
+  </data>
+  <data name="Err_DUPLICATE_LICENSE_PLATE" xml:space="preserve">
+    <value>This license plate is already assigned to another vehicle.</value>
+  </data>
+  <data name="Err_INVENTORY_ALREADY_SOLD" xml:space="preserve">
+    <value>This inventory VIN unit has already been sold.</value>
+  </data>
+  <data name="Err_DEMO_VIN_TIME_CONFLICT" xml:space="preserve">
+    <value>This demo VIN is already assigned to another test drive in the same window.</value>
+  </data>
+  <data name="Err_PAST_TEST_DRIVE_DATE" xml:space="preserve">
+    <value>Cannot schedule a test drive on a past date.</value>
+  </data>
+  <data name="Err_IMMUTABLE_LEDGER_VIOLATION" xml:space="preserve">
+    <value>Point ledger records are strictly immutable.</value>
+  </data>
+  <data name="Err_IMMUTABLE_FINANCIAL_RECORD_VIOLATION" xml:space="preserve">
+    <value>Finalized financial records are strictly immutable.</value>
+  </data>
+</root>
