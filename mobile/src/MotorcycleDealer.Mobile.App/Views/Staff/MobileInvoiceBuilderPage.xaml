@@ -192,9 +192,6 @@
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="dto:SparePartDto">
                                         <Border Style="{StaticResource SunkenPanel}">
-                                            <Border.Behaviors>
-                                                <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
-                                            </Border.Behaviors>
                                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                                 <VerticalStackLayout Spacing="2" VerticalOptions="Center">
                                                     <Label Text="{Binding Name}" Style="{StaticResource CardTitleLabel}" FontSize="13" />
@@ -347,8 +344,10 @@
                         <VerticalStackLayout Spacing="10">
                             <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
                                 <controls:LottieOrIconView
+                                    IsVisible="{Binding SettledInvoice, Converter={StaticResource IsNotNull}}"
                                     LottieFile="lottie_success_check.json"
                                     FallbackGlyph="{x:Static icons:PhosphorIcons.CheckCircle}"
+                                    FallbackColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
                                     Size="36"
                                     RepeatCount="0" />
                                 <Label
@@ -437,8 +436,10 @@
                     IsVisible="{Binding PreviewTierUpgraded}">
                     <HorizontalStackLayout Spacing="6" HorizontalOptions="Center" VerticalOptions="Center">
                         <controls:LottieOrIconView
+                            IsVisible="{Binding PreviewTierUpgraded}"
                             LottieFile="lottie_tier_sparkle.json"
                             FallbackGlyph="{x:Static icons:PhosphorIcons.Crown}"
+                            FallbackColor="{StaticResource TierGoldAccent}"
                             Size="20"
                             RepeatCount="0" />
                         <Label

@@ -164,9 +164,6 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="dto:ServiceTimeSlotDto">
                             <Border Style="{StaticResource DoubleBezelOuter}">
-                                <Border.Behaviors>
-                                    <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
-                                </Border.Behaviors>
                                 <Border Style="{StaticResource DoubleBezelInner}">
                                     <VerticalStackLayout Spacing="8">
                                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">

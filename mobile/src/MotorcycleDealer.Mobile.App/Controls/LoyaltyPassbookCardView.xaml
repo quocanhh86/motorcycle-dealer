@@ -3,7 +3,6 @@
     x:Class="MotorcycleDealer.Mobile.App.Controls.LoyaltyPassbookCardView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
     x:Name="Root"
@@ -15,9 +14,6 @@
         StrokeShape="RoundRectangle 16"
         Background="{Binding Source={x:Reference Root}, Path=CardBackgroundBrush}"
         Padding="0">
-        <Border.Behaviors>
-            <toolkit:TouchBehavior PressedScale="0.97" PressedOpacity="0.90" PressedAnimationDuration="110" />
-        </Border.Behaviors>
 
         <Grid IsClippedToBounds="True">
             <!-- Diagonal Specular Metallic Foil Sheen (auto-paused when hidden or reduced-motion) -->

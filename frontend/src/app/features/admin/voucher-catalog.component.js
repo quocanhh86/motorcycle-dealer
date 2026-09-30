@@ -270,7 +270,7 @@
                       '</td>' +
                       '<td class="mono-num" style="font-weight:700;">{{ item.pointsCost | number }} {{ \'common.ptsShort\' | t }}</td>' +
                       '<td class="mono-num">' +
-                        '<div>{{ item.discountSummary }}</div>' +
+                        '<div>{{ $ctrl.formatDiscountSummary(item) }}</div>' +
                         '<div class="text-muted" style="font-size:11px;">{{ \'admin.vouchers.minOrderShort\' | t:{ amount: (item.minOrderAmount | vndCurrency) } }}</div>' +
                       '</td>' +
                       '<td>' +
@@ -477,6 +477,26 @@
       }
       return String(code || '');
     }
+
+    function getActiveLocale() {
+      return (I18nService && angular.isFunction(I18nService.getLocale))
+        ? I18nService.getLocale()
+        : 'en-US';
+    }
+
+    $ctrl.formatDiscountSummary = function (item) {
+      if (!item) { return ''; }
+      var locale = getActiveLocale();
+      if (LoyaltyCalculator) {
+        if (angular.isFunction(LoyaltyCalculator.formatDiscountSummaryLocalized)) {
+          return LoyaltyCalculator.formatDiscountSummaryLocalized(item, locale) || item.discountSummary || '';
+        }
+        if (angular.isFunction(LoyaltyCalculator.formatDiscountSummary)) {
+          return LoyaltyCalculator.formatDiscountSummary(item, locale) || item.discountSummary || '';
+        }
+      }
+      return item.discountSummary || '';
+    };
 
     function resolveMinTierIdByCode(tierCode) {
       for (var i = 0; i < ($ctrl.tiers || []).length; i++) {

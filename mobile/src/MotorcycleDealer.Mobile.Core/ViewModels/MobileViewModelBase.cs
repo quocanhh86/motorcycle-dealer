@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -18,6 +19,14 @@ public abstract partial class MobileViewModelBase : ObservableObject
 {
     private readonly IAppPreferencesStore? _preferencesStore;
     private readonly IMessenger _baseMessenger;
+
+    /// <summary>
+    /// Optional platform UI-thread marshaling hook (wired by Mobile.App's MauiProgram to
+    /// <c>MainThread.BeginInvokeOnMainThread</c>) so cross-thread culture/theme broadcasts
+    /// safely marshal property and ObservableCollection updates onto the UI thread.
+    /// Null in pure net10.0 unit tests (executes synchronously).
+    /// </summary>
+    public static Action<Action>? MainThreadInvoker { get; set; }
 
     protected MobileViewModelBase(
         LocalizationService? localizationService = null,
@@ -105,6 +114,40 @@ public abstract partial class MobileViewModelBase : ObservableObject
     {
     }
 
+    protected virtual void OnThemeChanged(string themeMode)
+    {
+    }
+
+    protected static void DispatchToMainThread(Action action)
+    {
+        ArgumentNullException.ThrowIfNull(action);
+        var invoker = MainThreadInvoker;
+        if (invoker is not null)
+        {
+            invoker(action);
+        }
+        else
+        {
+            action();
+        }
+    }
+
+    protected static void RefreshCollection<T>(ObservableCollection<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+        if (collection.Count == 0)
+        {
+            return;
+        }
+
+        var snapshot = collection.ToArray();
+        collection.Clear();
+        foreach (var item in snapshot)
+        {
+            collection.Add(item);
+        }
+    }
+
     protected void UnregisterBaseMessages() => _baseMessenger.UnregisterAll(this);
 
     protected string FormatApiError<T>(ApiResult<T> result) => Loc.GetApiErrorMessage(result);
@@ -132,21 +175,29 @@ public abstract partial class MobileViewModelBase : ObservableObject
 
     private void HandleCultureChanged(string cultureCode)
     {
-        OnPropertyChanged(nameof(IsVietnamese));
-        OnPropertyChanged(nameof(IsEnglish));
-        OnPropertyChanged(nameof(ActiveLanguageCode));
-        OnPropertyChanged(nameof(LanguageToggleText));
-        OnPropertyChanged(nameof(ThemeToggleText));
-        OnCultureChanged(cultureCode);
+        DispatchToMainThread(() =>
+        {
+            OnPropertyChanged(nameof(IsVietnamese));
+            OnPropertyChanged(nameof(IsEnglish));
+            OnPropertyChanged(nameof(ActiveLanguageCode));
+            OnPropertyChanged(nameof(LanguageToggleText));
+            OnPropertyChanged(nameof(ThemeToggleText));
+            OnCultureChanged(cultureCode);
+        });
     }
 
     private void HandleThemeChanged(string themeMode)
     {
         var normalized = NormalizeThemeMode(themeMode);
-        if (!string.Equals(ActiveThemeMode, normalized, StringComparison.OrdinalIgnoreCase))
+        DispatchToMainThread(() =>
         {
-            ActiveThemeMode = normalized;
-        }
+            if (!string.Equals(ActiveThemeMode, normalized, StringComparison.OrdinalIgnoreCase))
+            {
+                ActiveThemeMode = normalized;
+            }
+
+            OnThemeChanged(normalized);
+        });
     }
 
     private static string NormalizeThemeMode(string? raw) =>

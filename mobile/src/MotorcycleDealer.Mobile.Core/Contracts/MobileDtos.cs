@@ -113,7 +113,7 @@ public sealed record DealerModelStockSummaryDto(
     int AvailableCount)
 {
     [JsonIgnore]
-    public string UnitsLabel => VietnamFormatting.FormatQuantity("unit", AvailableCount);
+    public string UnitsLabel => LocalizationService.Current.FormatQuantity("unit", AvailableCount);
 }
 
 public sealed record MaintenanceRuleDto(
@@ -517,13 +517,13 @@ public sealed record ServiceTimeSlotDto(
     public string TimeRangeDisplay => VietnamFormatting.FormatTimeRange(StartTime, EndTime);
 
     [JsonIgnore]
-    public string OpenBaysLabel => AppResources.Format("BookingSlotOpenBaysFormat", VietnamFormatting.FormatQuantity("bay", RemainingCapacity));
+    public string OpenBaysLabel => LocalizationService.Current.Format("BookingSlotOpenBaysFormat", LocalizationService.Current.FormatQuantity("bay", RemainingCapacity));
 
     [JsonIgnore]
-    public string BookedRatioLabel => AppResources.Format("BookingSlotBookedRatioFormat", BookedCount, MaxCapacity);
+    public string BookedRatioLabel => LocalizationService.Current.Format("BookingSlotBookedRatioFormat", BookedCount, MaxCapacity);
 
     [JsonIgnore]
-    public string FreeBadgeLabel => AppResources.Format("BookingSlotFreeBadgeFormat", RemainingCapacity);
+    public string FreeBadgeLabel => LocalizationService.Current.Format("BookingSlotFreeBadgeFormat", RemainingCapacity);
 }
 
 public sealed record CreateTimeSlotRequest
@@ -862,7 +862,7 @@ public sealed record ServiceReviewDto(
     DateTimeOffset? UpdatedAtUtc)
 {
     [JsonIgnore]
-    public string RatingDisplay => AppResources.Format("StaffQaCsatRatingBadge", Rating);
+    public string RatingDisplay => LocalizationService.Current.Format("StaffQaCsatRatingBadge", Rating);
 }
 
 public sealed record ServiceReviewPageDto(

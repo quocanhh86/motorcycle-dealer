@@ -15,13 +15,24 @@ public partial class CustomerHomePage : ContentPage
         _shellViewModel = shellViewModel ?? throw new ArgumentNullException(nameof(shellViewModel));
         InitializeComponent();
         BindingContext = ViewModel;
+        Unloaded += OnPageUnloaded;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        PassbookCard.ResumeSheen();
         await ViewModel.LoadDashboardCommand.ExecuteAsync(null);
     }
+
+    protected override void OnDisappearing()
+    {
+        PassbookCard.PauseSheen();
+        base.OnDisappearing();
+    }
+
+    private void OnPageUnloaded(object? sender, EventArgs e)
+        => PassbookCard.PauseSheen();
 
     private async void OnSignOutClicked(object? sender, EventArgs e)
         => await _shellViewModel.SignOutCommand.ExecuteAsync(null);

@@ -53,11 +53,13 @@
                     Padding="0">
                     <VerticalStackLayout Spacing="0">
                         <!-- Editorial Workshop Bay Hero Strip -->
-                        <Grid HeightRequest="120">
+                        <Grid HeightRequest="120" IsClippedToBounds="True">
                             <Image
                                 Source="hero_workshop_bay.jpg"
                                 Aspect="AspectFill"
-                                HeightRequest="120" />
+                                HeightRequest="120"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
                             <BoxView>
                                 <BoxView.Background>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -362,9 +364,6 @@
                 <Border
                     Style="{StaticResource DoubleBezelOuter}"
                     IsVisible="{Binding ScannedIntakeVehicle, Converter={StaticResource IsNotNull}}">
-                    <Border.Behaviors>
-                        <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
-                    </Border.Behaviors>
                     <Border Style="{StaticResource DoubleBezelInner}">
                         <Grid ColumnDefinitions="88,*" ColumnSpacing="12">
                             <Border

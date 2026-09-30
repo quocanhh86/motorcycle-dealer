@@ -134,6 +134,7 @@ public sealed class FakeNavigationService : INavigationService
 {
     public List<(string Route, IDictionary<string, object>? Parameters)> Navigations { get; } = [];
     public List<string> OpenedUrls { get; } = [];
+    public List<(string? PromptTitle, bool RequireIso3779Vin)> BarcodeScanRequests { get; } = [];
     public int GoBackCount { get; private set; }
     public string? NextBarcodeScanResult { get; set; }
 
@@ -149,8 +150,11 @@ public sealed class FakeNavigationService : INavigationService
         return Task.CompletedTask;
     }
 
-    public Task<string?> RequestBarcodeScanAsync(string? promptTitle = null) =>
-        Task.FromResult(NextBarcodeScanResult);
+    public Task<string?> RequestBarcodeScanAsync(string? promptTitle = null, bool requireIso3779Vin = false)
+    {
+        BarcodeScanRequests.Add((promptTitle, requireIso3779Vin));
+        return Task.FromResult(NextBarcodeScanResult);
+    }
 
     public Task OpenExternalUrlAsync(string url)
     {

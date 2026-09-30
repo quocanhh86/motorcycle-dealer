@@ -91,9 +91,6 @@
                             <Border
                                 Style="{StaticResource SunkenPanel}"
                                 IsVisible="{Binding SelectedInventory, Converter={StaticResource IsNotNull}}">
-                                <Border.Behaviors>
-                                    <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
-                                </Border.Behaviors>
                                 <Grid ColumnDefinitions="92,*" ColumnSpacing="12">
                                     <Border
                                         Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
@@ -344,9 +341,6 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="dto:SalesOrderDto">
                             <Border Style="{StaticResource DoubleBezelOuter}">
-                                <Border.Behaviors>
-                                    <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
-                                </Border.Behaviors>
                                 <Border Style="{StaticResource DoubleBezelInner}">
                                     <VerticalStackLayout Spacing="6">
                                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">

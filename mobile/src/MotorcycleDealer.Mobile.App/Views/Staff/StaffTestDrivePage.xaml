@@ -192,9 +192,6 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="dto:TestDriveBookingDto">
                             <Border Style="{StaticResource DoubleBezelOuter}">
-                                <Border.Behaviors>
-                                    <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
-                                </Border.Behaviors>
                                 <Border Style="{StaticResource DoubleBezelInner}">
                                     <VerticalStackLayout Spacing="8">
                                         <Grid ColumnDefinitions="84,*" ColumnSpacing="12">

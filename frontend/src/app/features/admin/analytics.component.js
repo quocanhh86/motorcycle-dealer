@@ -374,7 +374,7 @@
 
           /* 4 Primary Executive Double-Bezel KPI Cards with kpi-counter */
           '<div class="bento-grid" style="margin-bottom:16px;" ng-show="$ctrl.hasLoadedOnce || !$ctrl.isLoading">' +
-            '<div class="col-3 bezel-card stagger-item" style="--i: {{ $index }};" ng-repeat="kpi in $ctrl.kpis track by kpi.id">' +
+            '<div class="col-3 bezel-card stagger-item" ng-attr-style="--i:{{ $index }};" ng-repeat="kpi in $ctrl.kpis track by kpi.id">' +
               '<div class="bezel-card-inner" style="display:flex;flex-direction:column;justify-content:space-between;gap:8px;">' +
                 '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
                   '<span class="kpi-label">{{ kpi.labelKey | t }}</span>' +

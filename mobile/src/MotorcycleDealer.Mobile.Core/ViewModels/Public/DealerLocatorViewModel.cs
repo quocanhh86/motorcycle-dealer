@@ -60,6 +60,14 @@ public sealed partial class DealerLocatorViewModel : MobileViewModelBase
         }
 
         OnPropertyChanged(nameof(OfflineDirectoryBannerText));
+
+        var selectedCity = SelectedCity;
+        var selectedDealer = SelectedDealer;
+        RefreshCollection(CityFilters);
+        RefreshCollection(Dealers);
+        SelectedCity = selectedCity;
+        OnPropertyChanged(nameof(SelectedCity));
+        SelectedDealer = selectedDealer;
     }
 
     [RelayCommand]

@@ -799,6 +799,8 @@ public sealed partial class LocalizationService
     public string Err_TIER_REQUIREMENT_NOT_MET => GetString("Err_TIER_REQUIREMENT_NOT_MET");
     public string Err_RATE_LIMIT_EXCEEDED => GetString("Err_RATE_LIMIT_EXCEEDED");
     public string Err_NETWORK_OFFLINE => GetString("Err_NETWORK_OFFLINE");
+    public string Err_NETWORK_UNREACHABLE => GetString("Err_NETWORK_UNREACHABLE");
+    public string Err_REQUEST_TIMEOUT => GetString("Err_REQUEST_TIMEOUT");
     public string Err_DATABASE_UNAVAILABLE => GetString("Err_DATABASE_UNAVAILABLE");
     public string Err_INVALID_JSON_PAYLOAD => GetString("Err_INVALID_JSON_PAYLOAD");
     public string Err_INTERNAL_SERVER_ERROR => GetString("Err_INTERNAL_SERVER_ERROR");

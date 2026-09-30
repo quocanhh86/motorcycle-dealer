@@ -321,8 +321,12 @@
     return 1;
   }
 
+  function isVietnameseLocale(locale) {
+    return angular.isString(locale) && locale.trim().toLowerCase().indexOf('vi') === 0;
+  }
+
   // Deterministic VND voucher discount evaluator (FixedAmount vs Percentage capped by MaxDiscountAmount & GrossAmount)
-  function computeVoucherDiscount(voucher, grossAmountVnd) {
+  function computeVoucherDiscount(voucher, grossAmountVnd, locale) {
     var gross = Math.max(0, Number(grossAmountVnd) || 0);
     if (!voucher || !angular.isObject(voucher)) {
       return {
@@ -337,10 +341,13 @@
       Number(voucher.minOrderAmount !== undefined ? voucher.minOrderAmount : voucher.minOrderVnd) || 0
     );
     if (gross < minOrder) {
+      var isVi = isVietnameseLocale(locale);
       return {
         discountAmount: 0,
         isEligible: false,
-        ineligibleReason: 'Gross amount (' + gross.toLocaleString('en-US') + ' VND) is below voucher minimum (' + minOrder.toLocaleString('en-US') + ' VND).'
+        ineligibleReason: isVi
+          ? ('Tổng tiền (' + Math.round(gross).toLocaleString('vi-VN') + ' ₫) thấp hơn mức tối thiểu của voucher (' + Math.round(minOrder).toLocaleString('vi-VN') + ' ₫).')
+          : ('Gross amount (' + gross.toLocaleString('en-US') + ' VND) is below voucher minimum (' + minOrder.toLocaleString('en-US') + ' VND).')
       };
     }
 
@@ -370,7 +377,7 @@
   }
 
   // Shared deterministic discount label formatter (FixedAmount vs Percentage + optional MaxDiscountAmount cap)
-  function formatDiscountSummary(voucherOrCatalog) {
+  function formatDiscountSummary(voucherOrCatalog, locale) {
     if (!voucherOrCatalog || !angular.isObject(voucherOrCatalog)) {
       return '';
     }
@@ -381,15 +388,25 @@
     ) {
       return String(voucherOrCatalog.discountSummary);
     }
+    var isVi = isVietnameseLocale(locale);
     var dtype = String(voucherOrCatalog.discountType || 'FixedAmount');
     var dval = Math.max(0, Number(voucherOrCatalog.discountValue) || 0);
     if (dtype === 'Percentage') {
       var rawCap = voucherOrCatalog.maxDiscountAmount;
       var capNum = rawCap !== null && rawCap !== undefined && rawCap !== '' ? Number(rawCap) : 0;
+      if (isVi) {
+        var viCapLabel = (!isNaN(capNum) && capNum > 0)
+          ? (' (Tối đa ' + Math.round(capNum).toLocaleString('vi-VN') + ' ₫)')
+          : '';
+        return 'Giảm ' + dval + '%' + viCapLabel;
+      }
       var capLabel = (!isNaN(capNum) && capNum > 0)
         ? (' (Cap ' + Math.round(capNum).toLocaleString('vi-VN') + ' ₫)')
         : '';
       return dval + '% Off' + capLabel;
+    }
+    if (isVi) {
+      return 'Giảm ' + Math.round(dval).toLocaleString('vi-VN') + ' ₫';
     }
     return Math.round(dval).toLocaleString('vi-VN') + ' ₫ Off';
   }
@@ -409,6 +426,7 @@
       resolveTierProgress: resolveLoyaltyTierProgress,
       getTierRank: getLoyaltyTierRank,
       computeVoucherDiscount: computeVoucherDiscount,
-      formatDiscountSummary: formatDiscountSummary
+      formatDiscountSummary: formatDiscountSummary,
+      formatDiscountSummaryLocalized: formatDiscountSummary
     }));
 })();

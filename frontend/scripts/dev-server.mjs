@@ -48,8 +48,26 @@ function sendResponse(res, statusCode, contentType, bodyBuffer, method) {
   res.end(bodyBuffer);
 }
 
+function tryDecodePathname(urlPathname) {
+  if (typeof urlPathname !== 'string' || urlPathname.includes('\0')) {
+    return null;
+  }
+  try {
+    const decoded = decodeURIComponent(urlPathname);
+    if (decoded.includes('\0')) {
+      return null;
+    }
+    return decoded;
+  } catch {
+    return null;
+  }
+}
+
 function resolveSafeStaticFile(urlPathname) {
-  const decoded = decodeURIComponent(urlPathname);
+  const decoded = tryDecodePathname(urlPathname);
+  if (decoded === null) {
+    return null;
+  }
   const normalizedRel = decoded.replace(/^\/+/, '');
   const candidatePath = path.resolve(SRC_ROOT, normalizedRel);
 
@@ -92,12 +110,29 @@ export function createSpaServer() {
       const parsedUrl = new URL(req.url || '/', 'http://localhost');
       pathname = parsedUrl.pathname || '/';
     } catch {
-      const body = JSON.stringify({ status: 400, title: 'Malformed Request URI' });
+      const body = JSON.stringify({
+        type: 'https://httpstatuses.io/400',
+        status: 400,
+        title: 'Malformed Request URI',
+        detail: 'Request URI could not be parsed.'
+      });
       sendResponse(res, 400, 'application/problem+json; charset=utf-8', Buffer.from(body, 'utf8'), method);
       return;
     }
 
-    if (pathname === '/health') {
+    const decodedPathname = tryDecodePathname(pathname);
+    if (decodedPathname === null) {
+      const body = JSON.stringify({
+        type: 'https://httpstatuses.io/400',
+        status: 400,
+        title: 'Malformed Request URI',
+        detail: 'Request path contains invalid URI percent-encoding or a disallowed NUL byte.'
+      });
+      sendResponse(res, 400, 'application/problem+json; charset=utf-8', Buffer.from(body, 'utf8'), method);
+      return;
+    }
+
+    if (decodedPathname === '/health') {
       const payload = JSON.stringify({
         status: 'Healthy',
         service: 'motorcycle-dealer-spa',
@@ -107,7 +142,7 @@ export function createSpaServer() {
       return;
     }
 
-    if (pathname === '/' || pathname === '/index.html') {
+    if (decodedPathname === '/' || decodedPathname === '/index.html') {
       const indexPath = path.join(SRC_ROOT, 'index.html');
       const htmlBuf = fs.readFileSync(indexPath);
       sendResponse(res, 200, MIME_TYPES['.html'], htmlBuf, method);
@@ -123,13 +158,13 @@ export function createSpaServer() {
       return;
     }
 
-    const hasAssetExtension = path.extname(pathname) !== '';
+    const hasAssetExtension = path.extname(decodedPathname) !== '';
     if (hasAssetExtension) {
       const notFoundBody = JSON.stringify({
         type: 'https://httpstatuses.io/404',
         title: 'Static Asset Not Found',
         status: 404,
-        detail: `Asset '${pathname}' does not exist in frontend/src.`
+        detail: `Asset '${decodedPathname}' does not exist in frontend/src.`
       });
       sendResponse(res, 404, 'application/problem+json; charset=utf-8', Buffer.from(notFoundBody, 'utf8'), method);
       return;

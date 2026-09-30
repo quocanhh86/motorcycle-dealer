@@ -18,8 +18,8 @@ public sealed class MauiUserFeedbackService : IUserFeedbackService
         TextColor = Color.FromArgb("#F8FAFC"),
         ActionButtonTextColor = Color.FromArgb("#DC2626"),
         CornerRadius = new CornerRadius(8),
-        Font = MauiFont.SystemFontOfSize(14),
-        ActionButtonFont = MauiFont.SystemFontOfSize(14, FontWeight.Bold)
+        Font = MauiFont.OfSize("BeVietnamProRegular", 14),
+        ActionButtonFont = MauiFont.OfSize("BeVietnamProSemiBold", 14)
     };
 
     public async Task ShowToastAsync(string message, CancellationToken ct = default)

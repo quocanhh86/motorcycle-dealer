@@ -13,11 +13,13 @@ public partial class StaffTestDrivePage : ContentPage
         ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         InitializeComponent();
         BindingContext = ViewModel;
+        Unloaded += OnPageUnloaded;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
         WeakReferenceMessenger.Default.Register<StaffTestDrivePage, CultureChangedMessage>(
             this,
             static (page, _) => page.RefreshLocalizedChips());
@@ -29,6 +31,9 @@ public partial class StaffTestDrivePage : ContentPage
         WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
         base.OnDisappearing();
     }
+
+    private void OnPageUnloaded(object? sender, EventArgs e)
+        => WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
 
     private void RefreshLocalizedChips()
     {

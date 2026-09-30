@@ -5,10 +5,18 @@
     .module('app.core')
     .service('DealerApiService', DealerApiService);
 
-  DealerApiService.$inject = ['$http', '$q', 'APP_CONFIG', 'ProblemDetailsMapper'];
-  function DealerApiService($http, $q, APP_CONFIG, ProblemDetailsMapper) {
+  DealerApiService.$inject = ['$http', '$q', 'APP_CONFIG', 'ProblemDetailsMapper', 'I18nService'];
+  function DealerApiService($http, $q, APP_CONFIG, ProblemDetailsMapper, I18nService) {
     var self = this;
     var idempSeq = 0;
+
+    function isVietnameseActive() {
+      if (I18nService && angular.isFunction(I18nService.getLocale)) {
+        var loc = I18nService.getLocale();
+        return angular.isString(loc) && loc.trim().toLowerCase().indexOf('vi') === 0;
+      }
+      return false;
+    }
 
     function baseUrl() {
       return String(APP_CONFIG.apiBaseUrl || 'http://localhost:5080/api/v1').replace(/\/+$/, '');
@@ -952,14 +960,24 @@
     // --- Phase 6 Normalizers (ServiceInvoices, Loyalty, Vouchers, Notifications) ---
 
     function formatVoucherDiscountSummary(discountType, discountValue, maxDiscountAmount) {
+      var isVi = isVietnameseActive();
       var dtype = String(discountType || 'FixedAmount');
       var dval = Math.max(0, Number(discountValue) || 0);
       if (dtype === 'Percentage') {
         var capNum = maxDiscountAmount !== null && maxDiscountAmount !== undefined ? Number(maxDiscountAmount) : 0;
+        if (isVi) {
+          var viCapLabel = (!isNaN(capNum) && capNum > 0)
+            ? (' (Tối đa ' + Math.round(capNum).toLocaleString('vi-VN') + ' ₫)')
+            : '';
+          return 'Giảm ' + dval + '%' + viCapLabel;
+        }
         var capLabel = (!isNaN(capNum) && capNum > 0)
           ? (' (Cap ' + Math.round(capNum).toLocaleString('vi-VN') + ' ₫)')
           : '';
         return dval + '% Off' + capLabel;
+      }
+      if (isVi) {
+        return 'Giảm ' + Math.round(dval).toLocaleString('vi-VN') + ' ₫';
       }
       return Math.round(dval).toLocaleString('vi-VN') + ' ₫ Off';
     }
@@ -3059,9 +3077,10 @@
         phone: String(pickDefined(dBlock, ['phone', 'phoneNumber', 'Phone', 'PhoneNumber'], pickDefined(r, ['dealerPhone', 'DealerPhone'], '')))
       };
 
+      var isVi = isVietnameseActive();
       var cBlock = (r.customer && angular.isObject(r.customer)) ? r.customer : ((r.Customer && angular.isObject(r.Customer)) ? r.Customer : {});
       var customer = {
-        fullName: String(pickDefined(cBlock, ['fullName', 'name', 'FullName', 'Name'], pickDefined(r, ['customerFullName', 'CustomerFullName'], 'Valued Customer'))),
+        fullName: String(pickDefined(cBlock, ['fullName', 'name', 'FullName', 'Name'], pickDefined(r, ['customerFullName', 'CustomerFullName'], isVi ? 'Khách hàng thân thiết' : 'Valued Customer'))),
         email: String(pickDefined(cBlock, ['email', 'Email'], pickDefined(r, ['customerEmail', 'CustomerEmail'], ''))),
         phone: String(pickDefined(cBlock, ['phone', 'phoneNumber', 'Phone', 'PhoneNumber'], pickDefined(r, ['customerPhone', 'CustomerPhone'], '')))
       };
@@ -3069,7 +3088,7 @@
       var vBlock = (r.vehicle && angular.isObject(r.vehicle)) ? r.vehicle : ((r.Vehicle && angular.isObject(r.Vehicle)) ? r.Vehicle : {});
       var vehicle = {
         modelCode: String(pickDefined(vBlock, ['modelCode', 'ModelCode'], pickDefined(r, ['modelCode', 'ModelCode'], ''))),
-        modelName: String(pickDefined(vBlock, ['modelName', 'motorcycleModelName', 'ModelName', 'MotorcycleModelName'], pickDefined(r, ['motorcycleModelName', 'modelName', 'MotorcycleModelName'], 'Authorized Motorcycle'))),
+        modelName: String(pickDefined(vBlock, ['modelName', 'motorcycleModelName', 'ModelName', 'MotorcycleModelName'], pickDefined(r, ['motorcycleModelName', 'modelName', 'MotorcycleModelName'], isVi ? 'Xe máy chính hãng' : 'Authorized Motorcycle'))),
         colorName: String(pickDefined(vBlock, ['colorName', 'ColorName'], pickDefined(r, ['colorName', 'ColorName'], ''))),
         vin: String(pickDefined(vBlock, ['vin', 'VIN', 'Vin'], pickDefined(r, ['vin', 'VIN'], ''))).toUpperCase(),
         engineNumber: String(pickDefined(vBlock, ['engineNumber', 'EngineNumber'], pickDefined(r, ['engineNumber', 'EngineNumber'], ''))),
@@ -3125,7 +3144,9 @@
           lineItems.push(self.normalizeInvoiceLineItem({
             lineNumber: lineItems.length + 1,
             partCodeSnapshot: 'SVC-LABOR',
-            description: 'Authorized Workshop Labor & Multi-Point Inspection',
+            description: isVi
+              ? 'Công bảo dưỡng xưởng & Kiểm tra đa điểm chính hãng'
+              : 'Authorized Workshop Labor & Multi-Point Inspection',
             itemType: 'Labor',
             quantity: 1,
             unitPriceVnd: laborAmt,
@@ -3136,7 +3157,9 @@
           lineItems.push(self.normalizeInvoiceLineItem({
             lineNumber: lineItems.length + 1,
             partCodeSnapshot: 'SVC-PARTS',
-            description: 'Genuine OEM Parts & Workshop Consumables',
+            description: isVi
+              ? 'Phụ tùng chính hãng OEM & Vật tư xưởng dịch vụ'
+              : 'Genuine OEM Parts & Workshop Consumables',
             itemType: 'Part',
             quantity: 1,
             unitPriceVnd: partsAmt,

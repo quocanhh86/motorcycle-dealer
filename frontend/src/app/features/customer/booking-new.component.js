@@ -237,7 +237,7 @@
                   '<skeleton-loader ng-if="$ctrl.isLoadingInit && $ctrl.dealers.length === 0" variant="cards" count="2"></skeleton-loader>' +
 
                   '<div class="grid-12" ng-if="$ctrl.dealers.length > 0">' +
-                    '<div class="col-6 stagger-item" ng-repeat="dlr in $ctrl.dealers track by dlr.id" style="--i:{{ $index }};">' +
+                    '<div class="col-6 stagger-item" ng-repeat="dlr in $ctrl.dealers track by dlr.id" ng-attr-style="--i:{{ $index }};">' +
                       '<div class="slot-card" style="height:100%;" ng-class="{\'is-selected\': $ctrl.draft.dealerId === dlr.id}">' +
                         '<div>' +
                           '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">' +
@@ -290,7 +290,7 @@
                     '<div class="form-group">' +
                       '<label class="form-label" for="bookingVehicleSelect">{{ \'customerBookingNew.selectVehicleLabel\' | t }}</label>' +
                       '<div class="grid-12" style="gap:10px;margin-bottom:10px;">' +
-                        '<div class="col-6 stagger-item" ng-repeat="v in $ctrl.vehicles track by v.id" style="--i:{{ $index }};">' +
+                        '<div class="col-6 stagger-item" ng-repeat="v in $ctrl.vehicles track by v.id" ng-attr-style="--i:{{ $index }};">' +
                           '<button type="button" class="slot-card" style="width:100%;text-align:left;cursor:pointer;flex-direction:row;align-items:center;gap:12px;" ' +
                                   'ng-class="{\'is-selected\': $ctrl.draft.customerVehicleId === v.id}" ' +
                                   'ng-click="$ctrl.pickVehicleCard(v)">' +
@@ -404,7 +404,7 @@
                   '</empty-state>' +
 
                   '<div class="grid-12" ng-if="!$ctrl.isLoadingSlots && $ctrl.slots.length > 0">' +
-                    '<div class="col-4 stagger-item" ng-repeat="slot in $ctrl.slots track by slot.slotId" style="--i:{{ $index }};">' +
+                    '<div class="col-4 stagger-item" ng-repeat="slot in $ctrl.slots track by slot.slotId" ng-attr-style="--i:{{ $index }};">' +
                       '<div class="slot-card" style="height:100%;" ' +
                            'ng-class="{\'is-selected\': $ctrl.draft.serviceTimeSlotId === slot.slotId, \'is-last-bay\': slot.isBookable && slot.remainingCapacity === 1, \'is-disabled\': !slot.isBookable}">' +
                         '<div>' +
@@ -456,7 +456,7 @@
                     '<label class="form-label" for="bookingVoucherSelect">{{ \'booking.applyVoucherLabel\' | t }}</label>' +
                     '<select id="bookingVoucherSelect" class="form-control mono-num" ' +
                             'ng-model="$ctrl.draft.appliedCustomerVoucherId" ' +
-                            'ng-options="v.id as (v.voucherCode + \' • \' + v.discountSummary + \' (\' + (v.minOrderAmount | vndCurrency) + \')\') for v in $ctrl.availableVouchers" ' +
+                            'ng-options="v.id as $ctrl.formatVoucherOption(v) for v in $ctrl.availableVouchers" ' +
                             'ng-change="$ctrl.onVoucherSelected()">' +
                       '<option value="">{{ \'customerBookingNew.selectVoucherOption\' | t }}</option>' +
                     '</select>' +
@@ -572,7 +572,8 @@
     'ProblemDetailsMapper',
     'ToastService',
     'TokenStorageService',
-    'I18nService'
+    'I18nService',
+    'LoyaltyCalculator'
   ];
   function CustomerBookingNewController(
     $q,
@@ -584,7 +585,8 @@
     ProblemDetailsMapper,
     ToastService,
     TokenStorageService,
-    I18nService
+    I18nService,
+    LoyaltyCalculator
   ) {
     var $ctrl = this;
     var cleanupFns = [];
@@ -599,6 +601,38 @@
       }
       return fallback !== undefined ? fallback : key;
     }
+
+    function getActiveLocale() {
+      return (I18nService && angular.isFunction(I18nService.getLocale))
+        ? I18nService.getLocale()
+        : 'en-US';
+    }
+
+    function formatVndSafe(val) {
+      if (I18nService && angular.isFunction(I18nService.formatVnd)) {
+        return I18nService.formatVnd(val);
+      }
+      return Math.round(Number(val) || 0).toLocaleString('vi-VN') + ' ₫';
+    }
+
+    $ctrl.formatVoucherDiscountSummary = function (voucher) {
+      if (!voucher) { return ''; }
+      var locale = getActiveLocale();
+      if (LoyaltyCalculator) {
+        if (angular.isFunction(LoyaltyCalculator.formatDiscountSummaryLocalized)) {
+          return LoyaltyCalculator.formatDiscountSummaryLocalized(voucher, locale) || voucher.discountSummary || '';
+        }
+        if (angular.isFunction(LoyaltyCalculator.formatDiscountSummary)) {
+          return LoyaltyCalculator.formatDiscountSummary(voucher, locale) || voucher.discountSummary || '';
+        }
+      }
+      return voucher.discountSummary || '';
+    };
+
+    $ctrl.formatVoucherOption = function (voucher) {
+      if (!voucher) { return ''; }
+      return voucher.voucherCode + ' • ' + $ctrl.formatVoucherDiscountSummary(voucher) + ' (' + formatVndSafe(voucher.minOrderAmount) + ')';
+    };
 
     function syncUserMultiplier() {
       var user = AuthService.getCurrentUser() || {};

@@ -200,7 +200,7 @@
                     '</tr>' +
                   '</thead>' +
                   '<tbody>' +
-                    '<tr class="stagger-item" ng-repeat="row in $ctrl.vehicles track by row.id" style="--i:{{ $index }};">' +
+                    '<tr class="stagger-item" ng-repeat="row in $ctrl.vehicles track by row.id" ng-attr-style="--i:{{ $index }};">' +
                       '<td>' +
                         '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
                           '<span class="text-primary" style="font-weight:600;">{{ row.customerFullName || (\'staff.cust.registeredOwnerFallback\' | t) }}</span>' +

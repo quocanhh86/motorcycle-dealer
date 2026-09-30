@@ -218,7 +218,7 @@
             '<article class="bezel-card stagger-item" ' +
                      'ng-repeat="bk in $ctrl.filteredBookings track by bk.id" ' +
                      'ng-class="{\'is-signalr-pulse\': bk.isLiveArrival}" ' +
-                     'style="--i:{{ $index }};">' +
+                     'ng-attr-style="--i:{{ $index }};">' +
               '<div class="bezel-card-inner">' +
                 '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">' +
                   '<div style="flex:1;min-width:250px;">' +

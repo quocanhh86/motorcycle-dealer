@@ -319,7 +319,7 @@
                 '<article class="bezel-card stagger-item" ' +
                          'ng-repeat="td in $ctrl.filteredTestDrives track by td.id" ' +
                          'ng-class="{\'is-signalr-pulse\': td.isLiveArrival}" ' +
-                         'style="--i:{{ $index }};">' +
+                         'ng-attr-style="--i:{{ $index }};">' +
                   '<div class="bezel-card-inner">' +
                     '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">' +
                       '<div style="display:flex;align-items:flex-start;gap:12px;flex:1;min-width:240px;">' +

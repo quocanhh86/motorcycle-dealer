@@ -41,6 +41,7 @@
       grossAmount: 'Tổng trước giảm giá',
       netPaidTitle: 'THỰC THANH TOÁN (VNĐ)',
       footerImmutable: 'Chứng từ sổ cái tài chính bất biến',
+      footerPlatform: 'Nền tảng Quản lý Đại lý Xe máy & Khách hàng Thân thiết v1.4',
       verifyLabel: 'Xác thực'
     }
   };
@@ -85,6 +86,7 @@
       grossAmount: 'Gross Amount',
       netPaidTitle: 'NET PAID (VND)',
       footerImmutable: 'Immutable Financial Ledger Record',
+      footerPlatform: 'Motorcycle Dealer & Loyalty Management Platform v1.4',
       verifyLabel: 'Verify'
     }
   };
@@ -272,7 +274,7 @@
               '</div>' +
 
               '<footer class="text-muted" style="margin-top:18px;padding-top:10px;border-top:1px dashed var(--clr-border-strong);display:flex;justify-content:space-between;font-size:11px;flex-wrap:wrap;gap:8px;">' +
-                '<span>{{ \'receipt.footerImmutable\' | t }} • Motorcycle Dealer &amp; Loyalty Management Platform v1.2</span>' +
+                '<span>{{ \'receipt.footerImmutable\' | t }} • {{ \'receipt.footerPlatform\' | t }}</span>' +
                 '<span class="mono-num">{{ \'receipt.verifyLabel\' | t }}: {{ $ctrl.viewModel.receiptNumber }} / {{ $ctrl.viewModel.verificationCode }}</span>' +
               '</footer>' +
             '</div>' +

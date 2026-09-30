@@ -23,7 +23,10 @@ public sealed partial class NotificationsFeedViewModel : MobileViewModelBase, ID
     private readonly IMainThreadDispatcher _mainThreadDispatcher;
     private readonly IUserActionLogger? _userActionLogger;
 
+    private readonly Lock _eventSubscriptionLock = new();
     private int? _lastServerTotalBufferedCount;
+    private bool _eventsAttached;
+    private IUserActionLogger? _subscribedLogger;
 
     public NotificationsFeedViewModel(
         IDealerMobileApiClient apiClient,
@@ -49,13 +52,6 @@ public sealed partial class NotificationsFeedViewModel : MobileViewModelBase, ID
         CanFilterDealerFeed = _sessionState.HasPermission(Permissions.Notifications.ViewDealer);
         ActiveSection = "Alerts";
         ActivityLogSummary = Loc.NotifDefaultLogSummary;
-        _signalRService.MissedNotificationsRecovered += OnMissedNotificationsRecovered;
-
-        var activeLogger = _userActionLogger ?? MobileUserActionLogHub.Current;
-        if (activeLogger is not null)
-        {
-            activeLogger.ActionLogged += OnActionLogged;
-        }
     }
 
     public ObservableCollection<NotificationDto> Notifications { get; } = [];
@@ -101,6 +97,56 @@ public sealed partial class NotificationsFeedViewModel : MobileViewModelBase, ID
         OnPropertyChanged(nameof(LogSourceToggleLabel));
         OnPropertyChanged(nameof(UnreadHeaderLabel));
         RefreshActivitySummary();
+        RefreshCollection(Notifications);
+        RefreshCollection(ActivityLogs);
+    }
+
+    /// <summary>
+    /// Idempotently attaches singleton SignalR and action-logger event subscriptions while the page is visible.
+    /// Pair with <see cref="DetachEventSubscriptions"/> on disappearing/unloaded to prevent RISK-04 transient VM leaks.
+    /// </summary>
+    public void AttachEventSubscriptions()
+    {
+        lock (_eventSubscriptionLock)
+        {
+            if (_eventsAttached)
+            {
+                return;
+            }
+
+            _signalRService.MissedNotificationsRecovered += OnMissedNotificationsRecovered;
+            var activeLogger = _userActionLogger ?? MobileUserActionLogHub.Current;
+            if (activeLogger is not null)
+            {
+                activeLogger.ActionLogged += OnActionLogged;
+                _subscribedLogger = activeLogger;
+            }
+
+            _eventsAttached = true;
+        }
+    }
+
+    /// <summary>
+    /// Idempotently detaches singleton SignalR and action-logger event subscriptions so transient ViewModels can be GC'd.
+    /// </summary>
+    public void DetachEventSubscriptions()
+    {
+        lock (_eventSubscriptionLock)
+        {
+            if (!_eventsAttached)
+            {
+                return;
+            }
+
+            _signalRService.MissedNotificationsRecovered -= OnMissedNotificationsRecovered;
+            if (_subscribedLogger is not null)
+            {
+                _subscribedLogger.ActionLogged -= OnActionLogged;
+                _subscribedLogger = null;
+            }
+
+            _eventsAttached = false;
+        }
     }
 
     [RelayCommand]
@@ -415,13 +461,7 @@ public sealed partial class NotificationsFeedViewModel : MobileViewModelBase, ID
 
     public void Dispose()
     {
-        _signalRService.MissedNotificationsRecovered -= OnMissedNotificationsRecovered;
-        var activeLogger = _userActionLogger ?? MobileUserActionLogHub.Current;
-        if (activeLogger is not null)
-        {
-            activeLogger.ActionLogged -= OnActionLogged;
-        }
-
+        DetachEventSubscriptions();
         UnregisterBaseMessages();
     }
 }

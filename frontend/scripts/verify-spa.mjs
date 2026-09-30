@@ -7443,12 +7443,16 @@ async function main() {
                     bellNavigatedStates[0] === 'app.customer.warranty';
                   xpBellCtrl.$onDestroy();
 
-                  // 4. F-XP-06: customerBookings Completed invoice pre-fetch + LoyaltyPointsUpdated cross-tab review refresh + receipt v1.2 footer
+                  // 4. F-XP-06: customerBookings Completed invoice pre-fetch + LoyaltyPointsUpdated cross-tab review refresh + localized v1.4 receipt footer
                   const xpCustBookingsDef = registeredComponents.get('customerBookings');
                   const xpReceiptModalDef = registeredComponents.get('printableReceiptModal');
                   const rcptTpl = String(xpReceiptModalDef?.template || '');
-                  const rcptFooterV12Ok =
-                    rcptTpl.includes('Platform v1.2') && !rcptTpl.includes('Platform v1.1');
+                  const rcptCompSrc = fs.readFileSync(path.join(SRC_ROOT, 'app/shared/printable-receipt-modal.component.js'), 'utf8');
+                  const rcptFooterV14Ok =
+                    rcptTpl.includes('receipt.footerPlatform') &&
+                    rcptCompSrc.includes('Platform v1.4') &&
+                    !rcptTpl.includes('Platform v1.1') &&
+                    !rcptTpl.includes('Platform v1.2');
 
                   let invoicePrefetchHits = 0;
                   let myReviewsRefreshHits = 0;
@@ -7620,7 +7624,7 @@ async function main() {
                   const xp06PostDestroySafe = myReviewsRefreshHits === hitsBeforeDestroy;
 
                   const xp06Ok =
-                    rcptFooterV12Ok &&
+                    rcptFooterV14Ok &&
                     cachedCompletedInvoice?.invoiceNumber === 'INV-XP06-001' &&
                     prefetchHitsAfterComplete === 1 &&
                     canRateImmediately &&
@@ -7634,7 +7638,7 @@ async function main() {
                       `Cross-Phase Stage 3 suite (ai) failed: F-XP-01b=${xp01bOk}, F-XP-04b=${xp04bOk}, F-XP-05=${xp05Ok}, F-XP-06=${xp06Ok}, F-XP-09b=${xp09bLiveOk}/${xp09bFallbackOk}`
                     );
                   } else {
-                    pass('Verified Cross-Phase Stage 3 fixes F-XP-01b (ServiceReviewBonus ledger filter), F-XP-04b (SCR-ADM-01 CSAT & Warranty column + Quality -> handoff), F-XP-05 (12-event x 3-role notification-bell deep-links), F-XP-06 (Completed invoice pre-fetch, cross-tab LoyaltyPointsUpdated review sync & v1.2 receipt footer), and F-XP-09b (/admin/analytics/quality-warranty + fallback).');
+                    pass('Verified Cross-Phase Stage 3 fixes F-XP-01b (ServiceReviewBonus ledger filter), F-XP-04b (SCR-ADM-01 CSAT & Warranty column + Quality -> handoff), F-XP-05 (12-event x 3-role notification-bell deep-links), F-XP-06 (Completed invoice pre-fetch, cross-tab LoyaltyPointsUpdated review sync & localized v1.4 receipt footer), and F-XP-09b (/admin/analytics/quality-warranty + fallback).');
                   }
 
                   // (aj) Cross-Phase Stage 5 Clean-Code Refactoring & Boundary Matrices (RF-XP-04a, RF-XP-04b, RF-XP-04c)
@@ -7983,6 +7987,154 @@ async function main() {
         } else {
           pass('Verified v1.4.0 ThemeService (Light Showroom <-> Dark Pit-Lane) & I18nService (vi-VN default <-> en-US hot-switch + broadcasts).');
         }
+
+        // 4aa-regression. Wave 1 P0-3 (<bike-image>), P1-4 (vi-VN voucher/receipt), and P2-7 (errorRetryBanner/activityLogDrawer/AuthService)
+        i18nSvc.setLocale('vi-VN');
+        const bikeImgDef = registeredComponents.get('bikeImage');
+        const errBannerDef = registeredComponents.get('errorRetryBanner');
+        const actDrawerDef = registeredComponents.get('activityLogDrawer');
+        const rcptModalDef = registeredComponents.get('printableReceiptModal');
+        const loyaltyCalcV14 = registeredConstants.get('LoyaltyCalculator');
+        const dealerApiCtorV14 = registeredServices.get('DealerApiService');
+        const authSvcCtorV14 = registeredServices.get('AuthService');
+        const tokenStoreCtorV14 = registeredServices.get('TokenStorageService');
+        const problemMapperCtorV14 = registeredServices.get('ProblemDetailsMapper');
+
+        if (!bikeImgDef || !errBannerDef || !actDrawerDef || !rcptModalDef || !loyaltyCalcV14 || !dealerApiCtorV14 || !authSvcCtorV14) {
+          fail('Wave 1 regression suite missing required component/service registrations.');
+        } else {
+          // P0-3: <bike-image> external URL never derives .webp, local /assets/*.jpg retries rawSrc before FALLBACK_JPG, alt localizes
+          let imgErrHandler = null;
+          let imgCurrentSrcAttr = '';
+          const mockImgEl = {
+            addEventListener: (evt, fn) => { if (evt === 'error') imgErrHandler = fn; },
+            removeEventListener: (evt, fn) => { if (evt === 'error' && imgErrHandler === fn) imgErrHandler = null; },
+            getAttribute: (attr) => (attr === 'src' ? imgCurrentSrcAttr : null),
+            setAttribute: (attr, val) => { if (attr === 'src') imgCurrentSrcAttr = String(val); }
+          };
+          const mockBikeElement = [{ querySelector: (sel) => (sel === 'img.bike-image-img' ? mockImgEl : null) }];
+          const mockBikeScope = {
+            $applyAsync: (fn) => { if (typeof fn === 'function') fn(); },
+            $on: () => () => {}
+          };
+
+          const extBikeCtrl = new bikeImgDef.controller(mockBikeElement, mockBikeScope, i18nSvc);
+          extBikeCtrl.src = 'https://cdn.example.org/bike.jpg';
+          extBikeCtrl.$onInit();
+          const extNoWebpOk =
+            extBikeCtrl.webpSrc === null &&
+            extBikeCtrl.resolvedSrc === 'https://cdn.example.org/bike.jpg' &&
+            extBikeCtrl.usedFallback === false &&
+            extBikeCtrl.resolvedAlt === 'Xe máy';
+          extBikeCtrl.$onDestroy();
+
+          const localBikeCtrl = new bikeImgDef.controller(mockBikeElement, mockBikeScope, i18nSvc);
+          localBikeCtrl.src = '/assets/models/custom-jpg-only.jpg';
+          localBikeCtrl.$onInit();
+          localBikeCtrl.$postLink();
+          const localInitialWebpOk =
+            localBikeCtrl.webpSrc === '/assets/models/custom-jpg-only.webp' &&
+            localBikeCtrl.resolvedSrc === '/assets/models/custom-jpg-only.jpg' &&
+            localBikeCtrl.usedFallback === false;
+
+          // 1st error (WebP missing) -> drop webpSrc and retry raw /assets/...jpg BEFORE falling back
+          if (typeof imgErrHandler === 'function') imgErrHandler();
+          const retryRawFirstOk =
+            localBikeCtrl.webpSrc === null &&
+            localBikeCtrl.resolvedSrc === '/assets/models/custom-jpg-only.jpg' &&
+            localBikeCtrl.usedFallback === false;
+
+          // 2nd error (raw JPG also missing) -> fall back to FALLBACK_JPG
+          if (typeof imgErrHandler === 'function') imgErrHandler();
+          const fallbackSecondOk =
+            localBikeCtrl.webpSrc === null &&
+            localBikeCtrl.resolvedSrc === '/assets/editorial/showroom-hero-apex.jpg' &&
+            localBikeCtrl.usedFallback === true;
+          localBikeCtrl.$onDestroy();
+
+          // P1-4: Localized vi-VN LoyaltyCalculator & DealerApiService voucher/receipt labels + v1.4 localized receipt footer
+          const viPctSummary = loyaltyCalcV14.formatDiscountSummary({ discountType: 'Percentage', discountValue: 10, maxDiscountAmount: 500000 }, 'vi-VN');
+          const viFixedSummary = loyaltyCalcV14.formatDiscountSummary({ discountType: 'FixedAmount', discountValue: 50000 }, 'vi-VN');
+          const viIneligible = loyaltyCalcV14.computeVoucherDiscount({ discountType: 'FixedAmount', discountValue: 50000, minOrderAmount: 250000 }, 200000, 'vi-VN');
+          const viCalcOk =
+            viPctSummary === 'Giảm 10% (Tối đa 500.000 ₫)' &&
+            viFixedSummary === 'Giảm 50.000 ₫' &&
+            viIneligible.isEligible === false &&
+            String(viIneligible.ineligibleReason || '').startsWith('Tổng tiền (');
+
+          const viMapper = new problemMapperCtorV14();
+          const viApi = new dealerApiCtorV14(
+            { get: () => Promise.resolve({ data: {} }) },
+            { resolve: (v) => Promise.resolve(v), reject: (e) => Promise.reject(e) },
+            registeredConstants.get('APP_CONFIG'),
+            viMapper,
+            i18nSvc
+          );
+          const viCatalogNorm = viApi.normalizeVoucherCatalog({
+            codePrefix: 'SAVE10',
+            discountType: 'Percentage',
+            discountValue: 10,
+            maxDiscountAmount: 500000
+          });
+          const viRcptNorm = viApi.normalizePrintableReceipt({
+            invoiceNumber: 'INV-VI-001',
+            laborAmount: 150000,
+            partsAmount: 200000
+          });
+          const viApiOk =
+            viCatalogNorm.discountSummary === 'Giảm 10% (Tối đa 500.000 ₫)' &&
+            viRcptNorm.lineItems.length === 2 &&
+            viRcptNorm.lineItems[0].description.includes('Công bảo dưỡng') &&
+            viRcptNorm.lineItems[1].description.includes('Phụ tùng chính hãng');
+
+          // P2-7: PrintableReceiptModal v1.4 footer, ErrorRetryBanner Trace ID, ActivityLogDrawer sources, AuthService MISSING_REFRESH_TOKEN
+          const dummyRcptCtrl = new rcptModalDef.controller({}, viApi, i18nSvc);
+          dummyRcptCtrl.$onDestroy();
+          const dummyErrCtrl = new errBannerDef.controller(i18nSvc);
+          dummyErrCtrl.$onInit();
+          const dummyTokenStore = new tokenStoreCtorV14({});
+          const viAuthSvc = new authSvcCtorV14(
+            { resolve: (v) => Promise.resolve(v), reject: (e) => Promise.reject(e) },
+            { has: () => false, get: () => null },
+            mockRootScope,
+            registeredConstants.get('APP_CONFIG'),
+            registeredConstants.get('ROLE_HOME'),
+            registeredConstants.get('ROLE_PERMISSION_PRESETS'),
+            dummyTokenStore,
+            i18nSvc
+          );
+          let missingRefreshErr = null;
+          try {
+            await viAuthSvc.refreshTokens();
+          } catch (err) {
+            missingRefreshErr = err;
+          }
+          const viFooterStr = i18nSvc.t('receipt.footerPlatform');
+          const viTraceLabel = i18nSvc.t('errorBanner.traceIdLabel');
+          i18nSvc.setLocale('en-US');
+          const enFooterStr = i18nSvc.t('receipt.footerPlatform');
+          const enTraceLabel = i18nSvc.t('errorBanner.traceIdLabel');
+
+          const p27Ok =
+            viFooterStr.includes('v1.4') &&
+            enFooterStr.includes('Platform v1.4') &&
+            viTraceLabel === 'Mã truy vết' &&
+            enTraceLabel === 'Trace ID' &&
+            String(errBannerDef.template || '').includes('errorBanner.traceIdLabel') &&
+            String(actDrawerDef.template || '').includes('activityLog.sourceServer') &&
+            String(actDrawerDef.template || '').includes('activityLog.sourceWebClient') &&
+            String(actDrawerDef.template || '').includes('activityLog.sourceMobileApp') &&
+            missingRefreshErr?.data?.errorCode === 'MISSING_REFRESH_TOKEN' &&
+            missingRefreshErr?.data?.title === 'Phiên đăng nhập đã hết hạn';
+
+          if (!extNoWebpOk || !localInitialWebpOk || !retryRawFirstOk || !fallbackSecondOk || !viCalcOk || !viApiOk || !p27Ok) {
+            fail(
+              `Wave 1 runtime regression suite failed: extNoWebp=${extNoWebpOk}, localWebp=${localInitialWebpOk}, retryRaw=${retryRawFirstOk}, fallback=${fallbackSecondOk}, viCalc=${viCalcOk}, viApi=${viApiOk}, p27=${p27Ok}`
+            );
+          } else {
+            pass('Verified Wave 1 runtime fixes: P0-3 <bike-image> local-only .webp & rawSrc retry, P1-4 vi-VN voucher/receipt localization, and P2-7 localized Trace ID / activityLog sources / AuthService session expiry.');
+          }
+        }
       }
     }
   }
@@ -8023,15 +8175,15 @@ async function main() {
     pass(`Verified Zero-Mock / Zero-Hardcode Static Guard across all ${appJsFiles.length} SPA files (0 PREVIEW_*, 0 SEEDED_*, 0 plaintext passwords, 0 simulateLive* buttons, 0 hardcoded VIN/dealer/email samples).`);
   }
 
-  // 4aa-static. v1.4.0 Big Update Static Verification: Zero UI Emojis/Inline-Hex & 8 Studio Assets
+  // 4aa-static. v1.4.0 Big Update Static Verification: Zero UI Emojis/Inline-Hex, 8 Studio Assets & Wave 1 CSS/wwwroot Guards
   {
     const uiComponentFiles = appJsFiles.filter((f) => {
       const rel = path.relative(SRC_ROOT, f).replace(/\\/g, '/');
       return rel.startsWith('app/features/') || rel.startsWith('app/shared/');
     });
-    const uiEmojiRx = /[\u{26A1}\u{1F5A8}\u{1F6E1}\u{1F39F}\u{26A0}\u{1F48E}\u{1F527}\u{2615}\u{1F91D}\u{1F4CB}\u{1F50D}\u{1F9FE}\u{1F512}\u{1F4AC}\u{1F514}\u{2605}\u{2606}\u{2715}\u{2713}\u{25CF}\u{25CB}\u{25C6}\u{25B2}\u{25A0}\u{2298}\u{265B}\u{21BB}\u{25BE}\u{2699}\u{270E}\u{21E5}\u{25B6}\u{2630}]/gu;
-    const inlineHexRx = /style="[^"]*#[0-9A-Fa-f]{3,6}[^"]*"/g;
-    const asciiArrowRx = /-&gt;|&lt;-/g;
+    const uiEmojiRx = /[\u{26A1}\u{1F5A8}\u{1F6E1}\u{1F39F}\u{26A0}\u{1F48E}\u{1F527}\u{2615}\u{1F91D}\u{1F4CB}\u{1F50D}\u{1F9FE}\u{1F512}\u{1F4AC}\u{1F514}\u{2605}\u{2606}\u{2715}\u{2713}\u{25CF}\u{25CB}\u{25C6}\u{25B2}\u{25A0}\u{2298}\u{265B}\u{21BB}\u{25BE}\u{2699}\u{270E}\u{21E5}\u{25B6}\u{2630}]/u;
+    const inlineHexRx = /style="[^"]*#[0-9A-Fa-f]{3,6}[^"]*"/;
+    const asciiArrowRx = /-&gt;|&lt;-/;
     const uiViolations = [];
     for (const f of uiComponentFiles) {
       const txt = fs.readFileSync(f, 'utf8');
@@ -8061,6 +8213,52 @@ async function main() {
       fail(`Missing v1.4.0 studio media assets: ${missingAssets.join(', ')}`);
     } else {
       pass('Verified all 8 studio motorcycle & editorial assets (.jpg + .webp = 16 files) present under frontend/src/assets/.');
+    }
+
+    // P0-3 wwwroot .webp mirror parity check (when running inside monorepo)
+    const webApiWwwroot = path.join(REPO_ROOT, 'backend', 'src', 'MotorcycleDealer.WebApi', 'wwwroot');
+    if (fs.existsSync(webApiWwwroot)) {
+      const expectedWwwrootWebps = expectedStudioAssets.filter((rel) => rel.endsWith('.webp'));
+      const missingWwwrootWebps = expectedWwwrootWebps.filter((rel) => !fs.existsSync(path.join(webApiWwwroot, rel)));
+      if (missingWwwrootWebps.length > 0) {
+        fail(`Missing P0-3 WebApi wwwroot .webp assets: ${missingWwwrootWebps.join(', ')}`);
+      } else {
+        pass('Verified P0-3: all 8 studio .webp assets mirrored in backend/src/MotorcycleDealer.WebApi/wwwroot/assets/.');
+      }
+    }
+
+    // P0-1, P1-5 & P2-8 CSS regression checks in app-shell.css
+    const appShellCss = fs.readFileSync(path.join(SRC_ROOT, 'styles', 'app-shell.css'), 'utf8');
+    const receiptSheetBlockMatch = appShellCss.match(/\.printable-receipt-sheet\s*\{[\s\S]*?\}/);
+    const receiptSheetBlock = receiptSheetBlockMatch ? receiptSheetBlockMatch[0] : '';
+    const mediaPrintIdx = appShellCss.indexOf('@media print');
+    const mediaPrintBlock = mediaPrintIdx !== -1 ? appShellCss.slice(mediaPrintIdx) : '';
+
+    const p01PrintSelectorOk =
+      mediaPrintBlock.includes('body.is-printing-receipt-open .app-viewport section.view-enter > *:not(printable-receipt-modal)') &&
+      !mediaPrintBlock.includes('body.is-printing-receipt-open .app-viewport > ui-view > * > *:not(printable-receipt-modal)') &&
+      /body\.is-printing-receipt-open\s+printable-receipt-modal\s*\{[^}]*display:\s*block\s*!important/i.test(mediaPrintBlock);
+
+    const requiredTierResetVars = [
+      '--clr-tier-bronze-fg', '--clr-tier-bronze-bg', '--clr-tier-bronze-border', '--clr-tier-bronze-accent',
+      '--clr-tier-silver-fg', '--clr-tier-silver-bg', '--clr-tier-silver-border', '--clr-tier-silver-accent',
+      '--clr-tier-gold-fg', '--clr-tier-gold-bg', '--clr-tier-gold-border', '--clr-tier-gold-accent',
+      '--clr-tier-platinum-fg', '--clr-tier-platinum-bg', '--clr-tier-platinum-border', '--clr-tier-platinum-accent'
+    ];
+    const p15ReceiptTierResetsOk =
+      requiredTierResetVars.every((v) => receiptSheetBlock.includes(v)) &&
+      requiredTierResetVars.every((v) => mediaPrintBlock.includes(v));
+    const p15DarkSelectOptionOk =
+      /select\.form-control\s+option,\s*select\.form-input\s+option\s*\{[^}]*background-color:\s*var\(--clr-surface-card\)[^}]*color:\s*var\(--clr-text-primary\)/i.test(appShellCss);
+    const p28SidebarUnifiedOk =
+      /\.sidebar-nav-item\s+a\.is-active\s*\{[^}]*background-color:\s*rgba\(220,\s*38,\s*38,\s*0\.22\)[^}]*color:\s*#FECACA/i.test(appShellCss);
+
+    if (!p01PrintSelectorOk || !p15ReceiptTierResetsOk || !p15DarkSelectOptionOk || !p28SidebarUnifiedOk) {
+      fail(
+        `Wave 1 app-shell.css guard failed: p01Print=${p01PrintSelectorOk}, p15TierResets=${p15ReceiptTierResetsOk}, p15SelectOption=${p15DarkSelectOptionOk}, p28Sidebar=${p28SidebarUnifiedOk}`
+      );
+    } else {
+      pass('Verified Wave 1 CSS guards: P0-1 @media print receipt visibility, P1-5 4-tier white-paper resets & Dark <select> option contrast, P2-8 unified dark-chrome active sidebar.');
     }
   }
 
@@ -8106,6 +8304,26 @@ async function main() {
       fail(`GET /app/nonexistent-file.js expected 404, got ${missingAssetRes.statusCode}`);
     } else {
       pass('Ephemeral dev-server missing asset guard (GET /app/nonexistent-file.js -> 404) verified.');
+    }
+
+    // P0-2: Malformed URI encoding (GET /%ZZ) and NUL byte (GET /%00.js) MUST return HTTP 400 ProblemDetails without crashing Node
+    const badPercentRes = await httpGet(ephemeralPort, '/%ZZ');
+    const nulByteRes = await httpGet(ephemeralPort, '/%00.js');
+    const postMalformedHealthRes = await httpGet(ephemeralPort, '/health');
+    const badPercentCt = String(badPercentRes.headers['content-type'] || '');
+    const nulByteCt = String(nulByteRes.headers['content-type'] || '');
+    if (
+      badPercentRes.statusCode !== 400 ||
+      !badPercentCt.includes('application/problem+json') ||
+      nulByteRes.statusCode !== 400 ||
+      !nulByteCt.includes('application/problem+json') ||
+      postMalformedHealthRes.statusCode !== 200
+    ) {
+      fail(
+        `P0-2 dev-server malformed URI guard failed: /%ZZ=${badPercentRes.statusCode} (${badPercentCt}), /%00.js=${nulByteRes.statusCode} (${nulByteCt}), /health=${postMalformedHealthRes.statusCode}`
+      );
+    } else {
+      pass('Ephemeral dev-server P0-2 malformed URI guard (GET /%ZZ -> 400, GET /%00.js -> 400 ProblemDetails, server stays Healthy) verified.');
     }
   } finally {
     await new Promise((resolve) => server.close(resolve));

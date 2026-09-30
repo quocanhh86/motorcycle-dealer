@@ -1,11 +1,16 @@
+using System.Collections.Specialized;
 using System.Net;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using MotorcycleDealer.Mobile.Core.Abstractions;
 using MotorcycleDealer.Mobile.Core.Api;
 using MotorcycleDealer.Mobile.Core.Contracts;
 using MotorcycleDealer.Mobile.Core.DependencyInjection;
 using MotorcycleDealer.Mobile.Core.Domain;
+using MotorcycleDealer.Mobile.Core.Localization;
+using MotorcycleDealer.Mobile.Core.Logging;
+using MotorcycleDealer.Mobile.Core.Messaging;
 using MotorcycleDealer.Mobile.Core.Persistence;
 using MotorcycleDealer.Mobile.Core.Realtime;
 using MotorcycleDealer.Mobile.Core.Security;
@@ -242,19 +247,34 @@ public sealed class SignalRAndViewModelTests
         await db.SaveCustomerVouchersAsync(session.OwnerScopeKey, [voucher]);
 
         // Simulate complete network failure
-        var apiClient = CreateMockApiClient((_, _) => throw new HttpRequestException("Device is offline"));
-        using var vm = new LoyaltyPassbookViewModel(
-            apiClient, db, session, new FakeConnectivityMonitor(false), new FakeShareService(), new FakeHapticService(), new FakeMainThreadDispatcher(),
-            new WeakReferenceMessenger(), new FakeUserFeedbackService());
+        var messenger = new WeakReferenceMessenger();
+        var loc = new LocalizationService(new InMemoryAppPreferencesStore(), messenger);
+        loc.SetCulture(LocalizationService.VietnameseCultureCode);
 
-        await vm.LoadPassbookAsync();
+        try
+        {
+            var apiClient = CreateMockApiClient((_, _) => throw new HttpRequestException("Device is offline"));
+            using var vm = new LoyaltyPassbookViewModel(
+                apiClient, db, session, new FakeConnectivityMonitor(false), new FakeShareService(), new FakeHapticService(), new FakeMainThreadDispatcher(),
+                messenger, new FakeUserFeedbackService(), loc);
 
-        Assert.True(vm.IsOfflineBannerVisible);
-        Assert.NotNull(vm.Wallet);
-        Assert.Equal("Gold", vm.TierCode);
-        Assert.Equal("1.850 pts", vm.FormattedAvailablePoints);
-        Assert.Single(vm.MyVouchers);
-        Assert.StartsWith("dealer://voucher/v1?code=OFFLINE-QR-99", vm.SelectedVoucherQrPayload);
+            await vm.LoadPassbookAsync();
+
+            Assert.True(vm.IsOfflineBannerVisible);
+            Assert.NotNull(vm.Wallet);
+            Assert.Equal("Gold", vm.TierCode);
+            Assert.Equal("1.850 điểm", vm.FormattedAvailablePoints);
+            Assert.Single(vm.MyVouchers);
+            Assert.StartsWith("dealer://voucher/v1?code=OFFLINE-QR-99", vm.SelectedVoucherQrPayload);
+
+            // Live hot-switch to en-US updates FormattedAvailablePoints without manual refresh
+            loc.SetCulture(LocalizationService.EnglishCultureCode);
+            Assert.Equal("1.850 pts", vm.FormattedAvailablePoints);
+        }
+        finally
+        {
+            loc.SetCulture(LocalizationService.VietnameseCultureCode);
+        }
     }
 
     [Fact]
@@ -405,6 +425,302 @@ public sealed class SignalRAndViewModelTests
         Assert.NotNull(provider.GetRequiredService<StaffTestDriveViewModel>());
         Assert.NotNull(provider.GetRequiredService<StaffWarrantyCsatViewModel>());
         Assert.NotNull(provider.GetRequiredService<SlotCapacityViewModel>());
+    }
+
+    [Fact]
+    public async Task LocalizationService_NetworkUnreachableAndTimeout_LocalizeCleanlyInViAndEn()
+    {
+        var messenger = new WeakReferenceMessenger();
+        var loc = new LocalizationService(new InMemoryAppPreferencesStore(), messenger);
+
+        try
+        {
+            var unreachableClient = CreateMockApiClient((_, _) => throw new HttpRequestException("Connection refused"));
+            var timeoutClient = CreateMockApiClient((_, _) => throw new TaskCanceledException("Simulated timeout"));
+
+            var unreachableRes = await unreachableClient.GetHealthAsync();
+            var timeoutRes = await timeoutClient.GetHealthAsync();
+
+            Assert.Equal("NETWORK_UNREACHABLE", unreachableRes.Problem?.ErrorCode);
+            Assert.Equal("REQUEST_TIMEOUT", timeoutRes.Problem?.ErrorCode);
+
+            // Vietnamese (vi-VN)
+            loc.SetCulture(LocalizationService.VietnameseCultureCode);
+            var viUnreachable = loc.GetApiErrorMessage(unreachableRes);
+            var viTimeout = loc.GetApiErrorMessage(timeoutRes);
+            Assert.Equal(loc.Err_NETWORK_UNREACHABLE, viUnreachable);
+            Assert.Equal(loc.Err_REQUEST_TIMEOUT, viTimeout);
+            Assert.Equal(viUnreachable, loc.GetErrorLabel("NETWORK_UNREACHABLE"));
+            Assert.Equal(viTimeout, loc.GetErrorLabel("REQUEST_TIMEOUT"));
+            Assert.Contains("kết nối", viUnreachable, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("thời gian chờ", viTimeout, StringComparison.OrdinalIgnoreCase);
+
+            // English (en-US)
+            loc.SetCulture(LocalizationService.EnglishCultureCode);
+            var enUnreachable = loc.GetApiErrorMessage(unreachableRes);
+            var enTimeout = loc.GetApiErrorMessage(timeoutRes);
+            Assert.Equal(loc.Err_NETWORK_UNREACHABLE, enUnreachable);
+            Assert.Equal(loc.Err_REQUEST_TIMEOUT, enTimeout);
+            Assert.Equal(enUnreachable, loc.GetErrorLabel("NETWORK_UNREACHABLE"));
+            Assert.Equal(enTimeout, loc.GetErrorLabel("REQUEST_TIMEOUT"));
+            Assert.NotEqual(viUnreachable, enUnreachable);
+            Assert.NotEqual(viTimeout, enTimeout);
+            Assert.Equal(enUnreachable, AppResources.Err_NETWORK_UNREACHABLE);
+            Assert.Equal(enTimeout, AppResources.Err_REQUEST_TIMEOUT);
+        }
+        finally
+        {
+            loc.SetCulture(LocalizationService.VietnameseCultureCode);
+        }
+    }
+
+    [Fact]
+    public async Task LiveCultureHotSwitch_RefreshesLocalizedPoints_CityFilters_AndDtoCollections()
+    {
+        using var tempPath = new TempDatabasePathProvider();
+        var tokenStore = new InMemorySecureTokenStore();
+        await using var db = new MobileOfflineDb(tempPath, tokenStore);
+        await db.InitializeAsync();
+
+        var messenger = new WeakReferenceMessenger();
+        var loc = new LocalizationService(new InMemoryAppPreferencesStore(), messenger);
+        loc.SetCulture(LocalizationService.VietnameseCultureCode);
+
+        try
+        {
+            var session = new MobileSessionState();
+            session.ApplyAuthenticatedUser(TestDataFactory.CustomerUser());
+            var apiClient = CreateMockApiClient((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+            var dispatcher = new FakeMainThreadDispatcher();
+            var nav = new FakeNavigationService();
+            var haptic = new FakeHapticService();
+            var feedback = new FakeUserFeedbackService();
+
+            await using var signalR = new SignalRMobileService(
+                new DefaultApiEndpointProvider(tokenStore), tokenStore, session, apiClient, db, new FakeLocalNotificationService(), dispatcher);
+
+            using var homeVm = new CustomerHomeViewModel(
+                apiClient, db, session, signalR, nav, dispatcher, messenger, feedback, localizationService: loc);
+            Assert.Equal("1.850 điểm", homeVm.FormattedAvailablePoints);
+
+            var dealerVm = new DealerLocatorViewModel(apiClient, db, nav, dispatcher, loc, messenger: messenger);
+            dealerVm.CityFilters.Add("Hanoi");
+            var cityFiltersResets = 0;
+            dealerVm.CityFilters.CollectionChanged += (_, e) =>
+            {
+                if (e.Action == NotifyCollectionChangedAction.Reset) cityFiltersResets++;
+            };
+
+            var slotVm = new SlotCapacityViewModel(apiClient, haptic, dispatcher, loc, messenger: messenger);
+            slotVm.Slots.Add(TestDataFactory.SampleSlot(remaining: 2));
+            var slotResets = 0;
+            slotVm.Slots.CollectionChanged += (_, e) =>
+            {
+                if (e.Action == NotifyCollectionChangedAction.Reset) slotResets++;
+            };
+            var viOpenBays = slotVm.Slots[0].OpenBaysLabel;
+
+            using var testDriveVm = new StaffTestDriveViewModel(apiClient, haptic, dispatcher, messenger, feedback, loc);
+            var td = new TestDriveBookingDto(
+                Guid.NewGuid(), Guid.NewGuid(), "TD-2026-001", "Requested",
+                Guid.NewGuid(), "Nam", "nam@test.vn", Guid.NewGuid(), "DLR-HN-01", "Hanoi", "Hanoi",
+                Guid.NewGuid(), "HND-SH160I-2026", "Honda SH160i", null, null, null,
+                new DateOnly(2026, 12, 1), "09:00:00", "10:00:00", "A2-999", "0901234567",
+                null, null, null, null, null, null, "RV1=", DateTimeOffset.UtcNow, null);
+            testDriveVm.TestDrives.Add(td);
+            var tdResets = 0;
+            testDriveVm.TestDrives.CollectionChanged += (_, e) =>
+            {
+                if (e.Action == NotifyCollectionChangedAction.Reset) tdResets++;
+            };
+            var viTdStatus = testDriveVm.TestDrives[0].FormattedStatus;
+
+            var showroomVm = new ShowroomCatalogViewModel(apiClient, db, session, nav, dispatcher, localizationService: loc, messenger: messenger);
+            var modelWithStock = TestDataFactory.SampleModel() with
+            {
+                DealerStockBreakdown = [new DealerModelStockSummaryDto(Guid.NewGuid(), "DLR-HN-01", "Hanoi", "Hanoi", 3)]
+            };
+            showroomVm.Models.Add(modelWithStock);
+            showroomVm.SelectedModel = modelWithStock;
+            var viCategory = showroomVm.Models[0].LocalizedCategory;
+            var viUnits = showroomVm.Models[0].DealerStockBreakdown[0].UnitsLabel;
+
+            // Live hot-switch VI -> EN
+            loc.SetCulture(LocalizationService.EnglishCultureCode);
+
+            Assert.Equal("1.850 pts", homeVm.FormattedAvailablePoints);
+            Assert.True(cityFiltersResets >= 1);
+            Assert.Equal(["All", "Hanoi"], dealerVm.CityFilters.ToArray());
+            Assert.Equal("All", dealerVm.SelectedCity);
+            Assert.True(slotResets >= 1);
+            Assert.NotEqual(viOpenBays, slotVm.Slots[0].OpenBaysLabel);
+            Assert.True(tdResets >= 1);
+            Assert.NotEqual(viTdStatus, testDriveVm.TestDrives[0].FormattedStatus);
+            Assert.NotEqual(viCategory, showroomVm.Models[0].LocalizedCategory);
+            Assert.NotEqual(viUnits, showroomVm.Models[0].DealerStockBreakdown[0].UnitsLabel);
+            Assert.NotNull(showroomVm.SelectedModel);
+        }
+        finally
+        {
+            loc.SetCulture(LocalizationService.VietnameseCultureCode);
+        }
+    }
+
+    [Fact]
+    public async Task TransientViewModels_AttachAndDetachEventSubscriptions_AreIdempotentAndStopLeaks()
+    {
+        using var tempPath = new TempDatabasePathProvider();
+        var tokenStore = new InMemorySecureTokenStore();
+        var endpoint = new DefaultApiEndpointProvider(tokenStore, "http://127.0.0.1:1");
+        var session = new MobileSessionState();
+        session.ApplyAuthenticatedUser(TestDataFactory.StaffUser());
+        await using var db = new MobileOfflineDb(tempPath, tokenStore);
+        await db.InitializeAsync();
+
+        var dispatcher = new FakeMainThreadDispatcher();
+        var connectivity = new FakeConnectivityMonitor(true);
+        var bookingFetchCount = 0;
+
+        var apiClient = CreateMockApiClient((req, _) =>
+        {
+            if (req.RequestUri!.AbsolutePath == "/api/v1/bookings/dealer")
+            {
+                Interlocked.Increment(ref bookingFetchCount);
+                return Task.FromResult(TestJsonResponses.JsonOk(
+                    new PagedApiEnvelope<BookingDto>(true, [TestDataFactory.SampleBooking()], new PaginationMeta(1, 50, 1, 1, false, false), TestDataFactory.Meta()),
+                    MobileJsonSerializerContext.Default.PagedApiEnvelopeBookingDto));
+            }
+
+            var recovered = new NotificationDto(
+                Guid.NewGuid(), Guid.NewGuid(), session.UserId, session.DealerId, null,
+                SignalRHubEventNames.BookingCreated, "New Booking", "Bay 1",
+                null, false, null, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow);
+            return Task.FromResult(TestJsonResponses.JsonOk(
+                new NotificationFeedEnvelope(true, [recovered], 1, new PaginationMeta(1, 50, 1, 1, false, false), new NotificationFeedMeta(DateTimeOffset.UtcNow, "t", 1)),
+                MobileJsonSerializerContext.Default.NotificationFeedEnvelope));
+        });
+
+        await using var signalR = new SignalRMobileService(
+            endpoint, tokenStore, session, apiClient, db, new FakeLocalNotificationService(), dispatcher);
+
+        using var logger = new UserActionLogger(
+            new StubHttpClientFactory(_ => new HttpClient()),
+            endpoint, tokenStore, session, tempPath, new DefaultAppPlatformInfo(), connectivity, NoOpUserActionPlatformSink.Instance);
+
+        var outbox = new OfflineOutboxSyncService(db, apiClient, connectivity);
+
+        // 1. NotificationsFeedViewModel: detached by default, idempotent attach, clean detach
+        using var notifVm = new NotificationsFeedViewModel(
+            apiClient, session, signalR, connectivity, outbox, dispatcher, logger);
+        notifVm.ActiveSection = "Logs";
+
+        logger.Track("BeforeAttach", syncToServer: false);
+        Assert.Empty(notifVm.ActivityLogs);
+
+        notifVm.AttachEventSubscriptions();
+        notifVm.AttachEventSubscriptions(); // Idempotent second call must NOT double-subscribe
+        logger.Track("WhileAttached", syncToServer: false);
+        Assert.Single(notifVm.ActivityLogs);
+
+        notifVm.DetachEventSubscriptions();
+        notifVm.DetachEventSubscriptions(); // Idempotent second detach
+        logger.Track("AfterDetach", syncToServer: false);
+        Assert.Single(notifVm.ActivityLogs);
+
+        // 2. StaffWorkbenchViewModel: detached by default, idempotent attach, clean detach
+        using var staffVm = new StaffWorkbenchViewModel(
+            apiClient, db, session, signalR, new FakeNavigationService(), new FakeHapticService(), dispatcher,
+            new WeakReferenceMessenger(), new FakeUserFeedbackService());
+
+        var bookingEvent = new BookingCreatedRealtimeEvent(
+            Guid.NewGuid(), SignalRHubEventNames.BookingCreated, Guid.NewGuid(), "BK-LIVE-1",
+            session.DealerId!.Value, "Nam", "RLHJC7920NY123456", "SH160i",
+            new DateOnly(2026, 12, 1), new TimeOnly(9, 0), new TimeOnly(10, 0),
+            "PeriodicMaintenance", false, "Pending", DateTimeOffset.UtcNow);
+
+        await signalR.HandleIncomingBookingCreatedAsync(bookingEvent);
+        Assert.Equal(0, Volatile.Read(ref bookingFetchCount));
+
+        staffVm.AttachEventSubscriptions();
+        staffVm.AttachEventSubscriptions(); // Idempotent
+        await signalR.HandleIncomingBookingCreatedAsync(bookingEvent);
+        await Task.Delay(50);
+        Assert.Equal(1, Volatile.Read(ref bookingFetchCount));
+
+        staffVm.DetachEventSubscriptions();
+        await signalR.HandleIncomingBookingCreatedAsync(bookingEvent);
+        await Task.Delay(50);
+        Assert.Equal(1, Volatile.Read(ref bookingFetchCount));
+    }
+
+    [Fact]
+    public async Task BarcodeScannerCallSites_PassExplicitRequireIso3779Vin_AndMainThreadInvokerMarshalsBroadcasts()
+    {
+        using var tempPath = new TempDatabasePathProvider();
+        var tokenStore = new InMemorySecureTokenStore();
+        await using var db = new MobileOfflineDb(tempPath, tokenStore);
+        var session = new MobileSessionState();
+        session.ApplyAuthenticatedUser(TestDataFactory.StaffUser());
+        var apiClient = CreateMockApiClient((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+        var dispatcher = new FakeMainThreadDispatcher();
+        var connectivity = new FakeConnectivityMonitor(true);
+        var outbox = new OfflineOutboxSyncService(db, apiClient, connectivity);
+        var nav = new FakeNavigationService { NextBarcodeScanResult = null };
+        var haptic = new FakeHapticService();
+        var share = new FakeShareService();
+        var feedback = new FakeUserFeedbackService();
+        var messenger = new WeakReferenceMessenger();
+
+        await using var signalR = new SignalRMobileService(
+            new DefaultApiEndpointProvider(tokenStore), tokenStore, session, apiClient, db, new FakeLocalNotificationService(), dispatcher);
+
+        using var garageVm = new VinGarageViewModel(
+            apiClient, db, session, connectivity, outbox, nav, haptic, dispatcher,
+            new RegisterVehicleInputValidator(), messenger, feedback);
+        using var salesVm = new ShowroomVinSalesViewModel(
+            apiClient, db, session, nav, share, haptic, dispatcher,
+            new SalesOrderInputValidator(), messenger, feedback);
+        using var workbenchVm = new StaffWorkbenchViewModel(
+            apiClient, db, session, signalR, nav, haptic, dispatcher, messenger, feedback);
+        var invoiceVm = new MobileInvoiceBuilderViewModel(
+            apiClient, db, session, nav, share, haptic, dispatcher, messenger, feedback);
+
+        await garageVm.ScanVinCommand.ExecuteAsync(null);
+        await salesVm.ScanVinForReceiveCommand.ExecuteAsync(null);
+        await workbenchVm.ScanForIntakeCommand.ExecuteAsync(null);
+        await invoiceVm.ScanVoucherQrCommand.ExecuteAsync(null);
+
+        Assert.Equal(4, nav.BarcodeScanRequests.Count);
+        Assert.True(nav.BarcodeScanRequests[0].RequireIso3779Vin);  // VinGarageViewModel: strict VIN
+        Assert.True(nav.BarcodeScanRequests[1].RequireIso3779Vin);  // ShowroomVinSalesViewModel: strict VIN
+        Assert.False(nav.BarcodeScanRequests[2].RequireIso3779Vin); // StaffWorkbenchViewModel: VIN or Booking QR
+        Assert.False(nav.BarcodeScanRequests[3].RequireIso3779Vin); // MobileInvoiceBuilderViewModel: Voucher QR
+
+        // Verify MobileViewModelBase.MainThreadInvoker marshals off-thread culture & theme broadcasts
+        var invokerHits = 0;
+        var previousInvoker = MobileViewModelBase.MainThreadInvoker;
+        MobileViewModelBase.MainThreadInvoker = action =>
+        {
+            Interlocked.Increment(ref invokerHits);
+            action();
+        };
+
+        try
+        {
+            var slotVm = new SlotCapacityViewModel(apiClient, haptic, dispatcher, messenger: messenger);
+            await Task.Run(() =>
+            {
+                messenger.Send(new CultureChangedMessage(LocalizationService.VietnameseCultureCode));
+                messenger.Send(new ThemeChangedMessage("dark"));
+            });
+
+            Assert.True(Volatile.Read(ref invokerHits) >= 2);
+            Assert.True(slotVm.IsDarkTheme);
+        }
+        finally
+        {
+            MobileViewModelBase.MainThreadInvoker = previousInvoker;
+        }
     }
 
     private static IDealerMobileApiClient CreateMockApiClient(

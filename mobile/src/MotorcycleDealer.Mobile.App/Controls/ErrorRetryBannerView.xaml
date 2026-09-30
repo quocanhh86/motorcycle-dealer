@@ -34,8 +34,7 @@
                 Command="{Binding Source={x:Reference Root}, Path=RetryCommand}"
                 IsVisible="{Binding Source={x:Reference Root}, Path=ShowRetry}"
                 Style="{StaticResource DangerOutlineButton}"
-                HeightRequest="44"
-                MinimumHeightRequest="44"
+                MinimumHeightRequest="48"
                 Padding="12,0"
                 FontSize="12"
                 VerticalOptions="Center" />

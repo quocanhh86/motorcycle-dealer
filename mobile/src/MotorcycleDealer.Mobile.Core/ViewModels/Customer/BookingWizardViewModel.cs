@@ -177,6 +177,25 @@ public sealed partial class BookingWizardViewModel : MobileViewModelBase, IDispo
 
     protected override void OnCultureChanged(string cultureCode)
     {
+        var selectedVehicle = SelectedVehicle;
+        var selectedDealer = SelectedDealer;
+        var selectedSlot = SelectedSlot;
+        var selectedVoucher = SelectedVoucher;
+        var selectedInvoice = SelectedInvoiceForReview;
+
+        RefreshCollection(Vehicles);
+        RefreshCollection(AvailableSlots);
+        RefreshCollection(EligibleVouchers);
+        RefreshCollection(MyBookings);
+        RefreshCollection(MyServiceInvoices);
+        RefreshCollection(MyTestDrives);
+
+        SelectedVehicle = selectedVehicle;
+        SelectedDealer = selectedDealer;
+        SelectedSlot = selectedSlot;
+        SelectedVoucher = selectedVoucher;
+        SelectedInvoiceForReview = selectedInvoice;
+
         OnPropertyChanged(nameof(SelectedRatingLabel));
         OnPropertyChanged(nameof(RatingInvoiceHeading));
     }

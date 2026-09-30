@@ -31,10 +31,11 @@
                     StrokeShape="RoundRectangle 16"
                     Padding="0">
                     <VerticalStackLayout Spacing="0">
-                        <Grid HeightRequest="164">
+                        <Grid HeightRequest="164" IsClippedToBounds="True">
                             <Image
                                 Source="{Binding HeroShowroomImageSource}"
                                 Aspect="AspectFill"
+                                HeightRequest="164"
                                 HorizontalOptions="Fill"
                                 VerticalOptions="Fill" />
                             <BoxView>
@@ -61,7 +62,7 @@
                                             StrokeThickness="1"
                                             StrokeShape="RoundRectangle 16"
                                             Padding="10,6"
-                                            MinimumHeightRequest="38"
+                                            MinimumHeightRequest="48"
                                             SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
                                             <Border.Behaviors>
                                                 <toolkit:TouchBehavior
@@ -91,7 +92,7 @@
                                             StrokeThickness="1"
                                             StrokeShape="RoundRectangle 16"
                                             Padding="10,6"
-                                            MinimumHeightRequest="38"
+                                            MinimumHeightRequest="48"
                                             SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
                                             <Border.Behaviors>
                                                 <toolkit:TouchBehavior
@@ -254,10 +255,11 @@
                                 Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
                                 StrokeThickness="1"
                                 Padding="0">
-                                <Grid HeightRequest="188">
+                                <Grid HeightRequest="188" IsClippedToBounds="True">
                                     <Image
                                         Source="{Binding SelectedModelImageSource}"
                                         Aspect="AspectFill"
+                                        HeightRequest="188"
                                         HorizontalOptions="Fill"
                                         VerticalOptions="Fill" />
                                     <Border
@@ -362,7 +364,7 @@
                                     IsExpanded="True"
                                     ExpandedChanged="OnOemExpanderChanged">
                                     <toolkit:Expander.Header>
-                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8" MinimumHeightRequest="40">
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8" MinimumHeightRequest="48">
                                             <Label
                                                 Text="{Binding Loc.ShowroomOemExpanderHeader}"
                                                 Style="{StaticResource EyebrowLabel}"

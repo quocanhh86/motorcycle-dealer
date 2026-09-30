@@ -58,7 +58,10 @@ public sealed partial class CustomerHomeViewModel : MobileViewModelBase, IDispos
         TierMultiplierLabel = _sessionState.TierMultiplier.HasValue
             ? $"{_sessionState.TierMultiplier.Value:0.00}x"
             : string.Empty;
-        FormattedAvailablePoints = VietnamFormatting.FormatPointsBalance(_sessionState.AvailablePoints ?? 0);
+        FormattedAvailablePoints = VietnamFormatting.FormatPointsLocalized(
+            _sessionState.AvailablePoints ?? 0,
+            signed: false,
+            culture: Loc.CurrentCulture);
         NextTierSummary = Loc.LoyaltySyncingTiers;
         NextTierHint = Loc.LoyaltySyncingTiers;
         TierProgressRatio = 0d;
@@ -130,6 +133,10 @@ public sealed partial class CustomerHomeViewModel : MobileViewModelBase, IDispos
         }
 
         ApplyWallet(Wallet, LoyaltyTiers);
+        RefreshCollection(LoyaltyTiers);
+        RefreshCollection(Vehicles);
+        RefreshCollection(UpcomingBookings);
+        RefreshCollection(UpcomingTestDrives);
         OnPropertyChanged(nameof(DueSoonAlertMessage));
         OnPropertyChanged(nameof(UnreadBadgeLabel));
         OnPropertyChanged(nameof(OfflineCacheBannerText));
@@ -307,14 +314,20 @@ public sealed partial class CustomerHomeViewModel : MobileViewModelBase, IDispos
             TierMultiplierLabel = _sessionState.TierMultiplier.HasValue
                 ? $"{_sessionState.TierMultiplier.Value:0.00}x"
                 : string.Empty;
-            FormattedAvailablePoints = VietnamFormatting.FormatPointsBalance(_sessionState.AvailablePoints ?? 0);
+            FormattedAvailablePoints = VietnamFormatting.FormatPointsLocalized(
+            _sessionState.AvailablePoints ?? 0,
+            signed: false,
+            culture: Loc.CurrentCulture);
             NextTierSummary = tiers.Count > 0 ? nextTierHint : Loc.HomeSignInOnlineTierHint;
             return;
         }
 
         TierCode = wallet.TierCode;
         TierMultiplierLabel = $"{wallet.PointsMultiplier:0.00}x";
-        FormattedAvailablePoints = VietnamFormatting.FormatPointsBalance(wallet.AvailablePoints);
+        FormattedAvailablePoints = VietnamFormatting.FormatPointsLocalized(
+            wallet.AvailablePoints,
+            signed: false,
+            culture: Loc.CurrentCulture);
         NextTierSummary = nextTierHint;
     }
 

@@ -2408,6 +2408,12 @@ Mã xác thực: {8}</value>
   <data name="Err_NETWORK_OFFLINE" xml:space="preserve">
     <value>Không thể kết nối đến máy chủ API. Vui lòng kiểm tra mạng hoặc cấu hình máy chủ.</value>
   </data>
+  <data name="Err_NETWORK_UNREACHABLE" xml:space="preserve">
+    <value>Không thể kết nối tới máy chủ đại lý. Vui lòng kiểm tra kết nối mạng hoặc địa chỉ API.</value>
+  </data>
+  <data name="Err_REQUEST_TIMEOUT" xml:space="preserve">
+    <value>Yêu cầu quá thời gian chờ. Vui lòng kiểm tra kết nối mạng và thử lại.</value>
+  </data>
   <data name="Err_DATABASE_UNAVAILABLE" xml:space="preserve">
     <value>Cơ sở dữ liệu tạm thời gián đoạn. Vui lòng thử lại sau ít phút.</value>
   </data>

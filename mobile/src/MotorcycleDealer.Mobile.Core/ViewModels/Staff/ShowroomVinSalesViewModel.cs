@@ -144,7 +144,20 @@ public sealed partial class ShowroomVinSalesViewModel : MobileViewModelBase, IDi
         }
     }
 
-    protected override void OnCultureChanged(string cultureCode) => UpdateTierProgress();
+    protected override void OnCultureChanged(string cultureCode)
+    {
+        var selectedInventory = SelectedInventory;
+        var selectedReceiveModel = SelectedReceiveModel;
+
+        RefreshCollection(AvailableStock);
+        RefreshCollection(Models);
+        RefreshCollection(RecentSalesOrders);
+        RefreshCollection(LoyaltyTiers);
+
+        SelectedInventory = selectedInventory;
+        SelectedReceiveModel = selectedReceiveModel;
+        UpdateTierProgress();
+    }
 
     [RelayCommand]
     public async Task LoadSalesDeskAsync()
@@ -232,7 +245,9 @@ public sealed partial class ShowroomVinSalesViewModel : MobileViewModelBase, IDi
     [RelayCommand]
     private async Task ScanVinForReceiveAsync()
     {
-        var raw = await _navigationService.RequestBarcodeScanAsync(Loc.SalesScanIntakePrompt).ConfigureAwait(false);
+        var raw = await _navigationService
+            .RequestBarcodeScanAsync(Loc.SalesScanIntakePrompt, requireIso3779Vin: true)
+            .ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(raw))
         {
             ReceiveVin = Iso3779VinValidator.SanitizeLiveInput(raw);

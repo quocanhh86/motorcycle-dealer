@@ -284,7 +284,7 @@
 
                   '<article class="kanban-card stagger-item" ' +
                            'ng-repeat="card in lane.items track by card.bookingNumber" ' +
-                           'style="--i:{{ $index }};" ' +
+                           'ng-attr-style="--i:{{ $index }};" ' +
                            'ng-class="{\'is-live-arrival is-signalr-pulse\': card.isLiveArrival}">' +
                     '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">' +
                       '<strong class="mono-num tabular-nums text-primary">{{ card.bookingNumber }}</strong>' +

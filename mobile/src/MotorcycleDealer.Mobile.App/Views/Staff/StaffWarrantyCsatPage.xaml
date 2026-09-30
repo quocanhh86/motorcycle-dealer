@@ -236,9 +236,6 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="dto:WarrantyClaimDto">
                                 <Border Style="{StaticResource DoubleBezelOuter}">
-                                    <Border.Behaviors>
-                                        <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
-                                    </Border.Behaviors>
                                     <Border Style="{StaticResource DoubleBezelInner}">
                                         <VerticalStackLayout Spacing="8">
                                             <Grid ColumnDefinitions="84,*" ColumnSpacing="12">
@@ -392,9 +389,6 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="dto:ServiceReviewDto">
                                 <Border Style="{StaticResource DoubleBezelOuter}">
-                                    <Border.Behaviors>
-                                        <toolkit:TouchBehavior PressedScale="0.97" PressedAnimationDuration="110" />
-                                    </Border.Behaviors>
                                     <Border Style="{StaticResource DoubleBezelInner}">
                                         <VerticalStackLayout Spacing="8">
                                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">

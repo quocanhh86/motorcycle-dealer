@@ -635,7 +635,7 @@
                       '</tr>' +
                     '</thead>' +
                     '<tbody>' +
-                      '<tr class="stagger-item" ng-repeat="inv in $ctrl.issuedInvoices track by inv.id" style="--i:{{ $index }};">' +
+                      '<tr class="stagger-item" ng-repeat="inv in $ctrl.issuedInvoices track by inv.id" ng-attr-style="--i:{{ $index }};">' +
                         '<td class="mono-num tabular-nums" style="font-weight:700;">{{ inv.invoiceNumber }}</td>' +
                         '<td>' +
                           '<div class="mono-num tabular-nums">{{ inv.bookingNumber || inv.serviceBookingId }}</div>' +
@@ -724,6 +724,12 @@
         return I18nService.formatVnd(val);
       }
       return Math.round(Number(val) || 0).toLocaleString('vi-VN') + ' ₫';
+    }
+
+    function getActiveLocale() {
+      return (I18nService && angular.isFunction(I18nService.getLocale))
+        ? I18nService.getLocale()
+        : 'en-US';
     }
 
     function isSettleableStatus(status) {
@@ -845,6 +851,11 @@
             $ctrl.loadQueues({ preserveDraft: true });
           }
         }));
+        cleanupFns.push($rootScope.$on('i18n:changed', function () {
+          if (!isDestroyed) {
+            $ctrl.recalculate();
+          }
+        }));
       }
 
       $ctrl.loadQueues();
@@ -861,7 +872,16 @@
     $ctrl.formatVoucherOption = function (v) {
       if (!v) { return ''; }
       var tag = v.status === 'ReservedOnBooking' ? t('staff.inv.voucherReservedTag') : '';
-      var discLabel = LoyaltyCalculator.formatDiscountSummary(v) || v.discountSummary || '';
+      var locale = getActiveLocale();
+      var discLabel = '';
+      if (LoyaltyCalculator) {
+        if (angular.isFunction(LoyaltyCalculator.formatDiscountSummaryLocalized)) {
+          discLabel = LoyaltyCalculator.formatDiscountSummaryLocalized(v, locale) || '';
+        } else if (angular.isFunction(LoyaltyCalculator.formatDiscountSummary)) {
+          discLabel = LoyaltyCalculator.formatDiscountSummary(v, locale) || '';
+        }
+      }
+      discLabel = discLabel || v.discountSummary || '';
       var minTag = v.minOrderAmount > 0 ? t('staff.inv.minOrderTag', { amount: formatVndSafe(v.minOrderAmount) }) : '';
       return tag + v.voucherCode + ' • ' + discLabel + minTag;
     };
@@ -1337,7 +1357,7 @@
       var ineligibleReason = null;
 
       if ($ctrl.selectedVoucher) {
-        var voucherEval = LoyaltyCalculator.computeVoucherDiscount($ctrl.selectedVoucher, gross);
+        var voucherEval = LoyaltyCalculator.computeVoucherDiscount($ctrl.selectedVoucher, gross, getActiveLocale());
         discount = voucherEval.discountAmount;
         ineligibleReason = voucherEval.ineligibleReason;
         $ctrl.invoice.voucherDiscountAmount = discount;

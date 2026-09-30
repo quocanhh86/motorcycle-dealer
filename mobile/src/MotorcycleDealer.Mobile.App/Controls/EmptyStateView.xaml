@@ -24,6 +24,7 @@
                 HorizontalOptions="Center"
                 Padding="4">
                 <controls:LottieOrIconView
+                    IsVisible="{Binding Source={x:Reference Root}, Path=IsVisible}"
                     LottieFile="{Binding Source={x:Reference Root}, Path=LottieFile}"
                     FallbackGlyph="{Binding Source={x:Reference Root}, Path=IconGlyph}"
                     FallbackColor="{StaticResource BrandPrimary}"

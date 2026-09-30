@@ -80,6 +80,7 @@
                 <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                         <controls:LottieOrIconView
+                            IsVisible="{Binding HasSuccess}"
                             LottieFile="lottie_success_check.json"
                             FallbackGlyph="{x:Static icons:PhosphorIcons.CheckCircle}"
                             FallbackColor="{StaticResource SuccessAccent}"
