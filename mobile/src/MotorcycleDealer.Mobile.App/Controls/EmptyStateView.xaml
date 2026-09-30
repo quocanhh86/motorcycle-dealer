@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="MotorcycleDealer.Mobile.App.Controls.EmptyStateView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="Root"
+    x:DataType="controls:EmptyStateView">
+
+    <Border
+        Style="{StaticResource CardBorder}"
+        Padding="24,22">
+        <VerticalStackLayout
+            Spacing="12"
+            HorizontalOptions="Center">
+
+            <Border
+                BackgroundColor="{AppThemeBinding Light={StaticResource BrandPrimarySoft}, Dark={StaticResource BrandPrimarySoftDark}}"
+                Stroke="{AppThemeBinding Light={StaticResource BrandPrimaryBorder}, Dark={StaticResource BrandPrimaryBorderDark}}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 36"
+                WidthRequest="72"
+                HeightRequest="72"
+                HorizontalOptions="Center"
+                Padding="4">
+                <controls:LottieOrIconView
+                    LottieFile="{Binding Source={x:Reference Root}, Path=LottieFile}"
+                    FallbackGlyph="{Binding Source={x:Reference Root}, Path=IconGlyph}"
+                    FallbackColor="{StaticResource BrandPrimary}"
+                    RepeatCount="-1"
+                    Size="56" />
+            </Border>
+
+            <Label
+                Text="{Binding Source={x:Reference Root}, Path=Title}"
+                IsVisible="{Binding Source={x:Reference Root}, Path=HasTitle}"
+                Style="{StaticResource SectionTitleLabel}"
+                HorizontalTextAlignment="Center" />
+
+            <Label
+                Text="{Binding Source={x:Reference Root}, Path=Subtitle}"
+                IsVisible="{Binding Source={x:Reference Root}, Path=HasSubtitle}"
+                Style="{StaticResource SecondaryLabel}"
+                HorizontalTextAlignment="Center" />
+
+            <Button
+                Text="{Binding Source={x:Reference Root}, Path=ActionText}"
+                Command="{Binding Source={x:Reference Root}, Path=ActionCommand}"
+                IsVisible="{Binding Source={x:Reference Root}, Path=ShowAction}"
+                Style="{StaticResource PrimaryButton}"
+                HorizontalOptions="Center"
+                Margin="0,4,0,0" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>
