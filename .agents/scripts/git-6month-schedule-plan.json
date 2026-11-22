@@ -1,0 +1,2560 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "Motorcycle Dealer & Loyalty Management Platform",
+  "repository": "https://github.com/quocanhh86/motorcycle-dealer.git",
+  "branch": "main",
+  "scheduleWindow": {
+    "startDate": "2026-11-22",
+    "endDate": "2027-05-23",
+    "totalDays": 183,
+    "existingWorkspaceDays": "1..148",
+    "plannedRoadmapDays": "149..183",
+    "fallbackChangelogPath": "docs/DAILY_CHANGELOG.md"
+  },
+  "days": [
+    {
+      "day": 1,
+      "dayCode": "Day 001",
+      "scheduledDate": "2026-11-22",
+      "phase": 1,
+      "taskId": "T-101",
+      "module": "init",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(init): initialize repository hygiene, requirements baseline, and 6-month daily shipper",
+      "expectedPaths": [
+        ".gitignore",
+        ".editorconfig",
+        ".env.example",
+        "REQUIREMENTS.md",
+        ".agents/scripts/git-6month-schedule-plan.json",
+        ".agents/scripts/daily-git-shipper.mjs",
+        ".agents/scripts/daily-git-shipper.ps1",
+        ".agents/scripts/register-daily-git-schedule.ps1"
+      ]
+    },
+    {
+      "day": 2,
+      "dayCode": "Day 002",
+      "scheduledDate": "2026-11-23",
+      "phase": 1,
+      "taskId": "T-102",
+      "module": "docs",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(prd): author product requirements and acceptance criteria FR-01..FR-07",
+      "expectedPaths": [
+        "docs/PRD.md"
+      ]
+    },
+    {
+      "day": 3,
+      "dayCode": "Day 003",
+      "scheduledDate": "2026-11-24",
+      "phase": 1,
+      "taskId": "T-104",
+      "module": "governance",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(governance): establish workspace engineering constitution and phase-gate rules",
+      "expectedPaths": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "day": 4,
+      "dayCode": "Day 004",
+      "scheduledDate": "2026-11-25",
+      "phase": 1,
+      "taskId": "T-103",
+      "module": "docs",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(readme): create portfolio landing page and closed-loop platform overview",
+      "expectedPaths": [
+        "README.md"
+      ]
+    },
+    {
+      "day": 5,
+      "dayCode": "Day 005",
+      "scheduledDate": "2026-11-26",
+      "phase": 1,
+      "taskId": "T-105",
+      "module": "arch",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(arch): specify 4-layer Clean Architecture and ratify ADR-001..ADR-006",
+      "expectedPaths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "day": 6,
+      "dayCode": "Day 006",
+      "scheduledDate": "2026-11-27",
+      "phase": 1,
+      "taskId": "T-106",
+      "module": "db-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(db): design 22-table 3NF SQL Server schema and B-tree indexing strategy",
+      "expectedPaths": [
+        "docs/DATABASE_DESIGN.md"
+      ]
+    },
+    {
+      "day": 7,
+      "dayCode": "Day 007",
+      "scheduledDate": "2026-11-28",
+      "phase": 1,
+      "taskId": "T-107",
+      "module": "design",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(design): define 34-permission RBAC matrix, REST v1, and SignalR contracts",
+      "expectedPaths": [
+        "docs/DESIGN.md"
+      ]
+    },
+    {
+      "day": 8,
+      "dayCode": "Day 008",
+      "scheduledDate": "2026-11-29",
+      "phase": 1,
+      "taskId": "T-110",
+      "module": "openapi",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spec): author OpenAPI 3.1.0 REST and SignalR webhook contract",
+      "expectedPaths": [
+        "docs/openapi.v1.yaml"
+      ]
+    },
+    {
+      "day": 9,
+      "dayCode": "Day 009",
+      "scheduledDate": "2026-11-30",
+      "phase": 1,
+      "taskId": "T-110",
+      "module": "qa-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(qa): define 55-case multi-layer QA test plan covering RISK-01..RISK-06",
+      "expectedPaths": [
+        "docs/TEST_PLAN.md"
+      ]
+    },
+    {
+      "day": 10,
+      "dayCode": "Day 010",
+      "scheduledDate": "2026-12-01",
+      "phase": 1,
+      "taskId": "T-110",
+      "module": "ops-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(ops): author LocalDB, Docker, and live demo operations runbook",
+      "expectedPaths": [
+        "docs/RUNBOOK.md"
+      ]
+    },
+    {
+      "day": 11,
+      "dayCode": "Day 011",
+      "scheduledDate": "2026-12-02",
+      "phase": 1,
+      "taskId": "T-111",
+      "module": "ux-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(ux): define Motorsport design tokens, shell directives, and UI-Router state tree",
+      "expectedPaths": [
+        "docs/screens/DESIGN_SYSTEM_AND_NAVIGATION.md"
+      ]
+    },
+    {
+      "day": 12,
+      "dayCode": "Day 012",
+      "scheduledDate": "2026-12-03",
+      "phase": 1,
+      "taskId": "T-111",
+      "module": "ux-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(ux): specify customer showroom, VIN garage, booking wizard, and loyalty screens",
+      "expectedPaths": [
+        "docs/screens/CUSTOMER_PORTAL_SCREENS.md"
+      ]
+    },
+    {
+      "day": 13,
+      "dayCode": "Day 013",
+      "scheduledDate": "2026-12-04",
+      "phase": 1,
+      "taskId": "T-111",
+      "module": "ux-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(ux): specify dealer staff workbench, invoicing, and admin analytics screens",
+      "expectedPaths": [
+        "docs/screens/STAFF_AND_ADMIN_SCREENS.md"
+      ]
+    },
+    {
+      "day": 14,
+      "dayCode": "Day 014",
+      "scheduledDate": "2026-12-05",
+      "phase": 1,
+      "taskId": "T-112",
+      "module": "mod-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(modules): author MOD-01 identity, JWT rotation, and 34-policy RBAC blueprint",
+      "expectedPaths": [
+        "docs/modules/MOD_01_AUTH_AND_RBAC.md"
+      ]
+    },
+    {
+      "day": 15,
+      "dayCode": "Day 015",
+      "scheduledDate": "2026-12-06",
+      "phase": 1,
+      "taskId": "T-112",
+      "module": "mod-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(modules): author MOD-02 showroom catalog, VIN sales, and digital garage blueprint",
+      "expectedPaths": [
+        "docs/modules/MOD_02_SHOWROOM_AND_VIN_GARAGE.md"
+      ]
+    },
+    {
+      "day": 16,
+      "dayCode": "Day 016",
+      "scheduledDate": "2026-12-07",
+      "phase": 1,
+      "taskId": "T-112",
+      "module": "mod-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(modules): author MOD-03 concurrency-safe slot booking and VIN reminder blueprint",
+      "expectedPaths": [
+        "docs/modules/MOD_03_SERVICE_BOOKING_AND_REMINDERS.md"
+      ]
+    },
+    {
+      "day": 17,
+      "dayCode": "Day 017",
+      "scheduledDate": "2026-12-08",
+      "phase": 1,
+      "taskId": "T-112",
+      "module": "mod-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(modules): author MOD-04 append-only point ledger, 4-tier progression, and vouchers blueprint",
+      "expectedPaths": [
+        "docs/modules/MOD_04_LOYALTY_TIERS_AND_VOUCHERS.md"
+      ]
+    },
+    {
+      "day": 18,
+      "dayCode": "Day 018",
+      "scheduledDate": "2026-12-09",
+      "phase": 1,
+      "taskId": "T-112",
+      "module": "mod-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(modules): author MOD-05 SignalR NotificationHub and dealer group isolation blueprint",
+      "expectedPaths": [
+        "docs/modules/MOD_05_SIGNALR_REALTIME_NOTIFICATIONS.md"
+      ]
+    },
+    {
+      "day": 19,
+      "dayCode": "Day 019",
+      "scheduledDate": "2026-12-10",
+      "phase": 1,
+      "taskId": "T-112",
+      "module": "mod-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(modules): author MOD-06 multi-dealer Chart.js analytics and CSV export blueprint",
+      "expectedPaths": [
+        "docs/modules/MOD_06_ADMIN_ANALYTICS_AND_REPORTING.md"
+      ]
+    },
+    {
+      "day": 20,
+      "dayCode": "Day 020",
+      "scheduledDate": "2026-12-11",
+      "phase": 1,
+      "taskId": "T-108",
+      "module": "wbs",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(wbs): publish 7-phase master work breakdown structure T-101..T-708",
+      "expectedPaths": [
+        "TASKS.md"
+      ]
+    },
+    {
+      "day": 21,
+      "dayCode": "Day 021",
+      "scheduledDate": "2026-12-12",
+      "phase": 1,
+      "taskId": "T-108",
+      "module": "wbs",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(progress): initialize phase-gate execution tracker and pre-mortem risk register",
+      "expectedPaths": [
+        "PROGRESS.md"
+      ]
+    },
+    {
+      "day": 22,
+      "dayCode": "Day 022",
+      "scheduledDate": "2026-12-13",
+      "phase": 1,
+      "taskId": "T-109",
+      "module": "docx-spec",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "docs(spec): compile OpenXML-validated executive Word platform specification",
+      "expectedPaths": [
+        "docs/Motorcycle_Dealer_Loyalty_Platform_Specification.docx"
+      ]
+    },
+    {
+      "day": 23,
+      "dayCode": "Day 023",
+      "scheduledDate": "2026-12-14",
+      "phase": 2,
+      "taskId": "T-201",
+      "module": "spec-snapshot",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spec): encode canonical 7-phase, 22-table, and 34-permission baseline snapshot",
+      "expectedPaths": [
+        ".agents/scripts/baseline-spec-snapshot.json"
+      ]
+    },
+    {
+      "day": 24,
+      "dayCode": "Day 024",
+      "scheduledDate": "2026-12-15",
+      "phase": 2,
+      "taskId": "T-201",
+      "module": "agents",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): register workspace plugin and single-root skill discovery manifests",
+      "expectedPaths": [
+        ".agents/plugins.json",
+        ".agents/skills.json"
+      ]
+    },
+    {
+      "day": 25,
+      "dayCode": "Day 025",
+      "scheduledDate": "2026-12-16",
+      "phase": 2,
+      "taskId": "T-201",
+      "module": "agents",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): configure motorcycle-dealer-suite plugin manifest and Stdio MCP wiring",
+      "expectedPaths": [
+        ".agents/plugins/motorcycle-dealer-suite/plugin.json",
+        ".agents/plugins/motorcycle-dealer-suite/mcp_config.json"
+      ]
+    },
+    {
+      "day": 26,
+      "dayCode": "Day 026",
+      "scheduledDate": "2026-12-17",
+      "phase": 2,
+      "taskId": "T-202",
+      "module": "agents",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add operational MCP routing guide and plugin safety rules",
+      "expectedPaths": [
+        ".agents/rules/AGENTS.md",
+        ".agents/plugins/motorcycle-dealer-suite/rules/AGENTS.md"
+      ]
+    },
+    {
+      "day": 27,
+      "dayCode": "Day 027",
+      "scheduledDate": "2026-12-18",
+      "phase": 2,
+      "taskId": "T-202",
+      "module": "agents",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add SessionStart active-phase context injection hook",
+      "expectedPaths": [
+        ".agents/plugins/motorcycle-dealer-suite/hooks.json",
+        ".agents/plugins/motorcycle-dealer-suite/hooks/session-start.mjs"
+      ]
+    },
+    {
+      "day": 28,
+      "dayCode": "Day 028",
+      "scheduledDate": "2026-12-19",
+      "phase": 2,
+      "taskId": "T-202",
+      "module": "agents",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): enforce PreToolUse guard blocking destructive SQL and ledger mutations",
+      "expectedPaths": [
+        ".agents/plugins/motorcycle-dealer-suite/hooks/safety-guard.mjs"
+      ]
+    },
+    {
+      "day": 29,
+      "dayCode": "Day 029",
+      "scheduledDate": "2026-12-20",
+      "phase": 2,
+      "taskId": "T-202",
+      "module": "mcp",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(mcp): implement motorcycle-dealer-guardrails JSON-RPC 2.0 Stdio MCP server",
+      "expectedPaths": [
+        ".agents/scripts/mcp-dealer-guardrails-server.mjs"
+      ]
+    },
+    {
+      "day": 30,
+      "dayCode": "Day 030",
+      "scheduledDate": "2026-12-21",
+      "phase": 2,
+      "taskId": "T-202",
+      "module": "mcp",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(mcp): implement read-only sqlserver-localdb-inspector Stdio MCP server",
+      "expectedPaths": [
+        ".agents/scripts/mcp-sqlserver-localdb-server.mjs"
+      ]
+    },
+    {
+      "day": 31,
+      "dayCode": "Day 031",
+      "scheduledDate": "2026-12-22",
+      "phase": 2,
+      "taskId": "T-203",
+      "module": "skills",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): author dotnet-clean-api skill for .NET 10 RBAC and ProblemDetails",
+      "expectedPaths": [
+        ".agents/skills/dotnet-clean-api/SKILL.md"
+      ]
+    },
+    {
+      "day": 32,
+      "dayCode": "Day 032",
+      "scheduledDate": "2026-12-23",
+      "phase": 2,
+      "taskId": "T-203",
+      "module": "skills",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): author sqlserver-efcore-dba skill for 22-table 3NF EF Core 10 patterns",
+      "expectedPaths": [
+        ".agents/skills/sqlserver-efcore-dba/SKILL.md"
+      ]
+    },
+    {
+      "day": 33,
+      "dayCode": "Day 033",
+      "scheduledDate": "2026-12-24",
+      "phase": 2,
+      "taskId": "T-204",
+      "module": "skills",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): author angularjs-enterprise-spa skill for UI-Router guards and Chart.js",
+      "expectedPaths": [
+        ".agents/skills/angularjs-enterprise-spa/SKILL.md"
+      ]
+    },
+    {
+      "day": 34,
+      "dayCode": "Day 034",
+      "scheduledDate": "2026-12-25",
+      "phase": 2,
+      "taskId": "T-204",
+      "module": "skills",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): author signalr-realtime-hub skill for dealer-scoped WebSocket push",
+      "expectedPaths": [
+        ".agents/skills/signalr-realtime-hub/SKILL.md"
+      ]
+    },
+    {
+      "day": 35,
+      "dayCode": "Day 035",
+      "scheduledDate": "2026-12-26",
+      "phase": 2,
+      "taskId": "T-205",
+      "module": "skills",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): author loyalty-booking-domain skill for VIN, RowVersion, and 4-tier math",
+      "expectedPaths": [
+        ".agents/skills/loyalty-booking-domain/SKILL.md"
+      ]
+    },
+    {
+      "day": 36,
+      "dayCode": "Day 036",
+      "scheduledDate": "2026-12-27",
+      "phase": 2,
+      "taskId": "T-206",
+      "module": "skills",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): author qa-verification-suite skill for concurrency and tenancy audits",
+      "expectedPaths": [
+        ".agents/skills/qa-verification-suite/SKILL.md"
+      ]
+    },
+    {
+      "day": 37,
+      "dayCode": "Day 037",
+      "scheduledDate": "2026-12-28",
+      "phase": 2,
+      "taskId": "T-206",
+      "module": "skills",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): author docx-spec-generator skill for OpenXML specification builds",
+      "expectedPaths": [
+        ".agents/skills/docx-spec-generator/SKILL.md"
+      ]
+    },
+    {
+      "day": 38,
+      "dayCode": "Day 038",
+      "scheduledDate": "2026-12-29",
+      "phase": 2,
+      "taskId": "T-206",
+      "module": "mcp",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(mcp): author mcp-devtools-orchestrator skill for 9-server MCP workflows",
+      "expectedPaths": [
+        ".agents/skills/mcp-devtools-orchestrator/SKILL.md"
+      ]
+    },
+    {
+      "day": 39,
+      "dayCode": "Day 039",
+      "scheduledDate": "2026-12-30",
+      "phase": 2,
+      "taskId": "T-207",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add cross-platform Clean Architecture and zero-secrets guardrail auditors",
+      "expectedPaths": [
+        ".agents/scripts/audit-dealer-guardrails.ps1",
+        ".agents/scripts/audit-dealer-guardrails.sh"
+      ]
+    },
+    {
+      "day": 40,
+      "dayCode": "Day 040",
+      "scheduledDate": "2026-12-31",
+      "phase": 2,
+      "taskId": "T-207",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add SQL Server LocalDB and Docker readiness migration scripts",
+      "expectedPaths": [
+        ".agents/scripts/ensure-sqlserver-db.ps1",
+        ".agents/scripts/ensure-sqlserver-db.sh"
+      ]
+    },
+    {
+      "day": 41,
+      "dayCode": "Day 041",
+      "scheduledDate": "2027-01-01",
+      "phase": 2,
+      "taskId": "T-207",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add TASKS.md and PROGRESS.md WBS reconciliation script",
+      "expectedPaths": [
+        ".agents/scripts/sync-progress.mjs"
+      ]
+    },
+    {
+      "day": 42,
+      "dayCode": "Day 042",
+      "scheduledDate": "2027-01-02",
+      "phase": 2,
+      "taskId": "T-207",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add zero-repo-dependency Word specification generator script",
+      "expectedPaths": [
+        ".agents/scripts/build-spec-docx.mjs"
+      ]
+    },
+    {
+      "day": 43,
+      "dayCode": "Day 043",
+      "scheduledDate": "2027-01-03",
+      "phase": 2,
+      "taskId": "T-207",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add 3-dealer closed-loop demo scenario validation script",
+      "expectedPaths": [
+        ".agents/scripts/seed-demo-scenarios.mjs"
+      ]
+    },
+    {
+      "day": 44,
+      "dayCode": "Day 044",
+      "scheduledDate": "2027-01-04",
+      "phase": 2,
+      "taskId": "T-207",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add cross-platform REST, ProblemDetails, and SignalR smoke runners",
+      "expectedPaths": [
+        ".agents/scripts/smoke-fullstack.ps1",
+        ".agents/scripts/smoke-fullstack.sh"
+      ]
+    },
+    {
+      "day": 45,
+      "dayCode": "Day 045",
+      "scheduledDate": "2027-01-05",
+      "phase": 2,
+      "taskId": "T-207",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add headless browser visual and SignalR toast evidence harvester",
+      "expectedPaths": [
+        ".agents/scripts/capture-live-evidence.mjs"
+      ]
+    },
+    {
+      "day": 46,
+      "dayCode": "Day 046",
+      "scheduledDate": "2027-01-06",
+      "phase": 2,
+      "taskId": "T-207",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add full-stack boot and portfolio evidence capture orchestrator",
+      "expectedPaths": [
+        ".agents/scripts/run-and-capture-dealer-platform.ps1"
+      ]
+    },
+    {
+      "day": 47,
+      "dayCode": "Day 047",
+      "scheduledDate": "2027-01-07",
+      "phase": 2,
+      "taskId": "T-208",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add master 6-stage platform verification gate scripts",
+      "expectedPaths": [
+        ".agents/scripts/verify-dealer-platform.ps1",
+        ".agents/scripts/verify-dealer-platform.sh"
+      ]
+    },
+    {
+      "day": 48,
+      "dayCode": "Day 048",
+      "scheduledDate": "2027-01-08",
+      "phase": 3,
+      "taskId": "T-308",
+      "module": "scripts",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(agents): add 3-battery automated phase quality-loop runner",
+      "expectedPaths": [
+        ".agents/scripts/run-phase-quality-loop.ps1"
+      ]
+    },
+    {
+      "day": 49,
+      "dayCode": "Day 049",
+      "scheduledDate": "2027-01-09",
+      "phase": 3,
+      "taskId": "T-301",
+      "module": "solution",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(solution): scaffold .NET 10 solution, strict build props, and EF Core tool manifest",
+      "expectedPaths": [
+        "backend/Directory.Build.props",
+        "backend/MotorcycleDealer.sln",
+        ".config/dotnet-tools.json"
+      ]
+    },
+    {
+      "day": 50,
+      "dayCode": "Day 050",
+      "scheduledDate": "2027-01-10",
+      "phase": 3,
+      "taskId": "T-308",
+      "module": "devops",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(devops): add backend Clean Architecture rules and non-root .NET 10 Dockerfile",
+      "expectedPaths": [
+        "backend/AGENTS.md",
+        "backend/Dockerfile"
+      ]
+    },
+    {
+      "day": 51,
+      "dayCode": "Day 051",
+      "scheduledDate": "2027-01-11",
+      "phase": 3,
+      "taskId": "T-308",
+      "module": "devops",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(devops): configure SQL Server 2022, WebApi, and non-root SPA Docker Compose stack",
+      "expectedPaths": [
+        "frontend/Dockerfile",
+        "docker-compose.yml"
+      ]
+    },
+    {
+      "day": 52,
+      "dayCode": "Day 052",
+      "scheduledDate": "2027-01-12",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): scaffold zero-dependency Domain project and Guid v7 BaseEntity",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/MotorcycleDealer.Domain.csproj",
+        "backend/src/MotorcycleDealer.Domain/Common/BaseEntity.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/IDomainEvent.cs"
+      ]
+    },
+    {
+      "day": 53,
+      "dayCode": "Day 053",
+      "scheduledDate": "2027-01-13",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): add UTC auditability and soft-deletion domain contracts",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Common/IAuditableEntity.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/AuditableEntity.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/ISoftDeletable.cs"
+      ]
+    },
+    {
+      "day": 54,
+      "dayCode": "Day 054",
+      "scheduledDate": "2027-01-14",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): define IDealerScoped tenancy, RowVersion concurrency, and append-only markers",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Common/IDealerScoped.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/IConcurrencyProtected.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/IAppendOnlyEntity.cs"
+      ]
+    },
+    {
+      "day": 55,
+      "dayCode": "Day 055",
+      "scheduledDate": "2027-01-15",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement strongly-typed Error and Result value primitives",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Common/Error.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/Result.cs"
+      ]
+    },
+    {
+      "day": 56,
+      "dayCode": "Day 056",
+      "scheduledDate": "2027-01-16",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): add DomainException, NotFoundException, and ConflictException hierarchy",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Common/DomainException.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/NotFoundException.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/ConflictException.cs"
+      ]
+    },
+    {
+      "day": 57,
+      "dayCode": "Day 057",
+      "scheduledDate": "2027-01-17",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): add ForbiddenAccessException and BusinessRuleViolationException types",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Common/ForbiddenAccessException.cs",
+        "backend/src/MotorcycleDealer.Domain/Common/BusinessRuleViolationException.cs"
+      ]
+    },
+    {
+      "day": 58,
+      "dayCode": "Day 058",
+      "scheduledDate": "2027-01-18",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): define canonical roles, JWT claims, and 34 RBAC permission constants",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Constants/RoleNames.cs",
+        "backend/src/MotorcycleDealer.Domain/Constants/JwtClaimNames.cs",
+        "backend/src/MotorcycleDealer.Domain/Constants/Permissions.cs"
+      ]
+    },
+    {
+      "day": 59,
+      "dayCode": "Day 059",
+      "scheduledDate": "2027-01-19",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): add identity and showroom stock/order lifecycle enums",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Enums/UserRoleCode.cs",
+        "backend/src/MotorcycleDealer.Domain/Enums/StockStatus.cs",
+        "backend/src/MotorcycleDealer.Domain/Enums/SalesOrderStatus.cs"
+      ]
+    },
+    {
+      "day": 60,
+      "dayCode": "Day 060",
+      "scheduledDate": "2027-01-20",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): add workshop booking state machine and maintenance reminder enums",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Enums/BookingStatus.cs",
+        "backend/src/MotorcycleDealer.Domain/Enums/ReminderStatus.cs"
+      ]
+    },
+    {
+      "day": 61,
+      "dayCode": "Day 061",
+      "scheduledDate": "2027-01-21",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): add 4-tier loyalty, ledger transaction, and voucher discount enums",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Enums/LoyaltyTierCode.cs",
+        "backend/src/MotorcycleDealer.Domain/Enums/LedgerTransactionType.cs",
+        "backend/src/MotorcycleDealer.Domain/Enums/VoucherDiscountType.cs"
+      ]
+    },
+    {
+      "day": 62,
+      "dayCode": "Day 062",
+      "scheduledDate": "2027-01-22",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): add customer voucher lifecycle and real-time notification event enums",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Enums/CustomerVoucherStatus.cs",
+        "backend/src/MotorcycleDealer.Domain/Enums/NotificationEventType.cs"
+      ]
+    },
+    {
+      "day": 63,
+      "dayCode": "Day 063",
+      "scheduledDate": "2027-01-23",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement ISO 3779 17-character VIN value object validation",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/ValueObjects/Vin.cs"
+      ]
+    },
+    {
+      "day": 64,
+      "dayCode": "Day 064",
+      "scheduledDate": "2027-01-24",
+      "phase": 3,
+      "taskId": "T-302",
+      "module": "domain",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement two-step floor loyalty points calculator and 4-tier resolver",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Services/LoyaltyPointsCalculator.cs"
+      ]
+    },
+    {
+      "day": 65,
+      "dayCode": "Day 065",
+      "scheduledDate": "2027-01-25",
+      "phase": 4,
+      "taskId": "T-401",
+      "module": "domain-identity",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement User and Role identity entities with dealer staff scoping",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Identity/User.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Identity/Role.cs"
+      ]
+    },
+    {
+      "day": 66,
+      "dayCode": "Day 066",
+      "scheduledDate": "2027-01-26",
+      "phase": 4,
+      "taskId": "T-401",
+      "module": "domain-identity",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement Permission, UserRole, and RolePermission RBAC join entities",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Identity/Permission.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Identity/UserRole.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Identity/RolePermission.cs"
+      ]
+    },
+    {
+      "day": 67,
+      "dayCode": "Day 067",
+      "scheduledDate": "2027-01-27",
+      "phase": 4,
+      "taskId": "T-401",
+      "module": "domain-identity",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement RefreshToken entity with TokenFamilyId rotation tracking",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Identity/RefreshToken.cs"
+      ]
+    },
+    {
+      "day": 68,
+      "dayCode": "Day 068",
+      "scheduledDate": "2027-01-28",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "domain-showroom",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement Dealer branch and MotorcycleModel catalog entities",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Showroom/Dealer.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Showroom/MotorcycleModel.cs"
+      ]
+    },
+    {
+      "day": 69,
+      "dayCode": "Day 069",
+      "scheduledDate": "2027-01-29",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "domain-showroom",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement IDealerScoped DealerInventory and immutable SalesOrder entities",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Showroom/DealerInventory.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Showroom/SalesOrder.cs"
+      ]
+    },
+    {
+      "day": 70,
+      "dayCode": "Day 070",
+      "scheduledDate": "2027-01-30",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "domain-garage",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement CustomerVehicle VIN garage entity with odometer invariants",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Garage/CustomerVehicle.cs"
+      ]
+    },
+    {
+      "day": 71,
+      "dayCode": "Day 071",
+      "scheduledDate": "2027-01-31",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "domain-garage",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement OEM MaintenanceRule and deduplicated MaintenanceReminder entities",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Garage/MaintenanceRule.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Garage/MaintenanceReminder.cs"
+      ]
+    },
+    {
+      "day": 72,
+      "dayCode": "Day 072",
+      "scheduledDate": "2027-02-01",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "domain-booking",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement RowVersion-protected ServiceTimeSlot and ServiceBooking entities",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Booking/ServiceTimeSlot.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Booking/ServiceBooking.cs"
+      ]
+    },
+    {
+      "day": 73,
+      "dayCode": "Day 073",
+      "scheduledDate": "2027-02-02",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "domain-booking",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement immutable workshop ServiceInvoice financial entity",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Booking/ServiceInvoice.cs"
+      ]
+    },
+    {
+      "day": 74,
+      "dayCode": "Day 074",
+      "scheduledDate": "2027-02-03",
+      "phase": 4,
+      "taskId": "T-403",
+      "module": "domain-loyalty",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement LoyaltyTier and concurrency-protected LoyaltyAccount entities",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Loyalty/LoyaltyTier.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Loyalty/LoyaltyAccount.cs"
+      ]
+    },
+    {
+      "day": 75,
+      "dayCode": "Day 075",
+      "scheduledDate": "2027-02-04",
+      "phase": 4,
+      "taskId": "T-403",
+      "module": "domain-loyalty",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement append-only PointLedgerEntry audit entity with IdempotencyKey",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Loyalty/PointLedgerEntry.cs"
+      ]
+    },
+    {
+      "day": 76,
+      "dayCode": "Day 076",
+      "scheduledDate": "2027-02-05",
+      "phase": 4,
+      "taskId": "T-403",
+      "module": "domain-loyalty",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(domain): implement VoucherCatalog, CustomerVoucher, and persistent Notification entities",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Entities/Loyalty/VoucherCatalog.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Loyalty/CustomerVoucher.cs",
+        "backend/src/MotorcycleDealer.Domain/Entities/Notifications/Notification.cs"
+      ]
+    },
+    {
+      "day": 77,
+      "dayCode": "Day 077",
+      "scheduledDate": "2027-02-06",
+      "phase": 3,
+      "taskId": "T-303",
+      "module": "application",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(app): scaffold Application layer project and FluentValidation DI pipeline",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/MotorcycleDealer.Application.csproj",
+        "backend/src/MotorcycleDealer.Application/DependencyInjection.cs"
+      ]
+    },
+    {
+      "day": 78,
+      "dayCode": "Day 078",
+      "scheduledDate": "2027-02-07",
+      "phase": 3,
+      "taskId": "T-303",
+      "module": "application",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(app): define IApplicationDbContext, ICurrentUserContext, and IDateTimeProvider ports",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Common/Interfaces/IApplicationDbContext.cs",
+        "backend/src/MotorcycleDealer.Application/Common/Interfaces/ICurrentUserContext.cs",
+        "backend/src/MotorcycleDealer.Application/Common/Interfaces/IDateTimeProvider.cs"
+      ]
+    },
+    {
+      "day": 79,
+      "dayCode": "Day 079",
+      "scheduledDate": "2027-02-08",
+      "phase": 3,
+      "taskId": "T-303",
+      "module": "application",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(app): define JWT, password hasher, and SignalR notification publisher contracts",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Common/Interfaces/IJwtTokenService.cs",
+        "backend/src/MotorcycleDealer.Application/Common/Interfaces/IPasswordHasher.cs",
+        "backend/src/MotorcycleDealer.Application/Common/Interfaces/INotificationPublisher.cs"
+      ]
+    },
+    {
+      "day": 80,
+      "dayCode": "Day 080",
+      "scheduledDate": "2027-02-09",
+      "phase": 3,
+      "taskId": "T-303",
+      "module": "application",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(app): add PagedResult envelope, PaginationQuery validator, and SystemHealthDto",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Common/Models/PagedResult.cs",
+        "backend/src/MotorcycleDealer.Application/Common/Models/PaginationQuery.cs",
+        "backend/src/MotorcycleDealer.Application/Common/Models/SystemHealthDto.cs"
+      ]
+    },
+    {
+      "day": 81,
+      "dayCode": "Day 081",
+      "scheduledDate": "2027-02-10",
+      "phase": 3,
+      "taskId": "T-303",
+      "module": "application",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(app): add zero-allocation 8-byte SQL Server RowVersion Base64 codec",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Common/Concurrency/RowVersionCodec.cs"
+      ]
+    },
+    {
+      "day": 82,
+      "dayCode": "Day 082",
+      "scheduledDate": "2027-02-11",
+      "phase": 3,
+      "taskId": "T-304",
+      "module": "infra",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): scaffold Infrastructure project, UTC clock provider, and SQL unique guards",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/MotorcycleDealer.Infrastructure.csproj",
+        "backend/src/MotorcycleDealer.Infrastructure/Services/SystemDateTimeProvider.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/SqlExceptionGuards.cs"
+      ]
+    },
+    {
+      "day": 83,
+      "dayCode": "Day 083",
+      "scheduledDate": "2027-02-12",
+      "phase": 3,
+      "taskId": "T-304",
+      "module": "infra",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): implement UTC audit interceptor and append-only PointLedgerEntries guard",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Interceptors/AuditableEntityInterceptor.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Interceptors/AppendOnlyLedgerInterceptor.cs"
+      ]
+    },
+    {
+      "day": 84,
+      "dayCode": "Day 084",
+      "scheduledDate": "2027-02-13",
+      "phase": 4,
+      "taskId": "T-404",
+      "module": "infra",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): configure MotorcycleDealerDbContext with IDealerScoped global query filters",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/MotorcycleDealerDbContext.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/MotorcycleDealerDbContextFactory.cs"
+      ]
+    },
+    {
+      "day": 85,
+      "dayCode": "Day 085",
+      "scheduledDate": "2027-02-14",
+      "phase": 4,
+      "taskId": "T-401",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core 3NF configurations for Users and Roles tables",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Identity/UserConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Identity/RoleConfiguration.cs"
+      ]
+    },
+    {
+      "day": 86,
+      "dayCode": "Day 086",
+      "scheduledDate": "2027-02-15",
+      "phase": 4,
+      "taskId": "T-401",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core 3NF configurations for Permissions, UserRoles, and RolePermissions",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Identity/PermissionConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Identity/UserRoleConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Identity/RolePermissionConfiguration.cs"
+      ]
+    },
+    {
+      "day": 87,
+      "dayCode": "Day 087",
+      "scheduledDate": "2027-02-16",
+      "phase": 4,
+      "taskId": "T-401",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core configuration and token-family indexes for RefreshTokens",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Identity/RefreshTokenConfiguration.cs"
+      ]
+    },
+    {
+      "day": 88,
+      "dayCode": "Day 088",
+      "scheduledDate": "2027-02-17",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core 3NF configurations for Dealers and MotorcycleModels",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Showroom/DealerConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Showroom/MotorcycleModelConfiguration.cs"
+      ]
+    },
+    {
+      "day": 89,
+      "dayCode": "Day 089",
+      "scheduledDate": "2027-02-18",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core configurations with VIN uniqueness and RowVersion for Showroom",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Showroom/DealerInventoryConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Showroom/SalesOrderConfiguration.cs"
+      ]
+    },
+    {
+      "day": 90,
+      "dayCode": "Day 090",
+      "scheduledDate": "2027-02-19",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core configuration and reminder covering index for CustomerVehicles",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Garage/CustomerVehicleConfiguration.cs"
+      ]
+    },
+    {
+      "day": 91,
+      "dayCode": "Day 091",
+      "scheduledDate": "2027-02-20",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core configurations and DeduplicationKey index for Garage reminders",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Garage/MaintenanceRuleConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Garage/MaintenanceReminderConfiguration.cs"
+      ]
+    },
+    {
+      "day": 92,
+      "dayCode": "Day 092",
+      "scheduledDate": "2027-02-21",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core configurations with capacity check and RowVersion for Bookings",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Booking/ServiceTimeSlotConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Booking/ServiceBookingConfiguration.cs"
+      ]
+    },
+    {
+      "day": 93,
+      "dayCode": "Day 093",
+      "scheduledDate": "2027-02-22",
+      "phase": 4,
+      "taskId": "T-402",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core 3NF configuration and revenue index for ServiceInvoices",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Booking/ServiceInvoiceConfiguration.cs"
+      ]
+    },
+    {
+      "day": 94,
+      "dayCode": "Day 094",
+      "scheduledDate": "2027-02-23",
+      "phase": 4,
+      "taskId": "T-403",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core configurations and RowVersion token for LoyaltyTiers and Accounts",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Loyalty/LoyaltyTierConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Loyalty/LoyaltyAccountConfiguration.cs"
+      ]
+    },
+    {
+      "day": 95,
+      "dayCode": "Day 095",
+      "scheduledDate": "2027-02-24",
+      "phase": 4,
+      "taskId": "T-403",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core configuration and unique IdempotencyKey index for PointLedgerEntries",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Loyalty/PointLedgerEntryConfiguration.cs"
+      ]
+    },
+    {
+      "day": 96,
+      "dayCode": "Day 096",
+      "scheduledDate": "2027-02-25",
+      "phase": 4,
+      "taskId": "T-403",
+      "module": "infra-ef",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): add EF Core configurations for VoucherCatalogs, CustomerVouchers, and Notifications",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Loyalty/VoucherCatalogConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Loyalty/CustomerVoucherConfiguration.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Configurations/Notifications/NotificationConfiguration.cs"
+      ]
+    },
+    {
+      "day": 97,
+      "dayCode": "Day 097",
+      "scheduledDate": "2027-02-26",
+      "phase": 4,
+      "taskId": "T-405",
+      "module": "migrations",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): generate initial 22-table 3NF SQL Server migration with RCSI and ledger trigger",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Migrations/20261121162940_InitialCreate_22Tables_3NF.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Migrations/20261121162940_InitialCreate_22Tables_3NF.Designer.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Migrations/MotorcycleDealerDbContextModelSnapshot.cs"
+      ]
+    },
+    {
+      "day": 98,
+      "dayCode": "Day 098",
+      "scheduledDate": "2027-02-27",
+      "phase": 4,
+      "taskId": "T-405",
+      "module": "seed",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(infra): implement idempotent 3-dealer, 34-permission, and 10-persona DatabaseSeeder",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Persistence/Seed/DatabaseSeeder.cs"
+      ]
+    },
+    {
+      "day": 99,
+      "dayCode": "Day 099",
+      "scheduledDate": "2027-02-28",
+      "phase": 4,
+      "taskId": "T-406",
+      "module": "auth",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(auth): define authentication DTO contracts and FluentValidation complexity rules",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Auth/AuthContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Auth/AuthValidators.cs"
+      ]
+    },
+    {
+      "day": 100,
+      "dayCode": "Day 100",
+      "scheduledDate": "2027-03-01",
+      "phase": 4,
+      "taskId": "T-406",
+      "module": "auth",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(auth): implement stackalloc PBKDF2-SHA512 password hasher and JWT token service",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Identity/Pbkdf2PasswordHasher.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Identity/JwtOptions.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Identity/JwtTokenService.cs"
+      ]
+    },
+    {
+      "day": 101,
+      "dayCode": "Day 101",
+      "scheduledDate": "2027-03-02",
+      "phase": 4,
+      "taskId": "T-406",
+      "module": "auth",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(auth): implement AuthService with atomic RCSI refresh-token rotation and replay revocation",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Identity/AuthService.cs"
+      ]
+    },
+    {
+      "day": 102,
+      "dayCode": "Day 102",
+      "scheduledDate": "2027-03-03",
+      "phase": 4,
+      "taskId": "T-407",
+      "module": "dealers",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(dealers): define dealer branch and staff administration contracts and validators",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Dealers/DealerContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Dealers/DealerValidators.cs"
+      ]
+    },
+    {
+      "day": 103,
+      "dayCode": "Day 103",
+      "scheduledDate": "2027-03-04",
+      "phase": 4,
+      "taskId": "T-407",
+      "module": "dealers",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(dealers): implement DealerAdministrationService and unified Infrastructure DI registration",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Identity/DealerAdministrationService.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/DependencyInjection.cs"
+      ]
+    },
+    {
+      "day": 104,
+      "dayCode": "Day 104",
+      "scheduledDate": "2027-03-05",
+      "phase": 3,
+      "taskId": "T-305",
+      "module": "webapi",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(api): scaffold WebApi project and LocalDB zero-secrets appsettings placeholders",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/MotorcycleDealer.WebApi.csproj",
+        "backend/src/MotorcycleDealer.WebApi/Properties/launchSettings.json",
+        "backend/src/MotorcycleDealer.WebApi/appsettings.json",
+        "backend/src/MotorcycleDealer.WebApi/appsettings.Development.json"
+      ]
+    },
+    {
+      "day": 105,
+      "dayCode": "Day 105",
+      "scheduledDate": "2027-03-06",
+      "phase": 3,
+      "taskId": "T-305",
+      "module": "webapi",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(api): implement RFC 7807 GlobalExceptionHandler, CORS options, and HttpCurrentUserContext",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Middleware/GlobalExceptionHandler.cs",
+        "backend/src/MotorcycleDealer.WebApi/Security/CorsOptions.cs",
+        "backend/src/MotorcycleDealer.WebApi/Security/HttpCurrentUserContext.cs"
+      ]
+    },
+    {
+      "day": 106,
+      "dayCode": "Day 106",
+      "scheduledDate": "2027-03-07",
+      "phase": 4,
+      "taskId": "T-407",
+      "module": "rbac",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(auth): implement FrozenDictionary 34-policy PermissionPolicyProvider and handler",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Security/PermissionRequirement.cs",
+        "backend/src/MotorcycleDealer.WebApi/Security/HasPermissionAttribute.cs",
+        "backend/src/MotorcycleDealer.WebApi/Security/PermissionPolicyProvider.cs",
+        "backend/src/MotorcycleDealer.WebApi/Security/PermissionAuthorizationHandler.cs"
+      ]
+    },
+    {
+      "day": 107,
+      "dayCode": "Day 107",
+      "scheduledDate": "2027-03-08",
+      "phase": 4,
+      "taskId": "T-407",
+      "module": "webapi",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(api): wire Program.cs pipeline, ActivePrincipalMiddleware lockout guard, and HealthController",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Security/ActivePrincipalMiddleware.cs",
+        "backend/src/MotorcycleDealer.WebApi/Program.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/HealthController.cs"
+      ]
+    },
+    {
+      "day": 108,
+      "dayCode": "Day 108",
+      "scheduledDate": "2027-03-09",
+      "phase": 4,
+      "taskId": "T-407",
+      "module": "auth-api",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(auth): expose /api/v1/auth and /api/v1/dealers REST controllers",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Controllers/AuthController.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/DealersController.cs"
+      ]
+    },
+    {
+      "day": 109,
+      "dayCode": "Day 109",
+      "scheduledDate": "2027-03-10",
+      "phase": 5,
+      "taskId": "T-501",
+      "module": "showroom",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(showroom): define motorcycle catalog and OEM maintenance rule DTOs and validators",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Showroom/ShowroomContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Showroom/ShowroomValidators.cs"
+      ]
+    },
+    {
+      "day": 110,
+      "dayCode": "Day 110",
+      "scheduledDate": "2027-03-11",
+      "phase": 5,
+      "taskId": "T-501",
+      "module": "showroom",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(showroom): implement ShowroomCatalogService and /api/v1/motorcycles controller",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Showroom/ShowroomRowVersionHelper.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Showroom/ShowroomCatalogService.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/MotorcyclesController.cs"
+      ]
+    },
+    {
+      "day": 111,
+      "dayCode": "Day 111",
+      "scheduledDate": "2027-03-12",
+      "phase": 5,
+      "taskId": "T-502",
+      "module": "inventories",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(showroom): define 17-char VIN dealer inventory contracts and ISO 3779 validators",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Inventories/InventoryContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Inventories/InventoryValidators.cs"
+      ]
+    },
+    {
+      "day": 112,
+      "dayCode": "Day 112",
+      "scheduledDate": "2027-03-13",
+      "phase": 5,
+      "taskId": "T-502",
+      "module": "inventories",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(showroom): implement IDealerScoped DealerInventoryService and /api/v1/inventories controller",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Showroom/DealerInventoryService.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/InventoriesController.cs"
+      ]
+    },
+    {
+      "day": 113,
+      "dayCode": "Day 113",
+      "scheduledDate": "2027-03-14",
+      "phase": 5,
+      "taskId": "T-503",
+      "module": "sales-orders",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(showroom): define showroom bike SalesOrders contracts and voucher concurrency validators",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/SalesOrders/SalesOrderContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/SalesOrders/SalesOrderValidators.cs"
+      ]
+    },
+    {
+      "day": 114,
+      "dayCode": "Day 114",
+      "scheduledDate": "2027-03-15",
+      "phase": 5,
+      "taskId": "T-503",
+      "module": "sales-orders",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(showroom): implement atomic VIN sale onboarding, point accrual, and SalesOrdersController",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Showroom/SalesOrderService.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/SalesOrdersController.cs"
+      ]
+    },
+    {
+      "day": 115,
+      "dayCode": "Day 115",
+      "scheduledDate": "2027-03-16",
+      "phase": 5,
+      "taskId": "T-504",
+      "module": "garage",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(garage): define customer digital VIN garage contracts and odometer validators",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Vehicles/VehicleContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Vehicles/VehicleValidators.cs"
+      ]
+    },
+    {
+      "day": 116,
+      "dayCode": "Day 116",
+      "scheduledDate": "2027-03-17",
+      "phase": 5,
+      "taskId": "T-504",
+      "module": "garage",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(garage): implement CustomerVehicleService and /api/v1/vehicles garage endpoints",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Showroom/CustomerVehicleService.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/VehiclesController.cs"
+      ]
+    },
+    {
+      "day": 117,
+      "dayCode": "Day 117",
+      "scheduledDate": "2027-03-18",
+      "phase": 5,
+      "taskId": "T-505",
+      "module": "time-slots",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(booking): define workshop ServiceTimeSlots capacity contracts and validators",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/TimeSlots/TimeSlotContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/TimeSlots/TimeSlotValidators.cs"
+      ]
+    },
+    {
+      "day": 118,
+      "dayCode": "Day 118",
+      "scheduledDate": "2027-03-19",
+      "phase": 5,
+      "taskId": "T-505",
+      "module": "time-slots",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(booking): implement RowVersion-guarded TimeSlotService and /api/v1/time-slots controller",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Booking/TimeSlotService.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/TimeSlotsController.cs"
+      ]
+    },
+    {
+      "day": 119,
+      "dayCode": "Day 119",
+      "scheduledDate": "2027-03-20",
+      "phase": 5,
+      "taskId": "T-506",
+      "module": "bookings",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(booking): define ServiceBookings request/status contracts and FluentValidation rules",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Bookings/BookingContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Bookings/BookingValidators.cs"
+      ]
+    },
+    {
+      "day": 120,
+      "dayCode": "Day 120",
+      "scheduledDate": "2027-03-21",
+      "phase": 5,
+      "taskId": "T-506",
+      "module": "bookings",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(booking): implement anti-double-booking ServiceBookingService and /api/v1/bookings controller",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Booking/ServiceBookingService.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/BookingsController.cs"
+      ]
+    },
+    {
+      "day": 121,
+      "dayCode": "Day 121",
+      "scheduledDate": "2027-03-22",
+      "phase": 5,
+      "taskId": "T-507",
+      "module": "vin-worker",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(booking): implement deduplicated VinMaintenanceReminderScanner with MAJOR_12000 tie-break",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Bookings/IVinMaintenanceReminderScanner.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/BackgroundJobs/VinMaintenanceReminderOptions.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/BackgroundJobs/VinMaintenanceReminderScanner.cs"
+      ]
+    },
+    {
+      "day": 122,
+      "dayCode": "Day 122",
+      "scheduledDate": "2027-03-23",
+      "phase": 5,
+      "taskId": "T-507",
+      "module": "vin-worker",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(booking): wire PeriodicTimer VinMaintenanceReminderWorker background service",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/BackgroundJobs/VinMaintenanceReminderWorker.cs"
+      ]
+    },
+    {
+      "day": 123,
+      "dayCode": "Day 123",
+      "scheduledDate": "2027-03-24",
+      "phase": 5,
+      "taskId": "T-506",
+      "module": "realtime",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(realtime): implement strongly-typed NotificationHub and claim-scoped SignalR publisher",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Hubs/INotificationClient.cs",
+        "backend/src/MotorcycleDealer.WebApi/Hubs/NotificationHub.cs",
+        "backend/src/MotorcycleDealer.WebApi/Hubs/SignalRNotificationPublisher.cs"
+      ]
+    },
+    {
+      "day": 124,
+      "dayCode": "Day 124",
+      "scheduledDate": "2027-03-25",
+      "phase": 3,
+      "taskId": "T-307",
+      "module": "spa-core",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): initialize AngularJS 1.8.3, UI-Router, Chart.js 4, and SignalR frontend package",
+      "expectedPaths": [
+        "frontend/AGENTS.md",
+        "frontend/package.json",
+        "frontend/package-lock.json"
+      ]
+    },
+    {
+      "day": 125,
+      "dayCode": "Day 125",
+      "scheduledDate": "2027-03-26",
+      "phase": 3,
+      "taskId": "T-307",
+      "module": "spa-core",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): add offline vendor bundle stager and SPA fallback development server",
+      "expectedPaths": [
+        "frontend/scripts/stage-vendor.mjs",
+        "frontend/scripts/dev-server.mjs"
+      ]
+    },
+    {
+      "day": 126,
+      "dayCode": "Day 126",
+      "scheduledDate": "2027-03-27",
+      "phase": 3,
+      "taskId": "T-307",
+      "module": "spa-core",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): build Motorsport design tokens, responsive shell styles, and ng-strict-di index.html",
+      "expectedPaths": [
+        "frontend/src/styles/design-tokens.css",
+        "frontend/src/styles/app-shell.css",
+        "frontend/src/index.html"
+      ]
+    },
+    {
+      "day": 127,
+      "dayCode": "Day 127",
+      "scheduledDate": "2027-03-28",
+      "phase": 3,
+      "taskId": "T-307",
+      "module": "spa-core",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): configure motorcycleDealerApp module and 29 UI-Router portal states",
+      "expectedPaths": [
+        "frontend/src/app/app.module.js",
+        "frontend/src/app/app.config.js",
+        "frontend/src/app/app.routes.js"
+      ]
+    },
+    {
+      "day": 128,
+      "dayCode": "Day 128",
+      "scheduledDate": "2027-03-29",
+      "phase": 4,
+      "taskId": "T-408",
+      "module": "spa-auth",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): implement 34-permission constants, RFC 7807 mapper, and DealerApiService client",
+      "expectedPaths": [
+        "frontend/src/app/core/auth/permissions.constants.js",
+        "frontend/src/app/core/api/problem-details-mapper.service.js",
+        "frontend/src/app/core/api/dealer-api.service.js"
+      ]
+    },
+    {
+      "day": 129,
+      "dayCode": "Day 129",
+      "scheduledDate": "2027-03-30",
+      "phase": 4,
+      "taskId": "T-408",
+      "module": "spa-auth",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): implement AuthService, single-flight 401 refresh interceptor, and UI-Router guards",
+      "expectedPaths": [
+        "frontend/src/app/core/auth/auth.service.js",
+        "frontend/src/app/core/auth/auth.interceptor.js",
+        "frontend/src/app/core/auth/route-guard.run.js"
+      ]
+    },
+    {
+      "day": 130,
+      "dayCode": "Day 130",
+      "scheduledDate": "2027-03-31",
+      "phase": 4,
+      "taskId": "T-408",
+      "module": "spa-realtime",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): implement digest-safe SignalRClientService with serialized lifecycle and reconnect",
+      "expectedPaths": [
+        "frontend/src/app/core/realtime/signalr-client.service.js"
+      ]
+    },
+    {
+      "day": 131,
+      "dayCode": "Day 131",
+      "scheduledDate": "2027-04-01",
+      "phase": 3,
+      "taskId": "T-307",
+      "module": "spa-shared",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): add has-permission, ISO 3779 vin-input directives, and VND/Asia-HCM filters",
+      "expectedPaths": [
+        "frontend/src/app/shared/has-permission.directive.js",
+        "frontend/src/app/shared/vin-input.directive.js",
+        "frontend/src/app/shared/vnd-currency.filter.js",
+        "frontend/src/app/shared/utc-to-local.filter.js"
+      ]
+    },
+    {
+      "day": 132,
+      "dayCode": "Day 132",
+      "scheduledDate": "2027-04-02",
+      "phase": 3,
+      "taskId": "T-307",
+      "module": "spa-shared",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): implement app-shell navigation, notification bell, toast feed, and dealerChart",
+      "expectedPaths": [
+        "frontend/src/app/shared/app-shell.component.js",
+        "frontend/src/app/shared/notification-bell.component.js",
+        "frontend/src/app/shared/toast-container.component.js",
+        "frontend/src/app/shared/dealer-chart.component.js"
+      ]
+    },
+    {
+      "day": 133,
+      "dayCode": "Day 133",
+      "scheduledDate": "2027-04-03",
+      "phase": 4,
+      "taskId": "T-408",
+      "module": "spa-public",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): build login, customer registration, and 403 forbidden access views",
+      "expectedPaths": [
+        "frontend/src/app/features/public/login.component.js",
+        "frontend/src/app/features/public/register.component.js",
+        "frontend/src/app/features/public/forbidden.component.js"
+      ]
+    },
+    {
+      "day": 134,
+      "dayCode": "Day 134",
+      "scheduledDate": "2027-04-04",
+      "phase": 5,
+      "taskId": "T-508",
+      "module": "spa-customer",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): build interactive public VIN showroom and customer overview dashboard",
+      "expectedPaths": [
+        "frontend/src/app/features/public/showroom.component.js",
+        "frontend/src/app/features/customer/dashboard.component.js"
+      ]
+    },
+    {
+      "day": 135,
+      "dayCode": "Day 135",
+      "scheduledDate": "2027-04-05",
+      "phase": 5,
+      "taskId": "T-508",
+      "module": "spa-customer",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): build customer digital VIN garage with external registration and mileage updates",
+      "expectedPaths": [
+        "frontend/src/app/features/customer/garage.component.js"
+      ]
+    },
+    {
+      "day": 136,
+      "dayCode": "Day 136",
+      "scheduledDate": "2027-04-06",
+      "phase": 5,
+      "taskId": "T-508",
+      "module": "spa-customer",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): build 4-step slot booking wizard with 409 auto-recovery and appointments manager",
+      "expectedPaths": [
+        "frontend/src/app/features/customer/booking-new.component.js",
+        "frontend/src/app/features/customer/bookings.component.js"
+      ]
+    },
+    {
+      "day": 137,
+      "dayCode": "Day 137",
+      "scheduledDate": "2027-04-07",
+      "phase": 5,
+      "taskId": "T-509",
+      "module": "spa-staff",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): build zero-refresh SignalR staff booking workbench and bay capacity manager",
+      "expectedPaths": [
+        "frontend/src/app/features/staff/workbench.component.js",
+        "frontend/src/app/features/staff/time-slots.component.js"
+      ]
+    },
+    {
+      "day": 138,
+      "dayCode": "Day 138",
+      "scheduledDate": "2027-04-08",
+      "phase": 5,
+      "taskId": "T-509",
+      "module": "spa-staff",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): build dealer VIN stock sales desk, customer lookup, and workshop invoice shell",
+      "expectedPaths": [
+        "frontend/src/app/features/staff/sales-desk.component.js",
+        "frontend/src/app/features/staff/customers.component.js",
+        "frontend/src/app/features/staff/invoice-builder.component.js"
+      ]
+    },
+    {
+      "day": 139,
+      "dayCode": "Day 139",
+      "scheduledDate": "2027-04-09",
+      "phase": 5,
+      "taskId": "T-509",
+      "module": "spa-admin",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): build admin dealer branches, staff lockout, and motorcycle OEM rules studios",
+      "expectedPaths": [
+        "frontend/src/app/features/admin/dealers.component.js",
+        "frontend/src/app/features/admin/staff.component.js",
+        "frontend/src/app/features/admin/models.component.js"
+      ]
+    },
+    {
+      "day": 140,
+      "dayCode": "Day 140",
+      "scheduledDate": "2027-04-10",
+      "phase": 5,
+      "taskId": "T-509",
+      "module": "spa-shells",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "feat(spa): add loyalty wallet, tier/voucher governance, and Chart.js analytics shell components",
+      "expectedPaths": [
+        "frontend/src/app/features/customer/loyalty.component.js",
+        "frontend/src/app/features/admin/loyalty-tiers.component.js",
+        "frontend/src/app/features/admin/voucher-catalog.component.js",
+        "frontend/src/app/features/admin/analytics.component.js"
+      ]
+    },
+    {
+      "day": 141,
+      "dayCode": "Day 141",
+      "scheduledDate": "2027-04-11",
+      "phase": 5,
+      "taskId": "T-509",
+      "module": "spa-tests",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "test(spa): implement 38-check automated AngularJS DI, guard, and SignalR verification suite",
+      "expectedPaths": [
+        "frontend/scripts/verify-spa.mjs"
+      ]
+    },
+    {
+      "day": 142,
+      "dayCode": "Day 142",
+      "scheduledDate": "2027-04-12",
+      "phase": 3,
+      "taskId": "T-306",
+      "module": "unit-tests",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "test(domain): add Clean Architecture inward-dependency reflection guard and primitive tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/MotorcycleDealer.Domain.UnitTests.csproj",
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/CleanArchitectureDependencyTests.cs",
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/DomainPrimitivesTests.cs"
+      ]
+    },
+    {
+      "day": 143,
+      "dayCode": "Day 143",
+      "scheduledDate": "2027-04-13",
+      "phase": 3,
+      "taskId": "T-306",
+      "module": "unit-tests",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "test(domain): add ISO 3779 VIN, two-step floor loyalty math, and RowVersionCodec boundary tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/VinTests.cs",
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/LoyaltyPointsCalculatorTests.cs",
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/RowVersionCodecTests.cs"
+      ]
+    },
+    {
+      "day": 144,
+      "dayCode": "Day 144",
+      "scheduledDate": "2027-04-14",
+      "phase": 4,
+      "taskId": "T-409",
+      "module": "unit-tests",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "test(domain): add 22-table 3NF EF Core metadata, index, and security helper unit tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/PaginationAndSecurityHelpersTests.cs",
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/Phase4SchemaAndDomainTests.cs"
+      ]
+    },
+    {
+      "day": 145,
+      "dayCode": "Day 145",
+      "scheduledDate": "2027-04-15",
+      "phase": 5,
+      "taskId": "T-510",
+      "module": "unit-tests",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "test(domain): add showroom VIN onboarding, slot booking, and reminder scanner boundary tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/Showroom/Phase5ShowroomGarageBoundaryTests.cs",
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/Booking/Phase5BookingBoundaryTests.cs"
+      ]
+    },
+    {
+      "day": 146,
+      "dayCode": "Day 146",
+      "scheduledDate": "2027-04-16",
+      "phase": 3,
+      "taskId": "T-306",
+      "module": "integration-tests",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "test(api): scaffold LocalDB integration test harness, DB cleaner, and ProblemDetails tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/MotorcycleDealer.Api.IntegrationTests.csproj",
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/LocalDbTestDatabaseCleaner.cs",
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/WebApiSkeletonIntegrationTests.cs"
+      ]
+    },
+    {
+      "day": 147,
+      "dayCode": "Day 147",
+      "scheduledDate": "2027-04-17",
+      "phase": 4,
+      "taskId": "T-409",
+      "module": "integration-tests",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "test(api): add 34-permission RBAC, RCSI token rotation race, and IDealerScoped isolation tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/Security/RbacAndTenancyTests.cs"
+      ]
+    },
+    {
+      "day": 148,
+      "dayCode": "Day 148",
+      "scheduledDate": "2027-04-18",
+      "phase": 5,
+      "taskId": "T-510",
+      "module": "integration-tests",
+      "sliceKind": "existing-workspace",
+      "commitMessage": "test(api): add atomic VIN sales, 10-way parallel slot race, and reminder idempotency tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/Showroom/ShowroomAndGarageIntegrationTests.cs",
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/Booking/SlotConcurrencyAndReminderTests.cs"
+      ]
+    },
+    {
+      "day": 149,
+      "dayCode": "Day 149",
+      "scheduledDate": "2027-04-19",
+      "phase": 6,
+      "taskId": "T-601",
+      "module": "loyalty-domain",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(loyalty): add LoyaltyTierCalculator progression rules and boundary unit tests",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Domain/Services/LoyaltyTierCalculator.cs",
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/Loyalty/LoyaltyTierCalculatorTests.cs"
+      ]
+    },
+    {
+      "day": 150,
+      "dayCode": "Day 150",
+      "scheduledDate": "2027-04-20",
+      "phase": 6,
+      "taskId": "T-601",
+      "module": "loyalty-app",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(loyalty): define loyalty wallet, ledger history, tier management, and adjustment contracts",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Loyalty/LoyaltyContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Loyalty/LoyaltyValidators.cs"
+      ]
+    },
+    {
+      "day": 151,
+      "dayCode": "Day 151",
+      "scheduledDate": "2027-04-21",
+      "phase": 6,
+      "taskId": "T-601",
+      "module": "loyalty-infra",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(loyalty): implement append-only PointLedgerEntries accrual and RowVersion tier service",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Loyalty/LoyaltyLedgerService.cs"
+      ]
+    },
+    {
+      "day": 152,
+      "dayCode": "Day 152",
+      "scheduledDate": "2027-04-22",
+      "phase": 6,
+      "taskId": "T-602",
+      "module": "service-invoices",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(invoices): define workshop ServiceInvoices settlement DTOs and voucher validators",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Invoices/ServiceInvoiceContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Invoices/ServiceInvoiceValidators.cs"
+      ]
+    },
+    {
+      "day": 153,
+      "dayCode": "Day 153",
+      "scheduledDate": "2027-04-23",
+      "phase": 6,
+      "taskId": "T-602",
+      "module": "service-invoices",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(invoices): implement transactional ServiceInvoices settlement, mileage sync, and points",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Booking/ServiceInvoiceService.cs"
+      ]
+    },
+    {
+      "day": 154,
+      "dayCode": "Day 154",
+      "scheduledDate": "2027-04-24",
+      "phase": 6,
+      "taskId": "T-602",
+      "module": "service-invoices",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(invoices): expose /api/v1/service-invoices dealer settlement and receipt endpoints",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Controllers/ServiceInvoicesController.cs"
+      ]
+    },
+    {
+      "day": 155,
+      "dayCode": "Day 155",
+      "scheduledDate": "2027-04-25",
+      "phase": 6,
+      "taskId": "T-603",
+      "module": "vouchers",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(vouchers): define VoucherCatalogs administration and CustomerVouchers redemption contracts",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Vouchers/VoucherContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Vouchers/VoucherValidators.cs"
+      ]
+    },
+    {
+      "day": 156,
+      "dayCode": "Day 156",
+      "scheduledDate": "2027-04-26",
+      "phase": 6,
+      "taskId": "T-603",
+      "module": "vouchers",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(vouchers): implement concurrency-safe voucher redemption deducting AvailablePoints only",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Loyalty/VoucherRedemptionService.cs"
+      ]
+    },
+    {
+      "day": 157,
+      "dayCode": "Day 157",
+      "scheduledDate": "2027-04-27",
+      "phase": 6,
+      "taskId": "T-603",
+      "module": "loyalty-api",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(loyalty): expose /api/v1/loyalty and /api/v1/vouchers RBAC-protected controllers",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Controllers/LoyaltyController.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/VouchersController.cs"
+      ]
+    },
+    {
+      "day": 158,
+      "dayCode": "Day 158",
+      "scheduledDate": "2027-04-28",
+      "phase": 6,
+      "taskId": "T-604",
+      "module": "signalr-hub",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(realtime): harden NotificationHub JWT access_token handshake and group claim audits",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Common/Interfaces/INotificationClient.cs",
+        "backend/src/MotorcycleDealer.WebApi/Hubs/NotificationHub.cs"
+      ]
+    },
+    {
+      "day": 159,
+      "dayCode": "Day 159",
+      "scheduledDate": "2027-04-29",
+      "phase": 6,
+      "taskId": "T-605",
+      "module": "notifications",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(realtime): implement persistent Notifications outbox store and SignalRNotificationDispatcher",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Notifications/NotificationContracts.cs",
+        "backend/src/MotorcycleDealer.Infrastructure/Realtime/SignalRNotificationDispatcher.cs"
+      ]
+    },
+    {
+      "day": 160,
+      "dayCode": "Day 160",
+      "scheduledDate": "2027-04-30",
+      "phase": 6,
+      "taskId": "T-605",
+      "module": "notifications",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(realtime): expose /api/v1/notifications unread feed and mark-as-read endpoints",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Controllers/NotificationsController.cs"
+      ]
+    },
+    {
+      "day": 161,
+      "dayCode": "Day 161",
+      "scheduledDate": "2027-05-01",
+      "phase": 6,
+      "taskId": "T-606",
+      "module": "spa-realtime",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(spa): connect notification-bell unread counter and mark-as-read drawer to live SignalR",
+      "expectedPaths": [
+        "frontend/src/app/core/realtime/signalr-client.service.js",
+        "frontend/src/app/shared/notification-bell.component.js"
+      ]
+    },
+    {
+      "day": 162,
+      "dayCode": "Day 162",
+      "scheduledDate": "2027-05-02",
+      "phase": 6,
+      "taskId": "T-607",
+      "module": "spa-invoicing",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(spa): implement live workshop invoice-builder with voucher discount and point preview",
+      "expectedPaths": [
+        "frontend/src/app/features/staff/invoice-builder.component.js",
+        "frontend/src/app/core/api/dealer-api.service.js"
+      ]
+    },
+    {
+      "day": 163,
+      "dayCode": "Day 163",
+      "scheduledDate": "2027-05-03",
+      "phase": 6,
+      "taskId": "T-607",
+      "module": "spa-workbench",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(spa): wire completed booking invoice handoff and real-time counter sync in staff workbench",
+      "expectedPaths": [
+        "frontend/src/app/features/staff/workbench.component.js"
+      ]
+    },
+    {
+      "day": 164,
+      "dayCode": "Day 164",
+      "scheduledDate": "2027-05-04",
+      "phase": 6,
+      "taskId": "T-608",
+      "module": "spa-loyalty",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(spa): implement customer loyalty wallet, ledger pagination, and one-click voucher redemption",
+      "expectedPaths": [
+        "frontend/src/app/features/customer/loyalty.component.js"
+      ]
+    },
+    {
+      "day": 165,
+      "dayCode": "Day 165",
+      "scheduledDate": "2027-05-05",
+      "phase": 6,
+      "taskId": "T-608",
+      "module": "spa-loyalty-admin",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(spa): wire admin loyalty-tiers multiplier editor and voucher-catalog quota studio",
+      "expectedPaths": [
+        "frontend/src/app/features/admin/loyalty-tiers.component.js",
+        "frontend/src/app/features/admin/voucher-catalog.component.js"
+      ]
+    },
+    {
+      "day": 166,
+      "dayCode": "Day 166",
+      "scheduledDate": "2027-05-06",
+      "phase": 6,
+      "taskId": "T-609",
+      "module": "phase6-tests",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "test(loyalty): add 4-tier threshold, voucher eligibility, and Phase 6 SPA verification checks",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/Loyalty/Phase6LoyaltyAndVoucherBoundaryTests.cs",
+        "frontend/scripts/verify-spa.mjs"
+      ]
+    },
+    {
+      "day": 167,
+      "dayCode": "Day 167",
+      "scheduledDate": "2027-05-07",
+      "phase": 6,
+      "taskId": "T-609",
+      "module": "phase6-tests",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "test(api): add atomic IdempotencyKey ledger, parallel voucher race, and live SignalR hub tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/Loyalty/LoyaltyAndSignalRTests.cs"
+      ]
+    },
+    {
+      "day": 168,
+      "dayCode": "Day 168",
+      "scheduledDate": "2027-05-08",
+      "phase": 7,
+      "taskId": "T-701",
+      "module": "analytics-app",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(analytics): define multi-dealer revenue, booking KPI, trend, and CSV export contracts",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Application/Features/Analytics/AdminAnalyticsContracts.cs",
+        "backend/src/MotorcycleDealer.Application/Features/Analytics/AdminAnalyticsValidators.cs"
+      ]
+    },
+    {
+      "day": 169,
+      "dayCode": "Day 169",
+      "scheduledDate": "2027-05-09",
+      "phase": 7,
+      "taskId": "T-701",
+      "module": "analytics-infra",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(analytics): implement SQL Server covering-index aggregations for Showroom and Service revenue",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Analytics/AdminAnalyticsService.cs"
+      ]
+    },
+    {
+      "day": 170,
+      "dayCode": "Day 170",
+      "scheduledDate": "2027-05-10",
+      "phase": 7,
+      "taskId": "T-701",
+      "module": "analytics-api",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(analytics): expose /api/v1/admin/analytics KPIs, trends, and RFC 4180 CSV export endpoints",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.Infrastructure/Services/Analytics/AnalyticsCsvExporter.cs",
+        "backend/src/MotorcycleDealer.WebApi/Controllers/AdminAnalyticsController.cs"
+      ]
+    },
+    {
+      "day": 171,
+      "dayCode": "Day 171",
+      "scheduledDate": "2027-05-11",
+      "phase": 7,
+      "taskId": "T-702",
+      "module": "spa-analytics",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(spa): build interactive Chart.js v4 stacked revenue bar and booking completion charts",
+      "expectedPaths": [
+        "frontend/src/app/features/admin/analytics.component.js",
+        "frontend/src/app/shared/dealer-chart.component.js"
+      ]
+    },
+    {
+      "day": 172,
+      "dayCode": "Day 172",
+      "scheduledDate": "2027-05-12",
+      "phase": 7,
+      "taskId": "T-702",
+      "module": "spa-analytics",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(spa): add 12-month revenue/booking multi-line trend, tier doughnut chart, and CSV download",
+      "expectedPaths": [
+        "frontend/src/app/features/admin/analytics.component.js"
+      ]
+    },
+    {
+      "day": 173,
+      "dayCode": "Day 173",
+      "scheduledDate": "2027-05-13",
+      "phase": 7,
+      "taskId": "T-703",
+      "module": "spa-governance",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "feat(spa): polish admin governance filters, RBAC action badges, and cross-portal deep links",
+      "expectedPaths": [
+        "frontend/src/app/features/admin/dealers.component.js",
+        "frontend/src/app/features/admin/models.component.js",
+        "frontend/src/app/features/admin/staff.component.js"
+      ]
+    },
+    {
+      "day": 174,
+      "dayCode": "Day 174",
+      "scheduledDate": "2027-05-14",
+      "phase": 7,
+      "taskId": "T-704",
+      "module": "analytics-tests",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "test(analytics): add date-window bucketing, zero-fill trend, and CSV sanitization unit tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Domain.UnitTests/Analytics/AdminAnalyticsBoundaryTests.cs"
+      ]
+    },
+    {
+      "day": 175,
+      "dayCode": "Day 175",
+      "scheduledDate": "2027-05-15",
+      "phase": 7,
+      "taskId": "T-704",
+      "module": "analytics-tests",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "test(api): add multi-dealer revenue reconciliation and RBAC analytics integration tests",
+      "expectedPaths": [
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/Analytics/AdminAnalyticsIntegrationTests.cs"
+      ]
+    },
+    {
+      "day": 176,
+      "dayCode": "Day 176",
+      "scheduledDate": "2027-05-16",
+      "phase": 7,
+      "taskId": "T-705",
+      "module": "e2e-smoke",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "test(e2e): expand full-stack smoke suite across all 13 API modules and closed-loop tier upgrade",
+      "expectedPaths": [
+        ".agents/scripts/smoke-fullstack.ps1",
+        ".agents/scripts/smoke-fullstack.sh"
+      ]
+    },
+    {
+      "day": 177,
+      "dayCode": "Day 177",
+      "scheduledDate": "2027-05-17",
+      "phase": 7,
+      "taskId": "T-705",
+      "module": "e2e-evidence",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "test(e2e): capture multi-portal Playwright screenshots, SignalR toasts, and Chart.js evidence",
+      "expectedPaths": [
+        ".agents/scripts/capture-live-evidence.mjs",
+        ".agents/scripts/run-and-capture-dealer-platform.ps1"
+      ]
+    },
+    {
+      "day": 178,
+      "dayCode": "Day 178",
+      "scheduledDate": "2027-05-18",
+      "phase": 7,
+      "taskId": "T-706",
+      "module": "security-audit",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "security(api): add auth rate-limiting policies and OWASP API Top 10 security regression tests",
+      "expectedPaths": [
+        "backend/src/MotorcycleDealer.WebApi/Program.cs",
+        "backend/tests/MotorcycleDealer.Api.IntegrationTests/Security/OwaspApiSecurityAuditTests.cs"
+      ]
+    },
+    {
+      "day": 179,
+      "dayCode": "Day 179",
+      "scheduledDate": "2027-05-19",
+      "phase": 7,
+      "taskId": "T-706",
+      "module": "security-docs",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "docs(security): record OWASP API Top 10 audit matrix and 55-case QA execution verdicts",
+      "expectedPaths": [
+        "docs/ARCHITECTURE.md",
+        "docs/TEST_PLAN.md"
+      ]
+    },
+    {
+      "day": 180,
+      "dayCode": "Day 180",
+      "scheduledDate": "2027-05-20",
+      "phase": 7,
+      "taskId": "T-707",
+      "module": "governance-sync",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "docs(progress): mark 64/64 WBS tasks complete and record Phase 6-7 quality-loop ledgers",
+      "expectedPaths": [
+        "TASKS.md",
+        "PROGRESS.md",
+        ".agents/scripts/baseline-spec-snapshot.json"
+      ]
+    },
+    {
+      "day": 181,
+      "dayCode": "Day 181",
+      "scheduledDate": "2027-05-21",
+      "phase": 7,
+      "taskId": "T-707",
+      "module": "docx-final",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "docs(spec): regenerate final OpenXML-validated Master Word Specification for v1.0.0",
+      "expectedPaths": [
+        "docs/Motorcycle_Dealer_Loyalty_Platform_Specification.docx"
+      ]
+    },
+    {
+      "day": 182,
+      "dayCode": "Day 182",
+      "scheduledDate": "2027-05-22",
+      "phase": 7,
+      "taskId": "T-707",
+      "module": "release-docs",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "docs(release): finalize portfolio README architecture showcase and deployment runbook",
+      "expectedPaths": [
+        "README.md",
+        "docs/RUNBOOK.md"
+      ]
+    },
+    {
+      "day": 183,
+      "dayCode": "Day 183",
+      "scheduledDate": "2027-05-23",
+      "phase": 7,
+      "taskId": "T-708",
+      "module": "release-v1",
+      "sliceKind": "planned-roadmap",
+      "commitMessage": "chore(release): finalize Docker Compose production readiness and publish v1.0.0 release notes",
+      "expectedPaths": [
+        "docker-compose.yml",
+        "docs/RELEASE_NOTES_v1.0.0.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+# ==============================================================================
+# Motorcycle Dealer & Loyalty Management Platform — Canonical .gitignore (T-301)
+# Note: Never ignore docs/*.docx or .agents/** (tracked governance & SSOT specs)
+# ==============================================================================
+
+# .NET / C# Build & Package Outputs
+**/[Bb]in/
+**/[Oo]bj/
+**/[Oo]ut/
+**/[Pp]ublish/
+artifacts/
+
+# Visual Studio / VS Code / JetBrains Rider Local State
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Test, Coverage & Profiling Outputs
+[Tt]est[Rr]esults/
+**/[Tt]est[Rr]esults/
+coverage/
+**/coverage/
+*.trx
+*.coverage
+*.coveragexml
+BenchmarkDotNet.Artifacts/
+
+# Node.js Dependencies & Staged Browser Vendor Bundles
+**/node_modules/
+frontend/src/vendor/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+
+# Environment Secrets, Keys & Local Certificates (Zero-Secrets Hygiene)
+.env
+.env.*
+!.env.example
+*.pfx
+*.pem
+*.key
+*.p12
+appsettings.Local.json
+appsettings.*.Local.json
+
+# OS, Editor & Office Temporary Lock Files
+~$*
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Explicit Tracked Governance & Specification Guarantees
+!docs/*.docx
+!.agents/**
