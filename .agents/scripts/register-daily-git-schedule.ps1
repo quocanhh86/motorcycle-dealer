@@ -1,7 +1,8 @@
 <#
 .SYNOPSIS
     Registers, inspects, or unregisters the user-level Windows Scheduled Task
-    'MotorcycleDealer-DailyGitShipper' to commit and push 1 logical slice every day for 6 months.
+    'MotorcycleDealer-DailyGitShipper' with 4 resilient triggers (AtLogOn + 09:05, 14:00, 20:00)
+    to commit and push 1 logical slice every day for 6 months without missing offline days.
 #>
 [CmdletBinding()]
 param(
@@ -42,31 +43,50 @@ if ($Unregister) {
     exit 0
 }
 
+$PowerShellExe = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+if (-not (Test-Path $PowerShellExe)) {
+    $PowerShellExe = (Get-Command "powershell.exe" -ErrorAction Stop).Source
+}
 $TaskArgs = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$ShipperPs1`" -RunDaily"
+$DailySlotStrings = @("09:05", "14:00", $Time) | Select-Object -Unique | Sort-Object
 
 if ($DryRun) {
     Write-Host "[DRY-RUN] Would register Windows Scheduled Task '$TaskName':" -ForegroundColor Cyan
-    Write-Host "  Daily Trigger : $Time (local time, StartWhenAvailable=true)"
-    Write-Host "  Execute       : powershell.exe $TaskArgs"
+    Write-Host "  Logon Trigger : AtLogOn ($env:USERNAME, Delay=PT2M)"
+    Write-Host "  Daily Slots   : $($DailySlotStrings -join ', ') (local time, StartWhenAvailable=true, StopOnIdleEnd=false, RestartCount=3/15m)"
+    Write-Host "  Execute       : $PowerShellExe $TaskArgs"
     Write-Host "  WorkingDir    : $RepoRoot"
     exit 0
 }
 
-$TriggerTime = [datetime]::ParseExact($Time, "HH:mm", [System.Globalization.CultureInfo]::InvariantCulture)
-$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $TaskArgs -WorkingDirectory $RepoRoot
-$Trigger = New-ScheduledTaskTrigger -Daily -At $TriggerTime
+$Action = New-ScheduledTaskAction -Execute $PowerShellExe -Argument $TaskArgs -WorkingDirectory $RepoRoot
+
+$LogonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
+$LogonTrigger.Delay = "PT2M"
+
+$DailyTriggers = foreach ($Slot in $DailySlotStrings) {
+    $ParsedTime = [datetime]::ParseExact($Slot, "HH:mm", [System.Globalization.CultureInfo]::InvariantCulture)
+    New-ScheduledTaskTrigger -Daily -At $ParsedTime
+}
+
+$AllTriggers = @($LogonTrigger) + @($DailyTriggers)
+
 $Settings = New-ScheduledTaskSettingsSet `
     -StartWhenAvailable `
     -AllowStartIfOnBatteries `
     -DontStopIfGoingOnBatteries `
+    -DontStopOnIdleEnd `
+    -RestartCount 3 `
+    -RestartInterval (New-TimeSpan -Minutes 15) `
+    -MultipleInstances IgnoreNew `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
 
-$Description = "Daily 6-month (183-day) Git slice shipper for Motorcycle Dealer & Loyalty Management Platform ($RepoRoot)."
+$Description = "Daily 6-month (183-day) Git slice shipper for Motorcycle Dealer & Loyalty Management Platform ($RepoRoot). Idempotent multi-trigger schedule (AtLogOn + $($DailySlotStrings -join ', '))."
 
 Register-ScheduledTask `
     -TaskName $TaskName `
     -Action $Action `
-    -Trigger $Trigger `
+    -Trigger $AllTriggers `
     -Settings $Settings `
     -Description $Description `
     -Force | Out-Null
@@ -74,5 +94,5 @@ Register-ScheduledTask `
 $VerifiedTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
 $TaskInfo = Get-ScheduledTaskInfo -TaskName $TaskName -ErrorAction Stop
 
-Write-Host "[PASS] Registered Windows Scheduled Task '$($VerifiedTask.TaskName)' (State=$($VerifiedTask.State), NextRunTime=$($TaskInfo.NextRunTime))." -ForegroundColor Green
+Write-Host "[PASS] Registered Windows Scheduled Task '$($VerifiedTask.TaskName)' with $($VerifiedTask.Triggers.Count) triggers (AtLogOn + $($DailySlotStrings -join ', '); State=$($VerifiedTask.State), StopOnIdleEnd=$($VerifiedTask.Settings.IdleSettings.StopOnIdleEnd), NextRunTime=$($TaskInfo.NextRunTime))." -ForegroundColor Green
 exit 0

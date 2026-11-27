@@ -32,6 +32,12 @@ coverage/
 *.coveragexml
 BenchmarkDotNet.Artifacts/
 
+# Runtime Structured User Action Logs (NDJSON rolling logs) & Playwright MCP Scratch
+logs/
+**/logs/
+*.ndjson
+.playwright-mcp/
+
 # Node.js Dependencies & Staged Browser Vendor Bundles
 **/node_modules/
 frontend/src/vendor/

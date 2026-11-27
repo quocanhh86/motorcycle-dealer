@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="MotorcycleDealer.Mobile.App.Controls.LoyaltyPassbookCardView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    x:Name="Root"
+    x:DataType="controls:LoyaltyPassbookCardView">
+
+    <Border
+        Stroke="{Binding Source={x:Reference Root}, Path=CardAccentBorder}"
+        StrokeThickness="1.5"
+        StrokeShape="RoundRectangle 16"
+        Background="{Binding Source={x:Reference Root}, Path=CardBackgroundBrush}"
+        Padding="0">
+        <Border.Behaviors>
+            <toolkit:TouchBehavior PressedScale="0.97" PressedOpacity="0.90" PressedAnimationDuration="110" />
+        </Border.Behaviors>
+
+        <Grid IsClippedToBounds="True">
+            <!-- Diagonal Specular Metallic Foil Sheen (auto-paused when hidden or reduced-motion) -->
+            <Border
+                x:Name="SpecularSheenOverlay"
+                WidthRequest="110"
+                HeightRequest="320"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                Rotation="-22"
+                TranslationX="-180"
+                StrokeThickness="0"
+                InputTransparent="True">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#00FFFFFF" Offset="0.0" />
+                        <GradientStop Color="#2BFFFFFF" Offset="0.5" />
+                        <GradientStop Color="#00FFFFFF" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <!-- Passbook Content -->
+            <VerticalStackLayout Padding="18" Spacing="14">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            Text="{Binding Source={x:Reference Root}, Path=Loc.LoyaltyPassbookEyebrow}"
+                            FontFamily="SpaceGroteskSemiBold"
+                            FontSize="10"
+                            CharacterSpacing="1.4"
+                            TextColor="#CBD5E1" />
+                        <Label
+                            Text="{Binding Source={x:Reference Root}, Path=MemberName}"
+                            FontFamily="SpaceGroteskBold"
+                            FontSize="18"
+                            TextColor="#F8FAFC" />
+                    </VerticalStackLayout>
+
+                    <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Start">
+                        <controls:LottieOrIconView
+                            x:Name="TierSparkle"
+                            LottieFile="lottie_tier_sparkle.json"
+                            FallbackGlyph="{x:Static icons:PhosphorIcons.Crown}"
+                            FallbackColor="{Binding Source={x:Reference Root}, Path=CardAccentBorder}"
+                            RepeatCount="0"
+                            Size="28" />
+
+                        <Border
+                            BackgroundColor="{Binding Source={x:Reference Root}, Path=TierBadgeBg}"
+                            Stroke="{Binding Source={x:Reference Root}, Path=CardAccentBorder}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 6"
+                            Padding="10,5"
+                            VerticalOptions="Center">
+                            <Label
+                                Text="{Binding Source={x:Reference Root}, Path=TierPillText}"
+                                FontFamily="JetBrainsMonoSemiBold"
+                                FontSize="12"
+                                TextColor="{Binding Source={x:Reference Root}, Path=TierBadgeFg}" />
+                        </Border>
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Border
+                        BackgroundColor="#1F020617"
+                        Stroke="#33FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="12,10">
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                Text="{Binding Source={x:Reference Root}, Path=Loc.LoyaltySpendableBalance}"
+                                FontFamily="SpaceGroteskSemiBold"
+                                FontSize="10"
+                                CharacterSpacing="0.8"
+                                TextColor="#CBD5E1" />
+                            <Label
+                                Text="{Binding Source={x:Reference Root}, Path=AvailablePointsText}"
+                                FontFamily="JetBrainsMonoSemiBold"
+                                FontSize="19"
+                                TextColor="#FFFFFF" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        BackgroundColor="#1F020617"
+                        Stroke="#33FFFFFF"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="12,10">
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                Text="{Binding Source={x:Reference Root}, Path=Loc.LoyaltyQualifyingLifetime}"
+                                FontFamily="SpaceGroteskSemiBold"
+                                FontSize="10"
+                                CharacterSpacing="0.8"
+                                TextColor="#CBD5E1" />
+                            <Label
+                                Text="{Binding Source={x:Reference Root}, Path=QualifyingPointsText}"
+                                FontFamily="JetBrainsMonoSemiBold"
+                                FontSize="19"
+                                TextColor="#F8FAFC" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Label
+                            Text="{Binding Source={x:Reference Root}, Path=NextTierHint}"
+                            FontFamily="BeVietnamProMedium"
+                            FontSize="12"
+                            TextColor="#E2E8F0" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding Source={x:Reference Root}, Path=SyncCaption}"
+                            FontFamily="JetBrainsMonoMedium"
+                            FontSize="11"
+                            TextColor="#CBD5E1" />
+                    </Grid>
+
+                    <ProgressBar
+                        x:Name="TierProgressBar"
+                        ProgressColor="{Binding Source={x:Reference Root}, Path=CardAccentBorder}"
+                        BackgroundColor="#38FFFFFF"
+                        HeightRequest="6" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+</ContentView>

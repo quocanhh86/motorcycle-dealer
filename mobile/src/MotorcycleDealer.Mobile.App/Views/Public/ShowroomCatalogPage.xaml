@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Public.ShowroomCatalogPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:ShowroomCatalogViewModel"
+    Title="{Binding Loc.ShowroomPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadCatalogCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Editorial Motorsport Hero Header with Offline Studio Photography & Quick Toggles -->
+                <Border
+                    BackgroundColor="{StaticResource Slate950}"
+                    Stroke="{StaticResource Slate800}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="0">
+                    <VerticalStackLayout Spacing="0">
+                        <Grid HeightRequest="164">
+                            <Image
+                                Source="{Binding HeroShowroomImageSource}"
+                                Aspect="AspectFill"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                            <BoxView>
+                                <BoxView.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#CC020617" Offset="0.0" />
+                                        <GradientStop Color="#66020617" Offset="0.45" />
+                                        <GradientStop Color="#F2020617" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </BoxView.Background>
+                            </BoxView>
+                            <Grid RowDefinitions="Auto,*,Auto" Padding="14,12">
+                                <!-- Top Bar: Eyebrow + 1-Tap VI|EN & Light/Dark Toggles -->
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <Label
+                                        Text="{Binding Loc.ShowroomEyebrow}"
+                                        Style="{StaticResource EyebrowLabel}"
+                                        VerticalTextAlignment="Center"
+                                        LineBreakMode="TailTruncation" />
+                                    <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                                        <Border
+                                            BackgroundColor="#CC1E293B"
+                                            Stroke="{StaticResource Slate700}"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 16"
+                                            Padding="10,6"
+                                            MinimumHeightRequest="38"
+                                            SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
+                                            <Border.Behaviors>
+                                                <toolkit:TouchBehavior
+                                                    PressedScale="0.95"
+                                                    PressedAnimationDuration="110"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=pub:ShowroomCatalogPage}"
+                                                    ShouldMakeChildrenInputTransparent="True" />
+                                            </Border.Behaviors>
+                                            <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.Translate}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="14"
+                                                    TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                                    VerticalTextAlignment="Center" />
+                                                <Label
+                                                    Text="{Binding LanguageToggleText}"
+                                                    FontFamily="JetBrainsMonoSemiBold"
+                                                    FontSize="11"
+                                                    TextColor="{StaticResource Slate50}"
+                                                    VerticalTextAlignment="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+                                        <Border
+                                            BackgroundColor="#CC1E293B"
+                                            Stroke="{StaticResource Slate700}"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 16"
+                                            Padding="10,6"
+                                            MinimumHeightRequest="38"
+                                            SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
+                                            <Border.Behaviors>
+                                                <toolkit:TouchBehavior
+                                                    PressedScale="0.95"
+                                                    PressedAnimationDuration="110"
+                                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=pub:ShowroomCatalogPage}"
+                                                    ShouldMakeChildrenInputTransparent="True" />
+                                            </Border.Behaviors>
+                                            <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.Moon}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="14"
+                                                    TextColor="{StaticResource TierGoldAccentDark}"
+                                                    VerticalTextAlignment="Center">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding IsDarkTheme}" Value="True">
+                                                            <Setter Property="Text" Value="{x:Static icons:PhosphorIcons.Sun}" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                                <Label
+                                                    Text="{Binding ThemeToggleText}"
+                                                    FontFamily="BeVietnamProSemiBold"
+                                                    FontSize="11"
+                                                    TextColor="{StaticResource Slate50}"
+                                                    VerticalTextAlignment="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+                                    </HorizontalStackLayout>
+                                </Grid>
+
+                                <!-- Bottom Headline & Caption -->
+                                <VerticalStackLayout Grid.Row="2" Spacing="3">
+                                    <Label
+                                        Text="{Binding Loc.ShowroomTitle}"
+                                        FontFamily="SpaceGroteskBold"
+                                        FontSize="22"
+                                        TextColor="{StaticResource Slate50}" />
+                                    <Label
+                                        Text="{Binding Loc.ShowroomHeroCaption}"
+                                        FontSize="12"
+                                        TextColor="{StaticResource Slate300}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Sub-Header Telemetry Strip -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" Padding="14,10" BackgroundColor="{StaticResource Slate900}">
+                            <Label
+                                Text="{Binding ShowroomSummarySubtitle}"
+                                FontSize="12"
+                                TextColor="{StaticResource Slate200}"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding SyncAgeLabel}"
+                                FontFamily="JetBrainsMonoMedium"
+                                FontSize="11"
+                                TextColor="{StaticResource Slate400}"
+                                VerticalTextAlignment="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Offline SQLCipher Fallback Banner -->
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.WifiSlash}"
+                            FontFamily="Phosphor"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding OfflineCatalogBannerText}"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Error Retry Banner -->
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadCatalogCommand}" />
+
+                <!-- Search Bar -->
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Border Style="{StaticResource InputContainer}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label
+                                Text="{x:Static icons:PhosphorIcons.MagnifyingGlass}"
+                                FontFamily="Phosphor"
+                                FontSize="18"
+                                TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                VerticalTextAlignment="Center" />
+                            <Entry
+                                Grid.Column="1"
+                                Text="{Binding SearchText}"
+                                Placeholder="{Binding Loc.ShowroomSearchPlaceholder}"
+                                ReturnType="Search"
+                                Completed="OnSearchCompleted" />
+                        </Grid>
+                    </Border>
+                    <Button
+                        Grid.Column="1"
+                        Text="{Binding Loc.Common_Search}"
+                        Command="{Binding LoadCatalogCommand}"
+                        Style="{StaticResource PrimaryButton}" />
+                </Grid>
+
+                <!-- Category Filter Chips -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout x:Name="CategoryChipContainer" BindableLayout.ItemsSource="{Binding CategoryFilters}" Spacing="8" Padding="0,0,16,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button
+                                    Text="{Binding ., Converter={StaticResource HumanizeStatus}, ConverterParameter=MotorcycleCategory}"
+                                    Style="{StaticResource ChipButton}"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectCategoryCommand, x:DataType=pub:ShowroomCatalogPage}"
+                                    CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                    <Binding Path="." />
+                                                    <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedCategory" x:DataType="pub:ShowroomCatalogPage" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="TextColor" Value="{StaticResource PureWhite}" />
+                                            <Setter Property="BorderColor" Value="{StaticResource BrandPrimary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- Multi-Variant Loading Skeleton -->
+                <controls:SkeletonLoaderView
+                    Variant="ShowroomCard"
+                    Count="2"
+                    IsVisible="{Binding IsBusy}" />
+
+                <!-- Selected Model Spotlight Card (Double-Bezel Frame + Studio Photography) -->
+                <Border
+                    Style="{StaticResource DoubleBezelOuter}"
+                    IsVisible="{Binding SelectedModel, Converter={StaticResource IsNotNull}}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="12">
+                            <!-- Studio Motorcycle Hero Image -->
+                            <Border
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                StrokeThickness="1"
+                                Padding="0">
+                                <Grid HeightRequest="188">
+                                    <Image
+                                        Source="{Binding SelectedModelImageSource}"
+                                        Aspect="AspectFill"
+                                        HorizontalOptions="Fill"
+                                        VerticalOptions="Fill" />
+                                    <Border
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="Start"
+                                        Margin="10"
+                                        BackgroundColor="#D9020617"
+                                        Stroke="{StaticResource Slate700}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 8"
+                                        Padding="8,4">
+                                        <Label
+                                            Text="{Binding SelectedModel.ModelCode}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            FontSize="11"
+                                            TextColor="{StaticResource Slate50}" />
+                                    </Border>
+                                    <controls:StatusBadgeView
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        Margin="10"
+                                        Status="Available" />
+                                </Grid>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="{Binding Loc.ShowroomSelectedSpecEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                                    <Label
+                                        Text="{Binding SelectedModel.ModelName}"
+                                        Style="{StaticResource PageTitleLabel}" />
+                                    <Label Style="{StaticResource SecondaryLabel}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding SelectedModel.Brand}" />
+                                                <Span Text=" · " />
+                                                <Span Text="{Binding Loc.Common_FactoryStandard}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="1"
+                                    Style="{StaticResource SunkenPanel}"
+                                    Padding="10,6"
+                                    VerticalOptions="Center">
+                                    <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                        <Label
+                                            Text="{Binding SelectedModel.AvailableStockCount}"
+                                            Style="{StaticResource MonoValueBoldLabel}"
+                                            FontSize="14"
+                                            TextColor="{StaticResource SuccessAccent}" />
+                                        <Label
+                                            Text="{Binding Loc.Qty_Unit}"
+                                            Style="{StaticResource CaptionLabel}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="1.42*,*,1.08*" ColumnSpacing="8">
+                                <Border Style="{StaticResource SunkenPanel}" Padding="10,8">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Text="{Binding Loc.ShowroomRetailLabel}" Style="{StaticResource CaptionLabel}" FontSize="11" LineBreakMode="NoWrap" />
+                                        <Label
+                                            Text="{Binding SelectedModel.BaseRetailPrice, Converter={StaticResource VndCurrency}}"
+                                            Style="{StaticResource MonoCodeLabel}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            LineBreakMode="NoWrap" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource SunkenPanel}" Padding="10,8">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Text="{Binding Loc.ShowroomEngineLabel}" Style="{StaticResource CaptionLabel}" FontSize="11" LineBreakMode="NoWrap" />
+                                        <Label
+                                            Text="{Binding SelectedModel.EngineDisplacementCc, StringFormat='{0} cc'}"
+                                            Style="{StaticResource MonoCodeLabel}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            LineBreakMode="NoWrap" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border Grid.Column="2" Style="{StaticResource SunkenPanel}" Padding="10,8">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Text="{Binding Loc.ShowroomWarrantyLabel}" Style="{StaticResource CaptionLabel}" FontSize="11" LineBreakMode="NoWrap" />
+                                        <Label Style="{StaticResource MonoCodeLabel}" FontFamily="JetBrainsMonoSemiBold" LineBreakMode="NoWrap">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding SelectedModel.WarrantyMonths}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding Loc.Qty_Month}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+
+                            <!-- Collapsible OEM Coverage & Live Branch Stock Breakdown -->
+                            <Border Style="{StaticResource SunkenPanel}">
+                                <toolkit:Expander
+                                    x:Name="OemCoverageExpander"
+                                    IsExpanded="True"
+                                    ExpandedChanged="OnOemExpanderChanged">
+                                    <toolkit:Expander.Header>
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8" MinimumHeightRequest="40">
+                                            <Label
+                                                Text="{Binding Loc.ShowroomOemExpanderHeader}"
+                                                Style="{StaticResource EyebrowLabel}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding Loc.Common_Live}"
+                                                Style="{StaticResource MonoCodeLabel}"
+                                                FontSize="11"
+                                                TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                x:Name="OemChevron"
+                                                Grid.Column="2"
+                                                Text="{x:Static icons:PhosphorIcons.CaretDown}"
+                                                FontFamily="Phosphor"
+                                                FontSize="16"
+                                                Rotation="180"
+                                                TextColor="{StaticResource BrandPrimary}"
+                                                VerticalTextAlignment="Center"
+                                                HorizontalTextAlignment="Center" />
+                                        </Grid>
+                                    </toolkit:Expander.Header>
+                                    <toolkit:Expander.Content>
+                                        <VerticalStackLayout Spacing="8" Padding="0,8,0,0">
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label
+                                                    Text="{x:Static icons:PhosphorIcons.ShieldCheck}"
+                                                    FontFamily="Phosphor"
+                                                    FontSize="15"
+                                                    TextColor="{StaticResource SuccessAccent}"
+                                                    VerticalTextAlignment="Center" />
+                                                <Label Style="{StaticResource CaptionLabel}" VerticalTextAlignment="Center">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Loc.ShowroomWarrantyLabel}" />
+                                                            <Span Text=": " />
+                                                            <Span Text="{Binding SelectedModel.WarrantyMonths}" />
+                                                            <Span Text=" " />
+                                                            <Span Text="{Binding Loc.Qty_Month}" />
+                                                            <Span Text=" · " />
+                                                            <Span Text="{Binding SelectedModel.WarrantyMileageKm, StringFormat='{0:N0} km'}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </HorizontalStackLayout>
+                                            <VerticalStackLayout
+                                                BindableLayout.ItemsSource="{Binding SelectedModel.DealerStockBreakdown}"
+                                                Spacing="6">
+                                                <BindableLayout.ItemTemplate>
+                                                    <DataTemplate x:DataType="dto:DealerModelStockSummaryDto">
+                                                        <Grid ColumnDefinitions="*,Auto">
+                                                            <Label Text="{Binding DealerName}" Style="{StaticResource SecondaryLabel}" />
+                                                            <Label
+                                                                Grid.Column="1"
+                                                                Text="{Binding UnitsLabel}"
+                                                                Style="{StaticResource MonoCodeLabel}"
+                                                                FontFamily="JetBrainsMonoSemiBold" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </BindableLayout.ItemTemplate>
+                                            </VerticalStackLayout>
+                                        </VerticalStackLayout>
+                                    </toolkit:Expander.Content>
+                                </toolkit:Expander>
+                            </Border>
+
+                            <!-- Tactile Editorial Pill CTA (CommunityToolkit.Maui TouchBehavior) -->
+                            <Border
+                                Style="{StaticResource PrimaryPillCta}"
+                                SemanticProperties.Description="{Binding Loc.ShowroomBookCta}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.97"
+                                        PressedOpacity="0.90"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.BookTestDriveForSelectedModelCommand, x:DataType=pub:ShowroomCatalogPage}"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                    <Label
+                                        Text="{Binding Loc.ShowroomBookCta}"
+                                        FontFamily="BeVietnamProSemiBold"
+                                        FontSize="14"
+                                        TextColor="{StaticResource PureWhite}"
+                                        VerticalTextAlignment="Center" />
+                                    <Border Grid.Column="1" Style="{StaticResource PrimaryPillCtaWell}">
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.ArrowRight}"
+                                            FontFamily="Phosphor"
+                                            FontSize="16"
+                                            TextColor="{StaticResource PureWhite}"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Showroom Model Cards -->
+                <Label Text="{Binding Loc.ShowroomAvailableModelsTitle}" Style="{StaticResource SectionTitleLabel}" />
+
+                <controls:EmptyStateView
+                    IsVisible="{Binding Models.Count, Converter={StaticResource EqualsString}, ConverterParameter=0}"
+                    IconGlyph="{x:Static icons:PhosphorIcons.Motorcycle}"
+                    LottieFile="lottie_empty_garage.json"
+                    Title="{Binding Loc.ShowroomEmptyTitle}"
+                    Subtitle="{Binding Loc.ShowroomEmptyDesc}"
+                    ActionText="{Binding Loc.Common_Refresh}"
+                    ActionCommand="{Binding LoadCatalogCommand}">
+                    <controls:EmptyStateView.Triggers>
+                        <DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </controls:EmptyStateView.Triggers>
+                </controls:EmptyStateView>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Models}" Spacing="12">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:MotorcycleModelDto">
+                            <Border x:Name="ModelCardRoot" Style="{StaticResource DoubleBezelOuter}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.97"
+                                        PressedOpacity="0.92"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectModelCommand, x:DataType=pub:ShowroomCatalogPage}"
+                                        CommandParameter="{Binding Source={x:Reference ModelCardRoot}, Path=BindingContext, x:DataType=Border}"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="10">
+                                        <!-- Offline-First Studio Model Image -->
+                                        <Border
+                                            StrokeShape="RoundRectangle 10"
+                                            Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                            StrokeThickness="1"
+                                            Padding="0">
+                                            <Image
+                                                Source="{Binding ResolvedImageSource}"
+                                                Aspect="AspectFill"
+                                                HeightRequest="176"
+                                                HorizontalOptions="Fill" />
+                                        </Border>
+
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="{Binding ModelCode}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                                <Label Text="{Binding ModelName}" Style="{StaticResource CardTitleLabel}" />
+                                                <Label Text="{Binding Brand}" Style="{StaticResource SecondaryLabel}" />
+                                            </VerticalStackLayout>
+                                            <controls:StatusBadgeView Grid.Column="1" Status="Info" LabelOverride="{Binding LocalizedCategory}" />
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label
+                                                Text="{Binding BaseRetailPrice, Converter={StaticResource VndCurrency}}"
+                                                Style="{StaticResource MonoValueBoldLabel}"
+                                                TextColor="{StaticResource BrandPrimary}"
+                                                VerticalTextAlignment="Center" />
+                                            <Border
+                                                Grid.Column="1"
+                                                Style="{StaticResource SunkenPanel}"
+                                                Padding="12,8"
+                                                StrokeShape="RoundRectangle 16">
+                                                <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                                    <Label
+                                                        Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_Inspect, x:DataType=loc:LocalizationService}"
+                                                        FontFamily="BeVietnamProSemiBold"
+                                                        FontSize="12"
+                                                        VerticalTextAlignment="Center" />
+                                                    <Label
+                                                        Text="{x:Static icons:PhosphorIcons.ArrowRight}"
+                                                        FontFamily="Phosphor"
+                                                        FontSize="14"
+                                                        TextColor="{StaticResource BrandPrimary}"
+                                                        VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
+                                            </Border>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

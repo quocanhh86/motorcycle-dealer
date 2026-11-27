@@ -1,0 +1,29 @@
+{
+  "name": "motorcycle-dealer-spa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Decoupled Modular AngularJS 1.8.3 SPA for the Motorcycle Dealer & Loyalty Management Platform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quocanhh86/motorcycle-dealer.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "postinstall": "node scripts/stage-vendor.mjs",
+    "stage-vendor": "node scripts/stage-vendor.mjs",
+    "start": "node scripts/dev-server.mjs",
+    "test": "node scripts/verify-spa.mjs"
+  },
+  "dependencies": {
+    "@fontsource/be-vietnam-pro": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@microsoft/signalr": "^8.0.7",
+    "@phosphor-icons/web": "^2.1.2",
+    "@uirouter/angularjs": "^1.0.30",
+    "angular": "1.8.3",
+    "chart.js": "^4.4.4"
+  }
+}

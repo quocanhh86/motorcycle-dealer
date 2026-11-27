@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Public.LoginRegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:LoginRegisterViewModel"
+    Title="{Binding Loc.AuthPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+
+            <!-- Motorsport Cockpit Brand Banner with 1-Tap VI|EN & Light/Dark Toggles -->
+            <Border Style="{StaticResource CarbonHeaderCard}">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Label
+                            Text="{Binding Loc.AuthEyebrow}"
+                            Style="{StaticResource EyebrowLabel}"
+                            VerticalTextAlignment="Center"
+                            LineBreakMode="TailTruncation" />
+                        <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                            <Border
+                                BackgroundColor="{StaticResource Slate800}"
+                                Stroke="{StaticResource Slate700}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 16"
+                                Padding="10,6"
+                                MinimumHeightRequest="38"
+                                SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.95"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=pub:LoginRegisterPage}"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.Translate}"
+                                        FontFamily="Phosphor"
+                                        FontSize="14"
+                                        TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        Text="{Binding LanguageToggleText}"
+                                        FontFamily="JetBrainsMonoSemiBold"
+                                        FontSize="11"
+                                        TextColor="{StaticResource Slate50}"
+                                        VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+                            <Border
+                                BackgroundColor="{StaticResource Slate800}"
+                                Stroke="{StaticResource Slate700}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 16"
+                                Padding="10,6"
+                                MinimumHeightRequest="38"
+                                SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
+                                <Border.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        PressedScale="0.95"
+                                        PressedAnimationDuration="110"
+                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=pub:LoginRegisterPage}"
+                                        ShouldMakeChildrenInputTransparent="True" />
+                                </Border.Behaviors>
+                                <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.Moon}"
+                                        FontFamily="Phosphor"
+                                        FontSize="14"
+                                        TextColor="{StaticResource TierGoldAccentDark}"
+                                        VerticalTextAlignment="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsDarkTheme}" Value="True">
+                                                <Setter Property="Text" Value="{x:Static icons:PhosphorIcons.Sun}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label
+                                        Text="{Binding ThemeToggleText}"
+                                        FontFamily="BeVietnamProSemiBold"
+                                        FontSize="11"
+                                        TextColor="{StaticResource Slate50}"
+                                        VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </HorizontalStackLayout>
+                    </Grid>
+                    <Label
+                        Text="{Binding Loc.AuthTitle}"
+                        FontFamily="SpaceGroteskBold"
+                        FontSize="22"
+                        TextColor="{StaticResource Slate50}" />
+                    <Label
+                        Text="{Binding Loc.AuthSubtitle}"
+                        FontSize="12"
+                        TextColor="{StaticResource Slate300}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Status Banners -->
+            <controls:ErrorRetryBannerView
+                IsVisible="{Binding HasError}"
+                Message="{Binding ErrorMessage}"
+                RetryText="{Binding Loc.Common_Retry}"
+                RetryCommand="{Binding SubmitCommand}" />
+
+            <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <controls:LottieOrIconView
+                        LottieFile="lottie_success_check.json"
+                        FallbackGlyph="{x:Static icons:PhosphorIcons.CheckCircle}"
+                        FallbackColor="{StaticResource SuccessAccent}"
+                        Size="28"
+                        RepeatCount="0" />
+                    <Label
+                        Grid.Column="1"
+                        Text="{Binding SuccessMessage}"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                        VerticalTextAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!-- Auth Form Card (Double-Bezel Frame) -->
+            <Border Style="{StaticResource DoubleBezelOuter}">
+                <Border Style="{StaticResource DoubleBezelInner}">
+                    <VerticalStackLayout Spacing="12">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label
+                                Text="{x:Static icons:PhosphorIcons.Lock}"
+                                FontFamily="Phosphor"
+                                FontSize="20"
+                                TextColor="{StaticResource BrandPrimary}"
+                                VerticalTextAlignment="Center" />
+                            <Label Grid.Column="1" Text="{Binding SubmitButtonText}" Style="{StaticResource SectionTitleLabel}" VerticalTextAlignment="Center" />
+                        </Grid>
+
+                        <Label Text="{Binding Loc.AuthSecurityNotice}" Style="{StaticResource CaptionLabel}" />
+
+                        <VerticalStackLayout Spacing="8" IsVisible="{Binding IsRegisterMode}">
+                            <Label Text="{Binding Loc.AuthFullNameLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding FullName}" Placeholder="{Binding Loc.AuthFullNamePlaceholder}" />
+                            </Border>
+
+                            <Label Text="{Binding Loc.AuthPhoneLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Entry Text="{Binding PhoneNumber}" Placeholder="{Binding Loc.AuthPhonePlaceholder}" Keyboard="Telephone" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <Label Text="{Binding Loc.AuthEmailLabel}" Style="{StaticResource CaptionLabel}" />
+                        <Border Style="{StaticResource InputContainer}">
+                            <Entry
+                                Text="{Binding Email}"
+                                Placeholder="{Binding Loc.AuthEmailPlaceholder}"
+                                Keyboard="Email">
+                                <Entry.Behaviors>
+                                    <toolkit:EmailValidationBehavior
+                                        x:Name="EmailValidator"
+                                        Flags="ValidateOnValueChanged"
+                                        ValidStyle="{StaticResource ValidEmailEntryStyle}"
+                                        InvalidStyle="{StaticResource InvalidEmailEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Border>
+                        <Label
+                            Text="{Binding Loc.AuthEmailInvalidHint}"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}"
+                            IsVisible="{Binding Source={x:Reference EmailValidator}, Path=IsNotValid, x:DataType=toolkit:EmailValidationBehavior}">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    TargetType="Label"
+                                    Binding="{Binding Email, Converter={StaticResource IsNotNullOrEmpty}}"
+                                    Value="False">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+
+                        <Label Text="{Binding Loc.AuthPasswordLabel}" Style="{StaticResource CaptionLabel}" />
+                        <Border Style="{StaticResource InputContainer}">
+                            <Entry
+                                Text="{Binding Password}"
+                                Placeholder="{Binding Loc.AuthPasswordPlaceholder}"
+                                IsPassword="True" />
+                        </Border>
+
+                        <Label
+                            Text="{Binding Loc.AuthPasswordRulesHint}"
+                            Style="{StaticResource CaptionLabel}"
+                            IsVisible="{Binding IsRegisterMode}" />
+
+                        <controls:SkeletonLoaderView
+                            Variant="ListRow"
+                            Count="1"
+                            IsVisible="{Binding IsBusy}" />
+
+                        <!-- Tactile Primary Pill CTA -->
+                        <Border
+                            Style="{StaticResource PrimaryPillCta}"
+                            SemanticProperties.Description="{Binding SubmitButtonText}">
+                            <Border.Behaviors>
+                                <toolkit:TouchBehavior
+                                    PressedScale="0.97"
+                                    PressedOpacity="0.90"
+                                    PressedAnimationDuration="110"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SubmitCommand, x:DataType=pub:LoginRegisterPage}"
+                                    ShouldMakeChildrenInputTransparent="True" />
+                            </Border.Behaviors>
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <Label
+                                    Text="{Binding SubmitButtonText}"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="14"
+                                    TextColor="{StaticResource PureWhite}"
+                                    VerticalTextAlignment="Center" />
+                                <Border Grid.Column="1" Style="{StaticResource PrimaryPillCtaWell}">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.SignIn}"
+                                        FontFamily="Phosphor"
+                                        FontSize="16"
+                                        TextColor="{StaticResource PureWhite}"
+                                        HorizontalTextAlignment="Center"
+                                        VerticalTextAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Button
+                            Text="{Binding ModeSwitchText}"
+                            Command="{Binding ToggleModeCommand}"
+                            Style="{StaticResource SecondaryButton}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Border>
+
+            <!-- Collapsible Backend API Endpoint & Health Check -->
+            <Border Style="{StaticResource DoubleBezelOuter}">
+                <Border Style="{StaticResource DoubleBezelInner}">
+                    <toolkit:Expander
+                        x:Name="EndpointExpander"
+                        IsExpanded="False"
+                        ExpandedChanged="OnEndpointExpanderChanged">
+                        <toolkit:Expander.Header>
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8" MinimumHeightRequest="44" Padding="0,2">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.SlidersHorizontal}"
+                                    FontFamily="Phosphor"
+                                    FontSize="16"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding Loc.AuthEndpointExpanderHeader}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Grid.Column="2"
+                                    Text="{Binding Loc.AuthConfigBadge}"
+                                    Style="{StaticResource MonoCodeLabel}"
+                                    FontSize="11"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    x:Name="EndpointChevron"
+                                    Grid.Column="3"
+                                    Text="{x:Static icons:PhosphorIcons.CaretDown}"
+                                    FontFamily="Phosphor"
+                                    FontSize="16"
+                                    Rotation="0"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center" />
+                            </Grid>
+                        </toolkit:Expander.Header>
+                        <toolkit:Expander.Content>
+                            <VerticalStackLayout Spacing="10" Padding="0,12,0,0">
+                                <Border Style="{StaticResource InputContainer}">
+                                    <Entry
+                                        Text="{Binding ApiBaseUrl}"
+                                        Style="{StaticResource MonoEntry}"
+                                        Placeholder="{Binding Loc.AuthEndpointPlaceholder}"
+                                        Keyboard="Url" />
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                    <Button
+                                        Text="{Binding Loc.AuthEmulatorPresetCta}"
+                                        Command="{Binding UseEmulatorEndpointCommand}"
+                                        Style="{StaticResource ChipButton}" />
+                                    <Button
+                                        Grid.Column="1"
+                                        Text="{Binding Loc.AuthAdbLocalhostPresetCta}"
+                                        Command="{Binding UseAdbLocalhostEndpointCommand}"
+                                        Style="{StaticResource ChipButton}" />
+                                </Grid>
+
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                    <Button
+                                        Text="{Binding Loc.AuthSaveEndpointCta}"
+                                        Command="{Binding SaveApiBaseUrlCommand}"
+                                        Style="{StaticResource SecondaryButton}" />
+                                    <Button
+                                        Grid.Column="1"
+                                        Text="{Binding Loc.AuthTestHealthCta}"
+                                        Command="{Binding TestApiHealthCommand}"
+                                        Style="{StaticResource DarkCarbonButton}" />
+                                </Grid>
+
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8" IsVisible="{Binding HealthStatusMessage, Converter={StaticResource IsNotNullOrEmpty}}">
+                                    <controls:StatusBadgeView Status="Healthy" LabelOverride="{Binding Loc.AuthApiProbeBadge}" VerticalOptions="Start" IsVisible="{Binding IsApiHealthy}" />
+                                    <controls:StatusBadgeView Status="Offline" LabelOverride="{Binding Loc.AuthUnreachableBadge}" VerticalOptions="Start" IsVisible="{Binding IsApiHealthy, Converter={StaticResource InvertedBool}}" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="{Binding HealthStatusMessage}"
+                                        Style="{StaticResource MonoCodeLabel}"
+                                        LineBreakMode="WordWrap"
+                                        VerticalTextAlignment="Center" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </toolkit:Expander.Content>
+                    </toolkit:Expander>
+                </Border>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

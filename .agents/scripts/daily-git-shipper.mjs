@@ -11,6 +11,63 @@ const GIT_DIR = path.join(REPO_ROOT, '.git');
 const SHIPPER_STATE_DIR = path.join(GIT_DIR, 'daily-shipper');
 const HISTORY_LOG_PATH = path.join(SHIPPER_STATE_DIR, 'shipper-history.jsonl');
 const LAST_RUN_PATH = path.join(SHIPPER_STATE_DIR, 'last-run.json');
+const LOCK_PATH = path.join(SHIPPER_STATE_DIR, 'shipper.lock');
+const LOCK_STALE_MS = 10 * 60 * 1000;
+
+const STANDARD_WIN_TOOL_DIRS = [
+  'C:\\Program Files\\GitHub CLI',
+  'C:\\Program Files\\Git\\cmd',
+  'C:\\Program Files\\Git\\bin',
+  'C:\\Program Files\\nodejs'
+];
+
+function computeEnhancedPath(basePath = '') {
+  const existingSegments = basePath
+    .split(path.delimiter)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const lowerSet = new Set(existingSegments.map((s) => s.toLowerCase()));
+  const prepend = [];
+
+  for (const dir of STANDARD_WIN_TOOL_DIRS) {
+    if (fs.existsSync(dir) && !lowerSet.has(dir.toLowerCase())) {
+      prepend.push(dir);
+      lowerSet.add(dir.toLowerCase());
+    }
+  }
+
+  return [...prepend, ...existingSegments].join(path.delimiter);
+}
+
+function buildChildEnv(extraEnv = {}) {
+  const env = { ...process.env };
+  const pathKeys = Object.keys(env).filter((k) => k.toUpperCase() === 'PATH');
+  const primaryPathKey = pathKeys[0] || 'PATH';
+  const currentPath = pathKeys.map((k) => env[k] || '').find(Boolean) || '';
+
+  for (const key of pathKeys) {
+    if (key !== primaryPathKey) {
+      delete env[key];
+    }
+  }
+
+  env[primaryPathKey] = computeEnhancedPath(currentPath);
+  env.GIT_TERMINAL_PROMPT = '0';
+  env.GCM_INTERACTIVE = 'never';
+
+  for (const [k, v] of Object.entries(extraEnv)) {
+    if (k.toUpperCase() === 'PATH') {
+      env[primaryPathKey] = computeEnhancedPath(String(v || ''));
+    } else {
+      env[k] = v;
+    }
+  }
+
+  return env;
+}
+
+// Prepend standard Windows CLI directories onto current process PATH immediately
+process.env.PATH = computeEnhancedPath(process.env.PATH || process.env.Path || '');
 
 function resolveGitExecutable() {
   const candidates = [
@@ -18,11 +75,13 @@ function resolveGitExecutable() {
     'C:\\Program Files\\Git\\cmd\\git.exe',
     'C:\\Program Files\\Git\\bin\\git.exe'
   ];
+  const baseEnv = buildChildEnv();
   for (const bin of candidates) {
     const res = spawnSync(bin, ['--version'], {
       cwd: REPO_ROOT,
       encoding: 'utf8',
-      windowsHide: true
+      windowsHide: true,
+      env: baseEnv
     });
     if (!res.error && res.status === 0) {
       return bin;
@@ -34,12 +93,7 @@ function resolveGitExecutable() {
 const GIT_BIN = resolveGitExecutable();
 
 function runGit(args, options = {}) {
-  const env = {
-    ...process.env,
-    GIT_TERMINAL_PROMPT: '0',
-    GCM_INTERACTIVE: 'never',
-    ...(options.env || {})
-  };
+  const env = buildChildEnv(options.env || {});
   const result = spawnSync(GIT_BIN, args, {
     cwd: REPO_ROOT,
     encoding: 'utf8',
@@ -96,6 +150,48 @@ function parseArgs(argv) {
   return { help, status, dryRun, forceNext, runDaily };
 }
 
+function acquireShipperLock() {
+  fs.mkdirSync(SHIPPER_STATE_DIR, { recursive: true });
+
+  if (fs.existsSync(LOCK_PATH)) {
+    try {
+      const stat = fs.statSync(LOCK_PATH);
+      const ageMs = Date.now() - stat.mtimeMs;
+      if (ageMs >= 0 && ageMs < LOCK_STALE_MS) {
+        return { acquired: false };
+      }
+      fs.rmSync(LOCK_PATH, { force: true });
+    } catch {
+      // Lock disappeared concurrently; proceed to atomic 'wx' creation
+    }
+  }
+
+  const payload = `${JSON.stringify({
+    pid: process.pid,
+    acquiredAtUtc: new Date().toISOString()
+  })}\n`;
+
+  try {
+    fs.writeFileSync(LOCK_PATH, payload, { flag: 'wx', encoding: 'utf8' });
+    return { acquired: true };
+  } catch (err) {
+    if (err && typeof err === 'object' && 'code' in err && err.code === 'EEXIST') {
+      return { acquired: false };
+    }
+    throw err;
+  }
+}
+
+function releaseShipperLock() {
+  try {
+    if (fs.existsSync(LOCK_PATH)) {
+      fs.rmSync(LOCK_PATH, { force: true });
+    }
+  } catch {
+    // Ignore cleanup errors on exit
+  }
+}
+
 function hasHeadCommit() {
   return runGit(['rev-parse', '--verify', 'HEAD'], { allowFailure: true }).status === 0;
 }
@@ -113,7 +209,14 @@ function getHeadInfo() {
   if (!hasHeadCommit()) {
     return null;
   }
-  const dateShort = runGit(['log', '-1', '--format=%cd', '--date=short']).stdout.trim();
+  const localDateRes = runGit(['log', '-1', '--format=%cd', '--date=format-local:%Y-%m-%d'], {
+    allowFailure: true
+  });
+  const localCandidate = localDateRes.status === 0 ? localDateRes.stdout.trim() : '';
+  const dateShort = /^\d{4}-\d{2}-\d{2}$/.test(localCandidate)
+    ? localCandidate
+    : runGit(['log', '-1', '--format=%cd', '--date=short']).stdout.trim();
+
   const fullHash = runGit(['rev-parse', 'HEAD']).stdout.trim();
   const shortHash = runGit(['rev-parse', '--short', 'HEAD']).stdout.trim();
   const subject = runGit(['log', '-1', '--format=%s']).stdout.trim();
@@ -190,7 +293,7 @@ function getWorkingTreeStatus() {
   };
 }
 
-function getRemoteSyncStatus(headInfo) {
+function getRemoteSyncStatus(headInfo, options = {}) {
   const remoteRes = runGit(['remote', 'get-url', 'origin'], { allowFailure: true });
   const originUrl = remoteRes.status === 0 ? remoteRes.stdout.trim() : null;
 
@@ -203,6 +306,13 @@ function getRemoteSyncStatus(headInfo) {
       needsPush: false,
       summary: originUrl ? 'No local commits yet (0 ahead)' : 'No origin remote configured'
     };
+  }
+
+  if (originUrl && options.refreshRemote) {
+    runGit(['fetch', 'origin', 'main'], {
+      allowFailure: true,
+      timeoutMs: 15000
+    });
   }
 
   const originMainVerify = runGit(['rev-parse', '--verify', 'refs/remotes/origin/main'], {
@@ -343,10 +453,17 @@ function persistShipperLog(record) {
 function attemptOriginPush() {
   const pushRes = runGit(['push', '-u', 'origin', 'main'], {
     allowFailure: true,
-    timeoutMs: 25000
+    timeoutMs: 30000
   });
 
   if (pushRes.status === 0) {
+    const headHash = runGit(['rev-parse', 'HEAD'], { allowFailure: true }).stdout.trim();
+    const remoteRef = runGit(['rev-parse', '--verify', 'refs/remotes/origin/main'], {
+      allowFailure: true
+    }).stdout.trim();
+    if (headHash && remoteRef !== headHash) {
+      runGit(['fetch', 'origin', 'main'], { allowFailure: true, timeoutMs: 15000 });
+    }
     console.log('[PASS] Pushed to origin/main');
     return { pushed: true, detail: (pushRes.stdout || pushRes.stderr).trim() };
   }
@@ -460,101 +577,111 @@ function handleDryRun(plan, forceNext) {
 }
 
 function handleRunDaily(plan, forceNext) {
-  const totalDays = plan.days.length;
-  const todayLocal = formatLocalYmd();
-  const headBefore = getHeadInfo();
-  const fallbackRel = (plan.scheduleWindow && plan.scheduleWindow.fallbackChangelogPath) || 'docs/DAILY_CHANGELOG.md';
+  const lock = acquireShipperLock();
+  if (!lock.acquired) {
+    console.log('[SKIP] Another shipper instance is currently running');
+    return;
+  }
 
-  // 1) Guard against duplicate daily commits unless --force-next is explicitly supplied
-  if (headBefore && headBefore.dateShort === todayLocal && !forceNext) {
-    console.log(`[SKIP] Today's slice already committed (${headBefore.shortHash} on ${headBefore.dateShort})`);
-    const syncBefore = getRemoteSyncStatus(headBefore);
-    let pushOutcome = { pushed: false, detail: 'already-synced' };
-    if (syncBefore.needsPush) {
-      pushOutcome = attemptOriginPush();
+  try {
+    const totalDays = plan.days.length;
+    const todayLocal = formatLocalYmd();
+    const headBefore = getHeadInfo();
+    const fallbackRel = (plan.scheduleWindow && plan.scheduleWindow.fallbackChangelogPath) || 'docs/DAILY_CHANGELOG.md';
+
+    // 1) Guard against duplicate daily commits unless --force-next is explicitly supplied
+    if (headBefore && headBefore.dateShort === todayLocal && !forceNext) {
+      console.log(`[SKIP] Today's slice already committed (${headBefore.shortHash} on ${headBefore.dateShort})`);
+      const syncBefore = getRemoteSyncStatus(headBefore, { refreshRemote: true });
+      let pushOutcome = { pushed: false, detail: 'already-synced' };
+      if (syncBefore.needsPush) {
+        pushOutcome = attemptOriginPush();
+      }
+      persistShipperLog({
+        timestampUtc: new Date().toISOString(),
+        localDate: todayLocal,
+        outcome: 'SKIP_ALREADY_COMMITTED_TODAY',
+        commitHash: headBefore.fullHash,
+        pushed: pushOutcome.pushed,
+        pushDetail: pushOutcome.detail
+      });
+      return;
     }
+
+    // 2) Resolve lowest uncommitted day (1..183) strictly from X-Schedule-Day trailers in git log
+    const committedDays = getCommittedScheduleDays();
+    const nextEntry = plan.days.find((d) => !committedDays.has(d.day)) || null;
+    if (!nextEntry) {
+      console.log(`[PASS] All ${totalDays} / ${totalDays} scheduled slices are already committed on main.`);
+      const syncBefore = getRemoteSyncStatus(headBefore, { refreshRemote: true });
+      if (syncBefore.needsPush) {
+        attemptOriginPush();
+      }
+      return;
+    }
+
+    // 3) Stage exact slice files (or deterministic fallback so zero days can ever fail)
+    const wtStatus = getWorkingTreeStatus();
+    const selection = selectFilesForSlice(nextEntry, wtStatus, fallbackRel);
+
+    if (selection.requiresChangelogAppend) {
+      appendDailyChangelogEntry(fallbackRel, nextEntry, totalDays, headBefore);
+    }
+
+    runGit(['add', '--', ...selection.filesToStage]);
+
+    // Verify staged changes exist
+    const stagedVerify = hasHeadCommit()
+      ? runGit(['diff', '--cached', '--name-only', '--', ...selection.filesToStage]).stdout.trim()
+      : runGit(['status', '--porcelain', '--', ...selection.filesToStage]).stdout.trim();
+
+    if (!stagedVerify) {
+      throw new Error(
+        `No index delta produced after staging [${selection.filesToStage.join(', ')}] for Day ${nextEntry.day}.`
+      );
+    }
+
+    // 4) Commit with <entry.commitMessage> + X-Schedule-Day trailer
+    const trailerBlock = [
+      `X-Schedule-Day: ${nextEntry.day}/${totalDays}`,
+      `X-Schedule-Date: ${nextEntry.scheduledDate}`,
+      `X-Schedule-Task: ${nextEntry.taskId}`
+    ].join('\n');
+
+    const commitArgs = ['commit', '-m', nextEntry.commitMessage, '-m', trailerBlock];
+    if (headBefore && wtStatus.preStagedPaths.some((p) => !selection.filesToStage.includes(p))) {
+      commitArgs.push('--only', '--', ...selection.filesToStage);
+    }
+
+    runGit(commitArgs);
+
+    const headAfter = getHeadInfo();
+    console.log(
+      `[PASS] Committed Day ${String(nextEntry.day).padStart(3, '0')}/${totalDays} (${headAfter.shortHash}): ${nextEntry.commitMessage} [${selection.filesToStage.length} file(s), strategy=${selection.strategy}]`
+    );
+
+    // 5) Attempt non-interactive push to origin/main
+    const pushOutcome = attemptOriginPush();
+
     persistShipperLog({
       timestampUtc: new Date().toISOString(),
       localDate: todayLocal,
-      outcome: 'SKIP_ALREADY_COMMITTED_TODAY',
-      commitHash: headBefore.fullHash,
+      outcome: 'COMMITTED',
+      day: nextEntry.day,
+      totalDays,
+      scheduledDate: nextEntry.scheduledDate,
+      taskId: nextEntry.taskId,
+      strategy: selection.strategy,
+      files: selection.filesToStage,
+      commitHash: headAfter.fullHash,
+      shortHash: headAfter.shortHash,
+      commitMessage: nextEntry.commitMessage,
       pushed: pushOutcome.pushed,
       pushDetail: pushOutcome.detail
     });
-    return;
+  } finally {
+    releaseShipperLock();
   }
-
-  // 2) Resolve lowest uncommitted day (1..183) strictly from X-Schedule-Day trailers in git log
-  const committedDays = getCommittedScheduleDays();
-  const nextEntry = plan.days.find((d) => !committedDays.has(d.day)) || null;
-  if (!nextEntry) {
-    console.log(`[PASS] All ${totalDays} / ${totalDays} scheduled slices are already committed on main.`);
-    const syncBefore = getRemoteSyncStatus(headBefore);
-    if (syncBefore.needsPush) {
-      attemptOriginPush();
-    }
-    return;
-  }
-
-  // 3) Stage exact slice files (or deterministic fallback so zero days can ever fail)
-  const wtStatus = getWorkingTreeStatus();
-  const selection = selectFilesForSlice(nextEntry, wtStatus, fallbackRel);
-
-  if (selection.requiresChangelogAppend) {
-    appendDailyChangelogEntry(fallbackRel, nextEntry, totalDays, headBefore);
-  }
-
-  runGit(['add', '--', ...selection.filesToStage]);
-
-  // Verify staged changes exist
-  const stagedVerify = hasHeadCommit()
-    ? runGit(['diff', '--cached', '--name-only', '--', ...selection.filesToStage]).stdout.trim()
-    : runGit(['status', '--porcelain', '--', ...selection.filesToStage]).stdout.trim();
-
-  if (!stagedVerify) {
-    throw new Error(
-      `No index delta produced after staging [${selection.filesToStage.join(', ')}] for Day ${nextEntry.day}.`
-    );
-  }
-
-  // 4) Commit with <entry.commitMessage> + X-Schedule-Day trailer
-  const trailerBlock = [
-    `X-Schedule-Day: ${nextEntry.day}/${totalDays}`,
-    `X-Schedule-Date: ${nextEntry.scheduledDate}`,
-    `X-Schedule-Task: ${nextEntry.taskId}`
-  ].join('\n');
-
-  const commitArgs = ['commit', '-m', nextEntry.commitMessage, '-m', trailerBlock];
-  if (headBefore && wtStatus.preStagedPaths.some((p) => !selection.filesToStage.includes(p))) {
-    commitArgs.push('--only', '--', ...selection.filesToStage);
-  }
-
-  runGit(commitArgs);
-
-  const headAfter = getHeadInfo();
-  console.log(
-    `[PASS] Committed Day ${String(nextEntry.day).padStart(3, '0')}/${totalDays} (${headAfter.shortHash}): ${nextEntry.commitMessage} [${selection.filesToStage.length} file(s), strategy=${selection.strategy}]`
-  );
-
-  // 5) Attempt non-interactive push to origin/main
-  const pushOutcome = attemptOriginPush();
-
-  persistShipperLog({
-    timestampUtc: new Date().toISOString(),
-    localDate: todayLocal,
-    outcome: 'COMMITTED',
-    day: nextEntry.day,
-    totalDays,
-    scheduledDate: nextEntry.scheduledDate,
-    taskId: nextEntry.taskId,
-    strategy: selection.strategy,
-    files: selection.filesToStage,
-    commitHash: headAfter.fullHash,
-    shortHash: headAfter.shortHash,
-    commitMessage: nextEntry.commitMessage,
-    pushed: pushOutcome.pushed,
-    pushDetail: pushOutcome.detail
-  });
 }
 
 function main() {

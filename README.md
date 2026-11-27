@@ -4,12 +4,12 @@
 [![ASP.NET Core Web API](https://img.shields.io/badge/ASP.NET%20Core-Web%20API%20%2B%20SignalR-512BD4)](https://learn.microsoft.com/aspnet/core)
 [![Entity Framework Core](https://img.shields.io/badge/EF%20Core-10.0%20Code--First-68217A)](https://learn.microsoft.com/ef/core)
 [![AngularJS 1.8](https://img.shields.io/badge/Front--End-AngularJS%201.8%20SPA-DD0031?logo=angularjs)](https://angularjs.org/)
-[![.NET MAUI Android](https://img.shields.io/badge/Mobile-.NET%2010%20MAUI%20Android%20(API%2026--35)-3DDC84?logo=android)](./docs/RELEASE_NOTES_v1.3.0.md)
+[![.NET MAUI Android & iOS](https://img.shields.io/badge/Mobile-.NET%2010%20MAUI%20Android%20%26%20iOS%20(API%2026--35%20%7C%20iOS%2015%2B)-3DDC84?logo=android)](./docs/RELEASE_NOTES_v1.3.0.md)
 [![Chart.js](https://img.shields.io/badge/Analytics-Chart.js%204-FF6384?logo=chartdotjs)](https://www.chartjs.org/)
 [![SQL Server](https://img.shields.io/badge/Database-SQL%20Server%20(3NF%20%E2%80%A2%2027%20Tables)-CC2927?logo=microsoftsqlserver)](https://www.microsoft.com/sql-server)
-[![Milestone](https://img.shields.io/badge/Release-v1.3.0%20Android%20MAUI%20Field%20App%20(10%20Phases)-2EA44F)](./docs/RELEASE_NOTES_v1.3.0.md)
+[![Milestone](https://img.shields.io/badge/Release-v1.4.0%20Full--Platform%20Atelier%20UI%2C%20Motion%20%26%20VI%2FEN%20i18n%20(10%20Phases)-2EA44F)](./PROGRESS.md)
 
-An enterprise-grade, closed-loop **multi-dealer motorcycle retail, showroom test-drive scheduling, workshop service & OEM spare-parts invoicing, 5-star post-service CSAT reviews (+25 bonus loyalty points), 36m/30,000km VIN warranty claims, VIN maintenance tracking, real-time staff notification, printable verification receipts, and tiered customer loyalty platform**. Engineered with **4-Layer Clean Architecture** in **C# / ASP.NET Core Web API (`.NET 10`)**, **Entity Framework Core**, **SignalR**, **Microsoft SQL Server**, a decoupled **AngularJS 1.8** Single-Page Application (`SPA`) featuring **Chart.js** executive analytics, and a native **C# `.NET 10 MAUI` Android Field Super-App** (`vn.motorcycledealer.mobile`) with **encrypted 9-table `SQLCipher` WAL offline caching** and **Camera2 VIN/QR scanning**.
+An enterprise-grade, closed-loop **multi-dealer motorcycle retail, showroom test-drive scheduling, workshop service & OEM spare-parts invoicing, 5-star post-service CSAT reviews (+25 bonus loyalty points), 36m/30,000km VIN warranty claims, VIN maintenance tracking, real-time staff notification, printable verification receipts, and tiered customer loyalty platform**. Engineered with **4-Layer Clean Architecture** in **C# / ASP.NET Core Web API (`.NET 10`)**, **Entity Framework Core 10**, **SignalR**, **Microsoft SQL Server**, a decoupled **AngularJS 1.8 Atelier SPA** featuring **Chart.js v4**, zero-CDN self-hosted typography/Phosphor icons, studio photography, Light/Dark themes & live bilingual **`vi-VN`/`en-US`** i18n, and a native **C# `.NET 10 MAUI` Android & iOS Field Super-App** (`vn.motorcycledealer.mobile`) with **SkiaSharp Lottie motion**, **offline-first studio media**, **encrypted 9-table `SQLCipher` WAL caching**, and **Camera2/AVFoundation VIN/QR scanning**.
 
 ---
 
@@ -19,10 +19,10 @@ An enterprise-grade, closed-loop **multi-dealer motorcycle retail, showroom test
 | :--- | :--- |
 | **Project Name** | **Motorcycle Dealer & Loyalty Management Platform** |
 | **Role** | Full-Stack Developer |
-| **Timeline** | `02/2026 - 08/2026` |
+| **Timeline** | `02/2026 - 08/2026` (Mar–Sep 2026 `183`-Day Multi-Branch History Replay) |
 | **Team Size** | `1 (Solo project)` |
 | **GitHub Repository** | [https://github.com/quocanhh86/motorcycle-dealer](https://github.com/quocanhh86/motorcycle-dealer) |
-| **Current Milestone** | **`v1.3.0` Full-Stack + Native `.NET 10 MAUI` Android Production Release (`88 / 88` = `100.0%`) — All 10 Engineering Phases Signed Off (`830 / 830` xUnit [`727` Backend + `103` Mobile] · `64 / 64` SPA · `7 / 7` MAUI Guardrails · `10 / 10` Smoke · `Pixel_8_API_35` Live APKs · `493 / 493` Files Synced)** |
+| **Current Milestone** | **`v1.4.0` Full-Platform Atelier UI, Motion, Studio Media & Bilingual `vi-VN`/`en-US` Release (`88 / 88` = `100.0%`) — All 10 Phases Signed Off (`830 / 830` xUnit [`727` Backend + `103` Mobile] · `69 / 69` SPA · `8 / 8` MAUI Guardrails [`26/26` `x:DataType`] · `10 / 10` Smoke · `9/9` Live `Pixel_8_API_35` & Playwright Visual QA · `0`-Warn `net10.0-ios` · `597 / 597` Files Synced)** |
 
 ---
 
@@ -45,9 +45,9 @@ An enterprise-grade, closed-loop **multi-dealer motorcycle retail, showroom test
   - Ensures **Dealer Staff receive new service bookings (`BookingCreated`), showroom test-drives (`TestDriveCreated`), CSAT reviews (`ServiceReviewSubmitted`), and VIN warranty claims (`WarrantyClaimCreated`) instantly on their live workbenches without page refresh**, while customers receive live status transitions, VIN maintenance reminders, and tier upgrade alerts.
 - **Admin Analytics & Quality/Warranty Dashboard (`FR-07`, `FR-09`)**:
   - Cross-dealer executive portal visualizing **Showroom Sales + Workshop Service revenue per dealer**, **booking volume & status funnels**, CSAT ratings & warranty claim coverage, monthly growth trends, and loyalty tier distributions using interactive **Chart.js** charts.
-- **Native Android `.NET 10 MAUI` Field Super-App (`FR-10`, `v1.3.0`)**:
-  - Decoupled C# 13 `.NET 10 MAUI` Android application (`mobile/`, `net10.0-android`, API `26`–`35`, `16` compiled `x:DataType` `SourceGen` screens) serving **Public Showroom (`3` tabs)**, **Customer (`5` tabs + Bell)**, and **`DealerStaff` (`5` tabs + pushed Invoice Builder + Bell)** while redirecting `Admin` to the Web HQ console (`AdminWebConsoleNoticePage`).
-  - Features **`SingleFlightTokenRefreshHandler`**, device-safe `LogoutRequest { RevokeAllDevices = false }`, Android Keystore `SecureStorage` (`allowBackup="false"`), encrypted **`9`-table `SQLCipher` WAL offline cache** (with strict `ADR-003`/`ADR-005` online-only rules), **`ZXing.Net.Maui` Camera2 17-char VIN / `dealer://` QR scanner**, pure C# offline vector QR passbook/receipts, and **`10`-event SignalR** + native Android `NotificationChannel` alerts.
+- **Atelier Web SPA & Native Android / iOS `.NET 10 MAUI` Field Super-App (`FR-10`, `v1.4.0`)**:
+  - **Atelier Web SPA (`frontend/`)**: Zero-CDN self-hosted typography (`Be Vietnam Pro`, `Space Grotesk`, `JetBrains Mono`) & Phosphor icons (`<app-icon>`), `16` `.jpg`/`.webp` studio assets (`<bike-image>`), GPU-safe `styles/motion.css`, 1-tap **Light Showroom ↔ Dark Pit-Lane** (`ThemeService`), live **`vi-VN` / `en-US`** hot-switching (`I18nService`, `Accept-Language`), reactive theme/locale `Chart.js v4`, and 3-tier correlated `<activity-log-drawer>` (`69/69` `verify-spa.mjs` PASS).
+  - **Native Android & iOS `.NET 10 MAUI` (`mobile/`)**: Multi-target `net10.0-android` (API `26`–`35`) + `net10.0-ios` (iOS `15.0+`) with `.NET 10` `SafeAreaEdges="All"`, **`26/26` compiled `x:DataType` `SourceGen` views**, **`9` bundled TTFs** + `Icons/PhosphorIcons.cs` (`14/14` Shell tabs), **`8` offline studio images** (`MotorcycleImageResolver`), **`SkiaSharp.Extended.UI.Maui 3.0.0`** (`4` bundled Lottie JSONs with reduced-motion fallback), **`LocalizationService`** (`803` `.resx` keys + `Humanizer.Core.vi 2.14.1`), **`CommunityToolkit.Maui 13.0`** (`TouchBehavior` `x:Reference`), Polly v8 resilience, `SingleFlightTokenRefreshHandler`, encrypted **`9`-table `SQLCipher` WAL**, **Camera2/AVFoundation VIN/QR**, offline vector QR, and **`10`-event SignalR** + Android/iOS native notifications.
 
 ---
 
@@ -90,8 +90,8 @@ flowchart LR
 
 | Layer | Technologies & Libraries | Architectural Role |
 | :--- | :--- | :--- |
-| **Front-End SPA** | `AngularJS 1.8` (`angular@1.8.3`), `@uirouter/angularjs`, `Chart.js 4`, `@microsoft/signalr`, HTML5 / CSS3 (`@media print`) | Component-based SPA (`30` navigable routes) with role guards, live WebSocket DOM updates, printable receipts, CSAT/warranty portals, and executive charts |
-| **Native Mobile App** | `C# 13`, `.NET 10 MAUI` (`net10.0-android`, API `26`–`35`), `CommunityToolkit.Mvvm`, `ZXing.Net.Maui`, `SQLCipher` (`9` WAL tables), `SignalR.Client` | Decoupled 2-Role Android Field App (`16` `SourceGen` `x:DataType` screens), Camera2 VIN/QR scanner, offline QR passbook/receipts, and Android Notification Channels |
+| **Front-End SPA** | `AngularJS 1.8` (`angular@1.8.3`), `@uirouter/angularjs`, `Chart.js 4`, `@microsoft/signalr`, `@phosphor-icons/web`, `@fontsource/*`, `motion.css` | Atelier SPA (`30` routes, `69/69` checks) with role guards, Light/Dark & `vi-VN`/`en-US` hot-switch, studio photography, live WebSocket DOM updates, printable receipts, and reactive executive charts |
+| **Native Mobile App** | `C# 13`, `.NET 10 MAUI` (`net10.0-android;net10.0-ios`), `CommunityToolkit.Maui 13.0`, `SkiaSharp.Extended.UI.Maui 3.0`, `FluentValidation`, Polly v8, `Humanizer.Core.vi`, `ZXing.Net.Maui`, `SQLCipher` (`9` WAL tables), `SignalR.Client` | Decoupled 2-Role Android & iOS Field App (`16` pages / `26` `SourceGen` `x:DataType` views), `9` bundled TTFs, `8` offline studio photos, `4` Lottie JSONs, `803`-key `vi-VN`/`en-US` `.resx`, Camera2/AVFoundation VIN/QR, offline QR passbook, and Android/iOS native alerts |
 | **Back-End API** | `C#`, `ASP.NET Core Web API` (`.NET 10` / `net10.0`, `18` Controllers), FluentValidation, `RFC 7807 ProblemDetails` | 4-Layer Clean Architecture (`Domain`, `Application`, `Infrastructure`, `WebApi`) |
 | **Real-Time & Workers** | `ASP.NET Core SignalR` (`NotificationHub`, `10` events), Hosted `BackgroundService` (`VinMaintenanceReminderWorker`) | Instant `dealer-{dealerId}` staff booking/test-drive/review/warranty alerts + automated deduplicated `VIN` maintenance scheduling |
 | **Data Access & ORM** | `Entity Framework Core 10` (`IEntityTypeConfiguration<T>`, Code-First Migrations, Global Query Filters) | Strongly-typed persistence, `IDealerScoped` tenant isolation (`8` tables), and `RowVersion` optimistic concurrency (`8` tables) |
@@ -130,8 +130,8 @@ motorcycle-dealer/
 ├── REQUIREMENTS.md                  # Canonical CV & functional requirement baseline
 ├── AGENTS.md                        # Workspace engineering constitution & EN/VI skill router
 ├── README.md                        # Executive project overview & documentation hub
-├── TASKS.md                         # Master 9-Phase Work Breakdown Structure (T-101..T-908: 80/80 Complete)
-├── PROGRESS.md                      # Milestone gate tracker (100%), 15R+6T ledgers, traceability & risk register
+├── TASKS.md                         # Master 10-Phase Work Breakdown Structure (T-101..T-1008: 88/88 Complete)
+├── PROGRESS.md                      # Milestone gate tracker (100%), 15R+6T ledgers, v1.4.0 QA & risk register
 ├── docs/
 │   ├── PRD.md                       # Product Requirements Document & Given/When/Then criteria (FR-01..FR-09)
 │   ├── ARCHITECTURE.md              # C4 diagrams, Clean Architecture rules, ADR-001..006 & OWASP API1-10
@@ -178,9 +178,9 @@ motorcycle-dealer/
 │       └── rules/AGENTS.md          # Plugin-scoped safety & MCP invariants
 ├── .config/dotnet-tools.json        # [Phase 4 — Complete] Pinned dotnet-ef 10.0.15 local tool manifest
 ├── docker-compose.yml               # [Phase 3/7 — Complete] SQL Server 2022 + non-root WebApi + SPA stack
-├── backend/                         # [Phase 9 — Complete] MotorcycleDealer.sln (18 Controllers, 10-Event SignalR Hub, Reminder Worker, Test-Drives, Spare-Parts/Receipts, CSAT/Warranty, 9-Route Analytics/17-Col CSV, 727/727 xUnit tests)
-├── frontend/                        # [Phase 9 — Complete] Modular AngularJS 1.8.3 SPA (26 Primary + 4 Alias = 30 Routes, Test-Drives, Spare-Parts, Printable Receipts, CSAT/Warranty, Chart.js v4, 64/64 checks)
-└── mobile/                          # [Phase 10 — v1.3.0] Native C# .NET 10 MAUI Android Field App (Mobile.Core net10.0 + Mobile.App net10.0-android 16 views + 9-table SQLCipher + Camera2 VIN/QR + Mobile.UnitTests)
+├── backend/                         # [v1.4.0] MotorcycleDealer.sln (18+ Controllers, /assets studio media, Activity Logs, 10-Event SignalR, 727/727 xUnit)
+├── frontend/                        # [v1.4.0] Atelier AngularJS 1.8.3 SPA (30 Routes, Light/Dark, VI/EN i18n, Phosphor, Studio Media, Chart.js v4, 69/69 checks)
+└── mobile/                          # [v1.4.0] Native C# .NET 10 MAUI Android & iOS App (Mobile.Core net10.0 + Mobile.App 26 x:DataType views, 9 TTFs, 8 studio photos, 4 Lottie JSONs, 803-key VI/EN, 9-table SQLCipher, 103/103 xUnit)
 ```
 
 ---

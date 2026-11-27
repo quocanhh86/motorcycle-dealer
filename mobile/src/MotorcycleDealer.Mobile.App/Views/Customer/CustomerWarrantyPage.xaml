@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Customer.CustomerWarrantyPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Customer;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    SafeAreaEdges="All"
+    x:DataType="vm:CustomerWarrantyViewModel"
+    Title="{Binding Loc.WarrantyPageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadWarrantyDataCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Carbon Warranty Header -->
+                <Border Style="{StaticResource CarbonHeaderCard}">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="{Binding Loc.WarrantyEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                            <Label
+                                Text="{Binding Loc.WarrantyTitle}"
+                                FontFamily="SpaceGroteskBold"
+                                FontSize="20"
+                                TextColor="{StaticResource Slate50}" />
+                            <Label
+                                Text="{Binding Loc.WarrantySubtitle}"
+                                FontSize="12"
+                                TextColor="{StaticResource Slate300}" />
+                        </VerticalStackLayout>
+                        <Border
+                            Grid.Column="1"
+                            BackgroundColor="{StaticResource Slate800}"
+                            Stroke="{StaticResource Slate700}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            WidthRequest="44"
+                            HeightRequest="44"
+                            VerticalOptions="Center">
+                            <Label
+                                Text="{x:Static icons:PhosphorIcons.ShieldCheck}"
+                                FontFamily="Phosphor"
+                                FontSize="22"
+                                TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Success Banner with Lottie Check -->
+                <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <controls:LottieOrIconView
+                            LottieFile="lottie_success_check.json"
+                            FallbackGlyph="{x:Static icons:PhosphorIcons.CheckCircle}"
+                            FallbackColor="{StaticResource SuccessAccent}"
+                            Size="28"
+                            RepeatCount="0" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding SuccessMessage}"
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Error Retry Banner -->
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadWarrantyDataCommand}" />
+
+                <!-- File Claim Form Card (Double-Bezel Frame + Selected Vehicle Studio Preview) -->
+                <Border Style="{StaticResource DoubleBezelOuter}">
+                    <Border Style="{StaticResource DoubleBezelInner}">
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Label Text="{Binding Loc.WarrantyFileClaimEyebrow}" Style="{StaticResource EyebrowLabel}" VerticalTextAlignment="Center" />
+                                <controls:StatusBadgeView
+                                    Grid.Column="1"
+                                    Status="Eligible"
+                                    LabelOverride="{Binding Loc.WarrantyCoveredBadge}"
+                                    IsVisible="{Binding IsWithinOemCoverage}" />
+                                <controls:StatusBadgeView
+                                    Grid.Column="1"
+                                    Status="OutOfCoverage"
+                                    LabelOverride="{Binding Loc.WarrantyOutOfLimitBadge}"
+                                    IsVisible="{Binding IsWithinOemCoverage, Converter={StaticResource InvertedBool}}" />
+                            </Grid>
+
+                            <!-- Selected Vehicle Studio Image Strip -->
+                            <Border Style="{StaticResource SunkenPanel}" IsVisible="{Binding SelectedVehicle, Converter={StaticResource IsNotNull}}">
+                                <Grid ColumnDefinitions="96,*" ColumnSpacing="10">
+                                    <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="0">
+                                        <Image
+                                            Source="{Binding SelectedVehicleImageSource}"
+                                            Aspect="AspectFill"
+                                            WidthRequest="96"
+                                            HeightRequest="68" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding SelectedVehicle.MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" FontSize="14" />
+                                        <Label Text="{Binding SelectedVehicle.Vin}" Style="{StaticResource MonoCodeLabel}" FontSize="11" />
+                                        <Label Text="{Binding WarrantyEligibilitySummary}" Style="{StaticResource CaptionLabel}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+
+                            <Label
+                                Text="{Binding WarrantyEligibilitySummary}"
+                                Style="{StaticResource SecondaryLabel}"
+                                IsVisible="True">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding SelectedVehicle, Converter={StaticResource IsNotNull}}" Value="True">
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Label Text="{Binding Loc.WarrantyVehicleLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.WarrantySelectVehicleTitle}"
+                                    ItemsSource="{Binding Vehicles}"
+                                    SelectedItem="{Binding SelectedVehicle}"
+                                    ItemDisplayBinding="{Binding Vin, x:DataType=dto:CustomerVehicleDto}" />
+                            </Border>
+
+                            <Label Text="{Binding Loc.WarrantyDealerLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Picker
+                                    Title="{Binding Loc.WarrantySelectDealerTitle}"
+                                    ItemsSource="{Binding Dealers}"
+                                    SelectedItem="{Binding SelectedDealer}"
+                                    ItemDisplayBinding="{Binding Name, x:DataType=dto:DealerDto}" />
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Loc.Common_OdometerKm}" Style="{StaticResource CaptionLabel}" />
+                                    <Border Style="{StaticResource InputContainer}">
+                                        <Entry Text="{Binding OdometerAtClaimKm}" Style="{StaticResource MonoEntry}" Keyboard="Numeric" />
+                                    </Border>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="{Binding Loc.WarrantyDefectCategoryLabel}" Style="{StaticResource CaptionLabel}" />
+                                    <Border Style="{StaticResource InputContainer}">
+                                        <Picker
+                                            ItemsSource="{Binding DefectCategories}"
+                                            SelectedItem="{Binding SelectedDefectCategory}"
+                                            ItemDisplayBinding="{Binding ., Converter={StaticResource HumanizeStatus}, ConverterParameter=WarrantyDefectCategory, x:DataType=x:String}" />
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Label Text="{Binding Loc.WarrantySymptomLabel}" Style="{StaticResource CaptionLabel}" />
+                            <Border Style="{StaticResource InputContainer}">
+                                <Editor Text="{Binding SymptomDescription}" Placeholder="{Binding Loc.WarrantySymptomPlaceholder}" />
+                            </Border>
+
+                            <Button
+                                Text="{Binding Loc.WarrantySubmitCta}"
+                                Command="{Binding SubmitWarrantyClaimCommand}"
+                                Style="{StaticResource PrimaryButton}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <!-- Multi-Variant Loading Skeleton -->
+                <controls:SkeletonLoaderView
+                    Variant="ListRow"
+                    Count="2"
+                    IsVisible="{Binding IsBusy}" />
+
+                <!-- My Claims History -->
+                <Label Text="{Binding Loc.WarrantySubmittedTitle}" Style="{StaticResource SectionTitleLabel}" />
+
+                <controls:EmptyStateView
+                    IsVisible="{Binding Claims.Count, Converter={StaticResource EqualsString}, ConverterParameter=0}"
+                    IconGlyph="{x:Static icons:PhosphorIcons.ShieldCheck}"
+                    LottieFile="lottie_empty_garage.json"
+                    Title="{Binding Loc.WarrantyEmptyTitle}"
+                    Subtitle="{Binding Loc.WarrantySubtitle}"
+                    ActionText="{Binding Loc.Common_Refresh}"
+                    ActionCommand="{Binding LoadWarrantyDataCommand}">
+                    <controls:EmptyStateView.Triggers>
+                        <DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </controls:EmptyStateView.Triggers>
+                </controls:EmptyStateView>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Claims}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:WarrantyClaimDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="76,*" ColumnSpacing="10">
+                                            <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="0" VerticalOptions="Center">
+                                                <Image
+                                                    Source="{Binding ResolvedImageSource}"
+                                                    Aspect="AspectFill"
+                                                    WidthRequest="76"
+                                                    HeightRequest="56" />
+                                            </Border>
+                                            <VerticalStackLayout Grid.Column="1" Spacing="3">
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                    <Label Text="{Binding ClaimNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                                    <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                                </Grid>
+                                                <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" FontSize="14" />
+                                                <Label Style="{StaticResource MonoCodeLabel}" FontSize="11">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_VinLabel, x:DataType=loc:LocalizationService}" />
+                                                            <Span Text=": " />
+                                                            <Span Text="{Binding Vin}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </VerticalStackLayout>
+                                        </Grid>
+
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.Wrench}"
+                                                FontFamily="Phosphor"
+                                                FontSize="14"
+                                                TextColor="{StaticResource BrandPrimary}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label Text="{Binding LocalizedDefectCategory}" Style="{StaticResource SecondaryLabel}" FontFamily="BeVietnamProMedium" VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+
+                                        <Label Text="{Binding SymptomDescription}" Style="{StaticResource SecondaryLabel}" />
+
+                                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding CoveredAmountVnd, Converter={StaticResource IsGreaterThanZero}}">
+                                            <Label
+                                                Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=WarrantyCoveredAmountLabel, x:DataType=loc:LocalizationService}"
+                                                Style="{StaticResource CaptionLabel}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding CoveredAmountVnd, Converter={StaticResource VndCurrency}}"
+                                                Style="{StaticResource MonoCodeLabel}"
+                                                FontFamily="JetBrainsMonoSemiBold"
+                                                TextColor="{StaticResource SuccessAccent}" />
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6" IsVisible="{Binding ResolutionNotes, Converter={StaticResource IsNotNullOrEmpty}}">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.CheckCircle}"
+                                                FontFamily="Phosphor"
+                                                FontSize="14"
+                                                TextColor="{StaticResource SuccessAccent}"
+                                                VerticalTextAlignment="Start" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding ResolutionNotes}"
+                                                Style="{StaticResource CaptionLabel}" />
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6" IsVisible="{Binding RejectionReason, Converter={StaticResource IsNotNullOrEmpty}}">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.XCircle}"
+                                                FontFamily="Phosphor"
+                                                FontSize="14"
+                                                TextColor="{StaticResource DangerAccent}"
+                                                VerticalTextAlignment="Start" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding RejectionReason}"
+                                                Style="{StaticResource CaptionLabel}"
+                                                TextColor="{StaticResource DangerAccent}" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

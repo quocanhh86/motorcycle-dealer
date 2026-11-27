@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MotorcycleDealer.Mobile.App.Views.Customer.CustomerHomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Customer;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    SafeAreaEdges="All"
+    x:Name="PageRoot"
+    x:DataType="vm:CustomerHomeViewModel"
+    Title="{Binding Loc.HomePageTitle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#020617" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{Binding Loc.ToolbarAlerts}" Command="{Binding OpenNotificationsCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="Phosphor"
+                    Glyph="{x:Static icons:PhosphorIcons.Bell}"
+                    Color="{StaticResource Slate50}"
+                    Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="{Binding Loc.ToolbarSignOut}" Clicked="OnSignOutClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="Phosphor"
+                    Glyph="{x:Static icons:PhosphorIcons.SignOut}"
+                    Color="{StaticResource Slate50}"
+                    Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadDashboardCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Editorial Rider Cockpit Hero with Studio Backdrop & 1-Tap VI|EN + Theme Toggles -->
+                <Border
+                    BackgroundColor="{StaticResource Slate950}"
+                    Stroke="{StaticResource Slate800}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="0">
+                    <Grid HeightRequest="172" IsClippedToBounds="True">
+                        <Image
+                            Source="{Binding HeroShowroomImageSource}"
+                            Aspect="AspectFill"
+                            HeightRequest="172"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            Opacity="0.38" />
+                        <BoxView>
+                            <BoxView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#B3020617" Offset="0.0" />
+                                    <GradientStop Color="#E6020617" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </BoxView.Background>
+                        </BoxView>
+                        <VerticalStackLayout Padding="16" Spacing="8">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Label
+                                    Text="{Binding Loc.HomeEyebrow}"
+                                    Style="{StaticResource EyebrowLabel}"
+                                    VerticalTextAlignment="Center"
+                                    LineBreakMode="TailTruncation" />
+                                <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                                    <Border
+                                        BackgroundColor="#CC1E293B"
+                                        Stroke="{StaticResource Slate700}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 16"
+                                        Padding="10,6"
+                                        MinimumHeightRequest="38"
+                                        SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
+                                        <Border.Behaviors>
+                                            <toolkit:TouchBehavior
+                                                PressedScale="0.95"
+                                                PressedAnimationDuration="110"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=cus:CustomerHomePage}"
+                                                ShouldMakeChildrenInputTransparent="True" />
+                                        </Border.Behaviors>
+                                        <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.Translate}"
+                                                FontFamily="Phosphor"
+                                                FontSize="14"
+                                                TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Text="{Binding LanguageToggleText}"
+                                                FontFamily="JetBrainsMonoSemiBold"
+                                                FontSize="11"
+                                                TextColor="{StaticResource Slate50}"
+                                                VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                    </Border>
+                                    <Border
+                                        BackgroundColor="#CC1E293B"
+                                        Stroke="{StaticResource Slate700}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 16"
+                                        Padding="10,6"
+                                        MinimumHeightRequest="38"
+                                        SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
+                                        <Border.Behaviors>
+                                            <toolkit:TouchBehavior
+                                                PressedScale="0.95"
+                                                PressedAnimationDuration="110"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=cus:CustomerHomePage}"
+                                                ShouldMakeChildrenInputTransparent="True" />
+                                        </Border.Behaviors>
+                                        <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.Moon}"
+                                                FontFamily="Phosphor"
+                                                FontSize="14"
+                                                TextColor="{StaticResource TierGoldAccentDark}"
+                                                VerticalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsDarkTheme}" Value="True">
+                                                        <Setter Property="Text" Value="{x:Static icons:PhosphorIcons.Sun}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label
+                                                Text="{Binding ThemeToggleText}"
+                                                FontFamily="BeVietnamProSemiBold"
+                                                FontSize="11"
+                                                TextColor="{StaticResource Slate50}"
+                                                VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <Label
+                                Text="{Binding GreetingTitle}"
+                                FontFamily="SpaceGroteskBold"
+                                FontSize="22"
+                                TextColor="{StaticResource Slate50}" />
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <HorizontalStackLayout Spacing="8">
+                                    <controls:StatusBadgeView Status="{Binding TierCode}" />
+                                    <controls:StatusBadgeView
+                                        Status="Active"
+                                        LabelOverride="{Binding TierMultiplierLabel}"
+                                        IsVisible="{Binding TierMultiplierLabel, Converter={StaticResource IsNotNullOrEmpty}}" />
+                                    <controls:StatusBadgeView
+                                        Status="Pending"
+                                        LabelOverride="{Binding UnreadBadgeLabel}"
+                                        IsVisible="{Binding UnreadNotificationsCount, Converter={StaticResource IsGreaterThanZero}}" />
+                                </HorizontalStackLayout>
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding SyncAgeLabel}"
+                                    FontFamily="JetBrainsMonoMedium"
+                                    FontSize="11"
+                                    TextColor="{StaticResource Slate400}"
+                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Offline SQLCipher Fallback Banner -->
+                <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.WifiSlash}"
+                            FontFamily="Phosphor"
+                            FontSize="18"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding OfflineCacheBannerText}"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light={StaticResource WarningFg}, Dark={StaticResource WarningFgDark}}"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Error Retry Banner -->
+                <controls:ErrorRetryBannerView
+                    IsVisible="{Binding HasError}"
+                    Message="{Binding ErrorMessage}"
+                    RetryText="{Binding Loc.Common_Retry}"
+                    RetryCommand="{Binding LoadDashboardCommand}" />
+
+                <!-- Maintenance Reminder Alert Strip -->
+                <Border Style="{StaticResource AlertDangerBanner}" IsVisible="{Binding DueSoonVehicleCount, Converter={StaticResource IsGreaterThanZero}}">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                        <Label
+                            Text="{x:Static icons:PhosphorIcons.WarningCircle}"
+                            FontFamily="PhosphorFill"
+                            FontSize="22"
+                            TextColor="{AppThemeBinding Light={StaticResource DangerAccent}, Dark={StaticResource DangerAccentDark}}"
+                            VerticalTextAlignment="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                            <Label
+                                Text="{Binding Loc.HomeMaintenanceDueEyebrow}"
+                                FontFamily="SpaceGroteskSemiBold"
+                                FontSize="11"
+                                TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                            <Label
+                                Text="{Binding DueSoonAlertMessage}"
+                                FontSize="13"
+                                TextColor="{AppThemeBinding Light={StaticResource DangerFg}, Dark={StaticResource DangerFgDark}}" />
+                        </VerticalStackLayout>
+                        <Button
+                            Grid.Column="2"
+                            Text="{Binding Loc.HomeBookNowCta}"
+                            Command="{Binding OpenBookingWizardCommand}"
+                            Style="{StaticResource PrimaryButton}" />
+                    </Grid>
+                </Border>
+
+                <!-- Passbook Snapshot Card -->
+                <controls:LoyaltyPassbookCardView
+                    MemberName="{Binding Wallet.CustomerFullName, FallbackValue='', TargetNullValue=''}"
+                    TierName="{Binding TierCode}"
+                    TierMultiplier="{Binding Wallet.PointsMultiplier, FallbackValue=1.00}"
+                    AvailablePoints="{Binding Wallet.AvailablePoints, FallbackValue=0}"
+                    LifetimeQualifyingPoints="{Binding Wallet.LifetimeQualifyingPoints, FallbackValue=0}"
+                    TierProgressRatio="{Binding TierProgressRatio}"
+                    NextTierHint="{Binding NextTierHint}"
+                    SyncCaption="{Binding SyncAgeLabel}" />
+
+                <!-- 2x2 Tactile Quick Launch Action Tiles (Double-Bezel + Phosphor Icons + TouchBehavior) -->
+                <Label Text="{Binding Loc.HomeQuickActionsTitle}" Style="{StaticResource SectionTitleLabel}" />
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                    <Border Style="{StaticResource DoubleBezelOuter}" SemanticProperties.Description="{Binding Loc.HomeTileGarage}">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedOpacity="0.88"
+                                PressedAnimationDuration="110"
+                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenGarageCommand, x:DataType=cus:CustomerHomePage}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <Border Style="{StaticResource DoubleBezelInner}" Padding="14,14">
+                            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.Garage}"
+                                    FontFamily="Phosphor"
+                                    FontSize="22"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.HomeTileGarage}"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="14"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Border>
+
+                    <Border Grid.Column="1" Style="{StaticResource DoubleBezelOuter}" SemanticProperties.Description="{Binding Loc.HomeTileBookService}">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedOpacity="0.90"
+                                PressedAnimationDuration="110"
+                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenBookingWizardCommand, x:DataType=cus:CustomerHomePage}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <Border
+                            BackgroundColor="{StaticResource BrandPrimary}"
+                            Stroke="{StaticResource BrandPrimary}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 15"
+                            Padding="14,14">
+                            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.CalendarPlus}"
+                                    FontFamily="Phosphor"
+                                    FontSize="22"
+                                    TextColor="{StaticResource PureWhite}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.HomeTileBookService}"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="14"
+                                    TextColor="{StaticResource PureWhite}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Border>
+
+                    <Border Grid.Row="1" Style="{StaticResource DoubleBezelOuter}" SemanticProperties.Description="{Binding Loc.HomeTilePassbook}">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedOpacity="0.88"
+                                PressedAnimationDuration="110"
+                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenLoyaltyPassbookCommand, x:DataType=cus:CustomerHomePage}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <Border Style="{StaticResource DoubleBezelInner}" Padding="14,14">
+                            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.QrCode}"
+                                    FontFamily="Phosphor"
+                                    FontSize="22"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.HomeTilePassbook}"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="14"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource DoubleBezelOuter}" SemanticProperties.Description="{Binding Loc.HomeTileWarranty}">
+                        <Border.Behaviors>
+                            <toolkit:TouchBehavior
+                                PressedScale="0.97"
+                                PressedOpacity="0.88"
+                                PressedAnimationDuration="110"
+                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenWarrantyCommand, x:DataType=cus:CustomerHomePage}"
+                                ShouldMakeChildrenInputTransparent="True" />
+                        </Border.Behaviors>
+                        <Border Style="{StaticResource DoubleBezelInner}" Padding="14,14">
+                            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.ShieldCheck}"
+                                    FontFamily="Phosphor"
+                                    FontSize="22"
+                                    TextColor="{StaticResource BrandPrimary}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Text="{Binding Loc.HomeTileWarranty}"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="14"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Border>
+                </Grid>
+
+                <!-- Studio VIN Garage Preview Strip -->
+                <VerticalStackLayout Spacing="10" IsVisible="{Binding Vehicles.Count, Converter={StaticResource IsGreaterThanZero}}">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Label Text="{Binding Loc.HomeGaragePreviewTitle}" Style="{StaticResource SectionTitleLabel}" VerticalTextAlignment="Center" />
+                        <Border Grid.Column="1" Style="{StaticResource SunkenPanel}" Padding="10,6" StrokeShape="RoundRectangle 14">
+                            <Border.Behaviors>
+                                <toolkit:TouchBehavior
+                                    PressedScale="0.95"
+                                    PressedAnimationDuration="110"
+                                    Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenGarageCommand, x:DataType=cus:CustomerHomePage}"
+                                    ShouldMakeChildrenInputTransparent="True" />
+                            </Border.Behaviors>
+                            <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                <Label Text="{Binding Loc.HomeViewAllCta}" FontFamily="BeVietnamProSemiBold" FontSize="12" TextColor="{StaticResource BrandPrimary}" />
+                                <Label Text="{x:Static icons:PhosphorIcons.CaretRight}" FontFamily="Phosphor" FontSize="13" TextColor="{StaticResource BrandPrimary}" VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Grid>
+                    <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Vehicles}" Spacing="10" Padding="0,0,16,0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="dto:CustomerVehicleDto">
+                                    <Border Style="{StaticResource DoubleBezelOuter}" WidthRequest="228">
+                                        <Border.Behaviors>
+                                            <toolkit:TouchBehavior
+                                                PressedScale="0.97"
+                                                PressedAnimationDuration="110"
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.OpenGarageCommand, x:DataType=cus:CustomerHomePage}"
+                                                ShouldMakeChildrenInputTransparent="True" />
+                                        </Border.Behaviors>
+                                        <Border Style="{StaticResource DoubleBezelInner}" Padding="10">
+                                            <VerticalStackLayout Spacing="8">
+                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="0" Padding="0">
+                                                    <Image
+                                                        Source="{Binding ResolvedImageSource}"
+                                                        Aspect="AspectFill"
+                                                        HeightRequest="112"
+                                                        HorizontalOptions="Fill" />
+                                                </Border>
+                                                <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" FontSize="14" LineBreakMode="TailTruncation" />
+                                                <Label Text="{Binding Vin}" Style="{StaticResource MonoCodeLabel}" FontSize="11" LineBreakMode="TailTruncation" />
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                                                    <Label Text="{Binding CurrentMileageKm, StringFormat='{0:N0} km'}" Style="{StaticResource MonoCodeLabel}" FontSize="12" VerticalTextAlignment="Center" />
+                                                    <controls:StatusBadgeView Grid.Column="1" Status="{Binding MaintenanceStatus}" />
+                                                </Grid>
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+                    </ScrollView>
+                </VerticalStackLayout>
+
+                <!-- Multi-Variant Loading Skeleton -->
+                <controls:SkeletonLoaderView
+                    Variant="KpiBento"
+                    Count="2"
+                    IsVisible="{Binding IsBusy}" />
+
+                <!-- Upcoming Workshop Bookings -->
+                <Label Text="{Binding Loc.HomeUpcomingBookingsTitle}" Style="{StaticResource SectionTitleLabel}" />
+                <controls:EmptyStateView
+                    IsVisible="{Binding UpcomingBookings.Count, Converter={StaticResource EqualsString}, ConverterParameter=0}"
+                    IconGlyph="{x:Static icons:PhosphorIcons.CalendarCheck}"
+                    LottieFile="lottie_empty_garage.json"
+                    Title="{Binding Loc.HomeEmptyBookingsTitle}"
+                    Subtitle="{Binding Loc.HomeEmptyBookingsDesc}"
+                    ActionText="{Binding Loc.HomeBookNowCta}"
+                    ActionCommand="{Binding OpenBookingWizardCommand}">
+                    <controls:EmptyStateView.Triggers>
+                        <DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </controls:EmptyStateView.Triggers>
+                </controls:EmptyStateView>
+                <VerticalStackLayout
+                    BindableLayout.ItemsSource="{Binding UpcomingBookings}"
+                    Spacing="10"
+                    IsVisible="{Binding UpcomingBookings.Count, Converter={StaticResource IsGreaterThanZero}}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:BookingDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Text="{Binding BookingNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="14" />
+                                            <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                        </Grid>
+                                        <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                        <Label Style="{StaticResource MonoCodeLabel}" FontSize="12">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Source={x:Static loc:LocalizationService.Current}, Path=Common_VinLabel, x:DataType=loc:LocalizationService}" />
+                                                    <Span Text=": " />
+                                                    <Span Text="{Binding Vin}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Text="{Binding DealerName}" Style="{StaticResource SecondaryLabel}" />
+                                        <HorizontalStackLayout Spacing="12">
+                                            <Label Text="{Binding SlotDate, Converter={StaticResource VietnamDateTime}}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                            <Label Text="{Binding ShortStartTime}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                            <Label Text="{Binding FormattedServiceType}" Style="{StaticResource CaptionLabel}" VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Upcoming Test Drives -->
+                <Label Text="{Binding Loc.HomeScheduledTestDrivesTitle}" Style="{StaticResource SectionTitleLabel}" />
+                <controls:EmptyStateView
+                    IsVisible="{Binding UpcomingTestDrives.Count, Converter={StaticResource EqualsString}, ConverterParameter=0}"
+                    IconGlyph="{x:Static icons:PhosphorIcons.SteeringWheel}"
+                    LottieFile="lottie_empty_garage.json"
+                    Title="{Binding Loc.HomeEmptyTestDrivesTitle}"
+                    Subtitle="{Binding Loc.HomeEmptyTestDrivesDesc}">
+                    <controls:EmptyStateView.Triggers>
+                        <DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </controls:EmptyStateView.Triggers>
+                </controls:EmptyStateView>
+                <VerticalStackLayout
+                    BindableLayout.ItemsSource="{Binding UpcomingTestDrives}"
+                    Spacing="10"
+                    IsVisible="{Binding UpcomingTestDrives.Count, Converter={StaticResource IsGreaterThanZero}}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="dto:TestDriveBookingDto">
+                            <Border Style="{StaticResource DoubleBezelOuter}">
+                                <Border Style="{StaticResource DoubleBezelInner}">
+                                    <Grid ColumnDefinitions="84,*" ColumnSpacing="12">
+                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="0" Padding="0" VerticalOptions="Center">
+                                            <Image
+                                                Source="{Binding ResolvedImageSource}"
+                                                Aspect="AspectFill"
+                                                WidthRequest="84"
+                                                HeightRequest="64" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <Label Text="{Binding BookingNumber}" Style="{StaticResource MonoValueBoldLabel}" FontSize="13" />
+                                                <controls:StatusBadgeView Grid.Column="1" Status="{Binding Status}" />
+                                            </Grid>
+                                            <Label Text="{Binding MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" FontSize="14" />
+                                            <Label Text="{Binding DealerName}" Style="{StaticResource SecondaryLabel}" />
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Label Text="{Binding PreferredDate, Converter={StaticResource VietnamDateTime}}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                                <Label Text="{Binding ShortStartTime}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

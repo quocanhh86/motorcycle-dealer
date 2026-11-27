@@ -1,0 +1,2447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>Apex Moto</value>
+  </data>
+  <data name="AppBrandName" xml:space="preserve">
+    <value>APEX MOTO LOYALTY</value>
+  </data>
+  <data name="AppBrandTagline" xml:space="preserve">
+    <value>Nền tảng Đại lý Xe máy &amp; Hội viên</value>
+  </data>
+  <data name="LangToggleLabel" xml:space="preserve">
+    <value>VI | EN</value>
+  </data>
+  <data name="LangVietnameseShort" xml:space="preserve">
+    <value>VI</value>
+  </data>
+  <data name="LangEnglishShort" xml:space="preserve">
+    <value>EN</value>
+  </data>
+  <data name="ThemeLightLabel" xml:space="preserve">
+    <value>Sáng</value>
+  </data>
+  <data name="ThemeDarkLabel" xml:space="preserve">
+    <value>Tối</value>
+  </data>
+  <data name="ToolbarAlerts" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="ToolbarSignOut" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="ToolbarTheme" xml:space="preserve">
+    <value>Giao diện</value>
+  </data>
+  <data name="ToolbarLanguage" xml:space="preserve">
+    <value>VI | EN</value>
+  </data>
+  <data name="TabShowroom" xml:space="preserve">
+    <value>Showroom</value>
+  </data>
+  <data name="TabDealers" xml:space="preserve">
+    <value>Đại lý</value>
+  </data>
+  <data name="TabSignIn" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="TabHome" xml:space="preserve">
+    <value>Trang chủ</value>
+  </data>
+  <data name="TabGarage" xml:space="preserve">
+    <value>Garage</value>
+  </data>
+  <data name="TabBook" xml:space="preserve">
+    <value>Đặt lịch</value>
+  </data>
+  <data name="TabLoyalty" xml:space="preserve">
+    <value>Điểm thưởng</value>
+  </data>
+  <data name="TabWarranty" xml:space="preserve">
+    <value>Bảo hành</value>
+  </data>
+  <data name="TabBayOps" xml:space="preserve">
+    <value>Xưởng</value>
+  </data>
+  <data name="TabVinSales" xml:space="preserve">
+    <value>Bán xe</value>
+  </data>
+  <data name="TabRides" xml:space="preserve">
+    <value>Lái thử</value>
+  </data>
+  <data name="TabQa" xml:space="preserve">
+    <value>CSAT &amp; BH</value>
+  </data>
+  <data name="TabSlots" xml:space="preserve">
+    <value>Khung giờ</value>
+  </data>
+  <data name="TabAdminHq" xml:space="preserve">
+    <value>Quản trị HQ</value>
+  </data>
+  <data name="ShellGuestRider" xml:space="preserve">
+    <value>Khách tham quan</value>
+  </data>
+  <data name="ShellRolePublic" xml:space="preserve">
+    <value>Showroom công khai</value>
+  </data>
+  <data name="ShellRoleCustomerTier" xml:space="preserve">
+    <value>Hội viên {0}</value>
+  </data>
+  <data name="ShellRoleDealerStaff" xml:space="preserve">
+    <value>Nhân viên đại lý</value>
+  </data>
+  <data name="ShellRoleAdminWeb" xml:space="preserve">
+    <value>Quản trị (Web HQ)</value>
+  </data>
+  <data name="ShellRealtimeLive" xml:space="preserve">
+    <value>Trực tuyến</value>
+  </data>
+  <data name="ShellRealtimeConnecting" xml:space="preserve">
+    <value>Đang kết nối...</value>
+  </data>
+  <data name="ShellRealtimeReconnecting" xml:space="preserve">
+    <value>Đang kết nối lại...</value>
+  </data>
+  <data name="ShellRealtimeOffline" xml:space="preserve">
+    <value>Ngoại tuyến</value>
+  </data>
+  <data name="Common_All" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="Common_Saving" xml:space="preserve">
+    <value>Đang lưu...</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="Common_Confirm" xml:space="preserve">
+    <value>Xác nhận</value>
+  </data>
+  <data name="Common_Complete" xml:space="preserve">
+    <value>Hoàn tất</value>
+  </data>
+  <data name="Common_Submit" xml:space="preserve">
+    <value>Gửi</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Tải lại</value>
+  </data>
+  <data name="Common_Retry" xml:space="preserve">
+    <value>Thử lại</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>Tìm kiếm</value>
+  </data>
+  <data name="Common_Filter" xml:space="preserve">
+    <value>Bộ lọc</value>
+  </data>
+  <data name="Common_ClearFilters" xml:space="preserve">
+    <value>Xóa bộ lọc</value>
+  </data>
+  <data name="Common_Back" xml:space="preserve">
+    <value>Quay lại</value>
+  </data>
+  <data name="Common_Next" xml:space="preserve">
+    <value>Tiếp tục</value>
+  </data>
+  <data name="Common_Inspect" xml:space="preserve">
+    <value>Xem chi tiết</value>
+  </data>
+  <data name="Common_Remove" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>Thêm</value>
+  </data>
+  <data name="Common_AddShort" xml:space="preserve">
+    <value>+ Thêm</value>
+  </data>
+  <data name="Common_Share" xml:space="preserve">
+    <value>Chia sẻ</value>
+  </data>
+  <data name="Common_Scan" xml:space="preserve">
+    <value>Quét</value>
+  </data>
+  <data name="Common_Loading" xml:space="preserve">
+    <value>Đang tải dữ liệu...</value>
+  </data>
+  <data name="Common_NoData" xml:space="preserve">
+    <value>Chưa có dữ liệu hiển thị</value>
+  </data>
+  <data name="Common_Offline" xml:space="preserve">
+    <value>Ngoại tuyến</value>
+  </data>
+  <data name="Common_Online" xml:space="preserve">
+    <value>Trực tuyến</value>
+  </data>
+  <data name="Common_Live" xml:space="preserve">
+    <value>TRỰC TIẾP</value>
+  </data>
+  <data name="Common_Optional" xml:space="preserve">
+    <value>Không bắt buộc</value>
+  </data>
+  <data name="Common_Required" xml:space="preserve">
+    <value>Bắt buộc</value>
+  </data>
+  <data name="Common_Status" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="Common_Notes" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="Common_VinLabel" xml:space="preserve">
+    <value>Số khung VIN</value>
+  </data>
+  <data name="Common_VinPrefixed" xml:space="preserve">
+    <value>VIN: {0}</value>
+  </data>
+  <data name="Common_RiderPrefixed" xml:space="preserve">
+    <value>Khách hàng: {0}</value>
+  </data>
+  <data name="Common_Model" xml:space="preserve">
+    <value>Mẫu xe máy</value>
+  </data>
+  <data name="Common_Dealer" xml:space="preserve">
+    <value>Đại lý</value>
+  </data>
+  <data name="Common_Branch" xml:space="preserve">
+    <value>Chi nhánh đại lý</value>
+  </data>
+  <data name="Common_OdometerKm" xml:space="preserve">
+    <value>Số ODO (km)</value>
+  </data>
+  <data name="Common_CurrentOdometerKm" xml:space="preserve">
+    <value>Số ODO hiện tại (km)</value>
+  </data>
+  <data name="Common_LicensePlate" xml:space="preserve">
+    <value>Biển số xe</value>
+  </data>
+  <data name="Common_Color" xml:space="preserve">
+    <value>Màu sắc xe</value>
+  </data>
+  <data name="Common_PaymentMethod" xml:space="preserve">
+    <value>Phương thức thanh toán</value>
+  </data>
+  <data name="Common_PointsShort" xml:space="preserve">
+    <value>điểm</value>
+  </data>
+  <data name="Common_VndShort" xml:space="preserve">
+    <value>VNĐ</value>
+  </data>
+  <data name="Common_RatingOutOfFive" xml:space="preserve">
+    <value>{0} / 5</value>
+  </data>
+  <data name="Common_RatingScore" xml:space="preserve">
+    <value>{0:0.00} / 5</value>
+  </data>
+  <data name="Common_JustNow" xml:space="preserve">
+    <value>Vừa xong</value>
+  </data>
+  <data name="Common_NeverSynced" xml:space="preserve">
+    <value>Chưa đồng bộ</value>
+  </data>
+  <data name="Common_SyncedJustNow" xml:space="preserve">
+    <value>Đồng bộ vừa xong</value>
+  </data>
+  <data name="Common_SyncedAgoFormat" xml:space="preserve">
+    <value>Đồng bộ {0}</value>
+  </data>
+  <data name="Common_MinutesAgo" xml:space="preserve">
+    <value>{0} phút trước</value>
+  </data>
+  <data name="Common_HoursAgo" xml:space="preserve">
+    <value>{0} giờ trước</value>
+  </data>
+  <data name="Common_DaysAgo" xml:space="preserve">
+    <value>{0} ngày trước</value>
+  </data>
+  <data name="Common_SyncedMinutesAgo" xml:space="preserve">
+    <value>Đồng bộ {0} phút trước</value>
+  </data>
+  <data name="Common_SyncedHoursAgo" xml:space="preserve">
+    <value>Đồng bộ {0} giờ trước</value>
+  </data>
+  <data name="Common_SyncedDaysAgo" xml:space="preserve">
+    <value>Đồng bộ {0} ngày trước</value>
+  </data>
+  <data name="Common_OfflineCacheToast" xml:space="preserve">
+    <value>Đang dùng bộ nhớ đệm ngoại tuyến ({0}).</value>
+  </data>
+  <data name="Common_FactoryStandard" xml:space="preserve">
+    <value>Tiêu chuẩn hãng</value>
+  </data>
+  <data name="Common_Dash" xml:space="preserve">
+    <value>—</value>
+  </data>
+  <data name="Qty_Model" xml:space="preserve">
+    <value>mẫu xe</value>
+  </data>
+  <data name="Qty_Branch" xml:space="preserve">
+    <value>chi nhánh</value>
+  </data>
+  <data name="Qty_Bay" xml:space="preserve">
+    <value>khoang</value>
+  </data>
+  <data name="Qty_Unit" xml:space="preserve">
+    <value>xe</value>
+  </data>
+  <data name="Qty_Motorcycle" xml:space="preserve">
+    <value>xe máy</value>
+  </data>
+  <data name="Qty_Vin" xml:space="preserve">
+    <value>số khung VIN</value>
+  </data>
+  <data name="Qty_Slot" xml:space="preserve">
+    <value>khung giờ</value>
+  </data>
+  <data name="Qty_Alert" xml:space="preserve">
+    <value>thông báo</value>
+  </data>
+  <data name="Qty_Event" xml:space="preserve">
+    <value>sự kiện</value>
+  </data>
+  <data name="Qty_Day" xml:space="preserve">
+    <value>ngày</value>
+  </data>
+  <data name="Qty_Month" xml:space="preserve">
+    <value>tháng</value>
+  </data>
+  <data name="ShowroomPageTitle" xml:space="preserve">
+    <value>Showroom Apex Moto</value>
+  </data>
+  <data name="ShowroomEyebrow" xml:space="preserve">
+    <value>DANH MỤC XE MÁY CHÍNH HÃNG APEX MOTO</value>
+  </data>
+  <data name="ShowroomTitle" xml:space="preserve">
+    <value>Showroom Xe máy</value>
+  </data>
+  <data name="ShowroomSubtitleAcrossBranches" xml:space="preserve">
+    <value>{0} tại {1}</value>
+  </data>
+  <data name="ShowroomSubtitleAvailable" xml:space="preserve">
+    <value>Hiện có {0}</value>
+  </data>
+  <data name="ShowroomOfflineBanner" xml:space="preserve">
+    <value>Chế độ danh mục ngoại tuyến ({0}). Tồn kho thực tế sẽ cập nhật khi có mạng.</value>
+  </data>
+  <data name="ShowroomSearchPlaceholder" xml:space="preserve">
+    <value>Tìm thương hiệu, mẫu xe hoặc mã xe...</value>
+  </data>
+  <data name="ShowroomSelectedSpecEyebrow" xml:space="preserve">
+    <value>THÔNG SỐ MẪU XE ĐANG CHỌN</value>
+  </data>
+  <data name="ShowroomOemCertified" xml:space="preserve">
+    <value>{0} · Chứng nhận chính hãng OEM</value>
+  </data>
+  <data name="ShowroomInStockBadge" xml:space="preserve">
+    <value>CÒN {0} XE</value>
+  </data>
+  <data name="ShowroomOutOfStockBadge" xml:space="preserve">
+    <value>TẠM HẾT HÀNG</value>
+  </data>
+  <data name="ShowroomRetailLabel" xml:space="preserve">
+    <value>GIÁ NIÊM YẾT</value>
+  </data>
+  <data name="ShowroomEngineLabel" xml:space="preserve">
+    <value>ĐỘNG CƠ</value>
+  </data>
+  <data name="ShowroomWarrantyLabel" xml:space="preserve">
+    <value>BẢO HÀNH</value>
+  </data>
+  <data name="ShowroomEngineCcFormat" xml:space="preserve">
+    <value>{0} cc</value>
+  </data>
+  <data name="ShowroomWarrantyMonthsFormat" xml:space="preserve">
+    <value>{0} tháng OEM</value>
+  </data>
+  <data name="ShowroomOemExpanderHeader" xml:space="preserve">
+    <value>Bảo hành OEM &amp; Tồn kho theo chi nhánh</value>
+  </data>
+  <data name="ShowroomOemCoverageDetail" xml:space="preserve">
+    <value>Bảo hành chính hãng OEM: {0} tháng trên toàn hệ thống đại lý ủy quyền.</value>
+  </data>
+  <data name="ShowroomBookCta" xml:space="preserve">
+    <value>Đặt lịch Lái thử hoặc Bảo dưỡng</value>
+  </data>
+  <data name="ShowroomAvailableModelsTitle" xml:space="preserve">
+    <value>Các mẫu xe đang phân phối</value>
+  </data>
+  <data name="ShowroomEmptyTitle" xml:space="preserve">
+    <value>Không tìm thấy mẫu xe phù hợp</value>
+  </data>
+  <data name="ShowroomEmptyDesc" xml:space="preserve">
+    <value>Hãy thử xóa bộ lọc phân khúc hoặc từ khóa để xem toàn bộ danh mục.</value>
+  </data>
+  <data name="ShowroomStockUnitsLabel" xml:space="preserve">
+    <value>Còn {0}</value>
+  </data>
+  <data name="ShowroomHeroCaption" xml:space="preserve">
+    <value>Showroom Chính hãng &amp; Xưởng Bảo dưỡng Tiêu chuẩn</value>
+  </data>
+  <data name="DealerPageTitle" xml:space="preserve">
+    <value>Hệ thống Đại lý</value>
+  </data>
+  <data name="DealerEyebrow" xml:space="preserve">
+    <value>MẠNG LƯỚI ĐẠI LÝ ỦY QUYỀN VIỆT NAM</value>
+  </data>
+  <data name="DealerTitle" xml:space="preserve">
+    <value>Trung tâm Showroom &amp; Xưởng Dịch vụ</value>
+  </data>
+  <data name="DealerSubtitle" xml:space="preserve">
+    <value>Showroom Chính hãng &amp; Khoang Bảo dưỡng Tiêu chuẩn OEM</value>
+  </data>
+  <data name="DealerOfflineBanner" xml:space="preserve">
+    <value>Danh bạ đại lý ngoại tuyến ({0}).</value>
+  </data>
+  <data name="DealerVinsBadge" xml:space="preserve">
+    <value>{0} xe VIN</value>
+  </data>
+  <data name="DealerHoursLabel" xml:space="preserve">
+    <value>GIỜ MỞ CỬA</value>
+  </data>
+  <data name="DealerPhoneLabel" xml:space="preserve">
+    <value>ĐIỆN THOẠI</value>
+  </data>
+  <data name="DealerDirectionsCta" xml:space="preserve">
+    <value>Chỉ đường</value>
+  </data>
+  <data name="DealerCallCta" xml:space="preserve">
+    <value>Gọi chi nhánh</value>
+  </data>
+  <data name="DealerEmptyTitle" xml:space="preserve">
+    <value>Không tìm thấy chi nhánh phù hợp</value>
+  </data>
+  <data name="DealerEmptyDesc" xml:space="preserve">
+    <value>Chọn thành phố khác hoặc kéo xuống để tải lại danh sách đại lý.</value>
+  </data>
+  <data name="DealerSlotCapacityFormat" xml:space="preserve">
+    <value>{0} khoang / khung giờ</value>
+  </data>
+  <data name="AuthPageTitle" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="AuthEyebrow" xml:space="preserve">
+    <value>NỀN TẢNG DI ĐỘNG APEX MOTO · v1.4</value>
+  </data>
+  <data name="AuthTitle" xml:space="preserve">
+    <value>Truy cập Hội viên &amp; Nhân viên Đại lý</value>
+  </data>
+  <data name="AuthSubtitle" xml:space="preserve">
+    <value>JWT Keystore phần cứng · Xoay vòng phiên đơn luồng · Bộ nhớ mã hóa SQLCipher</value>
+  </data>
+  <data name="AuthSignInCta" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="AuthCreateAccountCta" xml:space="preserve">
+    <value>Tạo tài khoản Hội viên</value>
+  </data>
+  <data name="AuthSwitchToSignIn" xml:space="preserve">
+    <value>Đã có tài khoản? Đăng nhập ngay</value>
+  </data>
+  <data name="AuthSwitchToRegister" xml:space="preserve">
+    <value>Hội viên mới? Đăng ký tài khoản</value>
+  </data>
+  <data name="AuthFullNameLabel" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="AuthFullNamePlaceholder" xml:space="preserve">
+    <value>Nhập họ và tên đầy đủ</value>
+  </data>
+  <data name="AuthPhoneLabel" xml:space="preserve">
+    <value>Số điện thoại</value>
+  </data>
+  <data name="AuthPhonePlaceholder" xml:space="preserve">
+    <value>Nhập số điện thoại (VD: 0901234567)</value>
+  </data>
+  <data name="AuthEmailLabel" xml:space="preserve">
+    <value>Địa chỉ Email</value>
+  </data>
+  <data name="AuthEmailPlaceholder" xml:space="preserve">
+    <value>Nhập địa chỉ email</value>
+  </data>
+  <data name="AuthEmailInvalidHint" xml:space="preserve">
+    <value>Vui lòng nhập địa chỉ email hợp lệ</value>
+  </data>
+  <data name="AuthPasswordLabel" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
+  <data name="AuthPasswordPlaceholder" xml:space="preserve">
+    <value>Nhập mật khẩu</value>
+  </data>
+  <data name="AuthPasswordRulesHint" xml:space="preserve">
+    <value>Tối thiểu 8 ký tự gồm chữ hoa, chữ thường, số và ký tự đặc biệt.</value>
+  </data>
+  <data name="AuthEndpointExpanderHeader" xml:space="preserve">
+    <value>Cấu hình máy chủ API &amp; Kiểm tra kết nối</value>
+  </data>
+  <data name="AuthConfigBadge" xml:space="preserve">
+    <value>CẤU HÌNH</value>
+  </data>
+  <data name="AuthEndpointPlaceholder" xml:space="preserve">
+    <value>http://10.0.2.2:5080</value>
+  </data>
+  <data name="AuthEmulatorPresetCta" xml:space="preserve">
+    <value>Giả lập 10.0.2.2</value>
+  </data>
+  <data name="AuthAdbLocalhostPresetCta" xml:space="preserve">
+    <value>ADB Localhost</value>
+  </data>
+  <data name="AuthSaveEndpointCta" xml:space="preserve">
+    <value>Lưu máy chủ</value>
+  </data>
+  <data name="AuthTestHealthCta" xml:space="preserve">
+    <value>Kiểm tra /health</value>
+  </data>
+  <data name="AuthApiProbeBadge" xml:space="preserve">
+    <value>KẾT NỐI TỐT</value>
+  </data>
+  <data name="AuthUnreachableBadge" xml:space="preserve">
+    <value>KHÔNG KẾT NỐI ĐƯỢC</value>
+  </data>
+  <data name="AuthInvalidEndpointError" xml:space="preserve">
+    <value>Nhập địa chỉ API http:// hoặc https:// hợp lệ (VD: http://10.0.2.2:5080).</value>
+  </data>
+  <data name="AuthEndpointUpdated" xml:space="preserve">
+    <value>Đã cập nhật máy chủ API thành {0}</value>
+  </data>
+  <data name="AuthHealthOkFormat" xml:space="preserve">
+    <value>{0} · {1}</value>
+  </data>
+  <data name="AuthRegisterSuccessToast" xml:space="preserve">
+    <value>Tạo tài khoản thành công — chào mừng {0}!</value>
+  </data>
+  <data name="AuthLoginSuccessToast" xml:space="preserve">
+    <value>Đã đăng nhập với tài khoản {0}</value>
+  </data>
+  <data name="AuthStaffDealerUnassignedError" xml:space="preserve">
+    <value>Tài khoản nhân viên chưa được gán vào chi nhánh đại lý đang hoạt động.</value>
+  </data>
+  <data name="AuthSecurityNotice" xml:space="preserve">
+    <value>Đăng nhập bằng tài khoản Khách hàng hoặc Nhân viên đại lý đã đăng ký.</value>
+  </data>
+  <data name="AdminNoticePageTitle" xml:space="preserve">
+    <value>Cổng Quản trị Web HQ</value>
+  </data>
+  <data name="AdminNoticeBadge" xml:space="preserve">
+    <value>QUẢN TRỊ VIÊN NỀN TẢNG · 32 QUYỀN</value>
+  </data>
+  <data name="AdminNoticeTitle" xml:space="preserve">
+    <value>Vui lòng sử dụng Cổng Quản trị Web HQ</value>
+  </data>
+  <data name="AdminNoticeSignedInAs" xml:space="preserve">
+    <value>Đang đăng nhập với {0}</value>
+  </data>
+  <data name="AdminNoticeWhyTitle" xml:space="preserve">
+    <value>Vì sao Quản trị viên sử dụng bản Web HQ?</value>
+  </data>
+  <data name="AdminNoticeDescription" xml:space="preserve">
+    <value>Các nghiệp vụ Quản trị hệ thống (biểu đồ phân tích đa đại lý Chart.js, khởi tạo đại lý, cấu hình hạng thành viên và danh mục phụ tùng OEM) được tối ưu cho Cổng Quản trị Web máy tính.</value>
+  </data>
+  <data name="AdminNoticeDesktopUrlLabel" xml:space="preserve">
+    <value>ĐƯỜNG DẪN CỔNG QUẢN TRỊ WEB</value>
+  </data>
+  <data name="AdminNoticeOpenWebCta" xml:space="preserve">
+    <value>Mở Cổng Quản trị Web</value>
+  </data>
+  <data name="AdminNoticeSwitchAccountCta" xml:space="preserve">
+    <value>Đăng xuất &amp; Đổi tài khoản Hội viên / Nhân viên</value>
+  </data>
+  <data name="AdminNoticeMobileBoundaryNote" xml:space="preserve">
+    <value>Ứng dụng di động dành riêng cho Khách hàng và Nhân viên chi nhánh.</value>
+  </data>
+  <data name="HomePageTitle" xml:space="preserve">
+    <value>Trang chủ Hội viên</value>
+  </data>
+  <data name="HomeEyebrow" xml:space="preserve">
+    <value>BẢNG ĐIỀU KHIỂN HỘI VIÊN</value>
+  </data>
+  <data name="HomeWelcomeBack" xml:space="preserve">
+    <value>Chào mừng trở lại</value>
+  </data>
+  <data name="HomeHelloUser" xml:space="preserve">
+    <value>Xin chào, {0}</value>
+  </data>
+  <data name="HomeUnreadBadgeFormat" xml:space="preserve">
+    <value>{0} chưa đọc</value>
+  </data>
+  <data name="HomeOfflineBanner" xml:space="preserve">
+    <value>Chế độ ngoại tuyến — đang hiển thị dữ liệu mã hóa SQLCipher ({0}).</value>
+  </data>
+  <data name="HomeMaintenanceDueEyebrow" xml:space="preserve">
+    <value>NHẮC BẢO DƯỠNG ĐỊNH KỲ THEO VIN</value>
+  </data>
+  <data name="HomeDueSoonSingle" xml:space="preserve">
+    <value>{0} sắp đến mốc bảo dưỡng định kỳ.</value>
+  </data>
+  <data name="HomeDueSoonPlural" xml:space="preserve">
+    <value>{0} sắp đến mốc bảo dưỡng định kỳ.</value>
+  </data>
+  <data name="HomeBookNowCta" xml:space="preserve">
+    <value>Đặt lịch ngay</value>
+  </data>
+  <data name="HomeTileGarage" xml:space="preserve">
+    <value>Garage VIN</value>
+  </data>
+  <data name="HomeTileBookService" xml:space="preserve">
+    <value>Đặt bảo dưỡng</value>
+  </data>
+  <data name="HomeTilePassbook" xml:space="preserve">
+    <value>Thẻ &amp; Mã QR</value>
+  </data>
+  <data name="HomeTileWarranty" xml:space="preserve">
+    <value>Bảo hành VIN</value>
+  </data>
+  <data name="HomeUpcomingBookingsTitle" xml:space="preserve">
+    <value>Lịch bảo dưỡng sắp tới</value>
+  </data>
+  <data name="HomeScheduledTestDrivesTitle" xml:space="preserve">
+    <value>Lịch lái thử xe đã đặt</value>
+  </data>
+  <data name="HomeEmptyBookingsTitle" xml:space="preserve">
+    <value>Chưa có lịch bảo dưỡng sắp tới</value>
+  </data>
+  <data name="HomeEmptyBookingsDesc" xml:space="preserve">
+    <value>Đặt lịch bảo dưỡng định kỳ OEM để duy trì hiệu lực bảo hành 36 tháng.</value>
+  </data>
+  <data name="HomeEmptyTestDrivesTitle" xml:space="preserve">
+    <value>Chưa có lịch lái thử nào</value>
+  </data>
+  <data name="HomeEmptyTestDrivesDesc" xml:space="preserve">
+    <value>Chọn mẫu xe yêu thích tại Showroom để đặt lịch lái thử tại chi nhánh.</value>
+  </data>
+  <data name="HomeSignInOnlineTierHint" xml:space="preserve">
+    <value>Kết nối mạng để đồng bộ hạng thành viên</value>
+  </data>
+  <data name="HomeQuickActionsTitle" xml:space="preserve">
+    <value>Thao tác nhanh</value>
+  </data>
+  <data name="HomeGaragePreviewTitle" xml:space="preserve">
+    <value>Xe trong Garage VIN</value>
+  </data>
+  <data name="HomeViewAllCta" xml:space="preserve">
+    <value>Xem tất cả</value>
+  </data>
+  <data name="GaragePageTitle" xml:space="preserve">
+    <value>Garage Số khung VIN</value>
+  </data>
+  <data name="GarageEyebrow" xml:space="preserve">
+    <value>DANH SÁCH XE CHUẨN SỐ KHUNG ISO 3779</value>
+  </data>
+  <data name="GarageTitle" xml:space="preserve">
+    <value>Garage Số khung VIN của tôi</value>
+  </data>
+  <data name="GarageSubtitle" xml:space="preserve">
+    <value>Theo dõi số ODO, mốc bảo dưỡng định kỳ OEM và quét số khung VIN.</value>
+  </data>
+  <data name="GarageOfflineBanner" xml:space="preserve">
+    <value>Dữ liệu Garage ngoại tuyến ({0}). Cập nhật ODO sẽ tự động đồng bộ khi có mạng.</value>
+  </data>
+  <data name="GarageRegisteredTitle" xml:space="preserve">
+    <value>Xe máy đã đăng ký</value>
+  </data>
+  <data name="GarageCurrentOdometerLabel" xml:space="preserve">
+    <value>SỐ ODO HIỆN TẠI</value>
+  </data>
+  <data name="GarageNextMilestoneLabel" xml:space="preserve">
+    <value>MỐC BẢO DƯỠNG KẾ TIẾP</value>
+  </data>
+  <data name="GarageKmFormat" xml:space="preserve">
+    <value>{0:N0} km</value>
+  </data>
+  <data name="GarageSelectScheduleCta" xml:space="preserve">
+    <value>Chọn &amp; Xem lịch bảo dưỡng</value>
+  </data>
+  <data name="GarageActiveOdometerEyebrow" xml:space="preserve">
+    <value>CẬP NHẬT ODO &amp; NHẮC BẢO DƯỠNG XE ĐANG CHỌN</value>
+  </data>
+  <data name="GarageNewOdometerPlaceholder" xml:space="preserve">
+    <value>Nhập số ODO mới (km)</value>
+  </data>
+  <data name="GarageUpdateKmCta" xml:space="preserve">
+    <value>Cập nhật km</value>
+  </data>
+  <data name="GarageBookForVehicleCta" xml:space="preserve">
+    <value>Đặt lịch bảo dưỡng cho xe này</value>
+  </data>
+  <data name="GarageTargetMileageFormat" xml:space="preserve">
+    <value>Mốc chuẩn: {0:N0} km</value>
+  </data>
+  <data name="GarageRegisterExternalEyebrow" xml:space="preserve">
+    <value>ĐĂNG KÝ XE NGOÀI BẰNG SỐ VIN</value>
+  </data>
+  <data name="GarageVinPlaceholder" xml:space="preserve">
+    <value>Số khung VIN 17 ký tự (ISO 3779)</value>
+  </data>
+  <data name="GarageScanVinCta" xml:space="preserve">
+    <value>Quét VIN</value>
+  </data>
+  <data name="GarageSelectModelTitle" xml:space="preserve">
+    <value>Chọn mẫu xe</value>
+  </data>
+  <data name="GarageLicensePlatePlaceholder" xml:space="preserve">
+    <value>Biển số xe (VD: 29-B1 123.45)</value>
+  </data>
+  <data name="GarageColorPlaceholder" xml:space="preserve">
+    <value>Màu sắc xe</value>
+  </data>
+  <data name="GarageRegisterCta" xml:space="preserve">
+    <value>Thêm xe vào Garage VIN</value>
+  </data>
+  <data name="GarageValidVinMessage" xml:space="preserve">
+    <value>Số khung VIN chuẩn ISO 3779 hợp lệ</value>
+  </data>
+  <data name="GarageScanPromptTitle" xml:space="preserve">
+    <value>Quét số khung VIN 17 ký tự</value>
+  </data>
+  <data name="GarageVehicleAddedSuccess" xml:space="preserve">
+    <value>Đã thêm xe {0} vào Garage số khung VIN của bạn.</value>
+  </data>
+  <data name="GarageVehicleRegisteredToast" xml:space="preserve">
+    <value>Đã đăng ký xe {0}!</value>
+  </data>
+  <data name="GarageOdometerRegressionError" xml:space="preserve">
+    <value>Số ODO mới không được nhỏ hơn {0} đã ghi nhận.</value>
+  </data>
+  <data name="GarageOdometerQueuedOffline" xml:space="preserve">
+    <value>Ngoại tuyến: đã xếp hàng cập nhật số ODO để tự đồng bộ.</value>
+  </data>
+  <data name="GarageOdometerUpdated" xml:space="preserve">
+    <value>Đã cập nhật số ODO thành {0}.</value>
+  </data>
+  <data name="GarageOdometerQueuedDropped" xml:space="preserve">
+    <value>Mất kết nối: đã lưu hàng đợi cập nhật ODO để tự đồng bộ.</value>
+  </data>
+  <data name="GarageEmptyTitle" xml:space="preserve">
+    <value>Garage VIN của bạn đang trống</value>
+  </data>
+  <data name="GarageEmptyDesc" xml:space="preserve">
+    <value>Xe mua tại showroom sẽ tự động hiển thị tại đây, hoặc bạn có thể quét/nhập số VIN 17 ký tự.</value>
+  </data>
+  <data name="BookingPageTitle" xml:space="preserve">
+    <value>Đặt lịch &amp; Bảo dưỡng</value>
+  </data>
+  <data name="BookingEyebrow" xml:space="preserve">
+    <value>ĐẶT KHOANG XƯỞNG CHỐNG TRÙNG · ROWVERSION</value>
+  </data>
+  <data name="BookingTitle" xml:space="preserve">
+    <value>Đặt lịch Bảo dưỡng 3 Bước</value>
+  </data>
+  <data name="BookingSubtitle" xml:space="preserve">
+    <value>Chọn khoang xưởng trống, tự phục hồi tranh chấp 409, đánh giá +25 điểm và chia sẻ biên lai.</value>
+  </data>
+  <data name="BookingConflictBannerTitle" xml:space="preserve">
+    <value>XUNG ĐỘT 409 HẾT KHOANG — ĐÃ TỰ ĐỘNG TẢI LẠI</value>
+  </data>
+  <data name="BookingStep1Chip" xml:space="preserve">
+    <value>1. Chọn xe</value>
+  </data>
+  <data name="BookingStep2Chip" xml:space="preserve">
+    <value>2. Khung giờ</value>
+  </data>
+  <data name="BookingStep3Chip" xml:space="preserve">
+    <value>3. Xác nhận</value>
+  </data>
+  <data name="BookingStep1Header" xml:space="preserve">
+    <value>BƯỚC 1/3 — CHỌN XE &amp; CHI NHÁNH</value>
+  </data>
+  <data name="BookingStep2Header" xml:space="preserve">
+    <value>BƯỚC 2/3 — KHUNG GIỜ KHOANG TRỐNG THỰC TẾ</value>
+  </data>
+  <data name="BookingStep3Header" xml:space="preserve">
+    <value>BƯỚC 3/3 — ÁP VOUCHER &amp; XÁC NHẬN</value>
+  </data>
+  <data name="BookingVehicleLabel" xml:space="preserve">
+    <value>Xe máy (VIN)</value>
+  </data>
+  <data name="BookingSelectVehicleTitle" xml:space="preserve">
+    <value>Chọn xe máy</value>
+  </data>
+  <data name="BookingDealerLabel" xml:space="preserve">
+    <value>Chi nhánh đại lý</value>
+  </data>
+  <data name="BookingSelectDealerTitle" xml:space="preserve">
+    <value>Chọn đại lý</value>
+  </data>
+  <data name="BookingServiceTypeLabel" xml:space="preserve">
+    <value>Loại dịch vụ</value>
+  </data>
+  <data name="BookingServiceTypeTitle" xml:space="preserve">
+    <value>Chọn loại dịch vụ</value>
+  </data>
+  <data name="BookingNextChooseSlotCta" xml:space="preserve">
+    <value>Tiếp: Chọn khung giờ</value>
+  </data>
+  <data name="BookingSelectOpenBayLabel" xml:space="preserve">
+    <value>Chọn khung giờ còn khoang trống</value>
+  </data>
+  <data name="BookingAvailableSlotsTitle" xml:space="preserve">
+    <value>Khung giờ xưởng khả dụng</value>
+  </data>
+  <data name="BookingNextReviewCta" xml:space="preserve">
+    <value>Tiếp: Kiểm tra</value>
+  </data>
+  <data name="BookingReserveVoucherLabel" xml:space="preserve">
+    <value>Giữ Voucher dịch vụ (Không bắt buộc)</value>
+  </data>
+  <data name="BookingNoVoucherTitle" xml:space="preserve">
+    <value>Không áp dụng voucher</value>
+  </data>
+  <data name="BookingNotesLabel" xml:space="preserve">
+    <value>Ghi chú tình trạng xe / yêu cầu</value>
+  </data>
+  <data name="BookingNotesPlaceholder" xml:space="preserve">
+    <value>Mô tả tình trạng xe hoặc yêu cầu bảo dưỡng...</value>
+  </data>
+  <data name="BookingConfirmCta" xml:space="preserve">
+    <value>Xác nhận đặt lịch</value>
+  </data>
+  <data name="BookingMyBookingsTitle" xml:space="preserve">
+    <value>Lịch hẹn Bảo dưỡng của tôi</value>
+  </data>
+  <data name="BookingCancelCta" xml:space="preserve">
+    <value>Hủy lịch hẹn</value>
+  </data>
+  <data name="BookingCompletedReceiptsTitle" xml:space="preserve">
+    <value>Biên lai Xưởng &amp; Đánh giá +25 điểm CSAT</value>
+  </data>
+  <data name="BookingShareReceiptCta" xml:space="preserve">
+    <value>Chia sẻ biên lai</value>
+  </data>
+  <data name="BookingRateCsatCta" xml:space="preserve">
+    <value>Đánh giá +25 điểm</value>
+  </data>
+  <data name="BookingImmutableReceiptQrEyebrow" xml:space="preserve">
+    <value>MÃ QR BIÊN LAI XƯỞNG BẤT BIẾN</value>
+  </data>
+  <data name="BookingCsatEyebrow" xml:space="preserve">
+    <value>ĐÁNH GIÁ CSAT 5 SAO · THƯỞNG +25 ĐIỂM KHẢ DỤNG</value>
+  </data>
+  <data name="BookingRatingInvoiceFormat" xml:space="preserve">
+    <value>Đánh giá hóa đơn {0}</value>
+  </data>
+  <data name="BookingSelectedRatingFormat" xml:space="preserve">
+    <value>Mức đánh giá đã chọn: {0} / 5 sao</value>
+  </data>
+  <data name="BookingQualityTagsPlaceholder" xml:space="preserve">
+    <value>Thẻ nổi bật cách nhau bằng dấu phẩy (không bắt buộc)</value>
+  </data>
+  <data name="BookingReviewCommentPlaceholder" xml:space="preserve">
+    <value>Chia sẻ trải nghiệm dịch vụ tại xưởng...</value>
+  </data>
+  <data name="BookingSubmitCsatCta" xml:space="preserve">
+    <value>Gửi đánh giá CSAT (+25 điểm)</value>
+  </data>
+  <data name="BookingOnlineRequiredError" xml:space="preserve">
+    <value>Đặt khung giờ xưởng yêu cầu kết nối mạng trực tuyến để khóa khoang trống.</value>
+  </data>
+  <data name="BookingSelectRequiredError" xml:space="preserve">
+    <value>Vui lòng chọn xe, đại lý và khung giờ còn khoang trống.</value>
+  </data>
+  <data name="BookingSlotConflictRecovery" xml:space="preserve">
+    <value>Khung giờ vừa được khách hàng khác đặt hết khoang. Hệ thống đã tải lại khoang trống mới nhất — vui lòng chọn khung giờ khác.</value>
+  </data>
+  <data name="BookingSlotConflictSnackbar" xml:space="preserve">
+    <value>Khung giờ vừa kín chỗ — đã cập nhật lại danh sách khoang trống.</value>
+  </data>
+  <data name="BookingConfirmedSuccess" xml:space="preserve">
+    <value>Đã xác nhận lịch hẹn {0} vào ngày {1} ({2}).</value>
+  </data>
+  <data name="BookingConfirmedToast" xml:space="preserve">
+    <value>Đã xác nhận lịch hẹn {0}!</value>
+  </data>
+  <data name="BookingCancelledReasonDefault" xml:space="preserve">
+    <value>Khách hàng hủy lịch hẹn trên ứng dụng di động.</value>
+  </data>
+  <data name="BookingCancelledSuccess" xml:space="preserve">
+    <value>Đã hủy lịch hẹn {0}.</value>
+  </data>
+  <data name="BookingSelectInvoiceToRateError" xml:space="preserve">
+    <value>Vui lòng chọn một hóa đơn bảo dưỡng đã hoàn tất để đánh giá.</value>
+  </data>
+  <data name="BookingCsatQueuedOffline" xml:space="preserve">
+    <value>Ngoại tuyến: đánh giá CSAT (+25 điểm thưởng) đã được xếp hàng và sẽ tự gửi khi có mạng.</value>
+  </data>
+  <data name="BookingCsatSubmittedSuccess" xml:space="preserve">
+    <value>Cảm ơn bạn! Đánh giá {0} đã gửi — tặng +{1} điểm khả dụng.</value>
+  </data>
+  <data name="BookingCsatSubmittedSnackbar" xml:space="preserve">
+    <value>Gửi đánh giá thành công! Đã cộng +{0} điểm.</value>
+  </data>
+  <data name="BookingCsatQueuedDropped" xml:space="preserve">
+    <value>Mất kết nối: đánh giá CSAT đã được lưu để tự động gửi lại.</value>
+  </data>
+  <data name="BookingSelectTestDriveError" xml:space="preserve">
+    <value>Vui lòng chọn đại lý và mẫu xe để đăng ký lái thử.</value>
+  </data>
+  <data name="BookingTestDriveRequestedSuccess" xml:space="preserve">
+    <value>Đã gửi yêu cầu lái thử {0} tại {1}.</value>
+  </data>
+  <data name="BookingTestDriveRequestedToast" xml:space="preserve">
+    <value>Đã gửi yêu cầu lái thử {0}!</value>
+  </data>
+  <data name="BookingReceiptShareTitle" xml:space="preserve">
+    <value>Biên lai Dịch vụ {0}</value>
+  </data>
+  <data name="BookingReceiptShareBody" xml:space="preserve">
+    <value>Biên lai {0}
+Đại lý: {1}
+Số VIN: {2} ({3})
+Thực thanh toán: {4}
+Điểm thưởng: +{5} điểm ({6})
+Mã xác thực: {7}</value>
+  </data>
+  <data name="BookingSlotOpenBaysFormat" xml:space="preserve">
+    <value>Còn {0} trống</value>
+  </data>
+  <data name="BookingSlotBookedRatioFormat" xml:space="preserve">
+    <value>Đã đặt: {0} / {1} khoang · RowVersion</value>
+  </data>
+  <data name="BookingSlotFreeBadgeFormat" xml:space="preserve">
+    <value>CÒN {0}</value>
+  </data>
+  <data name="BookingEmptyTitle" xml:space="preserve">
+    <value>Chưa có lịch hẹn bảo dưỡng nào</value>
+  </data>
+  <data name="LoyaltyPageTitle" xml:space="preserve">
+    <value>Thẻ Hội viên &amp; Điểm thưởng</value>
+  </data>
+  <data name="LoyaltyPassbookEyebrow" xml:space="preserve">
+    <value>THẺ HỘI VIÊN ĐIỆN TỬ APEX MOTO</value>
+  </data>
+  <data name="LoyaltySpendableBalance" xml:space="preserve">
+    <value>ĐIỂM KHẢ DỤNG</value>
+  </data>
+  <data name="LoyaltyQualifyingLifetime" xml:space="preserve">
+    <value>ĐIỂM XÉT HẠNG TÍCH LŨY</value>
+  </data>
+  <data name="LoyaltyLifetimeSpendLabel" xml:space="preserve">
+    <value>Tổng chi tiêu tích lũy</value>
+  </data>
+  <data name="LoyaltyOfflineBanner" xml:space="preserve">
+    <value>Chế độ Thẻ ngoại tuyến ({0}) — mã QR Voucher vẫn quét được ngay cả khi mất mạng.</value>
+  </data>
+  <data name="LoyaltyTabVouchers" xml:space="preserve">
+    <value>Ví QR</value>
+  </data>
+  <data name="LoyaltyTabStore" xml:space="preserve">
+    <value>Đổi quà</value>
+  </data>
+  <data name="LoyaltyTabLedger" xml:space="preserve">
+    <value>Sổ điểm</value>
+  </data>
+  <data name="LoyaltyTabReceipts" xml:space="preserve">
+    <value>Biên lai</value>
+  </data>
+  <data name="LoyaltyCounterQrEyebrow" xml:space="preserve">
+    <value>MÃ QR QUÉT TẠI QUẦY (HOẠT ĐỘNG 100% NGOẠI TUYẾN)</value>
+  </data>
+  <data name="LoyaltyExpiresFormat" xml:space="preserve">
+    <value>Hạn sử dụng: {0}</value>
+  </data>
+  <data name="LoyaltyScopeFormat" xml:space="preserve">
+    <value>Phạm vi áp dụng: {0}</value>
+  </data>
+  <data name="LoyaltyDisplayQrCta" xml:space="preserve">
+    <value>Hiển thị mã QR</value>
+  </data>
+  <data name="LoyaltyRedeemCta" xml:space="preserve">
+    <value>Đổi ngay</value>
+  </data>
+  <data name="LoyaltyBalancePrefix" xml:space="preserve">
+    <value>Số dư: {0:N0}</value>
+  </data>
+  <data name="LoyaltySalesReceiptQrEyebrow" xml:space="preserve">
+    <value>MÃ QR BIÊN LAI MUA XE SHOWROOM</value>
+  </data>
+  <data name="LoyaltyShareSalesReceiptCta" xml:space="preserve">
+    <value>Xem &amp; Chia sẻ Biên lai mua xe</value>
+  </data>
+  <data name="LoyaltySyncingTiers" xml:space="preserve">
+    <value>Đang đồng bộ hạng thành viên...</value>
+  </data>
+  <data name="LoyaltyTopTierUnlocked" xml:space="preserve">
+    <value>Đã đạt hạng cao nhất Platinum</value>
+  </data>
+  <data name="LoyaltyNextTierHintFormat" xml:space="preserve">
+    <value>Còn {0} điểm xét hạng lên {1} ({2}x)</value>
+  </data>
+  <data name="LoyaltyRedeemOnlineRequired" xml:space="preserve">
+    <value>Đổi voucher yêu cầu kết nối mạng trực tuyến để bảo vệ số dư điểm thưởng.</value>
+  </data>
+  <data name="LoyaltyVoucherRedeemedSuccess" xml:space="preserve">
+    <value>Đã đổi thành công {0}! Sẵn sàng quét QR tại quầy.</value>
+  </data>
+  <data name="LoyaltyVoucherRedeemedSnackbar" xml:space="preserve">
+    <value>Đã đổi Voucher {0}! Sẵn sàng quét mã QR.</value>
+  </data>
+  <data name="LoyaltySalesReceiptShareTitle" xml:space="preserve">
+    <value>Biên lai Mua xe {0}</value>
+  </data>
+  <data name="LoyaltySalesReceiptShareBody" xml:space="preserve">
+    <value>Biên lai mua xe {0}
+Đại lý: {1}
+Mẫu xe: {2} · VIN {3}
+Thanh toán: {4}
+Điểm thưởng: +{5} điểm ({6})
+Mã xác thực: {7}</value>
+  </data>
+  <data name="LoyaltyEmptyVouchersTitle" xml:space="preserve">
+    <value>Bạn chưa có voucher nào</value>
+  </data>
+  <data name="LoyaltyEmptyVouchersDesc" xml:space="preserve">
+    <value>Hãy dùng điểm khả dụng ở mục Đổi quà để sở hữu mã QR ưu đãi.</value>
+  </data>
+  <data name="LoyaltyEmptyLedgerTitle" xml:space="preserve">
+    <value>Chưa có giao dịch sổ điểm</value>
+  </data>
+  <data name="LoyaltyEmptyLedgerDesc" xml:space="preserve">
+    <value>Điểm sẽ tự cộng sau khi chốt hóa đơn xưởng, mua xe hoặc đánh giá 5 sao.</value>
+  </data>
+  <data name="LoyaltyEmptyReceiptsTitle" xml:space="preserve">
+    <value>Chưa có biên lai mua xe</value>
+  </data>
+  <data name="LoyaltyEmptyStoreTitle" xml:space="preserve">
+    <value>Chưa có mẫu voucher khả dụng</value>
+  </data>
+  <data name="LoyaltyFormulaCaption" xml:space="preserve">
+    <value>10.000 đ chi tiêu ròng = 1 điểm gốc x Hệ số hạng</value>
+  </data>
+  <data name="LoyaltyTierPillFormat" xml:space="preserve">
+    <value>{0} · {1:0.00}x</value>
+  </data>
+  <data name="WarrantyPageTitle" xml:space="preserve">
+    <value>Bảo hành VIN</value>
+  </data>
+  <data name="WarrantyEyebrow" xml:space="preserve">
+    <value>BẢO HÀNH CHÍNH HÃNG OEM THEO SỐ VIN</value>
+  </data>
+  <data name="WarrantyTitle" xml:space="preserve">
+    <value>Yêu cầu Bảo hành VIN</value>
+  </data>
+  <data name="WarrantySubtitle" xml:space="preserve">
+    <value>Gửi hồ sơ bảo hành lỗi kỹ thuật tới chi nhánh và theo dõi tiến độ thẩm định trực tuyến.</value>
+  </data>
+  <data name="WarrantyFileClaimEyebrow" xml:space="preserve">
+    <value>GỬI HỒ SƠ BẢO HÀNH OEM</value>
+  </data>
+  <data name="WarrantyCoveredBadge" xml:space="preserve">
+    <value>CÒN BẢO HÀNH OEM</value>
+  </data>
+  <data name="WarrantyOutOfLimitBadge" xml:space="preserve">
+    <value>HẾT HẠN MỨC OEM</value>
+  </data>
+  <data name="WarrantySelectVehiclePrompt" xml:space="preserve">
+    <value>Chọn xe đã đăng ký để kiểm tra điều kiện bảo hành OEM.</value>
+  </data>
+  <data name="WarrantyCheckingCatalog" xml:space="preserve">
+    <value>Đang kiểm tra hạn mức bảo hành OEM từ danh mục xe...</value>
+  </data>
+  <data name="WarrantyEligibleFormat" xml:space="preserve">
+    <value>Đủ điều kiện · Hiệu lực đến {0} &amp; {1} ({2} tháng OEM)</value>
+  </data>
+  <data name="WarrantyOutsideLimitFormat" xml:space="preserve">
+    <value>Ngoài phạm vi OEM ({0} tháng / {1})</value>
+  </data>
+  <data name="WarrantyVehicleLabel" xml:space="preserve">
+    <value>Xe máy (VIN)</value>
+  </data>
+  <data name="WarrantySelectVehicleTitle" xml:space="preserve">
+    <value>Chọn xe máy</value>
+  </data>
+  <data name="WarrantyDealerLabel" xml:space="preserve">
+    <value>Đại lý tiếp nhận</value>
+  </data>
+  <data name="WarrantySelectDealerTitle" xml:space="preserve">
+    <value>Chọn chi nhánh</value>
+  </data>
+  <data name="WarrantyDefectCategoryLabel" xml:space="preserve">
+    <value>Nhóm hạng mục lỗi</value>
+  </data>
+  <data name="WarrantySymptomLabel" xml:space="preserve">
+    <value>Mô tả triệu chứng lỗi (tối thiểu 10 ký tự)</value>
+  </data>
+  <data name="WarrantySymptomPlaceholder" xml:space="preserve">
+    <value>Mô tả hiện tượng lỗi, đèn cảnh báo hoặc tiếng động bất thường...</value>
+  </data>
+  <data name="WarrantySubmitCta" xml:space="preserve">
+    <value>Gửi yêu cầu Bảo hành VIN</value>
+  </data>
+  <data name="WarrantySubmittedTitle" xml:space="preserve">
+    <value>Hồ sơ Bảo hành đã gửi</value>
+  </data>
+  <data name="WarrantyCategoryPrefixed" xml:space="preserve">
+    <value>Hạng mục: {0}</value>
+  </data>
+  <data name="WarrantyCoveredAmountLabel" xml:space="preserve">
+    <value>Giá trị hãng chi trả</value>
+  </data>
+  <data name="WarrantyResolutionPrefixed" xml:space="preserve">
+    <value>Kết quả xử lý: {0}</value>
+  </data>
+  <data name="WarrantyRejectedPrefixed" xml:space="preserve">
+    <value>Lý do từ chối: {0}</value>
+  </data>
+  <data name="WarrantyQueuedOffline" xml:space="preserve">
+    <value>Ngoại tuyến: hồ sơ bảo hành VIN đã được lưu hàng đợi và tự gửi khi có mạng.</value>
+  </data>
+  <data name="WarrantySubmittedSuccess" xml:space="preserve">
+    <value>Đã gửi hồ sơ bảo hành {0} đến {1}.</value>
+  </data>
+  <data name="WarrantySubmittedToast" xml:space="preserve">
+    <value>Đã gửi hồ sơ bảo hành {0}!</value>
+  </data>
+  <data name="WarrantyQueuedDropped" xml:space="preserve">
+    <value>Mất kết nối: hồ sơ bảo hành đã lưu hàng đợi để tự đồng bộ.</value>
+  </data>
+  <data name="WarrantyEmptyTitle" xml:space="preserve">
+    <value>Chưa có hồ sơ bảo hành nào</value>
+  </data>
+  <data name="StaffWorkbenchPageTitle" xml:space="preserve">
+    <value>Điều phối Xưởng trực tiếp</value>
+  </data>
+  <data name="StaffWorkbenchEyebrow" xml:space="preserve">
+    <value>VẬN HÀNH XƯỞNG THEO CHI NHÁNH</value>
+  </data>
+  <data name="StaffWorkbenchDefaultHeader" xml:space="preserve">
+    <value>Bảng Điều phối Xưởng</value>
+  </data>
+  <data name="StaffWorkbenchPendingKpi" xml:space="preserve">
+    <value>CHỜ / ĐÃ XÁC NHẬN</value>
+  </data>
+  <data name="StaffWorkbenchActiveBayKpi" xml:space="preserve">
+    <value>ĐANG TRONG KHOANG</value>
+  </data>
+  <data name="StaffWorkbenchSearchPlaceholder" xml:space="preserve">
+    <value>Tìm theo VIN, mã lịch hẹn hoặc tên khách</value>
+  </data>
+  <data name="StaffWorkbenchScanCta" xml:space="preserve">
+    <value>Quét VIN/QR</value>
+  </data>
+  <data name="StaffWorkbenchScannedIntakeTitle" xml:space="preserve">
+    <value>KHỚP XE TỪ QUÉT SỐ KHUNG VIN</value>
+  </data>
+  <data name="StaffWorkbenchSwipeTip" xml:space="preserve">
+    <value>Mẹo: Vuốt phải thẻ lịch hẹn để tiếp nhận xe nhanh vào khoang</value>
+  </data>
+  <data name="StaffWorkbenchCheckInCta" xml:space="preserve">
+    <value>Tiếp nhận</value>
+  </data>
+  <data name="StaffWorkbenchStartBayCta" xml:space="preserve">
+    <value>Vào khoang</value>
+  </data>
+  <data name="StaffWorkbenchNoShowCta" xml:space="preserve">
+    <value>Không đến</value>
+  </data>
+  <data name="StaffWorkbenchInvoiceCta" xml:space="preserve">
+    <value>Lập hóa đơn</value>
+  </data>
+  <data name="StaffWorkbenchScanPrompt" xml:space="preserve">
+    <value>Quét tem VIN hoặc mã QR Lịch hẹn</value>
+  </data>
+  <data name="StaffWorkbenchBookingLocated" xml:space="preserve">
+    <value>Đã tìm thấy lịch hẹn {0} ({1}).</value>
+  </data>
+  <data name="StaffWorkbenchBookingLoaded" xml:space="preserve">
+    <value>Đã tải lịch hẹn {0}.</value>
+  </data>
+  <data name="StaffWorkbenchBookingQrNotFound" xml:space="preserve">
+    <value>Không tìm thấy mã QR lịch hẹn trong hàng đợi chi nhánh.</value>
+  </data>
+  <data name="StaffWorkbenchVinIntakeMatched" xml:space="preserve">
+    <value>Khớp hồ sơ VIN: {0} ({1}).</value>
+  </data>
+  <data name="StaffWorkbenchFilteredByVin" xml:space="preserve">
+    <value>Đã lọc danh sách xưởng theo VIN {0}.</value>
+  </data>
+  <data name="StaffWorkbenchUnrecognizedBarcode" xml:space="preserve">
+    <value>Mã vạch/QR không hợp lệ. Vui lòng quét số VIN 17 ký tự hoặc QR lịch hẹn.</value>
+  </data>
+  <data name="StaffWorkbenchConflictError" xml:space="preserve">
+    <value>Lịch hẹn vừa được nhân viên khác cập nhật. Đang tải lại hàng đợi xưởng...</value>
+  </data>
+  <data name="StaffWorkbenchConflictSnackbar" xml:space="preserve">
+    <value>Lịch hẹn đã thay đổi — đang làm mới hàng đợi.</value>
+  </data>
+  <data name="StaffWorkbenchStatusMoved" xml:space="preserve">
+    <value>Lịch hẹn {0} đã chuyển sang trạng thái {1}.</value>
+  </data>
+  <data name="StaffWorkbenchStatusToast" xml:space="preserve">
+    <value>Lịch hẹn {0}: {1}</value>
+  </data>
+  <data name="StaffWorkbenchEmptyTitle" xml:space="preserve">
+    <value>Không có lịch hẹn trong mục này</value>
+  </data>
+  <data name="StaffWorkbenchConfirmCta" xml:space="preserve">
+    <value>Xác nhận</value>
+  </data>
+  <data name="StaffWorkbenchAllLane" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="StaffWorkbenchLiveTag" xml:space="preserve">
+    <value>TRỰC TIẾP SIGNALR</value>
+  </data>
+  <data name="InvoicePageTitle" xml:space="preserve">
+    <value>Chốt Hóa đơn Xưởng</value>
+  </data>
+  <data name="InvoiceEyebrow" xml:space="preserve">
+    <value>CHỐT HÓA ĐƠN XƯỞNG BẤT BIẾN NGUYÊN TỬ</value>
+  </data>
+  <data name="InvoiceLoadingBooking" xml:space="preserve">
+    <value>Đang tải lịch hẹn...</value>
+  </data>
+  <data name="InvoiceEarnMultiplierBadge" xml:space="preserve">
+    <value>Hệ số {0:0.00}x</value>
+  </data>
+  <data name="InvoiceLaborSectionEyebrow" xml:space="preserve">
+    <value>CÔNG KỸ THUẬT &amp; THÔNG TIN BÀN GIAO</value>
+  </data>
+  <data name="InvoiceBaseLaborLabel" xml:space="preserve">
+    <value>Tiền công cơ bản (VNĐ)</value>
+  </data>
+  <data name="InvoiceCompletionOdometerLabel" xml:space="preserve">
+    <value>Số ODO khi hoàn tất</value>
+  </data>
+  <data name="InvoiceWorkSummaryPlaceholder" xml:space="preserve">
+    <value>Ghi chú hạng mục kỹ thuật đã thực hiện...</value>
+  </data>
+  <data name="InvoiceCompatiblePartsEyebrow" xml:space="preserve">
+    <value>PHỤ TÙNG OEM TƯƠNG THÍCH</value>
+  </data>
+  <data name="InvoiceItemizedLinesEyebrow" xml:space="preserve">
+    <value>CHI TIẾT DÒNG HÓA ĐƠN DỊCH VỤ</value>
+  </data>
+  <data name="InvoiceVoucherQrEyebrow" xml:space="preserve">
+    <value>MÃ QR VOUCHER KHÁCH HÀNG</value>
+  </data>
+  <data name="InvoiceVoucherCodePlaceholder" xml:space="preserve">
+    <value>Quét mã QR hoặc nhập mã voucher</value>
+  </data>
+  <data name="InvoiceScanQrCta" xml:space="preserve">
+    <value>Quét QR</value>
+  </data>
+  <data name="InvoicePickVoucherTitle" xml:space="preserve">
+    <value>Chọn voucher khả dụng của khách</value>
+  </data>
+  <data name="InvoiceClearVoucherCta" xml:space="preserve">
+    <value>Gỡ voucher đang áp dụng</value>
+  </data>
+  <data name="InvoiceSettledReceiptEyebrow" xml:space="preserve">
+    <value>ĐÃ CHỐT HÓA ĐƠN — BIÊN LAI XÁC THỰC</value>
+  </data>
+  <data name="InvoiceShareReceiptCta" xml:space="preserve">
+    <value>Chia sẻ Biên lai Dịch vụ chính thức</value>
+  </data>
+  <data name="InvoiceGrossDiscountLabel" xml:space="preserve">
+    <value>Tạm tính / Giảm giá</value>
+  </data>
+  <data name="InvoiceDiscountFormat" xml:space="preserve">
+    <value>- {0}</value>
+  </data>
+  <data name="InvoiceNetPaidLabel" xml:space="preserve">
+    <value>THỰC THANH TOÁN (LÀM TRÒN 2 BƯỚC)</value>
+  </data>
+  <data name="InvoicePreviewPointsFormat" xml:space="preserve">
+    <value>+{0:N0} điểm</value>
+  </data>
+  <data name="InvoiceNextTierFormat" xml:space="preserve">
+    <value>Hạng sau giao dịch: {0}</value>
+  </data>
+  <data name="InvoiceTierUpgradeFormat" xml:space="preserve">
+    <value>THĂNG HẠNG THÀNH VIÊN: {0}!</value>
+  </data>
+  <data name="InvoiceSettleCta" xml:space="preserve">
+    <value>Chốt Hóa đơn Bất biến</value>
+  </data>
+  <data name="InvoiceDefaultLaborDesc" xml:space="preserve">
+    <value>Công bảo dưỡng xưởng định kỳ</value>
+  </data>
+  <data name="InvoiceLaborValidationError" xml:space="preserve">
+    <value>Nhập mô tả tiền công và đơn giá VNĐ lớn hơn 0.</value>
+  </data>
+  <data name="InvoiceScanVoucherPrompt" xml:space="preserve">
+    <value>Quét mã QR Voucher của khách hàng</value>
+  </data>
+  <data name="InvoiceVoucherAppliedToast" xml:space="preserve">
+    <value>Đã áp dụng Voucher {0}.</value>
+  </data>
+  <data name="InvoiceInvalidVoucherQrError" xml:space="preserve">
+    <value>Mã QR không phải định dạng dealer://voucher/v1 hợp lệ.</value>
+  </data>
+  <data name="InvoiceVoucherAttachedSuccess" xml:space="preserve">
+    <value>Đã đính kèm Voucher {0} vào hóa đơn.</value>
+  </data>
+  <data name="InvoiceNoBookingError" xml:space="preserve">
+    <value>Chưa tải lịch hẹn xưởng đang hoạt động.</value>
+  </data>
+  <data name="InvoiceEmptyAmountError" xml:space="preserve">
+    <value>Thêm ít nhất một phụ tùng hoặc tiền công lớn hơn 0 trước khi chốt hóa đơn.</value>
+  </data>
+  <data name="InvoiceSettledSuccess" xml:space="preserve">
+    <value>Đã chốt hóa đơn {0}! Cộng +{1} điểm ({2}).</value>
+  </data>
+  <data name="InvoiceSettledSnackbar" xml:space="preserve">
+    <value>Chốt hóa đơn {0} thành công (+{1} điểm).</value>
+  </data>
+  <data name="InvoiceShareFallbackBody" xml:space="preserve">
+    <value>Hóa đơn {0}
+Số VIN: {1}
+Thực thanh toán: {2}
+Điểm thưởng: +{3} điểm</value>
+  </data>
+  <data name="InvoiceShareReceiptBody" xml:space="preserve">
+    <value>Biên lai {0}
+Số VIN: {1}
+Thực thanh toán: {2}
+Điểm thưởng: +{3} điểm
+Mã xác thực: {4}</value>
+  </data>
+  <data name="SalesPageTitle" xml:space="preserve">
+    <value>Bán xe Showroom &amp; Kho VIN</value>
+  </data>
+  <data name="SalesEyebrow" xml:space="preserve">
+    <value>ĐƠN BÁN XE NGUYÊN TỬ &amp; TỰ KÍCH HOẠT GARAGE</value>
+  </data>
+  <data name="SalesTitle" xml:space="preserve">
+    <value>Quầy Bán xe Showroom theo VIN</value>
+  </data>
+  <data name="SalesSubtitle" xml:space="preserve">
+    <value>Hoàn tất bán xe tự động chốt kho VIN, mở Garage cho khách và cộng điểm tích lũy.</value>
+  </data>
+  <data name="SalesCompleteSectionEyebrow" xml:space="preserve">
+    <value>HOÀN TẤT ĐƠN BÁN XE SHOWROOM</value>
+  </data>
+  <data name="SalesAvailableVinLabel" xml:space="preserve">
+    <value>Xe VIN sẵn có tại chi nhánh</value>
+  </data>
+  <data name="SalesSelectAvailableVinTitle" xml:space="preserve">
+    <value>Chọn số khung VIN sẵn bán</value>
+  </data>
+  <data name="SalesBuyerEmailPlaceholder" xml:space="preserve">
+    <value>Email đã đăng ký của người mua</value>
+  </data>
+  <data name="SalesLicensePlatePlaceholder" xml:space="preserve">
+    <value>Biển số xe (nếu có)</value>
+  </data>
+  <data name="SalesVoucherCodePlaceholder" xml:space="preserve">
+    <value>Mã voucher ưu đãi (nếu có)</value>
+  </data>
+  <data name="SalesCompleteSaleCta" xml:space="preserve">
+    <value>Hoàn tất Bán xe theo VIN</value>
+  </data>
+  <data name="SalesReceiveSectionEyebrow" xml:space="preserve">
+    <value>NHẬP KHO SỐ KHUNG VIN MỚI</value>
+  </data>
+  <data name="SalesReceiveVinPlaceholder" xml:space="preserve">
+    <value>Số khung VIN 17 ký tự (ISO 3779)</value>
+  </data>
+  <data name="SalesScanVinCta" xml:space="preserve">
+    <value>Quét VIN</value>
+  </data>
+  <data name="SalesReceiveModelTitle" xml:space="preserve">
+    <value>Chọn mẫu xe máy</value>
+  </data>
+  <data name="SalesReceiveEnginePlaceholder" xml:space="preserve">
+    <value>Số máy động cơ</value>
+  </data>
+  <data name="SalesReceiveColorPlaceholder" xml:space="preserve">
+    <value>Tên màu xe</value>
+  </data>
+  <data name="SalesReceiveYearPlaceholder" xml:space="preserve">
+    <value>Năm SX</value>
+  </data>
+  <data name="SalesReceivePricePlaceholder" xml:space="preserve">
+    <value>Giá niêm yết (VNĐ)</value>
+  </data>
+  <data name="SalesReceiveVinCta" xml:space="preserve">
+    <value>Nhập kho số VIN</value>
+  </data>
+  <data name="SalesRecentOrdersTitle" xml:space="preserve">
+    <value>Đơn bán xe Showroom gần đây</value>
+  </data>
+  <data name="SalesShareReceiptCta" xml:space="preserve">
+    <value>Chia sẻ Biên lai Bán xe chính thức</value>
+  </data>
+  <data name="SalesScanIntakePrompt" xml:space="preserve">
+    <value>Quét tem số khung VIN để nhập kho</value>
+  </data>
+  <data name="SalesModelEngineRequiredError" xml:space="preserve">
+    <value>Vui lòng chọn mẫu xe và nhập số máy.</value>
+  </data>
+  <data name="SalesVinReceivedSuccess" xml:space="preserve">
+    <value>Đã nhập kho số khung VIN {0} tại showroom.</value>
+  </data>
+  <data name="SalesVinReceivedToast" xml:space="preserve">
+    <value>Đã thêm VIN {0} vào kho xe showroom.</value>
+  </data>
+  <data name="SalesOrderCompletedSuccess" xml:space="preserve">
+    <value>Hoàn tất đơn {0}! Đã đưa VIN {1} vào Garage khách hàng (+{2} điểm).</value>
+  </data>
+  <data name="SalesOrderCompletedSnackbar" xml:space="preserve">
+    <value>Bán xe {0} thành công! Cộng +{1} điểm.</value>
+  </data>
+  <data name="SalesReceiptShareBody" xml:space="preserve">
+    <value>Biên lai mua xe {0}
+Đại lý: {1}
+Khách hàng: {2}
+Xe: {3} · VIN {4}
+Thanh toán: {5}
+Điểm thưởng: +{6} điểm ({7})
+Mã xác thực: {8}</value>
+  </data>
+  <data name="SlotsPageTitle" xml:space="preserve">
+    <value>Quản lý Khoang xưởng</value>
+  </data>
+  <data name="SlotsEyebrow" xml:space="preserve">
+    <value>SỨC CHỨA KHOANG XƯỞNG · ROWVERSION</value>
+  </data>
+  <data name="SlotsTitle" xml:space="preserve">
+    <value>Lập lịch Khung giờ Xưởng</value>
+  </data>
+  <data name="SlotsSubtitle" xml:space="preserve">
+    <value>Tạo hàng loạt khung giờ 7 ngày, điều chỉnh số khoang hoặc tạm khóa bảo trì.</value>
+  </data>
+  <data name="SlotsBatchGeneratorEyebrow" xml:space="preserve">
+    <value>KHỞI TẠO KHUNG GIỜ HÀNG LOẠT</value>
+  </data>
+  <data name="SlotsFromDateLabel" xml:space="preserve">
+    <value>Từ ngày</value>
+  </data>
+  <data name="SlotsToDateLabel" xml:space="preserve">
+    <value>Đến ngày</value>
+  </data>
+  <data name="SlotsDurationLabel" xml:space="preserve">
+    <value>Thời lượng (phút)</value>
+  </data>
+  <data name="SlotsBaysPerSlotLabel" xml:space="preserve">
+    <value>Số khoang / ca</value>
+  </data>
+  <data name="SlotsLoadCta" xml:space="preserve">
+    <value>Tải khung giờ</value>
+  </data>
+  <data name="SlotsGenerateBatchCta" xml:space="preserve">
+    <value>Tạo hàng loạt</value>
+  </data>
+  <data name="SlotsActiveTitle" xml:space="preserve">
+    <value>Khung giờ đang mở của chi nhánh</value>
+  </data>
+  <data name="SlotsBlockedBadge" xml:space="preserve">
+    <value>TẠM KHÓA</value>
+  </data>
+  <data name="SlotsIncrementCapacityCta" xml:space="preserve">
+    <value>+1 khoang xưởng</value>
+  </data>
+  <data name="SlotsBlockReopenCta" xml:space="preserve">
+    <value>Khóa / Mở lại</value>
+  </data>
+  <data name="SlotsGeneratedSuccess" xml:space="preserve">
+    <value>Đã khởi tạo {0} khung giờ khoang xưởng.</value>
+  </data>
+  <data name="SlotsBlockedSuccess" xml:space="preserve">
+    <value>Đã tạm khóa khung giờ {0} để bảo trì.</value>
+  </data>
+  <data name="SlotsReopenedSuccess" xml:space="preserve">
+    <value>Đã mở lại khung giờ {0} (còn {1} trống).</value>
+  </data>
+  <data name="SlotsCapacityUpdatedSuccess" xml:space="preserve">
+    <value>Đã cập nhật sức chứa khoang lên {0}.</value>
+  </data>
+  <data name="TestDrivePageTitle" xml:space="preserve">
+    <value>Hàng đợi Lái thử</value>
+  </data>
+  <data name="TestDriveEyebrow" xml:space="preserve">
+    <value>XE DEMO VIN &amp; KHÓA ĐỒNG THỜI ROWVERSION</value>
+  </data>
+  <data name="TestDriveTitle" xml:space="preserve">
+    <value>Điều phối Lịch Lái thử Showroom</value>
+  </data>
+  <data name="TestDriveSubtitle" xml:space="preserve">
+    <value>Gán xe Demo VIN sẵn có, xác nhận khung giờ và cập nhật hoàn tất lái thử.</value>
+  </data>
+  <data name="TestDriveDemoControlsEyebrow" xml:space="preserve">
+    <value>PHÂN BỔ XE CHẠY THỬ (DEMO VIN)</value>
+  </data>
+  <data name="TestDrivePickDemoTitle" xml:space="preserve">
+    <value>Chọn xe Demo VIN khả dụng</value>
+  </data>
+  <data name="TestDriveStaffNotesPlaceholder" xml:space="preserve">
+    <value>Ghi chú bàn giao xe hoặc lý do hủy...</value>
+  </data>
+  <data name="TestDriveAssignedDemoPrefixed" xml:space="preserve">
+    <value>Xe Demo VIN đã gán: {0}</value>
+  </data>
+  <data name="TestDriveConfirmCta" xml:space="preserve">
+    <value>Xác nhận</value>
+  </data>
+  <data name="TestDriveCompleteCta" xml:space="preserve">
+    <value>Hoàn tất</value>
+  </data>
+  <data name="TestDriveCancelCta" xml:space="preserve">
+    <value>Hủy lịch</value>
+  </data>
+  <data name="TestDriveCancelledReasonDefault" xml:space="preserve">
+    <value>Nhân viên đại lý hủy lịch lái thử.</value>
+  </data>
+  <data name="TestDriveUpdatedSuccess" xml:space="preserve">
+    <value>Lịch lái thử {0} đã cập nhật sang {1}.</value>
+  </data>
+  <data name="TestDriveUpdatedToast" xml:space="preserve">
+    <value>Lái thử {0}: {1}</value>
+  </data>
+  <data name="TestDriveEmptyTitle" xml:space="preserve">
+    <value>Chưa có yêu cầu lái thử nào</value>
+  </data>
+  <data name="StaffQaPageTitle" xml:space="preserve">
+    <value>Bảo hành &amp; CSAT</value>
+  </data>
+  <data name="StaffQaEyebrow" xml:space="preserve">
+    <value>CHẤT LƯỢNG DỊCH VỤ &amp; THẨM ĐỊNH BẢO HÀNH</value>
+  </data>
+  <data name="StaffQaTitle" xml:space="preserve">
+    <value>Thẩm định Bảo hành &amp; Phản hồi CSAT</value>
+  </data>
+  <data name="StaffQaAvgCsatLabel" xml:space="preserve">
+    <value>ĐIỂM CSAT TRUNG BÌNH</value>
+  </data>
+  <data name="StaffQaUnansweredLabel" xml:space="preserve">
+    <value>ĐÁNH GIÁ CHƯA PHẢN HỒI</value>
+  </data>
+  <data name="StaffQaTabWarranty" xml:space="preserve">
+    <value>Hồ sơ Bảo hành</value>
+  </data>
+  <data name="StaffQaTabCsat" xml:space="preserve">
+    <value>Đánh giá CSAT</value>
+  </data>
+  <data name="StaffQaAdjudicationEyebrow" xml:space="preserve">
+    <value>PHỤ TÙNG BẢO HÀNH OEM &amp; GHI CHÚ THẨM ĐỊNH</value>
+  </data>
+  <data name="StaffQaCoveredPartTitle" xml:space="preserve">
+    <value>Phụ tùng OEM được bảo hành (Không bắt buộc)</value>
+  </data>
+  <data name="StaffQaCoveredAmountLabel" xml:space="preserve">
+    <value>Giá trị chi trả (VNĐ)</value>
+  </data>
+  <data name="StaffQaResolutionPlaceholder" xml:space="preserve">
+    <value>Ghi chú hướng xử lý bảo hành...</value>
+  </data>
+  <data name="StaffQaRejectionPlaceholder" xml:space="preserve">
+    <value>Lý do từ chối (nếu từ chối)...</value>
+  </data>
+  <data name="StaffQaDefectPrefixed" xml:space="preserve">
+    <value>Lỗi: {0}</value>
+  </data>
+  <data name="StaffQaUnderReviewCta" xml:space="preserve">
+    <value>Thẩm định</value>
+  </data>
+  <data name="StaffQaApproveCta" xml:space="preserve">
+    <value>Phê duyệt</value>
+  </data>
+  <data name="StaffQaCompleteCta" xml:space="preserve">
+    <value>Hoàn tất</value>
+  </data>
+  <data name="StaffQaRejectCta" xml:space="preserve">
+    <value>Từ chối</value>
+  </data>
+  <data name="StaffQaPostReplyEyebrow" xml:space="preserve">
+    <value>GỬI PHẢN HỒI CHÍNH THỨC TỪ CHI NHÁNH</value>
+  </data>
+  <data name="StaffQaReplyingToFormat" xml:space="preserve">
+    <value>Đang phản hồi đánh giá {0}</value>
+  </data>
+  <data name="StaffQaReplyPlaceholder" xml:space="preserve">
+    <value>Cảm ơn khách hàng và phản hồi ý kiến dịch vụ...</value>
+  </data>
+  <data name="StaffQaPublishReplyCta" xml:space="preserve">
+    <value>Đăng phản hồi chính thức</value>
+  </data>
+  <data name="StaffQaCsatRatingBadge" xml:space="preserve">
+    <value>{0}/5 CSAT</value>
+  </data>
+  <data name="StaffQaBranchReplyPrefixed" xml:space="preserve">
+    <value>Phản hồi chi nhánh: {0}</value>
+  </data>
+  <data name="StaffQaSelectToReplyCta" xml:space="preserve">
+    <value>Chọn để phản hồi</value>
+  </data>
+  <data name="StaffQaSelectReviewError" xml:space="preserve">
+    <value>Vui lòng chọn đánh giá của khách hàng để phản hồi.</value>
+  </data>
+  <data name="StaffQaReplyMinLengthError" xml:space="preserve">
+    <value>Nội dung phản hồi cần ít nhất 5 ký tự.</value>
+  </data>
+  <data name="StaffQaReplyPostedSuccess" xml:space="preserve">
+    <value>Đã đăng phản hồi chính thức cho đánh giá {0}.</value>
+  </data>
+  <data name="StaffQaReplyPostedToast" xml:space="preserve">
+    <value>Đã phản hồi {0}.</value>
+  </data>
+  <data name="StaffQaDefaultRejectionReason" xml:space="preserve">
+    <value>Không thuộc phạm vi lỗi kỹ thuật bảo hành OEM.</value>
+  </data>
+  <data name="StaffQaClaimUpdatedSuccess" xml:space="preserve">
+    <value>Hồ sơ bảo hành {0} đã chuyển sang {1}.</value>
+  </data>
+  <data name="StaffQaClaimUpdatedToast" xml:space="preserve">
+    <value>Bảo hành {0}: {1}</value>
+  </data>
+  <data name="StaffQaEmptyClaimsTitle" xml:space="preserve">
+    <value>Không có hồ sơ bảo hành tại chi nhánh</value>
+  </data>
+  <data name="NotifPageTitle" xml:space="preserve">
+    <value>Thông báo &amp; Nhật ký</value>
+  </data>
+  <data name="NotifEyebrow" xml:space="preserve">
+    <value>THÔNG BÁO SIGNALR 10 SỰ KIỆN &amp; NHẬT KÝ THAO TÁC</value>
+  </data>
+  <data name="NotifUnreadAlertsFormat" xml:space="preserve">
+    <value>{0} thông báo chưa đọc</value>
+  </data>
+  <data name="NotifMarkAllReadCta" xml:space="preserve">
+    <value>Đọc tất cả</value>
+  </data>
+  <data name="NotifSyncLogsCta" xml:space="preserve">
+    <value>Đồng bộ nhật ký</value>
+  </data>
+  <data name="NotifAlertsFeedTab" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="NotifActivityLogsTab" xml:space="preserve">
+    <value>Nhật ký thao tác</value>
+  </data>
+  <data name="NotifOfflineNotice" xml:space="preserve">
+    <value>Chế độ ngoại tuyến: trạng thái đã đọc và nhật ký thao tác được lưu cục bộ và tự đồng bộ khi có mạng.</value>
+  </data>
+  <data name="NotifUnreadOnlyLabel" xml:space="preserve">
+    <value>Chỉ hiện thông báo chưa đọc</value>
+  </data>
+  <data name="NotifDealerFeedOnlyLabel" xml:space="preserve">
+    <value>Chỉ hiện thông báo của chi nhánh</value>
+  </data>
+  <data name="NotifUnreadBadge" xml:space="preserve">
+    <value>CHƯA ĐỌC</value>
+  </data>
+  <data name="NotifMarkReadCta" xml:space="preserve">
+    <value>Đánh dấu đã đọc</value>
+  </data>
+  <data name="NotifAuditTrailEyebrow" xml:space="preserve">
+    <value>NHẬT KÝ THAO TÁC NGƯỜI DÙNG TRỰC TIẾP</value>
+  </data>
+  <data name="NotifDefaultLogSummary" xml:space="preserve">
+    <value>Nhật ký đồng bộ Thiết bị + Máy chủ</value>
+  </data>
+  <data name="NotifSourceServerMobile" xml:space="preserve">
+    <value>Nguồn: Máy chủ + Di động</value>
+  </data>
+  <data name="NotifSourceLocalDevice" xml:space="preserve">
+    <value>Nguồn: Cục bộ trên máy</value>
+  </data>
+  <data name="NotifLocalLogsSummaryFormat" xml:space="preserve">
+    <value>{0} sự kiện cục bộ · {1} · Phiên {2}</value>
+  </data>
+  <data name="NotifServerLogsSummaryFormat" xml:space="preserve">
+    <value>{0} sự kiện liên kết giữa Máy chủ, Web &amp; Di động</value>
+  </data>
+  <data name="NotifLogsSyncedSuccess" xml:space="preserve">
+    <value>Đã đồng bộ nhật ký thao tác lên máy chủ.</value>
+  </data>
+  <data name="NotifMarkedReadLocal" xml:space="preserve">
+    <value>Đã đánh dấu đã đọc cục bộ. Sẽ đồng bộ khi có mạng.</value>
+  </data>
+  <data name="NotifMarkedReadQueued" xml:space="preserve">
+    <value>Đã xếp hàng đồng bộ trạng thái đã đọc.</value>
+  </data>
+  <data name="NotifAllMarkedReadLocal" xml:space="preserve">
+    <value>Đã đọc tất cả trên máy. Sẽ đồng bộ khi có mạng.</value>
+  </data>
+  <data name="NotifAllMarkedReadSuccess" xml:space="preserve">
+    <value>Đã đánh dấu tất cả thông báo là đã đọc.</value>
+  </data>
+  <data name="NotifAllMarkedReadQueued" xml:space="preserve">
+    <value>Đã xếp hàng đồng bộ đánh dấu đọc tất cả.</value>
+  </data>
+  <data name="ScannerPageTitle" xml:space="preserve">
+    <value>Quét VIN / Mã QR</value>
+  </data>
+  <data name="ScannerDefaultHeading" xml:space="preserve">
+    <value>Quét số khung VIN hoặc Mã QR</value>
+  </data>
+  <data name="ScannerStrictVinSubtitle" xml:space="preserve">
+    <value>Số khung VIN 17 ký tự chuẩn ISO 3779 (không gồm I, O, Q)</value>
+  </data>
+  <data name="ScannerMultiCodeSubtitle" xml:space="preserve">
+    <value>Mã vạch VIN ISO 3779 · Mã QR Voucher · Mã QR Tiếp nhận lịch hẹn</value>
+  </data>
+  <data name="ScannerTorchOff" xml:space="preserve">
+    <value>Đèn pin</value>
+  </data>
+  <data name="ScannerTorchOn" xml:space="preserve">
+    <value>Đang bật đèn</value>
+  </data>
+  <data name="ScannerCameraUnavailableTitle" xml:space="preserve">
+    <value>KHÔNG MỞ ĐƯỢC CAMERA — NHẬP THỦ CÔNG SẴN SÀNG</value>
+  </data>
+  <data name="ScannerCameraPermissionDenied" xml:space="preserve">
+    <value>Chưa cấp quyền camera hoặc máy ảo không có camera. Vui lòng nhập số VIN 17 ký tự hoặc mã QR bên dưới.</value>
+  </data>
+  <data name="ScannerRetryPermissionCta" xml:space="preserve">
+    <value>Thử cấp lại quyền Camera</value>
+  </data>
+  <data name="ScannerManualHeader" xml:space="preserve">
+    <value>Nhập thủ công VIN 17 ký tự / Mã Voucher / QR</value>
+  </data>
+  <data name="ScannerManualPlaceholder" xml:space="preserve">
+    <value>Nhập số VIN 17 ký tự hoặc mã QR</value>
+  </data>
+  <data name="ScannerApplyCta" xml:space="preserve">
+    <value>Áp dụng mã đã quét / nhập</value>
+  </data>
+  <data name="ScannerManualHintVin" xml:space="preserve">
+    <value>Nhập đúng 17 ký tự (A-Z trừ I, O, Q và số 0-9).</value>
+  </data>
+  <data name="ScannerManualHintGeneral" xml:space="preserve">
+    <value>Hỗ trợ VIN 17 ký tự, dealer://voucher/v1, dealer://booking/v1 hoặc mã biên lai RCP-*.</value>
+  </data>
+  <data name="QrOfflineReadyCaption" xml:space="preserve">
+    <value>Mã QR xác thực 100% ngoại tuyến</value>
+  </data>
+  <data name="SignalR_BookingCreated_Title" xml:space="preserve">
+    <value>Lịch bảo dưỡng mới {0}</value>
+  </data>
+  <data name="SignalR_BookingCreated_Body" xml:space="preserve">
+    <value>{0} đã đặt {1} ({2}) vào ngày {3}.</value>
+  </data>
+  <data name="SignalR_BookingStatusChanged_Title" xml:space="preserve">
+    <value>Lịch hẹn {0} — {1}</value>
+  </data>
+  <data name="SignalR_BookingStatusChanged_Body" xml:space="preserve">
+    <value>{0} đã cập nhật lịch hẹn từ {1} sang {2}.</value>
+  </data>
+  <data name="SignalR_MaintenanceReminder_Title" xml:space="preserve">
+    <value>Nhắc bảo dưỡng: {0}</value>
+  </data>
+  <data name="SignalR_MaintenanceReminder_Body" xml:space="preserve">
+    <value>{0} ({1}) đạt {2} / mốc chuẩn {3}.</value>
+  </data>
+  <data name="SignalR_LoyaltyPointsUpdated_Title" xml:space="preserve">
+    <value>Điểm thưởng {0}</value>
+  </data>
+  <data name="SignalR_LoyaltyPointsUpdated_Body" xml:space="preserve">
+    <value>Chứng từ {0}: Số dư điểm khả dụng hiện là {1}.</value>
+  </data>
+  <data name="SignalR_TierUpgraded_Title" xml:space="preserve">
+    <value>Chúc mừng thăng hạng {0}!</value>
+  </data>
+  <data name="SignalR_TierUpgraded_Body" xml:space="preserve">
+    <value>Chúc mừng! Hệ số tích điểm của bạn đạt {0:0.00}x (từ {1} lên {2}).</value>
+  </data>
+  <data name="SignalR_TestDriveCreated_Title" xml:space="preserve">
+    <value>Yêu cầu lái thử mới {0}</value>
+  </data>
+  <data name="SignalR_TestDriveCreated_Body" xml:space="preserve">
+    <value>{0} đăng ký lái thử {1} ngày {2}.</value>
+  </data>
+  <data name="SignalR_TestDriveStatusChanged_Title" xml:space="preserve">
+    <value>Lái thử {0} — {1}</value>
+  </data>
+  <data name="SignalR_TestDriveStatusChanged_Body" xml:space="preserve">
+    <value>{0} đã cập nhật lịch lái thử {1} sang {2}.</value>
+  </data>
+  <data name="SignalR_ServiceReviewSubmitted_Title" xml:space="preserve">
+    <value>Đánh giá CSAT {0}/5 sao mới ({1})</value>
+  </data>
+  <data name="SignalR_ServiceReviewSubmitted_Body" xml:space="preserve">
+    <value>{0} đã đánh giá hóa đơn {1} ({2}).</value>
+  </data>
+  <data name="SignalR_WarrantyClaimCreated_Title" xml:space="preserve">
+    <value>Yêu cầu bảo hành mới {0}</value>
+  </data>
+  <data name="SignalR_WarrantyClaimCreated_Body" xml:space="preserve">
+    <value>{0} gửi yêu cầu bảo hành hạng mục {1} cho xe {2} ({3}).</value>
+  </data>
+  <data name="SignalR_WarrantyClaimStatusChanged_Title" xml:space="preserve">
+    <value>Bảo hành {0} — {1}</value>
+  </data>
+  <data name="SignalR_WarrantyClaimStatusChanged_Body" xml:space="preserve">
+    <value>{0} đã cập nhật hồ sơ xe {1} sang {2} (Hãng chi trả: {3}).</value>
+  </data>
+  <data name="Val_EmailRequired" xml:space="preserve">
+    <value>Vui lòng nhập địa chỉ email.</value>
+  </data>
+  <data name="Val_EmailMaxLength" xml:space="preserve">
+    <value>Địa chỉ email không được vượt quá 256 ký tự.</value>
+  </data>
+  <data name="Val_EmailInvalid" xml:space="preserve">
+    <value>Vui lòng nhập địa chỉ email hợp lệ.</value>
+  </data>
+  <data name="Val_PasswordRequired" xml:space="preserve">
+    <value>Vui lòng nhập mật khẩu.</value>
+  </data>
+  <data name="Val_PasswordMinLength" xml:space="preserve">
+    <value>Mật khẩu phải có ít nhất 8 ký tự.</value>
+  </data>
+  <data name="Val_PasswordMaxLength" xml:space="preserve">
+    <value>Mật khẩu không được vượt quá 128 ký tự.</value>
+  </data>
+  <data name="Val_PasswordComplexity" xml:space="preserve">
+    <value>Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số và 1 ký tự đặc biệt.</value>
+  </data>
+  <data name="Val_FullNameRequired" xml:space="preserve">
+    <value>Vui lòng nhập họ và tên.</value>
+  </data>
+  <data name="Val_FullNameMinLength" xml:space="preserve">
+    <value>Họ và tên phải có ít nhất 2 ký tự.</value>
+  </data>
+  <data name="Val_FullNameMaxLength" xml:space="preserve">
+    <value>Họ và tên không được vượt quá 150 ký tự.</value>
+  </data>
+  <data name="Val_PhoneRequired" xml:space="preserve">
+    <value>Vui lòng nhập số điện thoại Việt Nam.</value>
+  </data>
+  <data name="Val_PhoneMaxLength" xml:space="preserve">
+    <value>Số điện thoại không được vượt quá 20 ký tự.</value>
+  </data>
+  <data name="Val_PhoneInvalid" xml:space="preserve">
+    <value>Số điện thoại phải gồm 9 đến 15 chữ số (có thể bắt đầu bằng &apos;+&apos;).</value>
+  </data>
+  <data name="Val_VinRequired" xml:space="preserve">
+    <value>Số khung VIN phải gồm đúng 17 ký tự chữ hoa và số (ISO 3779).</value>
+  </data>
+  <data name="Val_VinLength" xml:space="preserve">
+    <value>Số khung VIN phải có đúng {0} ký tự ({1}/{0}).</value>
+  </data>
+  <data name="Val_VinForbiddenChar" xml:space="preserve">
+    <value>Số khung VIN chứa ký tự cấm &apos;{0}&apos; tại vị trí {1} (ISO 3779 cấm I, O, Q).</value>
+  </data>
+  <data name="Val_VinInvalidFormat" xml:space="preserve">
+    <value>Số khung VIN chỉ được chứa chữ hoa A-Z (trừ I, O, Q) và số 0-9.</value>
+  </data>
+  <data name="Val_VinInvalidFallback" xml:space="preserve">
+    <value>Số khung VIN 17 ký tự không hợp lệ theo chuẩn ISO 3779.</value>
+  </data>
+  <data name="Val_ModelRequired" xml:space="preserve">
+    <value>Vui lòng chọn mẫu xe máy.</value>
+  </data>
+  <data name="Val_MileageNonNegative" xml:space="preserve">
+    <value>Số ODO hiện tại không được âm.</value>
+  </data>
+  <data name="Val_MileageMax" xml:space="preserve">
+    <value>Số ODO hiện tại không được vượt quá 1.000.000 km.</value>
+  </data>
+  <data name="Val_LicensePlateMinLength" xml:space="preserve">
+    <value>Biển số xe cần có ít nhất 4 ký tự nếu nhập.</value>
+  </data>
+  <data name="Val_LicensePlateMaxLength" xml:space="preserve">
+    <value>Biển số xe không được vượt quá 20 ký tự.</value>
+  </data>
+  <data name="Val_ColorNameMaxLength" xml:space="preserve">
+    <value>Tên màu xe không được vượt quá 60 ký tự.</value>
+  </data>
+  <data name="Val_VehicleRequired" xml:space="preserve">
+    <value>Vui lòng chọn xe máy đã đăng ký.</value>
+  </data>
+  <data name="Val_DealerRequired" xml:space="preserve">
+    <value>Vui lòng chọn chi nhánh đại lý tiếp nhận.</value>
+  </data>
+  <data name="Val_ClaimOdometerNonNegative" xml:space="preserve">
+    <value>Số ODO tại thời điểm yêu cầu không được âm.</value>
+  </data>
+  <data name="Val_ClaimOdometerMax" xml:space="preserve">
+    <value>Số ODO không được vượt quá 1.000.000 km.</value>
+  </data>
+  <data name="Val_DefectCategoryRequired" xml:space="preserve">
+    <value>Vui lòng chọn nhóm hạng mục lỗi.</value>
+  </data>
+  <data name="Val_DefectCategoryInvalid" xml:space="preserve">
+    <value>Nhóm hạng mục lỗi không nằm trong danh mục bảo hành OEM.</value>
+  </data>
+  <data name="Val_SymptomRequired" xml:space="preserve">
+    <value>Vui lòng mô tả triệu chứng lỗi (tối thiểu 10 ký tự).</value>
+  </data>
+  <data name="Val_SymptomMinLength" xml:space="preserve">
+    <value>Mô tả triệu chứng lỗi cần ít nhất {0} ký tự.</value>
+  </data>
+  <data name="Val_SymptomMaxLength" xml:space="preserve">
+    <value>Mô tả triệu chứng lỗi không được vượt quá {0} ký tự.</value>
+  </data>
+  <data name="Val_InventoryRequired" xml:space="preserve">
+    <value>Vui lòng chọn một xe VIN sẵn bán trong kho chi nhánh.</value>
+  </data>
+  <data name="Val_BuyerEmailRequired" xml:space="preserve">
+    <value>Vui lòng nhập email đã đăng ký của khách mua xe.</value>
+  </data>
+  <data name="Val_BuyerEmailMaxLength" xml:space="preserve">
+    <value>Email khách mua không được vượt quá 256 ký tự.</value>
+  </data>
+  <data name="Val_BuyerEmailInvalid" xml:space="preserve">
+    <value>Vui lòng nhập địa chỉ email khách mua hợp lệ.</value>
+  </data>
+  <data name="Val_PaymentMethodRequired" xml:space="preserve">
+    <value>Vui lòng chọn phương thức thanh toán.</value>
+  </data>
+  <data name="Val_PaymentMethodInvalid" xml:space="preserve">
+    <value>Phương thức thanh toán phải là Chuyển khoản, Tiền mặt, Thẻ, Ví điện tử hoặc Trả góp.</value>
+  </data>
+  <data name="Val_VoucherCodeMaxLength" xml:space="preserve">
+    <value>Mã voucher không được vượt quá 32 ký tự.</value>
+  </data>
+  <data name="Val_SaleNotesMaxLength" xml:space="preserve">
+    <value>Ghi chú đơn bán không được vượt quá 500 ký tự.</value>
+  </data>
+  <data name="Enum_BookingStatus_Pending" xml:space="preserve">
+    <value>Chờ xác nhận</value>
+  </data>
+  <data name="Enum_BookingStatus_Confirmed" xml:space="preserve">
+    <value>Đã xác nhận</value>
+  </data>
+  <data name="Enum_BookingStatus_CheckedIn" xml:space="preserve">
+    <value>Đã tiếp nhận</value>
+  </data>
+  <data name="Enum_BookingStatus_InProgress" xml:space="preserve">
+    <value>Đang sửa chữa</value>
+  </data>
+  <data name="Enum_BookingStatus_Completed" xml:space="preserve">
+    <value>Hoàn tất</value>
+  </data>
+  <data name="Enum_BookingStatus_Cancelled" xml:space="preserve">
+    <value>Đã hủy</value>
+  </data>
+  <data name="Enum_BookingStatus_NoShow" xml:space="preserve">
+    <value>Không đến</value>
+  </data>
+  <data name="Enum_StockStatus_Available" xml:space="preserve">
+    <value>Sẵn sàng bán</value>
+  </data>
+  <data name="Enum_StockStatus_Reserved" xml:space="preserve">
+    <value>Đã giữ chỗ</value>
+  </data>
+  <data name="Enum_StockStatus_Sold" xml:space="preserve">
+    <value>Đã bán</value>
+  </data>
+  <data name="Enum_StockStatus_Transferred" xml:space="preserve">
+    <value>Đã điều chuyển</value>
+  </data>
+  <data name="Enum_VoucherStatus_Available" xml:space="preserve">
+    <value>Sẵn sàng dùng</value>
+  </data>
+  <data name="Enum_VoucherStatus_ReservedOnBooking" xml:space="preserve">
+    <value>Đang giữ cho lịch hẹn</value>
+  </data>
+  <data name="Enum_VoucherStatus_Used" xml:space="preserve">
+    <value>Đã sử dụng</value>
+  </data>
+  <data name="Enum_VoucherStatus_Expired" xml:space="preserve">
+    <value>Đã hết hạn</value>
+  </data>
+  <data name="Enum_LedgerType_SalesOrderEarn" xml:space="preserve">
+    <value>Tích điểm mua xe</value>
+  </data>
+  <data name="Enum_LedgerType_ServiceInvoiceEarn" xml:space="preserve">
+    <value>Tích điểm bảo dưỡng</value>
+  </data>
+  <data name="Enum_LedgerType_VoucherRedeem" xml:space="preserve">
+    <value>Đổi voucher ưu đãi</value>
+  </data>
+  <data name="Enum_LedgerType_VoucherExpireRefund" xml:space="preserve">
+    <value>Hoàn điểm voucher</value>
+  </data>
+  <data name="Enum_LedgerType_AdminAdjustment" xml:space="preserve">
+    <value>Điều chỉnh quản trị</value>
+  </data>
+  <data name="Enum_LedgerType_WelcomeBonus" xml:space="preserve">
+    <value>Thưởng chào mừng</value>
+  </data>
+  <data name="Enum_LedgerType_ServiceReviewBonus" xml:space="preserve">
+    <value>Thưởng đánh giá CSAT (+25)</value>
+  </data>
+  <data name="Enum_LoyaltyTier_Bronze" xml:space="preserve">
+    <value>Đồng (Bronze)</value>
+  </data>
+  <data name="Enum_LoyaltyTier_Silver" xml:space="preserve">
+    <value>Bạc (Silver)</value>
+  </data>
+  <data name="Enum_LoyaltyTier_Gold" xml:space="preserve">
+    <value>Vàng (Gold)</value>
+  </data>
+  <data name="Enum_LoyaltyTier_Platinum" xml:space="preserve">
+    <value>Bạch kim (Platinum)</value>
+  </data>
+  <data name="Enum_NotificationEvent_BookingCreated" xml:space="preserve">
+    <value>Lịch bảo dưỡng mới</value>
+  </data>
+  <data name="Enum_NotificationEvent_BookingStatusChanged" xml:space="preserve">
+    <value>Trạng thái lịch hẹn</value>
+  </data>
+  <data name="Enum_NotificationEvent_MaintenanceReminderTriggered" xml:space="preserve">
+    <value>Nhắc bảo dưỡng VIN</value>
+  </data>
+  <data name="Enum_NotificationEvent_LoyaltyPointsUpdated" xml:space="preserve">
+    <value>Cập nhật điểm thưởng</value>
+  </data>
+  <data name="Enum_NotificationEvent_TierUpgraded" xml:space="preserve">
+    <value>Thăng hạng thành viên</value>
+  </data>
+  <data name="Enum_NotificationEvent_SalesOrderCompleted" xml:space="preserve">
+    <value>Hoàn tất mua xe</value>
+  </data>
+  <data name="Enum_NotificationEvent_VoucherRedeemed" xml:space="preserve">
+    <value>Đổi voucher thành công</value>
+  </data>
+  <data name="Enum_NotificationEvent_TestDriveCreated" xml:space="preserve">
+    <value>Yêu cầu lái thử mới</value>
+  </data>
+  <data name="Enum_NotificationEvent_TestDriveStatusChanged" xml:space="preserve">
+    <value>Trạng thái lái thử</value>
+  </data>
+  <data name="Enum_NotificationEvent_ServiceReviewSubmitted" xml:space="preserve">
+    <value>Đánh giá dịch vụ mới</value>
+  </data>
+  <data name="Enum_NotificationEvent_WarrantyClaimCreated" xml:space="preserve">
+    <value>Yêu cầu bảo hành mới</value>
+  </data>
+  <data name="Enum_NotificationEvent_WarrantyClaimStatusChanged" xml:space="preserve">
+    <value>Trạng thái bảo hành</value>
+  </data>
+  <data name="Enum_ReminderStatus_Pending" xml:space="preserve">
+    <value>Chờ gửi</value>
+  </data>
+  <data name="Enum_ReminderStatus_Sent" xml:space="preserve">
+    <value>Đã thông báo</value>
+  </data>
+  <data name="Enum_ReminderStatus_Booked" xml:space="preserve">
+    <value>Đã đặt lịch</value>
+  </data>
+  <data name="Enum_ReminderStatus_Completed" xml:space="preserve">
+    <value>Hoàn tất</value>
+  </data>
+  <data name="Enum_ReminderStatus_Dismissed" xml:space="preserve">
+    <value>Đã bỏ qua</value>
+  </data>
+  <data name="Enum_ReminderStatus_Failed" xml:space="preserve">
+    <value>Gửi lỗi</value>
+  </data>
+  <data name="Enum_SalesOrderStatus_Pending" xml:space="preserve">
+    <value>Chờ xử lý</value>
+  </data>
+  <data name="Enum_SalesOrderStatus_Completed" xml:space="preserve">
+    <value>Hoàn tất</value>
+  </data>
+  <data name="Enum_SalesOrderStatus_Cancelled" xml:space="preserve">
+    <value>Đã hủy</value>
+  </data>
+  <data name="Enum_SparePartCategory_EngineOil" xml:space="preserve">
+    <value>Dầu nhớt động cơ</value>
+  </data>
+  <data name="Enum_SparePartCategory_Filter" xml:space="preserve">
+    <value>Lọc gió &amp; Lọc dầu</value>
+  </data>
+  <data name="Enum_SparePartCategory_Brakes" xml:space="preserve">
+    <value>Hệ thống phanh</value>
+  </data>
+  <data name="Enum_SparePartCategory_Transmission" xml:space="preserve">
+    <value>Truyền động &amp; Nhông sên</value>
+  </data>
+  <data name="Enum_SparePartCategory_Tires" xml:space="preserve">
+    <value>Lốp &amp; Vành xe</value>
+  </data>
+  <data name="Enum_SparePartCategory_Electrical" xml:space="preserve">
+    <value>Điện &amp; Ắc quy</value>
+  </data>
+  <data name="Enum_SparePartCategory_Accessory" xml:space="preserve">
+    <value>Phụ kiện chính hãng</value>
+  </data>
+  <data name="Enum_TestDriveStatus_Requested" xml:space="preserve">
+    <value>Chờ duyệt</value>
+  </data>
+  <data name="Enum_TestDriveStatus_Confirmed" xml:space="preserve">
+    <value>Đã xác nhận</value>
+  </data>
+  <data name="Enum_TestDriveStatus_Completed" xml:space="preserve">
+    <value>Đã lái thử</value>
+  </data>
+  <data name="Enum_TestDriveStatus_Cancelled" xml:space="preserve">
+    <value>Đã hủy</value>
+  </data>
+  <data name="Enum_TestDriveStatus_NoShow" xml:space="preserve">
+    <value>Không đến</value>
+  </data>
+  <data name="Enum_UserRole_Customer" xml:space="preserve">
+    <value>Khách hàng</value>
+  </data>
+  <data name="Enum_UserRole_DealerStaff" xml:space="preserve">
+    <value>Nhân viên đại lý</value>
+  </data>
+  <data name="Enum_UserRole_Admin" xml:space="preserve">
+    <value>Quản trị viên HQ</value>
+  </data>
+  <data name="Enum_DiscountType_FixedAmount" xml:space="preserve">
+    <value>Giảm tiền cố định</value>
+  </data>
+  <data name="Enum_DiscountType_Percentage" xml:space="preserve">
+    <value>Giảm theo phần trăm</value>
+  </data>
+  <data name="Enum_WarrantyStatus_Submitted" xml:space="preserve">
+    <value>Đã tiếp nhận</value>
+  </data>
+  <data name="Enum_WarrantyStatus_UnderReview" xml:space="preserve">
+    <value>Đang thẩm định</value>
+  </data>
+  <data name="Enum_WarrantyStatus_Approved" xml:space="preserve">
+    <value>Đã phê duyệt</value>
+  </data>
+  <data name="Enum_WarrantyStatus_Completed" xml:space="preserve">
+    <value>Hoàn tất bảo hành</value>
+  </data>
+  <data name="Enum_WarrantyStatus_Rejected" xml:space="preserve">
+    <value>Từ chối bảo hành</value>
+  </data>
+  <data name="Enum_WarrantyDefect_Engine" xml:space="preserve">
+    <value>Động cơ &amp; Hệ thống làm mát</value>
+  </data>
+  <data name="Enum_WarrantyDefect_Transmission" xml:space="preserve">
+    <value>Hộp số, Ly hợp &amp; Truyền động CVT</value>
+  </data>
+  <data name="Enum_WarrantyDefect_Electrical" xml:space="preserve">
+    <value>Hệ thống điện, ECU &amp; Cảm biến ABS</value>
+  </data>
+  <data name="Enum_WarrantyDefect_BrakesAndSuspension" xml:space="preserve">
+    <value>Hệ thống phanh &amp; Giảm xóc</value>
+  </data>
+  <data name="Enum_WarrantyDefect_FrameAndPaint" xml:space="preserve">
+    <value>Khung sườn &amp; Sơn tiêu chuẩn hãng</value>
+  </data>
+  <data name="Enum_WarrantyDefect_ExhaustAndFuel" xml:space="preserve">
+    <value>Hệ thống phun xăng PGM-FI &amp; Ống xả</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_All" xml:space="preserve">
+    <value>Tất cả phân khúc</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Scooter" xml:space="preserve">
+    <value>Xe tay ga</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Underbone" xml:space="preserve">
+    <value>Xe số phổ thông</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Sport" xml:space="preserve">
+    <value>Mô tô thể thao</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Naked" xml:space="preserve">
+    <value>Naked Bike</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Adventure" xml:space="preserve">
+    <value>Đường trường Adventure</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Cruiser" xml:space="preserve">
+    <value>Cruiser</value>
+  </data>
+  <data name="Enum_MotorcycleCategory_Electric" xml:space="preserve">
+    <value>Xe máy điện</value>
+  </data>
+  <data name="Enum_ServiceType_PeriodicMaintenance" xml:space="preserve">
+    <value>Bảo dưỡng định kỳ OEM</value>
+  </data>
+  <data name="Enum_ServiceType_WarrantyRepair" xml:space="preserve">
+    <value>Sửa chữa bảo hành hãng</value>
+  </data>
+  <data name="Enum_ServiceType_GeneralRepair" xml:space="preserve">
+    <value>Sửa chữa tổng quát</value>
+  </data>
+  <data name="Enum_ServiceType_Inspection" xml:space="preserve">
+    <value>Kiểm tra tổng thể xe</value>
+  </data>
+  <data name="Enum_ServiceType_OilAndTire" xml:space="preserve">
+    <value>Thay nhớt &amp; Lốp xe</value>
+  </data>
+  <data name="Enum_ServiceType_OilChange" xml:space="preserve">
+    <value>Thay nhớt &amp; Kiểm tra nhanh</value>
+  </data>
+  <data name="Enum_ServiceType_WarrantyInspection" xml:space="preserve">
+    <value>Kiểm tra bảo hành hãng</value>
+  </data>
+  <data name="Enum_ServiceType_TireAndBrakeService" xml:space="preserve">
+    <value>Thay lốp &amp; Bảo dưỡng phanh</value>
+  </data>
+  <data name="Enum_ServiceType_DiagnosticCheck" xml:space="preserve">
+    <value>Chẩn đoán lỗi điện tử ECU</value>
+  </data>
+  <data name="Enum_PaymentMethod_BankTransfer" xml:space="preserve">
+    <value>Chuyển khoản ngân hàng</value>
+  </data>
+  <data name="Enum_PaymentMethod_Cash" xml:space="preserve">
+    <value>Tiền mặt</value>
+  </data>
+  <data name="Enum_PaymentMethod_Card" xml:space="preserve">
+    <value>Thẻ ngân hàng</value>
+  </data>
+  <data name="Enum_PaymentMethod_EWallet" xml:space="preserve">
+    <value>Ví điện tử</value>
+  </data>
+  <data name="Enum_PaymentMethod_QrPay" xml:space="preserve">
+    <value>Quét mã QR Pay</value>
+  </data>
+  <data name="Enum_PaymentMethod_Installment" xml:space="preserve">
+    <value>Trả góp</value>
+  </data>
+  <data name="Enum_MaintenanceStatus_Upcoming" xml:space="preserve">
+    <value>Đúng lịch</value>
+  </data>
+  <data name="Enum_MaintenanceStatus_DueSoon" xml:space="preserve">
+    <value>Sắp đến hạn</value>
+  </data>
+  <data name="Enum_MaintenanceStatus_Overdue" xml:space="preserve">
+    <value>Quá hạn bảo dưỡng</value>
+  </data>
+  <data name="Enum_SignalRStatus_Connected" xml:space="preserve">
+    <value>Đã kết nối</value>
+  </data>
+  <data name="Enum_SignalRStatus_Connecting" xml:space="preserve">
+    <value>Đang kết nối</value>
+  </data>
+  <data name="Enum_SignalRStatus_Reconnecting" xml:space="preserve">
+    <value>Đang kết nối lại</value>
+  </data>
+  <data name="Enum_SignalRStatus_Disconnected" xml:space="preserve">
+    <value>Ngắt kết nối</value>
+  </data>
+  <data name="Enum_SignalRStatus_Offline" xml:space="preserve">
+    <value>Ngoại tuyến</value>
+  </data>
+  <data name="Enum_SignalRStatus_Unavailable" xml:space="preserve">
+    <value>Không khả dụng</value>
+  </data>
+  <data name="Enum_ApplicableScope_ServiceOnly" xml:space="preserve">
+    <value>Chỉ áp dụng Xưởng dịch vụ</value>
+  </data>
+  <data name="Enum_ApplicableScope_ShowroomOnly" xml:space="preserve">
+    <value>Chỉ áp dụng Mua xe Showroom</value>
+  </data>
+  <data name="Enum_ApplicableScope_Both" xml:space="preserve">
+    <value>Cả Showroom &amp; Xưởng dịch vụ</value>
+  </data>
+  <data name="Enum_InvoiceItemType_Part" xml:space="preserve">
+    <value>Phụ tùng</value>
+  </data>
+  <data name="Enum_InvoiceItemType_Labor" xml:space="preserve">
+    <value>Công thợ</value>
+  </data>
+  <data name="Enum_InvoiceItemType_Motorcycle" xml:space="preserve">
+    <value>Xe máy</value>
+  </data>
+  <data name="Enum_InvoiceItemType_Fee" xml:space="preserve">
+    <value>Phí dịch vụ</value>
+  </data>
+  <data name="Enum_RegistrationSource_ShowroomSale" xml:space="preserve">
+    <value>Mua tại Showroom</value>
+  </data>
+  <data name="Enum_RegistrationSource_DealerPurchase" xml:space="preserve">
+    <value>Mua tại Showroom</value>
+  </data>
+  <data name="Enum_RegistrationSource_ExternalManual" xml:space="preserve">
+    <value>Đăng ký VIN ngoài</value>
+  </data>
+  <data name="Enum_StatusBadge_Active" xml:space="preserve">
+    <value>Hoạt động</value>
+  </data>
+  <data name="Enum_StatusBadge_Inactive" xml:space="preserve">
+    <value>Tạm ngưng</value>
+  </data>
+  <data name="Enum_StatusBadge_Healthy" xml:space="preserve">
+    <value>Ổn định</value>
+  </data>
+  <data name="Enum_StatusBadge_Blocked" xml:space="preserve">
+    <value>Tạm khóa</value>
+  </data>
+  <data name="Enum_StatusBadge_InCoverage" xml:space="preserve">
+    <value>Còn bảo hành</value>
+  </data>
+  <data name="Enum_StatusBadge_OutOfCoverage" xml:space="preserve">
+    <value>Hết hạn mức</value>
+  </data>
+  <data name="Enum_StatusBadge_Success" xml:space="preserve">
+    <value>Thành công</value>
+  </data>
+  <data name="Enum_StatusBadge_Warning" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="Enum_StatusBadge_Denied" xml:space="preserve">
+    <value>Từ chối</value>
+  </data>
+  <data name="Enum_StatusBadge_ClientError" xml:space="preserve">
+    <value>Lỗi yêu cầu</value>
+  </data>
+  <data name="Err_VALIDATION_FAILED" xml:space="preserve">
+    <value>Dữ liệu nhập chưa hợp lệ. Vui lòng kiểm tra lại các trường thông tin.</value>
+  </data>
+  <data name="Err_UNAUTHORIZED" xml:space="preserve">
+    <value>Phiên xác thực không hợp lệ. Vui lòng đăng nhập lại.</value>
+  </data>
+  <data name="Err_TOKEN_EXPIRED" xml:space="preserve">
+    <value>Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.</value>
+  </data>
+  <data name="Err_INVALID_REFRESH_TOKEN" xml:space="preserve">
+    <value>Mã làm mới phiên không hợp lệ hoặc đã bị thu hồi.</value>
+  </data>
+  <data name="Err_REFRESH_TOKEN_REUSE_DETECTED" xml:space="preserve">
+    <value>Phát hiện phiên đăng nhập bất thường. Hệ thống đã đăng xuất để bảo vệ tài khoản.</value>
+  </data>
+  <data name="Err_REFRESH_TOKEN_REUSE" xml:space="preserve">
+    <value>Phát hiện phiên đăng nhập bất thường. Hệ thống đã đăng xuất để bảo vệ tài khoản.</value>
+  </data>
+  <data name="Err_REFRESH_TOKEN_MISSING" xml:space="preserve">
+    <value>Thiếu mã làm mới phiên. Vui lòng đăng nhập lại.</value>
+  </data>
+  <data name="Err_INVALID_CREDENTIALS" xml:space="preserve">
+    <value>Email hoặc mật khẩu không chính xác.</value>
+  </data>
+  <data name="Err_ACCOUNT_LOCKED" xml:space="preserve">
+    <value>Tài khoản đã bị khóa hoặc tạm ngừng hoạt động. Vui lòng liên hệ quản trị viên.</value>
+  </data>
+  <data name="Err_STAFF_DEALER_UNASSIGNED" xml:space="preserve">
+    <value>Tài khoản nhân viên chưa được gán đại lý hợp lệ.</value>
+  </data>
+  <data name="Err_ADMIN_WEB_CONSOLE_ONLY" xml:space="preserve">
+    <value>Quản trị đa đại lý, cấp tài khoản và danh mục OEM chỉ khả dụng trên Cổng Quản trị Web HQ.</value>
+  </data>
+  <data name="Err_UNSUPPORTED_ROLE" xml:space="preserve">
+    <value>Vai trò &apos;{0}&apos; không được hỗ trợ.</value>
+  </data>
+  <data name="Err_FORBIDDEN_PERMISSION" xml:space="preserve">
+    <value>Bạn không có quyền thực hiện thao tác này.</value>
+  </data>
+  <data name="Err_FORBIDDEN_DEALER_SCOPE" xml:space="preserve">
+    <value>Không thể truy cập dữ liệu thuộc chi nhánh đại lý khác.</value>
+  </data>
+  <data name="Err_FORBIDDEN_RESOURCE_OWNER" xml:space="preserve">
+    <value>Bạn chỉ có thể thao tác trên dữ liệu thuộc sở hữu của mình.</value>
+  </data>
+  <data name="Err_RESOURCE_NOT_FOUND" xml:space="preserve">
+    <value>Không tìm thấy bản ghi yêu cầu hoặc dữ liệu không còn tồn tại.</value>
+  </data>
+  <data name="Err_CONCURRENCY_CONFLICT" xml:space="preserve">
+    <value>Dữ liệu vừa được người khác cập nhật. Vui lòng tải lại và thử lại.</value>
+  </data>
+  <data name="Err_SLOT_CAPACITY_EXHAUSTED" xml:space="preserve">
+    <value>Khung giờ này vừa hết khoang trống. Vui lòng chọn khung giờ khác.</value>
+  </data>
+  <data name="Err_SLOT_CAPACITY_CONFLICT" xml:space="preserve">
+    <value>Khung giờ này vừa hết khoang trống. Vui lòng chọn khung giờ khác.</value>
+  </data>
+  <data name="Err_TEST_DRIVE_SLOT_FULL" xml:space="preserve">
+    <value>Khung giờ lái thử đã đủ suất tối đa. Vui lòng chọn khung giờ khác.</value>
+  </data>
+  <data name="Err_TEST_DRIVE_OVERLAP" xml:space="preserve">
+    <value>Bạn đã có lịch lái thử trùng khung giờ này.</value>
+  </data>
+  <data name="Err_DUPLICATE_VIN" xml:space="preserve">
+    <value>Số khung VIN 17 ký tự này đã tồn tại trên hệ thống.</value>
+  </data>
+  <data name="Err_DUPLICATE_PART_CODE" xml:space="preserve">
+    <value>Mã phụ tùng SKU này đã tồn tại trong danh mục.</value>
+  </data>
+  <data name="Err_INVOICE_ALREADY_ISSUED" xml:space="preserve">
+    <value>Lịch hẹn này đã được xuất hóa đơn trước đó.</value>
+  </data>
+  <data name="Err_INSUFFICIENT_LOYALTY_POINTS" xml:space="preserve">
+    <value>Số điểm khả dụng không đủ để thực hiện giao dịch này.</value>
+  </data>
+  <data name="Err_INSUFFICIENT_POINTS" xml:space="preserve">
+    <value>Số điểm khả dụng không đủ để đổi ưu đãi này.</value>
+  </data>
+  <data name="Err_VOUCHER_INELIGIBLE" xml:space="preserve">
+    <value>Voucher không đáp ứng điều kiện áp dụng cho đơn hàng hiện tại.</value>
+  </data>
+  <data name="Err_VOUCHER_QUOTA_EXHAUSTED" xml:space="preserve">
+    <value>Số lượng phát hành của voucher này đã hết.</value>
+  </data>
+  <data name="Err_VOUCHER_NOT_AVAILABLE" xml:space="preserve">
+    <value>Voucher này hiện không khả dụng hoặc đã được sử dụng.</value>
+  </data>
+  <data name="Err_SPARE_PART_INCOMPATIBLE" xml:space="preserve">
+    <value>Phụ tùng được chọn không tương thích với mẫu xe này.</value>
+  </data>
+  <data name="Err_SPARE_PART_INACTIVE" xml:space="preserve">
+    <value>Phụ tùng này đã ngừng kinh doanh.</value>
+  </data>
+  <data name="Err_INVALID_STATUS_TRANSITION" xml:space="preserve">
+    <value>Không thể chuyển sang trạng thái yêu cầu từ trạng thái hiện tại.</value>
+  </data>
+  <data name="Err_ODOMETER_REGRESSION" xml:space="preserve">
+    <value>Số ODO mới không được nhỏ hơn số ODO đã ghi nhận trước đó.</value>
+  </data>
+  <data name="Err_ODOMETER_CANNOT_DECREASE" xml:space="preserve">
+    <value>Số ODO mới không được nhỏ hơn số ODO đã ghi nhận trước đó.</value>
+  </data>
+  <data name="Err_REVIEW_ALREADY_SUBMITTED" xml:space="preserve">
+    <value>Hóa đơn này đã được gửi đánh giá CSAT trước đó.</value>
+  </data>
+  <data name="Err_DUPLICATE_SERVICE_REVIEW" xml:space="preserve">
+    <value>Hóa đơn này đã được gửi đánh giá CSAT trước đó.</value>
+  </data>
+  <data name="Err_WARRANTY_COVERAGE_EXPIRED" xml:space="preserve">
+    <value>Xe đã vượt quá giới hạn bảo hành OEM (36 tháng hoặc 30.000 km).</value>
+  </data>
+  <data name="Err_ACTIVE_WARRANTY_CLAIM_EXISTS" xml:space="preserve">
+    <value>Xe đang có một hồ sơ bảo hành mở chưa hoàn tất.</value>
+  </data>
+  <data name="Err_TIER_REQUIREMENT_NOT_MET" xml:space="preserve">
+    <value>Hạng thành viên hiện tại chưa đạt yêu cầu cho ưu đãi này.</value>
+  </data>
+  <data name="Err_RATE_LIMIT_EXCEEDED" xml:space="preserve">
+    <value>Bạn gửi quá nhiều yêu cầu trong thời gian ngắn. Vui lòng thử lại sau ít phút.</value>
+  </data>
+  <data name="Err_NETWORK_OFFLINE" xml:space="preserve">
+    <value>Không thể kết nối đến máy chủ API. Vui lòng kiểm tra mạng hoặc cấu hình máy chủ.</value>
+  </data>
+  <data name="Err_DATABASE_UNAVAILABLE" xml:space="preserve">
+    <value>Cơ sở dữ liệu tạm thời gián đoạn. Vui lòng thử lại sau ít phút.</value>
+  </data>
+  <data name="Err_INVALID_JSON_PAYLOAD" xml:space="preserve">
+    <value>Máy chủ trả về định dạng dữ liệu không hợp lệ. Vui lòng thử lại.</value>
+  </data>
+  <data name="Err_INTERNAL_SERVER_ERROR" xml:space="preserve">
+    <value>Hệ thống gặp sự cố ngoài dự kiến. Vui lòng cung cấp mã traceId để được hỗ trợ.</value>
+  </data>
+  <data name="Err_REQUEST_FAILED" xml:space="preserve">
+    <value>Không thể hoàn tất yêu cầu. Vui lòng thử lại.</value>
+  </data>
+  <data name="Err_DUPLICATE_EMAIL" xml:space="preserve">
+    <value>Địa chỉ email này đã được đăng ký.</value>
+  </data>
+  <data name="Err_DUPLICATE_PHONE" xml:space="preserve">
+    <value>Số điện thoại này đã tồn tại trên hệ thống.</value>
+  </data>
+  <data name="Err_DUPLICATE_LICENSE_PLATE" xml:space="preserve">
+    <value>Biển số xe này đã được đăng ký cho xe khác.</value>
+  </data>
+  <data name="Err_INVENTORY_ALREADY_SOLD" xml:space="preserve">
+    <value>Số khung VIN này đã được bán.</value>
+  </data>
+  <data name="Err_DEMO_VIN_TIME_CONFLICT" xml:space="preserve">
+    <value>Xe chạy thử (Demo VIN) này đã được gán cho lịch lái thử khác trong cùng khung giờ.</value>
+  </data>
+  <data name="Err_PAST_TEST_DRIVE_DATE" xml:space="preserve">
+    <value>Không thể đặt lịch lái thử cho ngày trong quá khứ.</value>
+  </data>
+  <data name="Err_IMMUTABLE_LEDGER_VIOLATION" xml:space="preserve">
+    <value>Sổ cái điểm thưởng bất biến không cho phép sửa hoặc xóa.</value>
+  </data>
+  <data name="Err_IMMUTABLE_FINANCIAL_RECORD_VIOLATION" xml:space="preserve">
+    <value>Chứng từ tài chính đã chốt không cho phép sửa hoặc xóa.</value>
+  </data>
+</root>

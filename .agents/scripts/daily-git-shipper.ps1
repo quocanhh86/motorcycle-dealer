@@ -20,16 +20,22 @@ $GitDir = Join-Path $RepoRoot ".git"
 $StateDir = Join-Path $GitDir "daily-shipper"
 $SchedulerLog = Join-Path $StateDir "task-scheduler.log"
 
-# Ensure Git and Node standard Windows locations are discoverable in non-interactive Task Scheduler sessions
+# Ensure GitHub CLI, Git, and Node standard Windows locations are prepended in headless Task Scheduler sessions
 $ExtraPaths = @(
-    "C:\Program Files\nodejs",
+    "C:\Program Files\GitHub CLI",
     "C:\Program Files\Git\cmd",
-    "C:\Program Files\Git\bin"
+    "C:\Program Files\Git\bin",
+    "C:\Program Files\nodejs"
 )
+$CurrentSegments = @($env:PATH -split ';' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+$ToPrepend = New-Object System.Collections.Generic.List[string]
 foreach ($Dir in $ExtraPaths) {
-    if ((Test-Path $Dir) -and ($env:PATH -notlike "*$Dir*")) {
-        $env:PATH = "$Dir;$env:PATH"
+    if ((Test-Path $Dir) -and (-not ($CurrentSegments | Where-Object { $_ -ieq $Dir }))) {
+        $ToPrepend.Add($Dir) | Out-Null
     }
+}
+if ($ToPrepend.Count -gt 0) {
+    $env:PATH = "$(($ToPrepend -join ';'));$env:PATH"
 }
 
 $NodeCmd = Get-Command "node" -ErrorAction SilentlyContinue

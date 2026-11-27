@@ -2,36 +2,39 @@
 
 | Metadata | Details |
 | :--- | :--- |
-| **Document ID** | `PRD-MDLMP-2026-V1` |
-| **Version** | `1.0.0` (Phase 1 Baseline Specification) |
+| **Document ID** | `PRD-MDLMP-2026-V1.3` |
+| **Version** | `1.3.0` (Phase 10 Feature Expansion — Native C# `.NET 10 MAUI` Android Field App) |
 | **Project Name** | Motorcycle Dealer & Loyalty Management Platform |
 | **Repository** | [https://github.com/quocanhh86/motorcycle-dealer](https://github.com/quocanhh86/motorcycle-dealer) |
 | **Role & Team Size** | Full-Stack Developer — `1 (Solo project)` |
 | **Project Timeline** | `02/2026 - 08/2026` |
-| **Current Phase** | Phase 1 — Documentation, Specifications & Governance (Zero Application Code) |
-| **Related Artifacts** | [REQUIREMENTS.md](../REQUIREMENTS.md) · [AGENTS.md](../AGENTS.md) · [ARCHITECTURE.md](./ARCHITECTURE.md) · [DATABASE_DESIGN.md](./DATABASE_DESIGN.md) · [DESIGN.md](./DESIGN.md) · [TASKS.md](../TASKS.md) · [PROGRESS.md](../PROGRESS.md) · [Master Word Specification (.docx)](./Motorcycle_Dealer_Loyalty_Platform_Specification.docx) |
+| **Implementation Status** | **Phases 1–9 Delivered & Phase 10 (`v1.3.0`) Active (`88` WBS Tasks across `10` Phases)** |
+| **Related Artifacts** | [REQUIREMENTS.md](../REQUIREMENTS.md) · [AGENTS.md](../AGENTS.md) · [ARCHITECTURE.md](./ARCHITECTURE.md) · [DATABASE_DESIGN.md](./DATABASE_DESIGN.md) · [DESIGN.md](./DESIGN.md) · [MOBILE_MAUI_SCREENS.md](./screens/MOBILE_MAUI_SCREENS.md) · [BD_00_BASIC_DESIGN_MASTER.md](./basic-design/BD_00_BASIC_DESIGN_MASTER.md) · [RELEASE_NOTES_v1.1.0.md](./RELEASE_NOTES_v1.1.0.md) · [RELEASE_NOTES_v1.2.0.md](./RELEASE_NOTES_v1.2.0.md) · [RELEASE_NOTES_v1.3.0.md](./RELEASE_NOTES_v1.3.0.md) · [TASKS.md](../TASKS.md) · [PROGRESS.md](../PROGRESS.md) · [Master Word Specification (.docx)](./Motorcycle_Dealer_Loyalty_Platform_Specification.docx) |
 
 ---
 
 ## 1. Executive Summary
 
-The **Motorcycle Dealer & Loyalty Management Platform** is an enterprise, multi-dealer retail, workshop service scheduling, Vehicle Identification Number (`VIN`) lifecycle tracking, and customer loyalty web platform engineered for regional motorcycle dealership networks. Built as a decoupled **AngularJS 1.8** Single-Page Application (`SPA`) backed by **C# / ASP.NET Core Web API (`.NET 10`)** in 4-layer Clean Architecture, **Entity Framework Core**, **SignalR**, and **Microsoft SQL Server** (`MotorcycleDealerDb`, 22 normalized 3NF tables), the platform unifies showroom vehicle sales and post-sale workshop retention into a single closed-loop digital ecosystem.
+The **Motorcycle Dealer & Loyalty Management Platform** is an enterprise, multi-dealer retail, showroom test-drive scheduling, workshop service booking, Vehicle Identification Number (`VIN`) lifecycle tracking, itemized OEM spare-parts invoicing, post-service 5-star CSAT review feedback, 36-month / 30,000-km VIN warranty claims management, and customer loyalty web platform engineered for regional motorcycle dealership networks. Built as a decoupled **AngularJS 1.8.3** Single-Page Application (`SPA`, `30` navigable UI-Router routes across `26` primary screens and `4` aliases) backed by **C# / ASP.NET Core Web API (`.NET 10`, `18` C# Controllers / `100+` HTTP bindings)** in 4-layer Clean Architecture, **Entity Framework Core 10**, **SignalR** (`10` strongly-typed real-time events), and **Microsoft SQL Server** (`MotorcycleDealerDb`, **`27` normalized 3NF tables**), the platform unifies showroom vehicle discovery, test rides, sales, post-sale workshop retention, and warranty quality assurance into a single closed-loop digital ecosystem.
 
-In traditional motorcycle retail networks, customer engagement fragments immediately after showroom handover: buyers lose paper maintenance booklets, dealerships manage workshop bays on spreadsheets prone to peak-hour double-booking, service advisors miss incoming online bookings without manually refreshing screens, and loyalty programs fail to connect initial vehicle purchases with recurring workshop maintenance. This platform eliminates those operational silos across three governed user roles—**Customer** (`Customer`), **Dealer Staff** (`DealerStaff`, isolated to a single assigned `DealerId`), and **Admin** (`Admin`, cross-dealer oversight).
+In traditional motorcycle retail networks, customer engagement fragments immediately after showroom visits or handover: prospective riders lack online test-drive scheduling, buyers lose paper maintenance booklets, dealerships manage workshop bays on spreadsheets prone to peak-hour double-booking, service advisors miss incoming online bookings without manually refreshing screens, workshop bills lack itemized OEM spare-part traceability or verifiable tax/loyalty receipts, post-service satisfaction goes unmeasured, warranty claims are tracked on disconnected spreadsheets, and loyalty programs fail to connect initial vehicle purchases with recurring workshop maintenance. This platform eliminates those operational silos across three governed user roles (**`48` canonical RBAC permissions**: `Customer = 20`, `DealerStaff = 22`, `Admin = 32`)—**Customer** (`Customer`), **Dealer Staff** (`DealerStaff`, isolated to a single assigned `DealerId`), and **Admin** (`Admin`, cross-dealer oversight).
 
-When a customer purchases a motorcycle from a branch's `DealerInventories` (`SalesOrders`), the 17-character `VIN` is automatically onboarded into their digital garage (`CustomerVehicles`), bound to model-specific `MaintenanceRules`, and credited with spending-based loyalty points in an immutable ledger (`PointLedgerEntries`). A background worker (`VinMaintenanceReminderWorker`) continuously evaluates mileage and time intervals to dispatch deduplicated `MaintenanceReminders`. Customers book workshop `ServiceTimeSlots` protected by SQL Server `RowVersion` optimistic concurrency while **SignalR** (`/hubs/notifications`) pushes instant booking alerts (`BookingCreated`) to branch staff without page refresh. Upon workshop completion (`ServiceInvoices`), redeemed `CustomerVouchers` are settled, net spending accrues tiered points (`Bronze` through `Platinum`), and headquarters executives monitor cross-dealer sales and service performance through interactive **Chart.js** dashboards.
+Prospective buyers schedule concurrency-safe showroom `TestDriveBookings` (`<= 2` active slots per model/dealer window) that push instant `TestDriveCreated` alerts to branch advisors. When a customer purchases a motorcycle from a branch's `DealerInventories` (`SalesOrders`), the 17-character `VIN` is automatically onboarded into their digital garage (`CustomerVehicles`), bound to model-specific `MaintenanceRules`, credited with spending-based loyalty points in an immutable ledger (`PointLedgerEntries`), and issued an official SHA-256 printable receipt (`RCP-SLS-*`). A background worker (`VinMaintenanceReminderWorker`) continuously evaluates mileage and time intervals to dispatch deduplicated `MaintenanceReminders`. Customers book workshop `ServiceTimeSlots` protected by SQL Server `RowVersion` optimistic concurrency while **SignalR** (`/hubs/notifications`) pushes instant alerts (`BookingCreated`, `TestDriveCreated`) to branch staff without page refresh. Upon workshop completion (`ServiceInvoices` + append-only `ServiceInvoiceLineItems` from the master OEM `SpareParts` catalog), redeemed `CustomerVouchers` are settled, net spending accrues tiered points (`Bronze` through `Platinum`), printable `@media print` receipts (`RCP-SVC-*`) are generated, and headquarters executives monitor cross-dealer sales and service performance through interactive **Chart.js v4** dashboards.
 
 ### 1.1 Requirement Traceability to Baseline Scope
 
-To maintain strict traceability between the executive portfolio specification ([REQUIREMENTS.md](../REQUIREMENTS.md)) and the closed-loop engineering baseline, the five core portfolio pillars map directly to seven detailed functional requirement domains (`FR-01`–`FR-07`):
+To maintain strict traceability between the executive portfolio specification ([REQUIREMENTS.md](../REQUIREMENTS.md)) and the delivered `v1.2.0` platform, the five core portfolio pillars plus the Phase 8 (`v1.1.0`) and Phase 9 (`v1.2.0`) expansions map directly to nine functional requirement domains (`FR-01`–`FR-09`):
 
 | Baseline Pillar ([REQUIREMENTS.md](../REQUIREMENTS.md)) | Closed-Loop PRD Requirement ID(s) | Core Architectural & Data Anchor | Delivery Phase |
 | :--- | :--- | :--- | :--- |
-| **Role-Based Access** (`Customer`, `Dealer Staff`, `Admin` with route guards & granular permissions) | `FR-01`: Role-Based Access Control & Granular Permissions | AngularJS UI-Router guards + `[HasPermission]` policies + `IDealerScoped` filter (`ADR-002`, `ADR-006`) | Phase 4 |
+| **Role-Based Access** (`Customer`, `Dealer Staff`, `Admin` with route guards & granular permissions) | `FR-01`: Role-Based Access Control & Granular Permissions (`48` Policies: `20 / 22 / 32`) | AngularJS UI-Router guards (`30` routes) + `[HasPermission]` policies + `IDealerScoped` filter (`ADR-002`, `ADR-006`) | Phase 4, 8 & 9 |
 | **Service Booking System** (Book by dealer & available time slot + automated reminders per vehicle `VIN` & maintenance schedule) | `FR-02`: Showroom Catalog, VIN Inventory & Bike Sales<br>`FR-03`: Customer VIN Garage & Maintenance Tracking<br>`FR-04`: Service Booking & Automated VIN Reminders | `DealerInventories`, `SalesOrders`, `CustomerVehicles`, `MaintenanceRules`, `MaintenanceReminders`, `ServiceTimeSlots`, `ServiceBookings`, `VinMaintenanceReminderWorker` (`ADR-005`) | Phase 5 |
 | **Loyalty & Rewards Engine** (Points from spending, membership tiers, voucher redemption) | `FR-05`: Loyalty & Rewards Engine | `LoyaltyTiers`, `LoyaltyAccounts`, append-only `PointLedgerEntries`, `VoucherCatalogs`, `CustomerVouchers`, `ServiceInvoices` (`ADR-003`) | Phase 6 |
-| **Real-Time Notifications** (SignalR instant new booking alerts for dealer staff without page refresh) | `FR-06`: Real-Time Notifications (`SignalR`) | `/hubs/notifications` (`NotificationHub`), `dealer-{dealerId}` & `user-{userId}` groups, `Notifications` table (`ADR-004`) | Phase 6 |
-| **Admin Analytics Dashboard** (Revenue & booking statistics per dealer visualized with `Chart.js`) | `FR-07`: Admin Multi-Dealer Analytics Dashboard | `/api/v1/admin/analytics/*` covering projections + `Chart.js` visualizations (`ADR-001`, `ADR-006`) | Phase 7 |
+| **Real-Time Notifications** (SignalR instant new booking alerts for dealer staff without page refresh) | `FR-06`: Real-Time Notifications (`SignalR` — `10` Events) | `/hubs/notifications` (`NotificationHub`), `dealer-{dealerId}` & `user-{userId}` groups, `Notifications` table (`ADR-004`) | Phase 6, 8 & 9 |
+| **Admin Analytics Dashboard** (Revenue & booking statistics per dealer visualized with `Chart.js`) | `FR-07`: Admin Multi-Dealer Analytics Dashboard | `/api/v1/admin/analytics/*` covering projections + `Chart.js v4` visualizations & UTF-8 BOM CSV (`ADR-001`, `ADR-006`) | Phase 7 & 9 |
+| **v1.1.0 Commercial & Workshop Expansion** (Test-Drive Scheduling, OEM Spare-Parts Itemized Invoicing & Printable Official Receipts) | `FR-08`: Showroom Test-Drive Scheduling, OEM Spare-Parts Itemized Invoicing & Printable Official Receipts | `TestDriveBookings` (`RowVersion`, `IDealerScoped`), `SpareParts`, immutable `ServiceInvoiceLineItems`, SHA-256 `/receipt` endpoints & `<printable-receipt-modal>` (`ADR-001`..`006`) | Phase 8 (`v1.1.0`) |
+| **v1.2.0 Post-Sale Quality & Warranty Expansion** (Post-Service 5-Star CSAT Reviews with `+25` Bonus Loyalty Points & 36-Month / 30,000-km VIN Warranty Claims) | `FR-09`: Post-Service 5-Star CSAT Reviews (`+25` Bonus `AvailablePoints`) & VIN Warranty Claims | `ServiceReviews` (`RowVersion`, `IDealerScoped`, `UQ_ServiceReviews_ServiceInvoiceId`), `WarrantyClaims` (`RowVersion`, `IDealerScoped`), `SERVICE_REVIEW:{InvoiceId}:BONUS`, `ServiceReviewSubmitted`, `WarrantyClaimCreated`, `WarrantyClaimStatusChanged` | Phase 9 (`v1.2.0`) |
+| **v1.3.0 Native Android Field Mobility** (`.NET 10 MAUI` 2-Role Super-App, Encrypted `SQLCipher` Offline Cache & Camera2 VIN/QR Scanning) | `FR-10`: Native Android Field Mobile Application (`.NET 10 MAUI`, 2-Role Field Scope, Offline `SQLCipher` Cache & Camera2 VIN/QR) | `mobile/MotorcycleDealer.Mobile.sln` (`Mobile.Core` `net10.0` + `Mobile.App` `net10.0-android`), `16` compiled `x:DataType` screens, `9`-table `SQLCipher` WAL cache, `SingleFlightTokenRefreshHandler`, `ZXing.Net.Maui` Camera2 scanner & `10`-event SignalR (`ADR-007`) | Phase 10 (`v1.3.0`) |
 
 ---
 
@@ -56,10 +59,10 @@ Regional motorcycle dealership groups operate across multiple urban branches (e.
 
 | Objective ID | Business Objective | Quantitative KPI / Success Metric | Data Source & Verification Mechanism | Target Threshold |
 | :--- | :--- | :--- | :--- | :--- |
-| **BO-01** | **Eliminate Workshop Bay Overbooking** | Concurrent booking over-allocation rate (`BookedCount > MaxCapacity`) | `ServiceTimeSlots` (`RowVersion` concurrency check) + parallel integration tests | **`0` double-bookings** (`100%` capacity enforcement) |
-| **BO-02** | **Zero-Refresh Real-Time Staff Responsiveness** | End-to-end latency from `POST /api/v1/bookings` commit to `DealerStaff` live queue DOM update | SignalR `/hubs/notifications` `BookingCreated` push to `dealer-{dealerId}` | **`< 500 ms` P95** with **`0` manual page reloads** |
+| **BO-01** | **Eliminate Workshop & Test-Drive Overbooking** | Concurrent booking over-allocation rate (`BookedCount > MaxCapacity`, Test-Drives `> 2` per window) | `ServiceTimeSlots` & `TestDriveBookings` (`RowVersion` + ACID transactions) + parallel integration tests | **`0` double-bookings** (`100%` capacity enforcement) |
+| **BO-02** | **Zero-Refresh Real-Time Staff Responsiveness** | End-to-end latency from `POST /api/v1/bookings` or `POST /api/v1/test-drives` commit to `DealerStaff` live queue DOM update | SignalR `/hubs/notifications` `BookingCreated` & `TestDriveCreated` push to `dealer-{dealerId}` | **`< 500 ms` P95** with **`0` manual page reloads** |
 | **BO-03** | **Closed-Loop VIN Onboarding & Proactive Retention** | Percentage of showroom `SalesOrders` automatically provisioned into `CustomerVehicles` with active `MaintenanceRules`, plus duplicate reminder rate | `SalesOrders` -> `CustomerVehicles` transaction + `MaintenanceReminders.DeduplicationKey` | **`100%` auto-onboarding**; **`0%` duplicate reminders** |
-| **BO-04** | **Financial-Grade Loyalty & Tier Integrity** | Ledger reconciliation drift (`LoyaltyAccounts.AvailablePoints` vs. `SUM(PointLedgerEntries.PointsDelta)`) | SQL Server audit query + `IdempotencyKey` uniqueness constraint | **`0` point discrepancy** (`100%` ledger parity) |
+| **BO-04** | **Financial-Grade Loyalty, Itemized Invoice & Receipt Integrity** | Ledger reconciliation drift (`LoyaltyAccounts.AvailablePoints` vs. `SUM(PointLedgerEntries.PointsDelta)`) & itemized invoice drift (`SUM(LineTotalVnd)` vs. `GrossAmount`) | SQL Server audit query + `IdempotencyKey` uniqueness + `ServiceInvoiceLineItems` + SHA-256 `ReceiptVerificationHash` | **`0` point or invoice discrepancy** (`100%` parity) |
 | **BO-05** | **Actionable Multi-Dealer Executive Visibility** | Query & render latency for cross-dealer Revenue (Sales + Service) and Booking `Chart.js` visualizations | `/api/v1/admin/analytics/*` backed by composite covering indexes | **`< 300 ms` P95** API aggregation across 12-month dataset |
 | **BO-06** | **Strict Multi-Branch Tenant Isolation** | Unauthorized cross-role or cross-dealer API/UI access rate | AngularJS UI-Router guards + `[HasPermission]` + EF Core `IDealerScoped` query filters | **`100%` blocked** (`401`/`403`/`404` deterministic rejection) |
 
@@ -75,9 +78,9 @@ The platform enforces **exactly three canonical roles**. Every authenticated use
 | :--- | :--- |
 | **Canonical Role Code** | `Customer` (Customer Portal — `app.customer.*`) |
 | **Demographics & Context** | 29-year-old software engineer in Ho Chi Minh City; recently purchased a new sport commuter motorcycle from an authorized dealer and also owns a 2-year-old scooter bought previously outside the network. |
-| **Primary Goals** | Browse showroom models and branch stock; view both motorcycles by `VIN` in one digital garage; receive timely mileage/date service alerts; book guaranteed Saturday morning workshop slots online; earn points from bike purchases and maintenance invoices; redeem points for service discount vouchers. |
-| **Key Frustrations** | Waiting on hold to check dealer slot availability; forgetting oil-change intervals; losing paper discount coupons; not knowing when workshop staff confirm or finish servicing his bike. |
-| **Data & Permission Scope** | Strictly restricted to public catalog/dealer/slot endpoints (`Permissions.Showroom.View`, `Permissions.Dealers.ViewPublic`, `Permissions.TimeSlots.ViewAvailable`) and self-owned records (`ViewOwn`, `RegisterOwn`, `Bookings.Create`, `Bookings.CancelOwn`, `Loyalty.RedeemVoucher`) where `CustomerId == currentUser.Id`. |
+| **Primary Goals** | Browse showroom models, branch stock, and book showroom test drives; view owned motorcycles by `VIN` in one digital garage; receive timely mileage/date service alerts; book guaranteed Saturday morning workshop slots online; earn points from bike purchases and itemized maintenance invoices; redeem points for service discount vouchers; print official SHA-256 verified tax & loyalty receipts (`RCP-SLS-*` / `RCP-SVC-*`). |
+| **Key Frustrations** | Waiting on hold to check dealer test-drive or service slot availability; forgetting oil-change intervals; losing paper discount coupons or service receipts; not knowing when workshop staff confirm or finish servicing his bike. |
+| **Data & Permission Scope** | Strictly restricted to **`16` granted `Customer` permissions** covering public catalog/dealer/slot endpoints (`Permissions.Showroom.View`, `Permissions.Dealers.ViewPublic`, `Permissions.TimeSlots.ViewAvailable`, `Permissions.Notifications.ViewOwn`) and self-owned records (`ViewOwn`, `RegisterOwn`, `Bookings.Create`, `Bookings.CancelOwn`, `TestDrives.Create`, `TestDrives.CancelOwn`, `TestDrives.ViewOwn`, `Loyalty.RedeemVoucher`) where `CustomerId == currentUser.Id`. |
 
 ### 4.2 Persona 2 — Lan Tran (`DealerStaff` / Dealer Staff)
 
@@ -85,9 +88,9 @@ The platform enforces **exactly three canonical roles**. Every authenticated use
 | :--- | :--- |
 | **Canonical Role Code** | `DealerStaff` (displayed in UI as **Dealer Staff** — `app.staff.*`) |
 | **Demographics & Context** | 32-year-old Senior Service Advisor & Showroom Coordinator at the **Saigon District 1 Flagship Dealership** (`DealerId` bound to a single dealership). Keeps the dealer workbench open on a desktop monitor throughout an 8-hour shift. |
-| **Primary Goals** | Manage branch `DealerInventories` (`VIN` stock) and daily `ServiceTimeSlots` capacities; complete showroom `SalesOrders` that instantly register the buyer's `VIN`; see new online `ServiceBookings` appear live on screen with audible/visual toast alerts **without refreshing the page**; verify customer `VIN` and reserved vouchers at check-in; issue accurate `ServiceInvoices` upon workshop completion. |
-| **Key Frustrations** | Missing urgent same-day bookings because a static table wasn't refreshed; two staff members selling the same `VIN` unit or overbooking a workshop bay; manually calculating tier multipliers and voucher caps at checkout. |
-| **Data & Permission Scope** | Scoped strictly to **one assigned `DealerId`** via EF Core Global Query Filters (`IDealerScoped`) and server-side command validation (`ViewDealer`, `ManageDealer`, `SalesOrders.Create`, `Bookings.UpdateStatus`, `Invoices.CreateDealer`, `Loyalty.ViewDealerCustomer`). Subscribes automatically to SignalR group `dealer-{dealerId}`. Cannot access other dealers' records or `Admin` configuration/analytics. |
+| **Primary Goals** | Manage branch `DealerInventories` (`VIN` stock), daily `ServiceTimeSlots`, and showroom `TestDriveBookings`; complete showroom `SalesOrders` that instantly register the buyer's `VIN`; see new online `ServiceBookings` and `TestDriveBookings` appear live on screen with visual toast alerts **without refreshing the page**; assign demo `VIN`s and convert completed test rides into bike sales; issue itemized `ServiceInvoices` using model-compatible OEM `SpareParts` and print official customer receipts upon completion. |
+| **Key Frustrations** | Missing urgent same-day service or test-drive bookings because a static table wasn't refreshed; two staff members selling the same `VIN` unit or overbooking a workshop bay; manually pricing OEM parts, tier multipliers, and voucher caps at checkout. |
+| **Data & Permission Scope** | Scoped strictly to **one assigned `DealerId`** (**`18` granted `DealerStaff` permissions**) via EF Core Global Query Filters (`IDealerScoped` across all `6` dealer-owned tables) and server-side command validation (`ViewDealer`, `ManageDealer`, `SalesOrders.Create`, `Bookings.UpdateStatus`, `TestDrives.ViewDealer`, `TestDrives.UpdateStatus`, `Invoices.CreateDealer`, `Loyalty.ViewDealerCustomer`). Subscribes automatically to SignalR group `dealer-{dealerId}`. Cannot access other dealers' records or `Admin` configuration/analytics. |
 
 ### 4.3 Persona 3 — Quoc Anh Hoang (`Admin`)
 
@@ -95,29 +98,29 @@ The platform enforces **exactly three canonical roles**. Every authenticated use
 | :--- | :--- |
 | **Canonical Role Code** | `Admin` (Network Administration & Analytics Portal — `app.admin.*`) |
 | **Demographics & Context** | 38-year-old Regional Operations & Digital Transformation Director overseeing all authorized dealerships across Hanoi, Da Nang, and Ho Chi Minh City. |
-| **Primary Goals** | Onboard and govern `Dealers` and `DealerStaff` accounts; curate the master `MotorcycleModels` catalog and standard `MaintenanceRules`; calibrate `LoyaltyTiers` (`Bronze`, `Silver`, `Gold`, `Platinum`), `VoucherCatalogs`, and audited point adjustments; compare per-dealer showroom vs. service revenue and booking funnel KPIs through interactive `Chart.js` visualizations. |
-| **Key Frustrations** | Waiting days for branch managers to email consolidated Excel revenue reports; inability to compare workshop booking completion vs. cancellation rates across dealers; unverified promotional voucher redemptions. |
-| **Data & Permission Scope** | Cross-dealer platform governance (`Dealers.ManageAll`, `Users.ManageStaff`, `Showroom.ManageModels`, `Vehicles.ManageRules`, `Loyalty.ManageTiers`, `Loyalty.ManageVoucherCatalog`, `Loyalty.AdjustPoints`, `Analytics.ViewAllDealers`, `Analytics.ExportReports`). Subscribes to SignalR group `role-Admin`. |
+| **Primary Goals** | Onboard and govern `Dealers` and `DealerStaff` accounts; curate the master `MotorcycleModels` catalog, OEM `SpareParts` SKUs, and standard `MaintenanceRules`; calibrate `LoyaltyTiers` (`Bronze`, `Silver`, `Gold`, `Platinum`), `VoucherCatalogs`, and audited point adjustments; compare per-dealer showroom vs. service revenue and booking funnel KPIs through interactive `Chart.js v4` visualizations. |
+| **Key Frustrations** | Waiting days for branch managers to email consolidated Excel revenue reports; inability to compare workshop booking completion vs. cancellation rates across dealers; unstandardized spare-parts pricing and unverified promotional voucher redemptions. |
+| **Data & Permission Scope** | Cross-dealer platform governance (**`28` granted `Admin` permissions**: `Dealers.ManageAll`, `Users.ManageStaff`, `Showroom.ManageModels`, `Vehicles.ManageRules`, `SpareParts.ManageCatalog`, `Loyalty.ManageTiers`, `Loyalty.ManageVoucherCatalog`, `Loyalty.AdjustPoints`, `Analytics.ViewAllDealers`, `Analytics.ExportReports`, plus cross-dealer operational oversight). Subscribes to SignalR group `role-Admin`. |
 
 ---
 
 ## 5. MECE End-to-End Customer Lifecycle & Journey
 
-The product architecture is organized into seven **Mutually Exclusive, Collectively Exhaustive (MECE)** lifecycle stages so every entity among the 22 SQL Server tables participates in an unbroken value loop:
+The product architecture is organized into **Mutually Exclusive, Collectively Exhaustive (MECE)** lifecycle stages so every entity among the **25 SQL Server 3NF tables** participates in an unbroken value loop:
 
 ```mermaid
 flowchart TD
-    S1["Stage 1: Showroom Discovery (Browse Dealers & MotorcycleModels Stocked by VIN)"]
-    S2A["Stage 2A: Showroom Bike Purchase (DealerStaff Creates SalesOrder -> Locks VIN)"]
+    S1["Stage 1: Showroom Discovery & Test-Drive Scheduling (MotorcycleModels + TestDriveBookings + Live TestDriveCreated)"]
+    S2A["Stage 2A: Showroom Bike Purchase & Official Receipt (DealerStaff Creates SalesOrder -> Locks VIN + RCP-SLS Receipt)"]
     S2B["Stage 2B: External Bike Onboarding (Customer Registers Owned 17-Char VIN)"]
     S3["Stage 3: Digital VIN Garage & Automated Reminders (VinMaintenanceReminderWorker Checks Mileage / Date)"]
     S4["Stage 4: Concurrency-Safe Service Booking (Select Dealer + ServiceTimeSlot + Optional CustomerVoucher)"]
-    S5["Stage 5: Instant SignalR Dispatch (Push BookingCreated to dealer-{dealerId} Without Page Refresh)"]
-    S6["Stage 6: Workshop Execution & Settlement (DealerStaff Issues ServiceInvoice & Consumes Voucher)"]
+    S5["Stage 5: Instant SignalR Dispatch (Push BookingCreated & TestDriveCreated to dealer-{dealerId} Without Refresh)"]
+    S6["Stage 6: Itemized OEM Spare-Parts Invoice & Receipt (ServiceInvoices + ServiceInvoiceLineItems + RCP-SVC Receipt)"]
     S7["Stage 7: Immutable Loyalty Accrual & Rewards (PointLedgerEntries + Bronze..Platinum Tier Upgrade + Voucher Store)"]
-    S8["Stage 8: Executive Retention Intelligence (Admin Chart.js Revenue & Booking Analytics per Dealer)"]
+    S8["Stage 8: Executive Retention Intelligence (Admin Chart.js v4 Revenue & Booking Analytics per Dealer)"]
 
-    S1 --> S2A
+    S1 -->|"Confirmed Demo Ride -> Convert to Sale"| S2A
     S1 --> S2B
     S2A -->|"Auto-Creates CustomerVehicle + Accrues Purchase Points"| S3
     S2B -->|"Links Model MaintenanceRules"| S3
@@ -132,21 +135,21 @@ flowchart TD
 
 ---
 
-## 6. Detailed Functional Requirements (`FR-01` – `FR-07`)
+## 6. Detailed Functional Requirements (`FR-01` – `FR-08`)
 
 ### 6.1 `FR-01`: Role-Based Access Control (RBAC) & Granular Permissions
 
-- **Priority**: `P0 (Critical)` | **Delivery Phase**: `Phase 4`
+- **Priority**: `P0 (Critical)` | **Delivery Phase**: `Phase 4` & `Phase 8 (v1.1.0)`
 - **Mapped Tables**: `Users`, `Roles`, `Permissions`, `UserRoles`, `RolePermissions`, `RefreshTokens`, `Dealers`
 - **Mapped Endpoints**: `/api/v1/auth/register`, `/api/v1/auth/login`, `/api/v1/auth/refresh`, `/api/v1/auth/logout`, `/api/v1/auth/me`, `/api/v1/dealers/{dealerId}/staff`
-- **Canonical Permission Catalog (`34` Permissions)**:
-  - **Showroom & Inventory**: `Permissions.Showroom.View`, `Permissions.Showroom.ManageModels`, `Permissions.Inventories.ViewDealer`, `Permissions.Inventories.ManageDealer`
-  - **Sales Orders**: `Permissions.SalesOrders.Create`, `Permissions.SalesOrders.ViewOwn`, `Permissions.SalesOrders.ViewDealer`
-  - **Customer Garage & Rules**: `Permissions.Vehicles.ViewOwn`, `Permissions.Vehicles.RegisterOwn`, `Permissions.Vehicles.ViewDealer`, `Permissions.Vehicles.ManageRules`
-  - **Time Slots & Bookings**: `Permissions.TimeSlots.ViewAvailable`, `Permissions.TimeSlots.ManageDealer`, `Permissions.Bookings.Create`, `Permissions.Bookings.CancelOwn`, `Permissions.Bookings.ViewOwn`, `Permissions.Bookings.ViewDealer`, `Permissions.Bookings.UpdateStatus`
-  - **Workshop Invoices**: `Permissions.Invoices.CreateDealer`, `Permissions.Invoices.ViewOwn`, `Permissions.Invoices.ViewDealer`
-  - **Loyalty & Vouchers**: `Permissions.Loyalty.ViewOwn`, `Permissions.Loyalty.RedeemVoucher`, `Permissions.Loyalty.ViewDealerCustomer`, `Permissions.Loyalty.ManageTiers`, `Permissions.Loyalty.ManageVoucherCatalog`, `Permissions.Loyalty.AdjustPoints`
-  - **Notifications, Dealers, Staff & Analytics**: `Permissions.Notifications.ViewOwn`, `Permissions.Notifications.ViewDealer`, `Permissions.Dealers.ViewPublic`, `Permissions.Dealers.ManageAll`, `Permissions.Users.ManageStaff`, `Permissions.Analytics.ViewAllDealers`, `Permissions.Analytics.ExportReports`
+- **Canonical Permission Catalog (`40` Permissions — `Customer = 16`, `DealerStaff = 18`, `Admin = 28`)**:
+  - **Showroom & Inventory (`4`)**: `Permissions.Showroom.View`, `Permissions.Showroom.ManageModels`, `Permissions.Inventories.ViewDealer`, `Permissions.Inventories.ManageDealer`
+  - **Showroom Sales & Test-Drives (`8`)**: `Permissions.SalesOrders.Create`, `Permissions.SalesOrders.ViewOwn`, `Permissions.SalesOrders.ViewDealer`, `Permissions.TestDrives.Create`, `Permissions.TestDrives.CancelOwn`, `Permissions.TestDrives.ViewOwn`, `Permissions.TestDrives.ViewDealer`, `Permissions.TestDrives.UpdateStatus`
+  - **Customer Garage & Rules (`4`)**: `Permissions.Vehicles.ViewOwn`, `Permissions.Vehicles.RegisterOwn`, `Permissions.Vehicles.ViewDealer`, `Permissions.Vehicles.ManageRules`
+  - **Time Slots & Bookings (`7`)**: `Permissions.TimeSlots.ViewAvailable`, `Permissions.TimeSlots.ManageDealer`, `Permissions.Bookings.Create`, `Permissions.Bookings.CancelOwn`, `Permissions.Bookings.ViewOwn`, `Permissions.Bookings.ViewDealer`, `Permissions.Bookings.UpdateStatus`
+  - **Workshop Invoices & OEM Spare Parts (`4`)**: `Permissions.Invoices.CreateDealer`, `Permissions.Invoices.ViewOwn`, `Permissions.Invoices.ViewDealer`, `Permissions.SpareParts.ManageCatalog`
+  - **Loyalty & Vouchers (`6`)**: `Permissions.Loyalty.ViewOwn`, `Permissions.Loyalty.RedeemVoucher`, `Permissions.Loyalty.ViewDealerCustomer`, `Permissions.Loyalty.ManageTiers`, `Permissions.Loyalty.ManageVoucherCatalog`, `Permissions.Loyalty.AdjustPoints`
+  - **Notifications, Dealers, Staff & Analytics (`7`)**: `Permissions.Notifications.ViewOwn`, `Permissions.Notifications.ViewDealer`, `Permissions.Dealers.ViewPublic`, `Permissions.Dealers.ManageAll`, `Permissions.Users.ManageStaff`, `Permissions.Analytics.ViewAllDealers`, `Permissions.Analytics.ExportReports`
 
 #### User Stories
 - **US-01.1 (`Customer`)**: As a `Customer`, I want to register, sign in, and be routed strictly to customer portal views (`app.customer.*`), so that my garage, bookings, and loyalty wallet remain private.
@@ -325,25 +328,30 @@ flowchart TD
 
 ### 6.6 `FR-06`: Real-Time Notifications (`SignalR`)
 
-- **Priority**: `P0 (Critical)` | **Delivery Phase**: `Phase 6`
-- **Mapped Tables**: `Notifications`, `ServiceBookings`, `MaintenanceReminders`, `LoyaltyAccounts`
+- **Priority**: `P0 (Critical)` | **Delivery Phase**: `Phase 6` & `Phase 8 (v1.1.0)`
+- **Mapped Tables**: `Notifications`, `ServiceBookings`, `TestDriveBookings`, `MaintenanceReminders`, `LoyaltyAccounts`
 - **Mapped Endpoints & Hub**: `/hubs/notifications` (`NotificationHub` / `INotificationClient`), `/api/v1/notifications`, `/api/v1/notifications/{id}/read`, `/api/v1/notifications/read-all`
 
 #### User Stories
-- **US-06.1 (`DealerStaff`)**: As a `DealerStaff` advisor monitoring the branch workbench, I want new customer booking alerts to appear on my screen **instantly without page refresh**, so that I can confirm appointments and prepare workshop bays immediately.
-- **US-06.2 (`Customer`)**: As a `Customer`, I want live in-app notifications and persistent unread badges whenever my booking status changes, a `VIN` maintenance reminder triggers, or my loyalty points/tier upgrades, so that I stay informed in real time and catch up on missed events when logging in later.
+- **US-06.1 (`DealerStaff`)**: As a `DealerStaff` advisor monitoring the branch workbench, I want new customer workshop booking and showroom test-drive alerts to appear on my screen **instantly without page refresh**, so that I can confirm appointments and prepare workshop bays or demo motorcycles immediately.
+- **US-06.2 (`Customer`)**: As a `Customer`, I want live in-app notifications and persistent unread badges whenever my workshop booking or test-drive status changes, a `VIN` maintenance reminder triggers, or my loyalty points/tier upgrades, so that I stay informed in real time and catch up on missed events when logging in later.
 
 #### SignalR Hub Contract (`/hubs/notifications`)
 - **Group Routing on Connection**:
   - `user-{userId}`: Joined automatically by every authenticated user (`Customer`, `DealerStaff`, `Admin`).
   - `dealer-{dealerId}`: Joined automatically by `DealerStaff` using the server-verified JWT `dealer_id` claim (never client-supplied parameters, preventing cross-dealer eavesdropping).
   - `role-Admin`: Joined automatically by `Admin` users.
-- **Canonical Server-to-Client Events (`INotificationClient`)**:
-  1. `BookingCreated`: Pushed to `dealer-{dealerId}` immediately after `ServiceBookings` commit.
-  2. `BookingStatusChanged`: Pushed to `user-{customerId}` whenever `DealerStaff` updates booking status (`Confirmed`, `InProgress`, `Completed`, `Cancelled`, `NoShow`).
+- **Canonical Server-to-Client Events (`INotificationClient` — `10` Events)**:
+  1. `BookingCreated`: Pushed to `dealer-{dealerId}` and `role-Admin` immediately after `ServiceBookings` commit.
+  2. `BookingStatusChanged`: Pushed to `user-{customerId}` and `dealer-{dealerId}` whenever `DealerStaff` updates booking status or customer cancels.
   3. `MaintenanceReminderTriggered`: Pushed to `user-{customerId}` by `VinMaintenanceReminderWorker`.
-  4. `LoyaltyPointsUpdated`: Pushed to `user-{customerId}` on `SalesOrders` / `ServiceInvoices` point accrual, voucher redemption, or admin adjustment.
+  4. `LoyaltyPointsUpdated`: Pushed to `user-{customerId}` on `SalesOrders` / `ServiceInvoices` point accrual, `+25` `ServiceReviewBonus` credit, voucher redemption, or admin adjustment.
   5. `TierUpgraded`: Pushed to `user-{customerId}` whenever `CurrentTierId` advances to a higher `LoyaltyTiers` rank.
+  6. `TestDriveCreated` (`v1.1.0`): Pushed to `dealer-{dealerId}` and `role-Admin` immediately after `TestDriveBookings` commit.
+  7. `TestDriveStatusChanged` (`v1.1.0`): Pushed to `user-{customerId}` and `dealer-{dealerId}` whenever `DealerStaff` confirms (with optional demo `VIN`), completes, or marks `NoShow`/`Cancelled`, or when the customer cancels.
+  8. `ServiceReviewSubmitted` (`v1.2.0`): Pushed to `dealer-{dealerId}` and `role-Admin` immediately after a customer submits a 5-star post-service CSAT `ServiceReview`.
+  9. `WarrantyClaimCreated` (`v1.2.0`): Pushed to `dealer-{dealerId}` and `role-Admin` immediately after a customer files a `WarrantyClaim` on an owned `CustomerVehicle`.
+  10. `WarrantyClaimStatusChanged` (`v1.2.0`): Pushed to `user-{customerId}` and `dealer-{dealerId}` whenever `DealerStaff` or `Admin` updates warranty claim adjudication (`UnderReview`, `Approved`, `Rejected`, `Completed`).
 
 #### Acceptance Criteria (Given / When / Then)
 1. **AC-06.1 — Instant Staff Booking Alert Without Page Refresh**:
@@ -390,6 +398,118 @@ flowchart TD
 
 ---
 
+### 6.8 `FR-08`: Showroom Test-Drive Scheduling, OEM Spare-Parts Itemized Invoicing & Printable Official Receipts (`v1.1.0`)
+
+- **Priority**: `P0 (Critical — Phase 8 Commercial Expansion)` | **Delivery Phase**: `Phase 8 (v1.1.0)`
+- **Mapped Tables**: `TestDriveBookings` (`Table 23`, `IDealerScoped`, `RowVersion`), `SpareParts` (`Table 24`, `ISoftDeletable`), `ServiceInvoiceLineItems` (`Table 25`, `IImmutableFinancialEntity`), `SalesOrders`, `ServiceInvoices`, `DealerInventories`, `Notifications`
+- **Mapped Endpoints**: `/api/v1/test-drives`, `/api/v1/test-drives/my`, `/api/v1/test-drives/{testDriveId}`, `/api/v1/test-drives/{testDriveId}/cancel`, `/api/v1/test-drives/{testDriveId}/status`, `/api/v1/spare-parts`, `/api/v1/spare-parts/{partId}`, `/api/v1/service-invoices/{invoiceId}/receipt`, `/api/v1/sales-orders/{orderId}/receipt`
+
+#### User Stories
+- **US-08.1 (`Customer`)**: As a `Customer` browsing the showroom, I want to click `[Book Test Drive]` on any active `MotorcycleModel`, pick a preferred dealership and time window, and see live confirmation and assigned demo `VIN` updates without refreshing, so that I can test-ride a motorcycle before purchasing.
+- **US-08.2 (`DealerStaff`)**: As a `DealerStaff` showroom coordinator, I want incoming `TestDriveBookings` to appear instantly on `/staff/test-drives` via SignalR `TestDriveCreated`, assign an `Available` demo `VIN` under `RowVersion` protection, and convert a `Completed` test drive directly into a Showroom `SalesOrder` with one click.
+- **US-08.3 (`DealerStaff` & `Admin`)**: As an `Admin`, I want to curate a master OEM `SpareParts` catalog (`PartCode`, category, model fitment or universal fit, `UnitPriceVnd`), and as `DealerStaff`, I want to pick compatible OEM spare parts and labor line items inside `SCR-STF-02` so `ServiceInvoices` persist immutable itemized `ServiceInvoiceLineItems` whose sum equals `GrossAmount`.
+- **US-08.4 (`Customer` & `DealerStaff`)**: As a `Customer` or `DealerStaff` advisor, I want to open and print clean A4/thermal official Dealership Tax & Loyalty Receipts (`RCP-SLS-*` and `RCP-SVC-*`) carrying a deterministic SHA-256 `VerificationCode` via `<printable-receipt-modal>`.
+
+#### Business Rules
+- **Test-Drive Window Capacity & Overlap Guard**: Each `(DealerId, MotorcycleModelId, PreferredDate, StartTime)` window permits at most **`2` active (`Requested` or `Confirmed`) `TestDriveBookings`** inside an ACID `CreateExecutionStrategy()` transaction (`409 TEST_DRIVE_SLOT_FULL` on contention), and blocks overlapping active test drives for the same customer (`409 TEST_DRIVE_OVERLAP`).
+- **Seamless Demo-to-Sale Progression**: If a demo `DealerInventories` unit assigned during `Confirmed` is subsequently sold via `POST /api/v1/sales-orders` (`StockStatus = 'Sold'`), `PATCH /api/v1/test-drives/{id}/status` cleanly transitions `Confirmed -> Completed` while preserving the historical `AssignedInventoryId` audit reference.
+- **Itemized OEM Spare-Parts Compatibility & Immutability**: When `POST /api/v1/service-invoices` includes `LineItems`, every referenced `SparePart` must be active (`422 SPARE_PART_INACTIVE` otherwise) and either universal (`CompatibleModelId == NULL`) or matched to the booked vehicle's `MotorcycleModelId` (`422 SPARE_PART_INCOMPATIBLE`). `ServiceInvoiceLineItems` snapshots `PartCodeSnapshot`, `Description`, `Quantity`, `UnitPriceVnd`, and `LineTotalVnd` as an immutable financial record (`SUM(Part lines) == PartsAmount`, `SUM(Labor lines) == LaborAmount`, `PartsAmount + LaborAmount == GrossAmount`), while keeping legacy summary-only payloads 100% backward-compatible.
+- **SHA-256 Printable Receipt Verification**: `GET /api/v1/service-invoices/{id}/receipt` and `GET /api/v1/sales-orders/{id}/receipt` enforce strict `Customer` ownership (`403 FORBIDDEN_RESOURCE_OWNER`) and `DealerStaff` `IDealerScoped` branch isolation (`404`), returning a deterministic 16-character uppercase hex SHA-256 `VerificationCode` (`ReceiptVerificationHash`).
+
+#### Acceptance Criteria (Given / When / Then)
+1. **AC-08.1 — Concurrency-Safe Test-Drive Slot Cap & Zero-Refresh SignalR Dispatch**:
+   - **Given** a dealership/model test-drive window (`10:00–10:45`) has a maximum active cap of `2` riders and `6` authenticated `Customer` sessions submit `POST /api/v1/test-drives` simultaneously,
+   - **When** all `6` transactions execute against SQL Server,
+   - **Then** at most `2` requests succeed with HTTP `201 Created` (`TD-YYYYMMDD-XXXXXX`), the remaining `4` fail deterministically with HTTP `409 Conflict` (`TEST_DRIVE_SLOT_FULL`), and connected `DealerStaff` on `app.staff.testDrives` (`dealer-{dealerId}`) receive `TestDriveCreated` cards live with zero page reloads.
+2. **AC-08.2 — Demo VIN Assignment & Post-Sale Completion Continuity**:
+   - **Given** `DealerStaff` confirms a `Requested` test drive (`PATCH /api/v1/test-drives/{id}/status` with `RowVersion`), assigning an `Available` branch demo `VIN` (`TestDriveStatusChanged` pushed to `user-{customerId}`), and the customer then purchases that exact `VIN` via `POST /api/v1/sales-orders`,
+   - **When** `DealerStaff` marks the test drive `Completed`,
+   - **Then** the transition succeeds (`200 OK`) preserving `AssignedInventoryId` and `AssignedVin` for historical showroom attribution.
+3. **AC-08.3 — OEM Spare-Parts Compatibility Validation & Immutable Line-Item Reconciliation**:
+   - **Given** an `InProgress` `ServiceBooking` for a **Honda SH160i** (`Model A`) and an OEM `SparePart` restricted exclusively to **Yamaha Exciter 155** (`Model B`),
+   - **When** `DealerStaff` attempts `POST /api/v1/service-invoices` including `Model B`'s part,
+   - **Then** the API rejects the request with HTTP `422 Unprocessable Entity` (`SPARE_PART_INCOMPATIBLE`); when settled with compatible/universal `SpareParts` and labor lines, `ServiceInvoiceLineItems` are persisted immutably (`UPDATE`/`DELETE` blocked by `AppendOnlyLedgerInterceptor`) with `SUM(LineTotalVnd) == GrossAmount`.
+4. **AC-08.4 — Printable Official Receipt Tenant Isolation & SHA-256 Seal**:
+   - **Given** a finalized `ServiceInvoice` (`INV-*`) or `SalesOrder` (`SO-*`) at `Dealer D1` owned by `Customer A`,
+   - **When** `Customer A` or `D1` `DealerStaff` requests `GET /api/v1/{service-invoices|sales-orders}/{id}/receipt`,
+   - **Then** the API returns `200 OK` with `RCP-SVC-*` / `RCP-SLS-*` and deterministic 16-char SHA-256 `verificationCode`, whereas `Customer B` receives `403 FORBIDDEN_RESOURCE_OWNER` and `Dealer D2` `DealerStaff` receives `404 Not Found`.
+5. **AC-08.5 — Clean `@media print` Receipt Modal Layout**:
+   - **Given** a user opens `<printable-receipt-modal>` from `SCR-STF-02`, `SCR-STF-03`, `SCR-CUS-04`, or `SCR-CUS-05` and clicks `[Print Official Receipt]`,
+   - **When** `$window.print()` invokes the browser `@media print` stylesheet,
+   - **Then** `.top-navbar`, `.role-sidebar`, `.breadcrumb-bar`, and `.toast-stack` are hidden while the itemized tax & loyalty receipt renders cleanly on A4/thermal paper.
+
+---
+
+### 6.9 `FR-09`: Post-Service 5-Star CSAT Reviews (`+25` Bonus `AvailablePoints`) & 36-Month / 30,000-km VIN Warranty Claims (`v1.2.0`)
+
+- **Priority**: `P0 (Critical — Phase 9 Quality & Warranty Expansion)` | **Delivery Phase**: `Phase 9 (v1.2.0)`
+- **Mapped Tables**: `ServiceReviews` (`Table 26`, `IDealerScoped`, `RowVersion`), `WarrantyClaims` (`Table 27`, `IDealerScoped`, `RowVersion`), `ServiceInvoices`, `PointLedgerEntries`, `LoyaltyAccounts`, `CustomerVehicles`, `MotorcycleModels`, `SpareParts`, `Notifications`
+- **Mapped Endpoints**: `/api/v1/service-reviews`, `/api/v1/service-reviews/my`, `/api/v1/service-reviews/by-invoice/{invoiceId}`, `/api/v1/service-reviews/{reviewId}/response`, `/api/v1/warranty-claims`, `/api/v1/warranty-claims/my`, `/api/v1/warranty-claims/{claimId}`, `/api/v1/warranty-claims/{claimId}/status`, `/api/v1/admin/analytics/quality-warranty`
+
+#### User Stories
+- **US-09.1 (`Customer`)**: As a `Customer` who paid a finalized workshop `ServiceInvoice`, I want to submit a 1-to-5 star post-service CSAT review (`OverallRating`, `TechnicianQualityRating`, `AdvisorHospitalityRating`, `WouldRecommend`, `Comment`) once per invoice and immediately earn **`+25` flat bonus spendable loyalty points (`AvailablePoints`)**, so my feedback is rewarded and heard by the branch.
+- **US-09.2 (`Customer`)**: As a `Customer` owning a motorcycle in `CustomerVehicles` within its factory warranty window (`<= 36 months` and `<= 30,000 km`), I want to submit a `WarrantyClaim` (`DefectCategory`, `SymptomDescription`, `MileageAtClaimKm`) and track adjudication in real time via SignalR `WarrantyClaimStatusChanged`.
+- **US-09.3 (`DealerStaff`)**: As a `DealerStaff` quality coordinator, I want incoming `ServiceReviewSubmitted` and `WarrantyClaimCreated` events to appear live on `/staff/warranty-reviews` (`SCR-STF-07`) with zero page reloads, post official branch responses to customer reviews (`RowVersion` guarded), and adjudicate branch warranty claims (`Submitted -> UnderReview -> Approved | Rejected -> Completed`) with optional compatible OEM `CoveredSparePartId` and `ApprovedCoveredAmountVnd`.
+- **US-09.4 (`Admin`)**: As an `Admin`, I want an interactive **CSAT & Warranty Quality Dashboard** (`/admin/quality-warranty`, `SCR-ADM-08`) with `Chart.js v4` visualizations comparing per-dealer `AverageCsatRating`, recommendation rates, warranty claim defect categories, and `ApprovedWarrantyCoveredVnd`.
+
+#### Business Rules
+- **1:1 Invoice CSAT Review & `+25` Spendable Bonus Invariant**:
+  - Only the owning `Customer` (`ServiceInvoice.CustomerId == currentUser.UserId`, else `403 FORBIDDEN_RESOURCE_OWNER`) may submit `POST /api/v1/service-reviews` for a settled `ServiceInvoice` (`Status == 'Paid'`), strictly at most once per invoice (`UQ_ServiceReviews_ServiceInvoiceId` -> `409 REVIEW_ALREADY_SUBMITTED` on duplicate/race).
+  - Within a single ACID transaction, submitting a `ServiceReview` (`REV-YYYYMMDD-XXXXXX`) appends an immutable `PointLedgerEntries` row (`TransactionType = 'ServiceReviewBonus'`, `PointsDelta = +25`, `ReferenceType = 'ServiceReview'`, `IdempotencyKey = $"SERVICE_REVIEW:{ServiceInvoiceId}:BONUS"`) that credits **`LoyaltyAccounts.AvailablePoints += 25` ONLY** while keeping **`LifetimeQualifyingPoints` strictly unchanged** (engagement bonuses never inflate spending-based tier progression).
+- **Factory Warranty Window & Active Duplicate Claim Guard**:
+  - `POST /api/v1/warranty-claims` verifies vehicle ownership (`403 FORBIDDEN_RESOURCE_OWNER`), monotonic mileage (`MileageAtClaimKm >= CurrentMileageKm`, else `422 ODOMETER_REGRESSION`), factory warranty eligibility against `MotorcycleModels.WarrantyMonths` (`36` months from `OwnershipStartDateUtc`) and `WarrantyMileageKm` (`30,000` km) (`422 WARRANTY_COVERAGE_EXPIRED` when exceeded), and blocks duplicate active claims (`Submitted`/`UnderReview`/`Approved`) for the same `(CustomerVehicleId, DefectCategory)` (`409 ACTIVE_WARRANTY_CLAIM_EXISTS`).
+  - When `DealerStaff`/`Admin` transitions a claim via `PATCH /api/v1/warranty-claims/{claimId}/status` (`RowVersion` guarded), any `CoveredSparePartId` must be active and universal or matched to the vehicle's `MotorcycleModelId` (`422 SPARE_PART_INCOMPATIBLE`).
+
+#### Acceptance Criteria (Given / When / Then)
+1. **AC-09.1 — Concurrency-Safe 1:1 Service Review & `+25` Spendable Bonus Credit**:
+   - **Given** `Customer` Minh has a settled `ServiceInvoice` (`INV-*`) and `6` concurrent `POST /api/v1/service-reviews` requests fire simultaneously for that `ServiceInvoiceId`,
+   - **When** SQL Server executes all `6` transactions,
+   - **Then** exact `1` succeeds (`201 Created`, `BonusPointsAwarded = 25`), `5` fail with `409 REVIEW_ALREADY_SUBMITTED`, `LoyaltyAccounts.AvailablePoints` increases by `+25` (`PointLedgerEntries` `SERVICE_REVIEW:{InvoiceId}:BONUS`) while `LifetimeQualifyingPoints` remains unchanged, and `ServiceReviewSubmitted` + `LoyaltyPointsUpdated` dispatch post-commit.
+2. **AC-09.2 — Warranty Coverage Enforcement & Zero-Refresh SignalR Lifecycle**:
+   - **Given** an owned `CustomerVehicle` within `<= 36 months` and `<= 30,000 km`,
+   - **When** the customer submits `POST /api/v1/warranty-claims`,
+   - **Then** `WC-YYYYMMDD-XXXXXX` commits (`201 Created`), `DealerStaff` on `SCR-STF-07` (`dealer-{dealerId}`) receives `WarrantyClaimCreated` with zero page refresh, and vehicles exceeding `WarrantyMonths` or `WarrantyMileageKm` are rejected with `422 WARRANTY_COVERAGE_EXPIRED`.
+
+---
+
+### 6.10 `FR-10`: Native Android Field Mobile Application (`.NET 10 MAUI`, 2-Role Field Scope, Offline `SQLCipher` Cache & Camera2 VIN/QR) (`v1.3.0`)
+
+- **Priority**: `P0 (Critical — Phase 10 Native Field Mobility Expansion)` | **Delivery Phase**: `Phase 10 (v1.3.0)`
+- **Mapped Server Contracts**: Reuses `100%` of the existing `27`-table SQL Server schema, `18` REST controllers (`/api/v1/*`), `48` RBAC permissions (`Mobile.Core/Contracts/Permissions.cs`), and `10`-event `/hubs/notifications` SignalR Hub with **zero breaking backend migrations**.
+- **Mapped On-Device Tables (`9` Encrypted `SQLCipher` WAL Tables)**: `CacheSyncState`, `CachedDealer`, `CachedMotorcycleModel`, `CachedCustomerVehicle`, `CachedLoyaltyWallet`, `CachedCustomerVoucher`, `CachedActiveAppointment`, `CachedReceiptSnapshot`, `OfflineMutationQueueItem`.
+- **Mapped Mobile Screens (`16` Compiled `x:DataType` Views)**: `SCR-MOB-PUB-01..04`, `SCR-MOB-CUS-01..06`, `SCR-MOB-STF-01..06` + modal `CameraBarcodeScannerPage` ([MOBILE_MAUI_SCREENS.md](./screens/MOBILE_MAUI_SCREENS.md)).
+
+#### User Stories
+- **US-10.1 (`Customer`)**: As a `Customer` visiting a basement workshop bay with weak cellular signal, I want to view my metallic Loyalty Passbook, present offline QR codes for my redeemed `CustomerVouchers`, `ServiceBookings`, and `RCP-*` receipts, scan my motorcycle's 17-character chassis `VIN` using the Android camera, update my odometer offline, and receive native Android notifications when my service status or loyalty tier changes.
+- **US-10.2 (`DealerStaff`)**: As a `DealerStaff` showroom advisor or service bay technician, I want a native Android field workbench (`AppShell` 5-tab bar) to scan customer Booking/Voucher QRs and 17-char VIN stickers via Camera2, swipe bookings to `CheckedIn`/`InProgress`, assemble itemized OEM `SpareParts` invoices with live two-step floor point previews, receive instant SignalR `BookingCreated`/`TestDriveCreated`/`WarrantyClaimCreated` alerts as Android `NotificationChannel` banners, and sign out of my mobile device without terminating my desktop Web SPA session.
+- **US-10.3 (`Admin`)**: As an `Admin`, if I sign in on the Android field app, I want a clear `AdminWebConsoleNoticePage` directing me to the AngularJS Web HQ dashboard so complex multi-dealer `Chart.js` analytics and master catalog administration stay on desktop browsers.
+
+#### Business Rules
+- **2-Role Field Scope & 48-Permission Parity**: `MobileRoleGuard` routes `Public` (`3` tabs), `Customer` (`20` permissions, `5` tabs + bell), `DealerStaff` (`22` permissions strictly `DealerId`-scoped, `5` tabs + pushed Invoice Builder + bell), and `Admin` (`AdminWebConsoleNoticePage`).
+- **Single-Flight `401` Refresh & Device-Safe Multi-Device Logout**: `SingleFlightTokenRefreshHandler` uses a singleton `SemaphoreSlim(1, 1)` double-check to collapse concurrent `401` responses into a single `/api/v1/auth/refresh` rotation; `LogoutCoordinator` defaults to `LogoutRequest { RefreshToken, RevokeAllDevices = false }` so desktop Web SPA sessions remain signed in, while wiping Android Keystore `SecureStorage` and all user/dealer-scoped `SQLCipher` tables (`OwnerScopeKey`).
+- **Strict `ADR-003`/`ADR-005` Online-Only Boundary**: `OfflineOutboxSyncService` MUST reject offline queueing of `SalesOrders`, `ServiceInvoices`, `ServiceInvoiceLineItems`, `PointLedgerEntries`, `RowVersion` slot/test-drive reservations, and voucher redemptions. Only `NotificationRead`, `NotificationReadAll`, `VehicleMileageUpdate`, `ServiceReviewSubmit`, and `WarrantyClaimSubmit` are eligible for FIFO offline queueing (dropped cleanly on `409`/`422`).
+- **Android Security Hardening**: `AndroidManifest.xml` MUST set `android:allowBackup="false"` with zero global cleartext traffic; `network_security_config.xml` enforces `<base-config cleartextTrafficPermitted="false" />` and restricts cleartext exclusively to `10.0.2.2`, `localhost`, and `127.0.0.1`.
+
+#### Acceptance Criteria (Given / When / Then)
+1. **AC-10.1 — Single-Flight Refresh & Device-Scoped Logout**:
+   - **Given** an expired mobile access token and `10` concurrent API requests returning `401 Unauthorized`,
+   - **When** `SingleFlightTokenRefreshHandler` intercepts all `10` responses,
+   - **Then** exact `1` `POST /api/v1/auth/refresh` rotation executes, all `10` buffered requests replay with the new Bearer token, and calling `SignOut` sends `RevokeAllDevices = false`, wiping Android Keystore + user-scoped `SQLCipher` rows while preserving public `CachedDealer`/`CachedMotorcycleModel` tables and keeping the Web SPA session active.
+2. **AC-10.2 — Encrypted `SQLCipher` Isolation & Online-Only Financial Guard**:
+   - **Given** an authenticated `Customer` or `DealerStaff` session caching offline receipts and vouchers in `MobileOfflineDb`,
+   - **When** opening the `.db3` file with an incorrect passphrase or attempting to enqueue a `SalesOrder`/`ServiceInvoice`/`RowVersion` slot reservation into `OfflineOutboxSyncService`,
+   - **Then** `SQLCipher` rejects the wrong key (`SQLiteException`) and `OfflineOutboxSyncService` throws an `OnlineOnlyViolation` rejection without persisting prohibited mutations.
+3. **AC-10.3 — Camera2 VIN/QR Deep-Link Parsing & Offline Vector QR Display**:
+   - **Given** a customer's offline `CachedCustomerVoucher` (`dealer://voucher/v1?code=...&id=...&rv=...`) or 17-character ISO 3779 VIN barcode,
+   - **When** displayed via `QrCodeDisplayView` with zero connectivity or scanned via `CameraBarcodeScannerPage` (or its emulator manual fallback),
+   - **Then** `QrCodeMatrixEncoder` renders a scannable ISO/IEC 18004 QR code offline and `DealerQrPayloadParser` routes the scanned voucher/booking/VIN directly into the target field ViewModel.
+4. **AC-10.4 — Native `10`-Event SignalR Lifecycle & Live `Pixel_8_API_35` Execution**:
+   - **Given** `vn.motorcycledealer.mobile` running live on WHPX `Pixel_8_API_35` (`adb reverse tcp:5080 tcp:5080`),
+   - **When** navigating Showroom -> Customer Loyalty Wallet QR -> DealerStaff Bay Workbench and toggling `Window.Stopped`/`Window.Resumed`,
+   - **Then** live seeded data renders with `0` `AndroidRuntime:E` crashes, SignalR pauses/resumes cleanly with `sinceUtc` delta catch-up, and `AndroidLocalNotificationService` dispatches alerts across `BookingAlerts`, `LoyaltyRewards`, and `WarrantyUpdates` channels.
+
+---
+
 ## 7. Edge Cases, Failure Modes & Error Scenarios
 
 | ID | Scenario / Edge Case | Expected Deterministic System Behavior | HTTP / Protocol Outcome |
@@ -405,7 +525,13 @@ flowchart TD
 | **EC-09** | **SignalR WebSocket Drop on Staff Workbench**: Dealership Wi-Fi blips for `20` seconds while bookings arrive. | `@microsoft/signalr` `.withAutomaticReconnect([0, 2000, 5000, 10000, 30000])` reconnects, re-authenticates JWT, rejoins `dealer-{dealerId}`, and triggers background sync of unread `Notifications` and active bookings. | Seamless live queue recovery |
 | **EC-10** | **Cross-Dealer Forged Payload**: `DealerStaff` at `D1` sends `DealerId = D2` inside a JSON request body. | Server **ignores** any client-supplied `DealerId` for `DealerStaff` and enforces the authenticated JWT `dealer_id` claim + `IDealerScoped` query filter. | `403 Forbidden` / `404 Not Found` |
 | **EC-11** | **Voucher Catalog Quota Exhaustion**: Two customers simultaneously redeem the final remaining unit (`QuotaRedeemed == QuotaTotal - 1`) of a limited promo voucher. | Atomic conditional SQL increment (`WHERE QuotaRedeemed < QuotaTotal`) allows one redemption and rejects the second without deducting points. | `409 Conflict` (`ProblemDetails`) |
-| **EC-12** | **AngularJS View Destroy with Active Charts/Listeners**: Admin switches rapidly between routes while `Chart.js` instances and SignalR `$rootScope` listeners are active. | Every controller registers `$scope.$on('$destroy', ...)` to call `chart.destroy()` and deregister SignalR event handlers, preventing memory and digest leaks. | Zero memory/digest leak |
+| **EC-12** | **AngularJS View Destroy with Active Charts/Listeners**: Admin switches rapidly between routes while `Chart.js` instances and SignalR `$rootScope` listeners are active. | Every controller registers `$onDestroy` to call `chart.destroy()` and deregister SignalR event handlers, preventing memory and digest leaks. | Zero memory/digest leak |
+| **EC-13** | **Parallel Showroom Test-Drive Contention or Customer Overlap**: Three riders request the same `(DealerId, MotorcycleModelId, PreferredDate, StartTime)` window (`cap = 2`), or one rider double-books overlapping windows. | ACID transaction rejects the 3rd concurrent request (`TEST_DRIVE_SLOT_FULL`) and rejects overlapping customer windows (`TEST_DRIVE_OVERLAP`). | `409 Conflict` (`ProblemDetails`) |
+| **EC-14** | **Incompatible or Inactive OEM Spare Part on Workshop Invoice**: Advisor submits a `ServiceInvoice` containing a deactivated `SparePart` or a SKU restricted to another `MotorcycleModelId`. | Server validates `SpareParts.IsActive` and `CompatibleModelId` against the booked vehicle's `MotorcycleModelId`, aborting transaction cleanly. | `422 Unprocessable Entity` (`ProblemDetails`) |
+| **EC-15** | **Parallel Duplicate Post-Service CSAT Review Submission**: Customer double-clicks `[Submit Review]` on a paid `ServiceInvoice` to farm `+25` bonus points. | `UQ_ServiceReviews_ServiceInvoiceId` + `UQ_PointLedgerEntries_IdempotencyKey` (`SERVICE_REVIEW:{InvoiceId}:BONUS`) allow exact `1` review and `+25` `AvailablePoints` grant, rejecting duplicates cleanly. | `409 Conflict` (`REVIEW_ALREADY_SUBMITTED`) |
+| **EC-16** | **Expired Factory Warranty or Duplicate Active Claim**: Customer files a `WarrantyClaim` on a vehicle older than `36` months / `> 30,000 km` or with an already open claim in the same `DefectCategory`. | Domain checks `OwnershipStartDateUtc + WarrantyMonths` and `MileageAtClaimKm <= WarrantyMileageKm` (`422 WARRANTY_COVERAGE_EXPIRED`) and rejects duplicate open claims (`409 ACTIVE_WARRANTY_CLAIM_EXISTS`). | `422 Unprocessable Entity` / `409 Conflict` |
+| **EC-17** | **Mobile Offline Financial or Slot-Booking Attempt (`v1.3.0`)**: Customer or DealerStaff attempts to finalize a `SalesOrder`, `ServiceInvoice`, `ServiceBooking`, or voucher redemption while device connectivity is offline. | `OfflineOutboxSyncService` enforces strict `ADR-003`/`ADR-005` online-only rules, rejecting queueing and presenting an actionable connectivity banner while keeping offline QR passbook & `CachedReceiptSnapshot` readable. | Local `OnlineOnlyViolation` guard (zero stale writes) |
+| **EC-18** | **Mobile Account Lockout or Multi-Device Logout (`v1.3.0`)**: Admin locks a mobile user mid-session, or user signs out on Android while logged into the AngularJS Web SPA. | `403 ACCOUNT_LOCKED`/`STAFF_DEALER_UNASSIGNED` invokes `ForceSignOutAsync()` wiping Keystore + user `SQLCipher` rows; normal mobile logout posts `RevokeAllDevices = false` so the Web SPA `TokenFamilyId` stays active. | `403 Forbidden` force wipe / `200 OK` isolated logout |
 
 ---
 
@@ -413,37 +539,37 @@ flowchart TD
 
 To preserve architectural focus and solo-project engineering quality within the `02/2026 - 08/2026` timeline, the following items are **explicitly out of scope**:
 
-1. **Online Payment Gateway / PCI Card Processing**: Showroom bike sales (`SalesOrders`) and workshop bills (`ServiceInvoices`) are settled physically at the dealership counter/POS (cash, bank transfer, POS terminal) and recorded as finalized financial documents in the platform.
-2. **Native iOS / Android Mobile Applications**: All three roles access the system through the responsive **AngularJS 1.8** web SPA across desktop and mobile browsers.
-3. **OEM Factory Manufacturing & Spare-Parts Warehouse ERP**: Workshop `ServiceInvoices` capture consolidated `LaborAmount`, `PartsAmount`, and notes rather than granular bolt-by-bolt warehouse bin replenishment.
+1. **Online Payment Gateway / PCI Card Processing**: Showroom bike sales (`SalesOrders`) and workshop bills (`ServiceInvoices`) are settled physically at the dealership counter/POS (cash, bank transfer, POS terminal) and recorded as finalized financial documents with printable SHA-256 receipts (`RCP-SLS-*`, `RCP-SVC-*`) in the platform.
+2. **iOS App Store Distribution & Admin Mobile Console**: Phase 10 (`v1.3.0`) delivers the native **C# `.NET 10 MAUI` Android Field App** (`net10.0-android`, API `26`–`35`) for `Public Showroom`, `Customer`, and `DealerStaff` field workflows, whereas `Admin` executive analytics/catalog management remains exclusively on the **AngularJS 1.8.3 Web HQ SPA** and Apple iOS provisioning/App Store distribution stays out of scope.
+3. **OEM Factory Manufacturing & Multi-Warehouse Bin Replenishment ERP**: While `v1.1.0`–`v1.2.0` deliver a governed master OEM `SpareParts` catalog, immutable itemized `ServiceInvoiceLineItems`, and dealership `WarrantyClaims` adjudication, physical factory manufacturing, supplier purchase orders, and warehouse bin-location stock counting remain out of scope.
 4. **Multi-Currency Foreign Exchange**: All monetary values are standardized in Vietnamese Dong (`VND`) stored as `DECIMAL(18,2)`.
 5. **Peer-to-Peer Used Motorcycle Marketplace**: Customers can register externally acquired motorcycles in their `VIN` garage for maintenance and loyalty accrual, but consumer-to-consumer classified listings are excluded.
-6. **Hard Deletion or Mutation of Financial / Loyalty History**: Finalized `SalesOrders`, `ServiceInvoices`, and `PointLedgerEntries` are immutable audit records; adjustments occur strictly via compensating entries.
+6. **Hard Deletion or Mutation of Financial / Loyalty History**: Finalized `SalesOrders`, `ServiceInvoices`, `ServiceInvoiceLineItems`, and `PointLedgerEntries` are immutable audit records; adjustments occur strictly via compensating entries.
 
 ---
 
 ## 9. Non-Functional Requirements (NFRs)
 
 ### 9.1 Security & Access Control (`NFR-SEC`)
-- **Authentication**: Stateless JWT Bearer access tokens (`15-minute` expiry) paired with cryptographically random, SHA-256 hashed `RefreshTokens` (`7-day` expiry) supporting rotation and token-family revocation on reuse detection.
-- **Password Storage**: Passwords hashed via adaptive work-factor hashing (`ASP.NET Core Identity PasswordHasher` / PBKDF2-HMAC-SHA512 or BCrypt) — plaintext or reversible encryption is strictly forbidden.
-- **Authorization Defense-in-Depth**: Dual-layer enforcement combining AngularJS UI-Router guards (`transitions.onBefore`) for UX and ASP.NET Core `[HasPermission("Permissions.<Module>.<Action>")]` policy handlers + `IDealerScoped` EF Core Global Query Filters for authoritative server-side security.
-- **Transport & Secrets Hygiene**: HTTPS enforcement in staging/production, strict CORS origin allowlisting (required for credentialed SignalR WebSockets), parameterized EF Core LINQ queries (`0` raw string-concatenated SQL), and zero credentials committed to Git.
+- **Authentication**: Stateless JWT Bearer access tokens (`15-minute` expiry) paired with cryptographically random, SHA-256 hashed `RefreshTokens` (`7-day` expiry) supporting rotation, token-family revocation on reuse detection, and immediate lockout enforcement via `ActivePrincipalMiddleware`.
+- **Password Storage**: Passwords hashed via adaptive work-factor hashing (`PBKDF2-HMAC-SHA512`, `210,000` iterations, constant-time comparison) — plaintext or reversible encryption is strictly forbidden.
+- **Authorization Defense-in-Depth**: Dual-layer enforcement combining AngularJS UI-Router guards (`$transitions.onBefore` across `30` navigable routes) for UX and ASP.NET Core `[HasPermission("Permissions.<Module>.<Action>")]` policy handlers (`48` canonical permissions) + `IDealerScoped` EF Core Global Query Filters (`8` dealer-scoped tables) for authoritative server-side security.
+- **Transport & Secrets Hygiene**: HTTPS enforcement in staging/production, strict CORS origin allowlisting (required for credentialed SignalR WebSockets), fixed-window auth rate limiting (`429 RATE_LIMIT_EXCEEDED`), parameterized EF Core LINQ queries (`0` raw string-concatenated SQL), and zero credentials committed to Git.
 
 ### 9.2 Concurrency & Transactional Consistency (`NFR-CON`)
-- **Optimistic Concurrency (`RowVersion`)**: Mandatory SQL Server `ROWVERSION` columns mapped as `[Timestamp]` concurrency tokens on `ServiceTimeSlots`, `DealerInventories`, `LoyaltyAccounts`, `CustomerVouchers`, and `ServiceBookings`.
-- **ACID Multi-Entity Boundaries**: Multi-table domain workflows (`SalesOrders` -> `CustomerVehicles` -> `PointLedgerEntries`; `ServiceBookings` -> `ServiceTimeSlots` -> `CustomerVouchers`; `ServiceInvoices` -> `CustomerVouchers` -> `PointLedgerEntries` -> `LoyaltyAccounts`) execute inside explicit `IUnitOfWork` SQL Server transactions.
+- **Optimistic Concurrency (`RowVersion`)**: Mandatory SQL Server `ROWVERSION` columns mapped as concurrency tokens on all `8` high-contention operational tables: `ServiceTimeSlots`, `DealerInventories`, `LoyaltyAccounts`, `CustomerVouchers`, `ServiceBookings`, `TestDriveBookings`, `ServiceReviews`, and `WarrantyClaims`.
+- **ACID Multi-Entity Boundaries**: Multi-table domain workflows (`SalesOrders` -> `CustomerVehicles` -> `PointLedgerEntries`; `ServiceBookings` -> `ServiceTimeSlots` -> `CustomerVouchers`; `ServiceInvoices` -> `ServiceInvoiceLineItems` -> `CustomerVouchers` -> `PointLedgerEntries` -> `LoyaltyAccounts`; `ServiceReviews` -> `PointLedgerEntries` -> `LoyaltyAccounts`; `TestDriveBookings` & `WarrantyClaims`) execute inside explicit `CreateExecutionStrategy()` + `BeginTransactionAsync()` SQL Server transactions.
 
 ### 9.3 Idempotency & Background Resilience (`NFR-IDEM`)
-- **Ledger Idempotency**: `PointLedgerEntries.IdempotencyKey` (`UNIQUE`) guarantees exactly-once point mutation per source business event (`SalesOrder:{Id}`, `ServiceInvoice:{Id}`, `Redeem:{CustomerVoucherId}`).
+- **Ledger Idempotency**: `PointLedgerEntries.IdempotencyKey` (`UNIQUE`) guarantees exactly-once point mutation per source business event (`SALES_ORDER:{Id}:EARN`, `SERVICE_INVOICE:{Id}:EARN`, `SERVICE_REVIEW:{InvoiceId}:BONUS`, `VOUCHER_REDEEM:{CustomerVoucherId}:SPEND`).
 - **Reminder Idempotency**: `MaintenanceReminders.DeduplicationKey` (`UNIQUE`) guarantees at-most-once alert dispatch per `{VIN}:{MaintenanceRuleId}:{TargetMileageKm}` milestone across worker restarts.
 
 ### 9.4 Performance & Scalability (`NFR-PERF`)
 - **API Response Targets**: `< 200 ms` P95 for transactional CRUD endpoints and `< 300 ms` P95 for cross-dealer `Admin` analytics queries over `100,000+` bookings/invoices using composite covering indexes and `AsNoTracking()` projections.
-- **Real-Time Push Latency**: `< 500 ms` P95 server-to-browser SignalR frame delivery for `BookingCreated` under `100` concurrent connected dealer workbenches.
+- **Real-Time Push Latency**: `< 500 ms` P95 server-to-browser SignalR frame delivery for `BookingCreated`, `TestDriveCreated`, `ServiceReviewSubmitted`, and `WarrantyClaimCreated` under `100` concurrent connected dealer workbenches.
 - **Bounded Queries**: All collection endpoints enforce server-side pagination (`pageNumber >= 1`, `pageSize` default `20`, max `100`).
 
 ### 9.5 Auditability, Precision & Observability (`NFR-AUD`)
-- **Temporal & Monetary Precision**: Every timestamp across all 22 tables uses `DATETIMEOFFSET(7)` normalized to `UTC`; every monetary column uses `DECIMAL(18,2)`.
-- **Immutable Audit Trail**: `PointLedgerEntries` is strictly append-only; `LoyaltyAccounts.AvailablePoints` is verifiable at any point in time against `SUM(PointLedgerEntries.PointsDelta)`.
-- **Standardized Diagnostics**: All API errors conform to `RFC 7807 ProblemDetails` with correlation `traceId`, structured Serilog/ILogger request logging, and `/health` readiness probes verifying SQL Server connectivity.
+- **Temporal & Monetary Precision**: Every timestamp across all **27** 3NF tables uses `DATETIMEOFFSET(7)` normalized to `UTC`; every monetary column uses `DECIMAL(18,2)`.
+- **Immutable Audit Trail**: `PointLedgerEntries` is strictly append-only (`LoyaltyAccounts.AvailablePoints == SUM(PointLedgerEntries.PointsDelta)`), `ServiceInvoiceLineItems` reconciles 100% with `ServiceInvoices.GrossAmount`, and official receipts carry deterministic SHA-256 verification hashes.
+- **Standardized Diagnostics**: All API errors conform to `RFC 7807 ProblemDetails` with correlation `traceId`, structured `ILogger` request logging, and `/health` + `/api/v1/health` readiness probes verifying SQL Server connectivity.
