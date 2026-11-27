@@ -13,6 +13,9 @@
       flushNow: 'Đồng bộ lên Server',
       clearLocal: 'Xóa tạm trình duyệt',
       allSources: 'Tất cả nguồn',
+      sourceServer: 'Máy chủ API (Server)',
+      sourceWebClient: 'Trình duyệt Web (WebClient)',
+      sourceMobileApp: 'Ứng dụng Di động (MobileApp)',
       screenLabel: 'Màn hình',
       targetLabel: 'Đích',
       totalBuffered: 'Tổng số bản ghi',
@@ -37,6 +40,9 @@
       flushNow: 'Flush to Server',
       clearLocal: 'Clear Local',
       allSources: 'All Sources',
+      sourceServer: 'API Server',
+      sourceWebClient: 'Web Browser',
+      sourceMobileApp: 'Mobile App',
       screenLabel: 'Screen',
       targetLabel: 'Target',
       totalBuffered: 'Total buffered',
@@ -118,9 +124,9 @@
                 '<select class="form-input" style="max-width:160px;min-height:34px;padding:4px 8px;font-size:12px;" ng-if="$ctrl.activeTab === \'server\'" ' +
                         'ng-model="$ctrl.sourceFilter" ng-change="$ctrl.loadServerLogs()">' +
                   '<option value="">{{ \'activityLog.allSources\' | t }}</option>' +
-                  '<option value="Server">Server</option>' +
-                  '<option value="WebClient">WebClient</option>' +
-                  '<option value="MobileApp">MobileApp</option>' +
+                  '<option value="Server">{{ \'activityLog.sourceServer\' | t }}</option>' +
+                  '<option value="WebClient">{{ \'activityLog.sourceWebClient\' | t }}</option>' +
+                  '<option value="MobileApp">{{ \'activityLog.sourceMobileApp\' | t }}</option>' +
                 '</select>' +
                 '<button type="button" class="btn btn-secondary btn-sm" ng-if="$ctrl.activeTab === \'server\'" ' +
                         'ng-disabled="$ctrl.loadingServer" ng-click="$ctrl.loadServerLogs()">' +

@@ -35,7 +35,7 @@
                                 StrokeThickness="1"
                                 StrokeShape="RoundRectangle 16"
                                 Padding="10,6"
-                                MinimumHeightRequest="38"
+                                MinimumHeightRequest="48"
                                 SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
                                 <Border.Behaviors>
                                     <toolkit:TouchBehavior
@@ -65,7 +65,7 @@
                                 StrokeThickness="1"
                                 StrokeShape="RoundRectangle 16"
                                 Padding="10,6"
-                                MinimumHeightRequest="38"
+                                MinimumHeightRequest="48"
                                 SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
                                 <Border.Behaviors>
                                     <toolkit:TouchBehavior

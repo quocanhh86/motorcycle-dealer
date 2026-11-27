@@ -14,6 +14,7 @@ using MotorcycleDealer.Mobile.Core.Logging;
 using MotorcycleDealer.Mobile.Core.Persistence;
 using MotorcycleDealer.Mobile.Core.Realtime;
 using MotorcycleDealer.Mobile.Core.Security;
+using MotorcycleDealer.Mobile.Core.ViewModels;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using ZXing.Net.Maui.Controls;
 
@@ -120,6 +121,7 @@ public static class MauiProgram
         MauiApp app = builder.Build();
 
         // Hydrate global singletons against native MAUI Preferences & OS accessibility settings at startup
+        MobileViewModelBase.MainThreadInvoker = MainThread.BeginInvokeOnMainThread;
         MotionHelper.MotionPreferences = app.Services.GetRequiredService<IMotionPreferencesService>();
         _ = app.Services.GetRequiredService<LocalizationService>();
 

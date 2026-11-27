@@ -92,6 +92,14 @@ public sealed partial class ShowroomCatalogViewModel : MobileViewModelBase
         }
 
         OnPropertyChanged(nameof(OfflineCatalogBannerText));
+
+        var selected = SelectedModel;
+        RefreshCollection(Models);
+        if (selected is not null)
+        {
+            SelectedModel = null;
+            SelectedModel = selected;
+        }
     }
 
     [RelayCommand]

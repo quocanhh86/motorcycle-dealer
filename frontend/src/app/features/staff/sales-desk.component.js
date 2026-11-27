@@ -344,7 +344,7 @@
                       '</tr>' +
                     '</thead>' +
                     '<tbody>' +
-                      '<tr class="stagger-item" ng-repeat="unit in $ctrl.filteredInventories track by unit.id" style="--i:{{ $index }};">' +
+                      '<tr class="stagger-item" ng-repeat="unit in $ctrl.filteredInventories track by unit.id" ng-attr-style="--i:{{ $index }};">' +
                         '<td class="mono-num tabular-nums" style="font-weight:700;">{{ unit.vin }}</td>' +
                         '<td class="mono-num tabular-nums text-secondary">{{ unit.engineNumber }}</td>' +
                         '<td>' +
@@ -419,7 +419,7 @@
                       '</tr>' +
                     '</thead>' +
                     '<tbody>' +
-                      '<tr class="stagger-item" ng-repeat="ord in $ctrl.salesOrders track by ord.id" style="--i:{{ $index }};">' +
+                      '<tr class="stagger-item" ng-repeat="ord in $ctrl.salesOrders track by ord.id" ng-attr-style="--i:{{ $index }};">' +
                         '<td class="mono-num tabular-nums" style="font-weight:700;">{{ ord.orderNumber }}</td>' +
                         '<td>' +
                           '<div class="text-primary" style="font-weight:600;">{{ ord.customerFullName || (\'common.customer\' | t) }}</div>' +

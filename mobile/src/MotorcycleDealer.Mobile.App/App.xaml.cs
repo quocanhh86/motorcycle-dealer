@@ -43,6 +43,7 @@ public partial class App : Application
 
         window.ModalPushed += (_, _) => ReapplyPlatformStatusBar();
         window.ModalPopped += (_, _) => ReapplyPlatformStatusBar();
+        window.Activated += (_, _) => ReapplyPlatformStatusBar();
 
         window.Created += async (_, _) =>
         {
@@ -112,6 +113,38 @@ public partial class App : Application
             if (Platform.CurrentActivity is MainActivity mainActivity)
             {
                 mainActivity.ApplyCarbonStatusBar();
+            }
+        });
+#elif IOS
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            if (!OperatingSystem.IsIOSVersionAtLeast(13) || !UIKit.UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+            {
+                return;
+            }
+
+            AppTheme activeTheme = Current is { UserAppTheme: not AppTheme.Unspecified } currentApp
+                ? currentApp.UserAppTheme
+                : Current?.RequestedTheme ?? AppTheme.Light;
+            UIKit.UIUserInterfaceStyle targetStyle = activeTheme == AppTheme.Dark
+                ? UIKit.UIUserInterfaceStyle.Dark
+                : UIKit.UIUserInterfaceStyle.Light;
+
+            Foundation.NSSet<UIKit.UIScene>? connectedScenes = UIKit.UIApplication.SharedApplication?.ConnectedScenes;
+            if (connectedScenes is null)
+            {
+                return;
+            }
+
+            foreach (UIKit.UIScene scene in connectedScenes)
+            {
+                if (scene is UIKit.UIWindowScene windowScene)
+                {
+                    foreach (UIKit.UIWindow window in windowScene.Windows)
+                    {
+                        window.OverrideUserInterfaceStyle = targetStyle;
+                    }
+                }
             }
         });
 #endif

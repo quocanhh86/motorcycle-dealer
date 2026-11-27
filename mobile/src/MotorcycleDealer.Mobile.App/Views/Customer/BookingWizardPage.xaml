@@ -30,10 +30,11 @@
                     StrokeThickness="1"
                     StrokeShape="RoundRectangle 16"
                     Padding="0">
-                    <Grid HeightRequest="142">
+                    <Grid HeightRequest="142" IsClippedToBounds="True">
                         <Image
                             Source="{Binding HeroWorkshopImageSource}"
                             Aspect="AspectFill"
+                            HeightRequest="142"
                             HorizontalOptions="Fill"
                             VerticalOptions="Fill" />
                         <BoxView>
@@ -86,6 +87,7 @@
                 <Border Style="{StaticResource AlertSuccessBanner}" IsVisible="{Binding HasSuccess}">
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                         <controls:LottieOrIconView
+                            IsVisible="{Binding HasSuccess}"
                             LottieFile="lottie_success_check.json"
                             FallbackGlyph="{x:Static icons:PhosphorIcons.CheckCircle}"
                             FallbackColor="{StaticResource SuccessAccent}"

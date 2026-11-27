@@ -264,7 +264,7 @@
           '<div style="display:flex;flex-direction:column;gap:14px;" ng-if="$ctrl.filteredTestDrives.length > 0">' +
             '<article class="bezel-card stagger-item" ' +
                      'ng-repeat="card in $ctrl.filteredTestDrives track by (card.id || card.bookingNumber)" ' +
-                     'style="--i:{{ $index }};" ' +
+                     'ng-attr-style="--i:{{ $index }};" ' +
                      'ng-class="{\'is-live-arrival is-signalr-pulse\': card.isLiveArrival}">' +
               '<div class="bezel-card-inner" style="padding:var(--space-4);">' +
                 '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">' +

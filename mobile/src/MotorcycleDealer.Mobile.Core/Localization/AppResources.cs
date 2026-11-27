@@ -860,6 +860,8 @@ public static class AppResources
     public static string Err_TIER_REQUIREMENT_NOT_MET => GetString("Err_TIER_REQUIREMENT_NOT_MET");
     public static string Err_RATE_LIMIT_EXCEEDED => GetString("Err_RATE_LIMIT_EXCEEDED");
     public static string Err_NETWORK_OFFLINE => GetString("Err_NETWORK_OFFLINE");
+    public static string Err_NETWORK_UNREACHABLE => GetString("Err_NETWORK_UNREACHABLE");
+    public static string Err_REQUEST_TIMEOUT => GetString("Err_REQUEST_TIMEOUT");
     public static string Err_DATABASE_UNAVAILABLE => GetString("Err_DATABASE_UNAVAILABLE");
     public static string Err_INVALID_JSON_PAYLOAD => GetString("Err_INVALID_JSON_PAYLOAD");
     public static string Err_INTERNAL_SERVER_ERROR => GetString("Err_INTERNAL_SERVER_ERROR");

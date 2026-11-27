@@ -15,11 +15,13 @@ public partial class ShowroomCatalogPage : ContentPage
         ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         InitializeComponent();
         BindingContext = ViewModel;
+        Unloaded += OnPageUnloaded;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
         WeakReferenceMessenger.Default.Register<ShowroomCatalogPage, CultureChangedMessage>(
             this,
             static (page, _) => page.RefreshLocalizedChips());
@@ -34,6 +36,9 @@ public partial class ShowroomCatalogPage : ContentPage
         WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
         base.OnDisappearing();
     }
+
+    private void OnPageUnloaded(object? sender, EventArgs e)
+        => WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
 
     private void RefreshLocalizedChips()
     {

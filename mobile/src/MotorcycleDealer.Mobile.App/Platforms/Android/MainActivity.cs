@@ -127,8 +127,11 @@ public class MainActivity : MauiAppCompatActivity
             // Dark #020617 Carbon header/status bar in BOTH Light & Dark modes -> always render crisp WHITE icons
             controller.AppearanceLightStatusBars = false;
 
-            bool isNight = (Resources?.Configuration?.UiMode & UiMode.NightMask) == UiMode.NightYes;
-            controller.AppearanceLightNavigationBars = !isNight;
+            Microsoft.Maui.Controls.Application? mauiApp = Microsoft.Maui.Controls.Application.Current;
+            bool isDark = mauiApp is not null
+                ? mauiApp.RequestedTheme == AppTheme.Dark
+                : (Resources?.Configuration?.UiMode & UiMode.NightMask) == UiMode.NightYes;
+            controller.AppearanceLightNavigationBars = !isDark;
         }
     }
 

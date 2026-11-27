@@ -118,7 +118,20 @@ public sealed partial class CustomerWarrantyViewModel : MobileViewModelBase, IDi
 
     partial void OnOdometerAtClaimKmChanged(int value) => RecomputeCoverageIndicator();
 
-    protected override void OnCultureChanged(string cultureCode) => RecomputeCoverageIndicator();
+    protected override void OnCultureChanged(string cultureCode)
+    {
+        var selectedVehicle = SelectedVehicle;
+        var selectedDealer = SelectedDealer;
+        var savedOdometer = OdometerAtClaimKm;
+
+        RefreshCollection(Claims);
+        RefreshCollection(Vehicles);
+
+        SelectedVehicle = selectedVehicle;
+        SelectedDealer = selectedDealer;
+        OdometerAtClaimKm = savedOdometer;
+        RecomputeCoverageIndicator();
+    }
 
     [RelayCommand]
     public async Task LoadWarrantyDataAsync()

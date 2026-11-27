@@ -182,6 +182,20 @@
     };
   }
 
+  var AUTH_I18N_VI = {
+    auth: {
+      sessionExpiredTitle: 'Phiên đăng nhập đã hết hạn',
+      noRefreshTokenDetail: 'Không tìm thấy mã làm mới phiên. Vui lòng đăng nhập lại.'
+    }
+  };
+
+  var AUTH_I18N_EN = {
+    auth: {
+      sessionExpiredTitle: 'Session Expired',
+      noRefreshTokenDetail: 'No refresh token available.'
+    }
+  };
+
   AuthService.$inject = [
     '$q',
     '$injector',
@@ -189,7 +203,8 @@
     'APP_CONFIG',
     'ROLE_HOME',
     'ROLE_PERMISSION_PRESETS',
-    'TokenStorageService'
+    'TokenStorageService',
+    'I18nService'
   ];
   function AuthService(
     $q,
@@ -198,7 +213,8 @@
     APP_CONFIG,
     ROLE_HOME,
     ROLE_PERMISSION_PRESETS,
-    TokenStorageService
+    TokenStorageService,
+    I18nService
   ) {
     var self = this;
     var _currentUser = null;
@@ -207,6 +223,34 @@
     var _currentUserFlight = null;
     var _currentUserFlightToken = null;
     var _sessionEpoch = 0;
+
+    function resolveI18nService() {
+      if (I18nService && angular.isFunction(I18nService.t)) {
+        return I18nService;
+      }
+      if ($injector && angular.isFunction($injector.has) && $injector.has('I18nService')) {
+        return $injector.get('I18nService');
+      }
+      return null;
+    }
+
+    function translateAuth(key, fallback) {
+      var i18nSvc = resolveI18nService();
+      if (i18nSvc) {
+        if (angular.isFunction(i18nSvc.extend)) {
+          i18nSvc.extend(AUTH_I18N_VI, AUTH_I18N_EN);
+        }
+        var translated = i18nSvc.t(key);
+        if (translated && translated !== key) {
+          return translated;
+        }
+      }
+      return fallback;
+    }
+
+    if (I18nService && angular.isFunction(I18nService.extend)) {
+      I18nService.extend(AUTH_I18N_VI, AUTH_I18N_EN);
+    }
 
     function resetCurrentUserFlight() {
       _currentUserFlight = null;
@@ -1031,8 +1075,8 @@
         return $q.reject({
           status: 401,
           data: {
-            title: 'Session Expired',
-            detail: 'No refresh token available.',
+            title: translateAuth('auth.sessionExpiredTitle', 'Session Expired'),
+            detail: translateAuth('auth.noRefreshTokenDetail', 'No refresh token available.'),
             errorCode: 'MISSING_REFRESH_TOKEN'
           }
         });

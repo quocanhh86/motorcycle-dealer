@@ -35,23 +35,42 @@
         '</figure>'
     });
 
-  BikeImageController.$inject = ['$element', '$scope'];
-  function BikeImageController($element, $scope) {
+  BikeImageController.$inject = ['$element', '$scope', 'I18nService'];
+  function BikeImageController($element, $scope, I18nService) {
     var $ctrl = this;
     var boundImgEl = null;
+    var disposeI18n = null;
+
+    function resolveDefaultAlt() {
+      if (I18nService && angular.isFunction(I18nService.t)) {
+        var translated = I18nService.t('common.vehicle');
+        if (translated && translated !== 'common.vehicle') {
+          return translated;
+        }
+      }
+      return 'Motorcycle';
+    }
 
     function deriveWebpCandidate(url) {
       if (!angular.isString(url) || !url) {
         return null;
       }
       var clean = url.split('?')[0];
+      // Only derive a .webp sibling for self-hosted local /assets/... files (never external CDN URLs)
+      if (!/^\/assets\//.test(clean)) {
+        return null;
+      }
       if (/\.webp$/i.test(clean)) {
-        return url;
+        return null;
       }
       if (/\.(jpe?g|png)$/i.test(clean)) {
         return url.replace(/\.(jpe?g|png)(\?.*)?$/i, '.webp$2');
       }
       return null;
+    }
+
+    function syncAlt() {
+      $ctrl.resolvedAlt = String($ctrl.alt || $ctrl.category || resolveDefaultAlt()).trim();
     }
 
     function syncBindings() {
@@ -60,14 +79,27 @@
 
       var rawSrc = angular.isString($ctrl.src) ? $ctrl.src.trim() : '';
       $ctrl.usedFallback = !rawSrc;
+      $ctrl.retriedOriginalSrc = false;
       $ctrl.resolvedSrc = rawSrc || FALLBACK_JPG;
       $ctrl.webpSrc = $ctrl.usedFallback ? null : deriveWebpCandidate($ctrl.resolvedSrc);
-      $ctrl.resolvedAlt = String($ctrl.alt || $ctrl.category || 'Motorcycle').trim();
+      syncAlt();
       $ctrl.badgeText = String($ctrl.badge || '').trim();
     }
 
     function handleImgError() {
       if ($ctrl.usedFallback) {
+        return;
+      }
+      // If a derived local .webp candidate failed first, drop <source> and retry the original rawSrc before falling back
+      if ($ctrl.webpSrc && !$ctrl.retriedOriginalSrc) {
+        $ctrl.webpSrc = null;
+        $ctrl.retriedOriginalSrc = true;
+        if (boundImgEl && angular.isFunction(boundImgEl.setAttribute) && $ctrl.resolvedSrc) {
+          boundImgEl.setAttribute('src', $ctrl.resolvedSrc);
+        }
+        if ($scope && angular.isFunction($scope.$applyAsync)) {
+          $scope.$applyAsync(angular.noop);
+        }
         return;
       }
       $ctrl.usedFallback = true;
@@ -81,7 +113,12 @@
       }
     }
 
-    $ctrl.$onInit = syncBindings;
+    $ctrl.$onInit = function () {
+      syncBindings();
+      if ($scope && angular.isFunction($scope.$on)) {
+        disposeI18n = $scope.$on('i18n:changed', syncAlt);
+      }
+    };
     $ctrl.$onChanges = syncBindings;
 
     $ctrl.$postLink = function () {
@@ -102,6 +139,10 @@
       if (boundImgEl && angular.isFunction(boundImgEl.removeEventListener)) {
         boundImgEl.removeEventListener('error', handleImgError);
       }
+      if (angular.isFunction(disposeI18n)) {
+        disposeI18n();
+      }
+      disposeI18n = null;
       boundImgEl = null;
     };
   }

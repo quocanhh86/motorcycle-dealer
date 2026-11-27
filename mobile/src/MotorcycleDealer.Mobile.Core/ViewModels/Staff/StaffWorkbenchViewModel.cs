@@ -30,9 +30,11 @@ public sealed partial class StaffWorkbenchViewModel : MobileViewModelBase, IDisp
     private readonly IMessenger _messenger;
     private readonly IUserFeedbackService _feedbackService;
 
+    private readonly Lock _eventSubscriptionLock = new();
     private List<BookingDto> _allBookings = [];
     private DateTimeOffset? _lastSyncUtc;
     private bool _isSelfBroadcasting;
+    private bool _eventsAttached;
 
     public StaffWorkbenchViewModel(
         IDealerMobileApiClient apiClient,
@@ -62,8 +64,6 @@ public sealed partial class StaffWorkbenchViewModel : MobileViewModelBase, IDisp
         SearchVinOrNumber = string.Empty;
         DealerHeaderLabel = _sessionState.DealerName ?? _sessionState.DealerCode ?? Loc.StaffWorkbenchDefaultHeader;
 
-        _signalRService.BookingCreatedReceived += OnBookingCreatedRealtime;
-        _signalRService.BookingStatusChangedReceived += OnBookingStatusChangedRealtime;
         _messenger.Register<StaffWorkbenchViewModel, BookingMutatedMessage>(this, static (r, _) => r.TriggerCrossTabRefresh());
     }
 
@@ -105,6 +105,49 @@ public sealed partial class StaffWorkbenchViewModel : MobileViewModelBase, IDisp
         if (_lastSyncUtc.HasValue || IsOfflineBannerVisible)
         {
             SyncAgeLabel = VietnamFormatting.FormatSyncAge(_lastSyncUtc, culture: Loc.CurrentCulture);
+        }
+
+        var selectedBooking = SelectedBooking;
+        RefreshCollection(FilteredBookings);
+        SelectedBooking = selectedBooking;
+        OnPropertyChanged(nameof(SelectedBooking));
+        OnPropertyChanged(nameof(ScannedIntakeVehicle));
+    }
+
+    /// <summary>
+    /// Idempotently attaches singleton SignalR workshop booking event subscriptions while the page is visible.
+    /// Pair with <see cref="DetachEventSubscriptions"/> on disappearing/unloaded to prevent RISK-04 transient VM leaks.
+    /// </summary>
+    public void AttachEventSubscriptions()
+    {
+        lock (_eventSubscriptionLock)
+        {
+            if (_eventsAttached)
+            {
+                return;
+            }
+
+            _signalRService.BookingCreatedReceived += OnBookingCreatedRealtime;
+            _signalRService.BookingStatusChangedReceived += OnBookingStatusChangedRealtime;
+            _eventsAttached = true;
+        }
+    }
+
+    /// <summary>
+    /// Idempotently detaches singleton SignalR workshop booking event subscriptions so transient ViewModels can be GC'd.
+    /// </summary>
+    public void DetachEventSubscriptions()
+    {
+        lock (_eventSubscriptionLock)
+        {
+            if (!_eventsAttached)
+            {
+                return;
+            }
+
+            _signalRService.BookingCreatedReceived -= OnBookingCreatedRealtime;
+            _signalRService.BookingStatusChangedReceived -= OnBookingStatusChangedRealtime;
+            _eventsAttached = false;
         }
     }
 
@@ -187,7 +230,9 @@ public sealed partial class StaffWorkbenchViewModel : MobileViewModelBase, IDisp
     [RelayCommand]
     public async Task ScanForIntakeAsync()
     {
-        var raw = await _navigationService.RequestBarcodeScanAsync(Loc.StaffWorkbenchScanPrompt).ConfigureAwait(false);
+        var raw = await _navigationService
+            .RequestBarcodeScanAsync(Loc.StaffWorkbenchScanPrompt, requireIso3779Vin: false)
+            .ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(raw))
         {
             return;
@@ -380,13 +425,27 @@ public sealed partial class StaffWorkbenchViewModel : MobileViewModelBase, IDisp
     {
         if (!_sessionState.DealerId.HasValue || _sessionState.DealerId.Value == e.DealerId)
         {
-            await LoadWorkbenchAsync().ConfigureAwait(false);
+            try
+            {
+                await LoadWorkbenchAsync().ConfigureAwait(false);
+            }
+            catch
+            {
+                // Prevent unobserved exception on realtime SignalR callback.
+            }
         }
     }
 
     private async void OnBookingStatusChangedRealtime(object? sender, BookingStatusChangedRealtimeEvent e)
     {
-        await LoadWorkbenchAsync().ConfigureAwait(false);
+        try
+        {
+            await LoadWorkbenchAsync().ConfigureAwait(false);
+        }
+        catch
+        {
+            // Prevent unobserved exception on realtime SignalR callback.
+        }
     }
 
     private async void TriggerCrossTabRefresh()
@@ -408,8 +467,7 @@ public sealed partial class StaffWorkbenchViewModel : MobileViewModelBase, IDisp
 
     public void Dispose()
     {
-        _signalRService.BookingCreatedReceived -= OnBookingCreatedRealtime;
-        _signalRService.BookingStatusChangedReceived -= OnBookingStatusChangedRealtime;
+        DetachEventSubscriptions();
         _messenger.UnregisterAll(this);
         UnregisterBaseMessages();
     }

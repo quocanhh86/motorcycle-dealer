@@ -51,11 +51,11 @@
                     StrokeThickness="1"
                     StrokeShape="RoundRectangle 16"
                     Padding="0">
-                    <Grid HeightRequest="172" IsClippedToBounds="True">
+                    <Grid HeightRequest="188" IsClippedToBounds="True">
                         <Image
                             Source="{Binding HeroShowroomImageSource}"
                             Aspect="AspectFill"
-                            HeightRequest="172"
+                            HeightRequest="188"
                             HorizontalOptions="Fill"
                             VerticalOptions="Fill"
                             Opacity="0.38" />
@@ -81,7 +81,7 @@
                                         StrokeThickness="1"
                                         StrokeShape="RoundRectangle 16"
                                         Padding="10,6"
-                                        MinimumHeightRequest="38"
+                                        MinimumHeightRequest="48"
                                         SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
                                         <Border.Behaviors>
                                             <toolkit:TouchBehavior
@@ -111,7 +111,7 @@
                                         StrokeThickness="1"
                                         StrokeShape="RoundRectangle 16"
                                         Padding="10,6"
-                                        MinimumHeightRequest="38"
+                                        MinimumHeightRequest="48"
                                         SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
                                         <Border.Behaviors>
                                             <toolkit:TouchBehavior
@@ -229,6 +229,7 @@
 
                 <!-- Passbook Snapshot Card -->
                 <controls:LoyaltyPassbookCardView
+                    x:Name="PassbookCard"
                     MemberName="{Binding Wallet.CustomerFullName, FallbackValue='', TargetNullValue=''}"
                     TierName="{Binding TierCode}"
                     TierMultiplier="{Binding Wallet.PointsMultiplier, FallbackValue=1.00}"

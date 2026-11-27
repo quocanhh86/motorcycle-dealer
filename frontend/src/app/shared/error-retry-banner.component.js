@@ -1,8 +1,21 @@
 (function () {
   'use strict';
 
+  var ERROR_BANNER_I18N_VI = {
+    errorBanner: {
+      traceIdLabel: 'Mã truy vết'
+    }
+  };
+
+  var ERROR_BANNER_I18N_EN = {
+    errorBanner: {
+      traceIdLabel: 'Trace ID'
+    }
+  };
+
   angular
     .module('app.shared')
+    .run(registerErrorBannerI18n)
     .component('errorRetryBanner', {
       bindings: {
         message: '<',
@@ -22,7 +35,7 @@
                 '{{ $ctrl.messageKey ? ($ctrl.messageKey | t) : $ctrl.message }}' +
               '</div>' +
               '<div class="font-mono-code" style="font-size:11px;opacity:0.85;margin-top:2px;" ng-if="$ctrl.traceId">' +
-                'Trace ID: {{ $ctrl.traceId }}' +
+                '{{ \'errorBanner.traceIdLabel\' | t }}: {{ $ctrl.traceId }}' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -37,9 +50,20 @@
         '</div>'
     });
 
-  ErrorRetryBannerController.$inject = [];
-  function ErrorRetryBannerController() {
+  registerErrorBannerI18n.$inject = ['I18nService'];
+  function registerErrorBannerI18n(I18nService) {
+    if (I18nService && angular.isFunction(I18nService.extend)) {
+      I18nService.extend(ERROR_BANNER_I18N_VI, ERROR_BANNER_I18N_EN);
+    }
+  }
+
+  ErrorRetryBannerController.$inject = ['I18nService'];
+  function ErrorRetryBannerController(I18nService) {
     var $ctrl = this;
+
+    if (I18nService && angular.isFunction(I18nService.extend)) {
+      I18nService.extend(ERROR_BANNER_I18N_VI, ERROR_BANNER_I18N_EN);
+    }
 
     function syncBindings() {
       $ctrl.hasMessage = Boolean(($ctrl.messageKey && String($ctrl.messageKey).trim()) || ($ctrl.message && String($ctrl.message).trim()));

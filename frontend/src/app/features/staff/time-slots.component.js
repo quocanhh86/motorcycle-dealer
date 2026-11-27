@@ -254,7 +254,7 @@
                 '<span class="text-muted" style="font-size:12px;">{{ \'staff.slots.matrixHint\' | t }}</span>' +
               '</div>' +
               '<div style="display:flex;flex-direction:column;gap:12px;">' +
-                '<div class="surface-sunken stagger-item" style="padding:12px 14px;--i:{{ $index }};" ng-repeat="day in $ctrl.groupedSlotsByDate track by day.slotDate">' +
+                '<div class="surface-sunken stagger-item" ng-attr-style="--i:{{ $index }};padding:12px 14px;" ng-repeat="day in $ctrl.groupedSlotsByDate track by day.slotDate">' +
                   '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">' +
                     '<strong class="mono-num tabular-nums text-primary" style="display:inline-flex;align-items:center;gap:6px;">' +
                       '<app-icon name="calendar-blank" weight="duotone" size="15"></app-icon>' +
@@ -299,7 +299,7 @@
                     '</tr>' +
                   '</thead>' +
                   '<tbody>' +
-                    '<tr class="stagger-item" ng-repeat="slot in $ctrl.slots track by slot.slotId" style="--i:{{ $index }};">' +
+                    '<tr class="stagger-item" ng-repeat="slot in $ctrl.slots track by slot.slotId" ng-attr-style="--i:{{ $index }};">' +
                       '<td class="mono-num tabular-nums">{{ slot.slotDate }}</td>' +
                       '<td class="mono-num tabular-nums" style="font-weight:700;">{{ slot.window }}</td>' +
                       '<td style="min-width:190px;">' +

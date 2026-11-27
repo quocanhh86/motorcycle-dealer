@@ -15,8 +15,8 @@
     <!-- Display Name & Cross-Platform Bundle/Package Identity -->
     <ApplicationTitle>Apex Moto</ApplicationTitle>
     <ApplicationId>vn.motorcycledealer.mobile</ApplicationId>
-    <ApplicationDisplayVersion>1.3.0</ApplicationDisplayVersion>
-    <ApplicationVersion>130</ApplicationVersion>
+    <ApplicationDisplayVersion>1.4.0</ApplicationDisplayVersion>
+    <ApplicationVersion>140</ApplicationVersion>
   </PropertyGroup>
 
   <!-- Android Platform Configuration (API 26 Oreo through API 35/36) -->

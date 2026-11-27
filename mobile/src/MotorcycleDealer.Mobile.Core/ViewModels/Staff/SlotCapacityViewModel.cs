@@ -50,6 +50,9 @@ public sealed partial class SlotCapacityViewModel : MobileViewModelBase
     [ObservableProperty]
     public partial int GenerateMaxCapacity { get; set; }
 
+    protected override void OnCultureChanged(string cultureCode) =>
+        RefreshCollection(Slots);
+
     [RelayCommand]
     public async Task LoadSlotsAsync()
     {

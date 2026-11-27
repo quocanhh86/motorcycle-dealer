@@ -37,7 +37,7 @@ public interface INavigationService
 {
     Task GoToAsync(string route, IDictionary<string, object>? parameters = null);
     Task GoBackAsync();
-    Task<string?> RequestBarcodeScanAsync(string? promptTitle = null);
+    Task<string?> RequestBarcodeScanAsync(string? promptTitle = null, bool requireIso3779Vin = false);
     Task OpenExternalUrlAsync(string url);
 }
 

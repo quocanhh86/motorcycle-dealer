@@ -17,11 +17,14 @@ public partial class StaffWorkbenchPage : ContentPage
         _shellViewModel = shellViewModel ?? throw new ArgumentNullException(nameof(shellViewModel));
         InitializeComponent();
         BindingContext = ViewModel;
+        Unloaded += OnPageUnloaded;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        ViewModel.AttachEventSubscriptions();
+        WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
         WeakReferenceMessenger.Default.Register<StaffWorkbenchPage, CultureChangedMessage>(
             this,
             static (page, _) => page.RefreshLocalizedChips());
@@ -31,7 +34,14 @@ public partial class StaffWorkbenchPage : ContentPage
     protected override void OnDisappearing()
     {
         WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
+        ViewModel.DetachEventSubscriptions();
         base.OnDisappearing();
+    }
+
+    private void OnPageUnloaded(object? sender, EventArgs e)
+    {
+        WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
+        ViewModel.DetachEventSubscriptions();
     }
 
     private void RefreshLocalizedChips()

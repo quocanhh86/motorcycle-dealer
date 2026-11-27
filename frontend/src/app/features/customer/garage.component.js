@@ -207,7 +207,7 @@
           '<div class="grid-12" ng-if="$ctrl.vehicles.length > 0">' +
             '<article class="col-6 bezel-card stagger-item" ' +
                      'ng-repeat="bike in $ctrl.vehicles track by bike.id" ' +
-                     'style="--i:{{ $index }};">' +
+                     'ng-attr-style="--i:{{ $index }};">' +
               '<div class="bezel-card-inner" style="display:flex;flex-direction:column;justify-content:space-between;gap:14px;">' +
                 '<div>' +
                   '<div style="margin-bottom:14px;">' +
@@ -489,7 +489,7 @@
                   '</empty-state>' +
 
                   '<div class="notification-item stagger-item" ng-repeat="rem in $ctrl.drawerReminders track by rem.id" ' +
-                       'ng-class="{\'is-unread\': rem.status === \'Sent\' || rem.status === \'Pending\'}" style="--i:{{ $index }};margin-bottom:10px;">' +
+                       'ng-class="{\'is-unread\': rem.status === \'Sent\' || rem.status === \'Pending\'}" ng-attr-style="--i:{{ $index }};margin-bottom:10px;">' +
                     '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">' +
                       '<strong class="text-primary">{{ rem.milestoneName }}</strong>' +
                       '<span class="badge" ng-class="rem.status === \'Completed\' ? \'badge-success\' : \'badge-warning\'">' +

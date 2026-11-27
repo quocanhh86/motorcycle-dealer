@@ -111,7 +111,7 @@ public sealed class MauiNavigationService : INavigationService
             }
         });
 
-    public Task<string?> RequestBarcodeScanAsync(string? promptTitle = null)
+    public Task<string?> RequestBarcodeScanAsync(string? promptTitle = null, bool requireIso3779Vin = false)
         => MainThread.InvokeOnMainThreadAsync(async () =>
         {
             if (Shell.Current is null)
@@ -121,19 +121,15 @@ public sealed class MauiNavigationService : INavigationService
 
             LocalizationService loc = LocalizationService.Current;
             string heading = string.IsNullOrWhiteSpace(promptTitle) ? loc.ScannerDefaultHeading : promptTitle;
-            bool strictVin = heading.Contains("17-Character", StringComparison.OrdinalIgnoreCase)
-                || heading.Contains("17 ký tự", StringComparison.OrdinalIgnoreCase)
-                || heading.Contains("Stock Intake", StringComparison.OrdinalIgnoreCase)
-                || heading.Contains("nhập kho", StringComparison.OrdinalIgnoreCase);
 
             MobileUserActionLogHub.Current?.Track("Scanner.Opened", "Scanner", heading);
 
             var scannerPage = new CameraBarcodeScannerPage(
                 heading: heading,
-                subtitle: strictVin
+                subtitle: requireIso3779Vin
                     ? loc.ScannerStrictVinSubtitle
                     : loc.ScannerMultiCodeSubtitle,
-                requireIso3779Vin: strictVin);
+                requireIso3779Vin: requireIso3779Vin);
 
             await Shell.Current.Navigation.PushModalAsync(scannerPage, animated: true);
             string? scanned = await scannerPage.WaitForResultAsync();

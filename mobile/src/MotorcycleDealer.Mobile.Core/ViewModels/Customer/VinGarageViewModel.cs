@@ -140,6 +140,16 @@ public sealed partial class VinGarageViewModel : MobileViewModelBase, IDisposabl
             SyncAgeLabel = VietnamFormatting.FormatSyncAge(_lastSyncUtc, culture: Loc.CurrentCulture);
         }
 
+        var selectedVehicle = SelectedVehicle;
+        var selectedModel = SelectedRegistrationModel;
+        var savedOdometer = UpdatedOdometerKm;
+        RefreshCollection(Vehicles);
+        RefreshCollection(AvailableModels);
+        RefreshCollection(SelectedVehicleReminders);
+        SelectedVehicle = selectedVehicle;
+        SelectedRegistrationModel = selectedModel;
+        UpdatedOdometerKm = savedOdometer;
+
         OnPropertyChanged(nameof(OfflineGarageBannerText));
     }
 
@@ -256,7 +266,9 @@ public sealed partial class VinGarageViewModel : MobileViewModelBase, IDisposabl
     [RelayCommand]
     private async Task ScanVinAsync()
     {
-        var raw = await _navigationService.RequestBarcodeScanAsync(Loc.GarageScanPromptTitle).ConfigureAwait(false);
+        var raw = await _navigationService
+            .RequestBarcodeScanAsync(Loc.GarageScanPromptTitle, requireIso3779Vin: true)
+            .ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(raw))
         {
             return;

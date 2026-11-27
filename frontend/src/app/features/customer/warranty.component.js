@@ -333,7 +333,7 @@
                 '<article class="bezel-card stagger-item" ' +
                          'ng-repeat="clm in $ctrl.filteredClaims track by clm.id" ' +
                          'ng-class="{\'is-signalr-pulse\': clm.isLiveArrival}" ' +
-                         'style="--i:{{ $index }};">' +
+                         'ng-attr-style="--i:{{ $index }};">' +
                   '<div class="bezel-card-inner">' +
                     '<div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">' +
                       '<div style="width:92px;flex-shrink:0;">' +

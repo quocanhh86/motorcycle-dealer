@@ -373,7 +373,7 @@
             '<div style="display:flex;flex-direction:column;gap:14px;" ng-if="$ctrl.filteredClaims.length > 0">' +
               '<article class="bezel-card stagger-item" ' +
                        'ng-repeat="clm in $ctrl.filteredClaims track by (clm.id || clm.claimNumber)" ' +
-                       'style="--i:{{ $index }};" ' +
+                       'ng-attr-style="--i:{{ $index }};" ' +
                        'ng-class="{\'is-live-arrival is-signalr-pulse\': clm.isLiveArrival}">' +
                 '<div class="bezel-card-inner" style="padding:var(--space-4);">' +
                   '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">' +
@@ -474,7 +474,7 @@
             '<div style="display:flex;flex-direction:column;gap:14px;" ng-if="$ctrl.filteredReviews.length > 0">' +
               '<article class="bezel-card stagger-item" ' +
                        'ng-repeat="rev in $ctrl.filteredReviews track by (rev.id || rev.reviewNumber)" ' +
-                       'style="--i:{{ $index }};" ' +
+                       'ng-attr-style="--i:{{ $index }};" ' +
                        'ng-class="{\'is-live-arrival is-signalr-pulse\': rev.isLiveArrival}">' +
                 '<div class="bezel-card-inner" style="padding:var(--space-4);">' +
                   '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">' +

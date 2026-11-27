@@ -60,6 +60,18 @@ public sealed partial class StaffTestDriveViewModel : MobileViewModelBase, IDisp
     [ObservableProperty]
     public partial string StaffNotesInput { get; set; }
 
+    protected override void OnCultureChanged(string cultureCode)
+    {
+        var selectedTestDrive = SelectedTestDrive;
+        var selectedDemo = SelectedDemoInventory;
+        RefreshCollection(TestDrives);
+        RefreshCollection(DemoUnits);
+        SelectedTestDrive = selectedTestDrive;
+        SelectedDemoInventory = selectedDemo;
+        OnPropertyChanged(nameof(SelectedTestDrive));
+        OnPropertyChanged(nameof(SelectedDemoInventory));
+    }
+
     [RelayCommand]
     public async Task LoadTestDrivesAsync()
     {

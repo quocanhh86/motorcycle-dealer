@@ -315,7 +315,7 @@
                 '<span class="kpi-label">{{ \'customerLoyalty.roadmapTitle\' | t }}</span>' +
               '</div>' +
               '<div class="grid-12" style="gap:12px;">' +
-                '<div class="col-3 stagger-item" ng-repeat="tr in $ctrl.tiers track by tr.code" style="--i:{{ $index }};">' +
+                '<div class="col-3 stagger-item" ng-repeat="tr in $ctrl.tiers track by tr.code" ng-attr-style="--i:{{ $index }};">' +
                   '<div class="surface-sunken" style="padding:12px 14px;height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:8px;" ' +
                        'ng-style="$ctrl.tierCode === tr.code ? {\'border-color\': \'var(--clr-brand-primary)\', \'background\': \'var(--clr-brand-primary-soft)\'} : {}">' +
                     '<div>' +
@@ -386,7 +386,7 @@
             '</empty-state>' +
 
             '<div class="grid-12" ng-if="$ctrl.catalog.length > 0">' +
-              '<article class="col-6 bezel-card stagger-item" ng-repeat="voucher in $ctrl.catalog track by voucher.id" style="--i:{{ $index }};">' +
+              '<article class="col-6 bezel-card stagger-item" ng-repeat="voucher in $ctrl.catalog track by voucher.id" ng-attr-style="--i:{{ $index }};">' +
                 '<div class="bezel-card-inner" style="display:flex;flex-direction:column;justify-content:space-between;gap:12px;">' +
                   '<div>' +
                     '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">' +
@@ -406,7 +406,7 @@
                     '<p class="text-muted" style="font-size:13px;margin:6px 0;">{{ voucher.description }}</p>' +
 
                     '<div class="surface-sunken text-secondary" style="padding:10px 12px;display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:10px;">' +
-                      '<span>{{ \'customerLoyalty.discountLabel\' | t }}: <strong class="mono-num text-primary">{{ voucher.discountSummary }}</strong></span>' +
+                      '<span>{{ \'customerLoyalty.discountLabel\' | t }}: <strong class="mono-num text-primary">{{ $ctrl.formatDiscountSummary(voucher) }}</strong></span>' +
                       '<span>{{ \'customerLoyalty.minOrderLabel\' | t }}: <strong class="mono-num text-primary">{{ voucher.minOrderAmount | vndCurrency }}</strong></span>' +
                       '<span>{{ \'customerLoyalty.validityDays\' | t:{ days: voucher.validDays } }}</span>' +
                       '<span>{{ \'customerLoyalty.quotaLabel\' | t }}: <strong class="mono-num text-primary">{{ voucher.quotaTotal !== null ? (voucher.remainingQuota + \' / \' + voucher.quotaTotal) : (\'customerLoyalty.quotaUnlimited\' | t) }}</strong></span>' +
@@ -451,7 +451,7 @@
             '</empty-state>' +
 
             '<div class="grid-12" ng-if="$ctrl.filteredMyVouchers.length > 0">' +
-              '<article class="col-6 bezel-card stagger-item" ng-repeat="mv in $ctrl.filteredMyVouchers track by mv.id" style="--i:{{ $index }};">' +
+              '<article class="col-6 bezel-card stagger-item" ng-repeat="mv in $ctrl.filteredMyVouchers track by mv.id" ng-attr-style="--i:{{ $index }};">' +
                 '<div class="bezel-card-inner" style="display:flex;flex-direction:column;justify-content:space-between;gap:10px;">' +
                   '<div>' +
                     '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">' +
@@ -463,7 +463,7 @@
                     '<h3 class="surface-card-title" style="font-size:15px;margin-top:10px;">{{ mv.title }}</h3>' +
                     '<div class="text-secondary" style="font-size:12px;margin-top:6px;">' +
                       '{{ \'customerLoyalty.scopeLabel\' | t }}: <strong class="text-primary">{{ mv.applicableScope | enumT:\'VoucherScope\' }}</strong> • ' +
-                      '<strong class="mono-num text-primary">{{ mv.discountSummary }}</strong> • ' +
+                      '<strong class="mono-num text-primary">{{ $ctrl.formatDiscountSummary(mv) }}</strong> • ' +
                       '{{ \'customerLoyalty.minOrderLabel\' | t }}: <span class="mono-num">{{ mv.minOrderAmount | vndCurrency }}</span>' +
                     '</div>' +
                     '<div class="mono-num text-muted" style="font-size:11px;margin-top:6px;">' +
@@ -724,6 +724,12 @@
       return code || '';
     }
 
+    function getActiveLocale() {
+      return (I18nService && angular.isFunction(I18nService.getLocale))
+        ? I18nService.getLocale()
+        : 'en-US';
+    }
+
     function syncSummaryObject() {
       $ctrl.summary = {
         tierCode: $ctrl.tierCode || 'Bronze',
@@ -828,7 +834,19 @@
         pageSize: 15
       };
 
-      $ctrl.formatDiscountSummary = LoyaltyCalculator.formatDiscountSummary;
+      $ctrl.formatDiscountSummary = function (voucherOrCatalog) {
+        if (!voucherOrCatalog) { return ''; }
+        var locale = getActiveLocale();
+        if (LoyaltyCalculator) {
+          if (angular.isFunction(LoyaltyCalculator.formatDiscountSummaryLocalized)) {
+            return LoyaltyCalculator.formatDiscountSummaryLocalized(voucherOrCatalog, locale) || voucherOrCatalog.discountSummary || '';
+          }
+          if (angular.isFunction(LoyaltyCalculator.formatDiscountSummary)) {
+            return LoyaltyCalculator.formatDiscountSummary(voucherOrCatalog, locale) || voucherOrCatalog.discountSummary || '';
+          }
+        }
+        return voucherOrCatalog.discountSummary || '';
+      };
       $ctrl.loadProblem = null;
       $ctrl.catalog = [];
       $ctrl.myVouchers = [];
@@ -952,10 +970,10 @@
         }
         applyAccountDto(bundle.account);
         $ctrl.catalog = (bundle.catalog || []).map(function (c) {
-          return c.discountSummary ? c : angular.extend({}, c, { discountSummary: LoyaltyCalculator.formatDiscountSummary(c) });
+          return angular.extend({}, c, { discountSummary: $ctrl.formatDiscountSummary(c) });
         });
         $ctrl.myVouchers = (bundle.myVouchers || []).map(function (mv) {
-          return mv.discountSummary ? mv : angular.extend({}, mv, { discountSummary: LoyaltyCalculator.formatDiscountSummary(mv) });
+          return angular.extend({}, mv, { discountSummary: $ctrl.formatDiscountSummary(mv) });
         });
         $ctrl.applyMyVouchersFilter();
         $ctrl.ledgerEntries = (bundle.ledger && bundle.ledger.items) || [];

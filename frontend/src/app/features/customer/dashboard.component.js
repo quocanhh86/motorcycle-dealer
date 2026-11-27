@@ -255,7 +255,7 @@
                   '<div ng-if="$ctrl.vehicles.length > 0" style="display:flex;flex-direction:column;gap:12px;">' +
                     '<div class="surface-sunken stagger-item" ' +
                          'ng-repeat="bike in $ctrl.vehicles track by bike.id" ' +
-                         'style="--i:{{ $index }};padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">' +
+                         'ng-attr-style="--i:{{ $index }};padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">' +
                       '<div style="display:flex;align-items:center;gap:12px;min-width:220px;flex:1;">' +
                         '<div style="width:92px;flex-shrink:0;">' +
                           '<bike-image src="bike.imageUrl" alt="{{ bike.motorcycleModelName }}" variant="thumb"></bike-image>' +
@@ -312,7 +312,7 @@
                   '<div ng-if="$ctrl.bookings.length > 0" style="display:flex;flex-direction:column;gap:10px;">' +
                     '<div class="surface-sunken stagger-item" ' +
                          'ng-repeat="bk in $ctrl.bookings | limitTo:4 track by bk.id" ' +
-                         'style="--i:{{ $index }};padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">' +
+                         'ng-attr-style="--i:{{ $index }};padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">' +
                       '<div>' +
                         '<div class="mono-num text-primary" style="font-weight:700;">{{ bk.bookingNumber }}</div>' +
                         '<div class="text-secondary" style="font-size:13px;margin-top:2px;">' +

@@ -15,6 +15,7 @@ public partial class LoyaltyPassbookCardView : ContentView
     private const string SheenAnimationName = "PassbookFoilSheen";
     private static readonly CultureInfo ViVn = CultureInfo.GetCultureInfo("vi-VN");
     private string _lastTierCode = string.Empty;
+    private bool _isSheenPaused;
 
     public static readonly BindableProperty MemberNameProperty = BindableProperty.Create(
         nameof(MemberName), typeof(string), typeof(LoyaltyPassbookCardView), string.Empty);
@@ -112,6 +113,18 @@ public partial class LoyaltyPassbookCardView : ContentView
         RecalculateVisuals();
     }
 
+    public void PauseSheen()
+    {
+        _isSheenPaused = true;
+        RunOnMainThread(UpdateSheenAnimation);
+    }
+
+    public void ResumeSheen()
+    {
+        _isSheenPaused = false;
+        RunOnMainThread(UpdateSheenAnimation);
+    }
+
     protected override void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
@@ -148,7 +161,7 @@ public partial class LoyaltyPassbookCardView : ContentView
         _lastTierCode = normalizedTier;
         RecalculateVisuals();
 
-        if (changed && IsLoaded && IsVisible)
+        if (changed && !_isSheenPaused && IsLoaded && IsVisible)
         {
             TierSparkle.Replay();
         }
@@ -209,7 +222,7 @@ public partial class LoyaltyPassbookCardView : ContentView
         }
     }
 
-    private bool ShouldAnimateSheen => IsLoaded && IsVisible && !MotionHelper.IsReducedMotionEnabled;
+    private bool ShouldAnimateSheen => !_isSheenPaused && IsLoaded && IsVisible && !MotionHelper.IsReducedMotionEnabled;
 
     private void UpdateSheenAnimation()
     {
@@ -248,6 +261,18 @@ public partial class LoyaltyPassbookCardView : ContentView
         this.AbortAnimation(SheenAnimationName);
         SpecularSheenOverlay.IsVisible = false;
         SpecularSheenOverlay.TranslationX = -180;
+    }
+
+    private static void RunOnMainThread(Action action)
+    {
+        if (MainThread.IsMainThread)
+        {
+            action();
+        }
+        else
+        {
+            MainThread.BeginInvokeOnMainThread(action);
+        }
     }
 
     private static LinearGradientBrush BuildFoilBrush(string startHex, string midHex, string endHex)

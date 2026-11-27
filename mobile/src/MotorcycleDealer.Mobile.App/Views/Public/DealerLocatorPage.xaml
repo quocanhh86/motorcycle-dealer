@@ -85,7 +85,7 @@
 
                 <!-- City Filter Chips -->
                 <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
-                    <HorizontalStackLayout BindableLayout.ItemsSource="{Binding CityFilters}" Spacing="8" Padding="0,0,16,0">
+                    <HorizontalStackLayout x:Name="CityChipContainer" BindableLayout.ItemsSource="{Binding CityFilters}" Spacing="8" Padding="0,0,16,0">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
                                 <Button

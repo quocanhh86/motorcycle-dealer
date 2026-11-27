@@ -60,7 +60,10 @@ public sealed partial class LoyaltyPassbookViewModel : MobileViewModelBase, IDis
         SelectedVoucherQrPayload = string.Empty;
         ActiveReceiptQrPayload = string.Empty;
         TierCode = _sessionState.TierCode ?? string.Empty;
-        FormattedAvailablePoints = VietnamFormatting.FormatPointsBalance(_sessionState.AvailablePoints ?? 0);
+        FormattedAvailablePoints = VietnamFormatting.FormatPointsLocalized(
+            _sessionState.AvailablePoints ?? 0,
+            signed: false,
+            culture: Loc.CurrentCulture);
         FormattedLifetimeSpent = VietnamFormatting.FormatVnd(_sessionState.LifetimeSpentVnd ?? 0m);
         TierProgressRatio = 0d;
         NextTierHint = Loc.LoyaltySyncingTiers;
@@ -120,6 +123,11 @@ public sealed partial class LoyaltyPassbookViewModel : MobileViewModelBase, IDis
 
     protected override void OnCultureChanged(string cultureCode)
     {
+        FormattedAvailablePoints = VietnamFormatting.FormatPointsLocalized(
+            Wallet?.AvailablePoints ?? _sessionState.AvailablePoints ?? 0,
+            signed: false,
+            culture: Loc.CurrentCulture);
+
         var lifetimePoints = Wallet?.LifetimeQualifyingPoints ?? _sessionState.LifetimeQualifyingPoints ?? 0;
         var (progressRatio, nextTierHint) = TwoStepLoyaltyPreviewCalculator.CalculateTierProgress(lifetimePoints, Tiers);
         TierProgressRatio = progressRatio;
@@ -129,6 +137,15 @@ public sealed partial class LoyaltyPassbookViewModel : MobileViewModelBase, IDis
         {
             SyncAgeLabel = VietnamFormatting.FormatSyncAge(_lastSyncUtc, culture: Loc.CurrentCulture);
         }
+
+        var selectedVoucher = SelectedVoucher;
+        RefreshCollection(Tiers);
+        RefreshCollection(MyVouchers);
+        RefreshCollection(VoucherStore);
+        RefreshCollection(LedgerEntries);
+        RefreshCollection(MySalesOrders);
+        SelectedVoucher = selectedVoucher;
+        OnPropertyChanged(nameof(SelectedVoucher));
 
         OnPropertyChanged(nameof(OfflinePassbookBannerText));
     }
@@ -206,7 +223,10 @@ public sealed partial class LoyaltyPassbookViewModel : MobileViewModelBase, IDis
                 if (walletData is not null)
                 {
                     TierCode = walletData.TierCode;
-                    FormattedAvailablePoints = VietnamFormatting.FormatPointsBalance(walletData.AvailablePoints);
+                    FormattedAvailablePoints = VietnamFormatting.FormatPointsLocalized(
+                        walletData.AvailablePoints,
+                        signed: false,
+                        culture: Loc.CurrentCulture);
                     FormattedLifetimeSpent = VietnamFormatting.FormatVnd(walletData.LifetimeSpentVnd);
                 }
 

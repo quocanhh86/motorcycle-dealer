@@ -8,12 +8,14 @@ public partial class CameraBarcodeScannerPage : ContentPage
 {
     private readonly TaskCompletionSource<string?> _resultTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly CancellationTokenSource _lifecycleCts = new();
+    private readonly Lock _ctsLock = new();
     private readonly bool _requireIso3779Vin;
     private CameraBarcodeReaderView? _cameraReader;
     private Task? _cameraActivationTask;
     private DateTimeOffset? _cameraMountedAtUtc;
     private int _completed;
     private bool _isClosing;
+    private bool _ctsDisposed;
     private string _manualInput = string.Empty;
 
     public LocalizationService Loc => LocalizationService.Current;
@@ -95,6 +97,7 @@ public partial class CameraBarcodeScannerPage : ContentPage
 
         InitializeComponent();
         Loaded += (_, _) => ApplyModalCarbonStatusBar();
+        Unloaded += OnPageUnloaded;
     }
 
     public Task<string?> WaitForResultAsync() => _resultTcs.Task;
@@ -104,14 +107,15 @@ public partial class CameraBarcodeScannerPage : ContentPage
         base.OnAppearing();
         ApplyModalCarbonStatusBar();
         Dispatcher.Dispatch(ApplyModalCarbonStatusBar);
-        _ = ReapplyStatusBarAfterTransitionAsync(_lifecycleCts.Token);
 
-        if (_isClosing)
+        if (!TryGetLifecycleToken(out CancellationToken lifecycleToken))
         {
             return;
         }
 
-        _cameraActivationTask = TryActivateCameraAsync(_lifecycleCts.Token);
+        _ = ReapplyStatusBarAfterTransitionAsync(lifecycleToken);
+
+        _cameraActivationTask = TryActivateCameraAsync(lifecycleToken);
         try
         {
             await _cameraActivationTask;
@@ -136,14 +140,7 @@ public partial class CameraBarcodeScannerPage : ContentPage
     protected override void OnDisappearing()
     {
         _isClosing = true;
-        try
-        {
-            _lifecycleCts.Cancel();
-        }
-        catch
-        {
-            // Ignore cancellation race
-        }
+        CancelLifecycleTokenSafely();
 
         if (_cameraReader is not null)
         {
@@ -160,6 +157,16 @@ public partial class CameraBarcodeScannerPage : ContentPage
 
         base.OnDisappearing();
         _resultTcs.TrySetResult(null);
+        ScheduleLifecycleCtsDispose();
+    }
+
+    private void OnPageUnloaded(object? sender, EventArgs e)
+    {
+        _isClosing = true;
+        CancelLifecycleTokenSafely();
+        DetachCameraReaderSafely();
+        _resultTcs.TrySetResult(null);
+        ScheduleLifecycleCtsDispose();
     }
 
     private async Task ReapplyStatusBarAfterTransitionAsync(CancellationToken ct)
@@ -344,12 +351,12 @@ public partial class CameraBarcodeScannerPage : ContentPage
 
     private async void OnEnableCameraClicked(object? sender, EventArgs e)
     {
-        if (_isClosing)
+        if (!TryGetLifecycleToken(out CancellationToken lifecycleToken))
         {
             return;
         }
 
-        _cameraActivationTask = TryActivateCameraAsync(_lifecycleCts.Token);
+        _cameraActivationTask = TryActivateCameraAsync(lifecycleToken);
         try
         {
             await _cameraActivationTask;
@@ -392,14 +399,7 @@ public partial class CameraBarcodeScannerPage : ContentPage
     private async Task CompleteAndCloseAsync(string? result)
     {
         _isClosing = true;
-        try
-        {
-            _lifecycleCts.Cancel();
-        }
-        catch
-        {
-            // Ignore cancellation race
-        }
+        CancelLifecycleTokenSafely();
 
         Task? activation = _cameraActivationTask;
         if (activation is not null && !activation.IsCompleted)
@@ -452,6 +452,91 @@ public partial class CameraBarcodeScannerPage : ContentPage
                 }
             }
         });
+
+        ScheduleLifecycleCtsDispose();
+    }
+
+    private bool TryGetLifecycleToken(out CancellationToken token)
+    {
+        lock (_ctsLock)
+        {
+            if (_isClosing || _ctsDisposed)
+            {
+                token = new CancellationToken(canceled: true);
+                return false;
+            }
+
+            token = _lifecycleCts.Token;
+            return true;
+        }
+    }
+
+    private void CancelLifecycleTokenSafely()
+    {
+        lock (_ctsLock)
+        {
+            if (_ctsDisposed)
+            {
+                return;
+            }
+
+            try
+            {
+                _lifecycleCts.Cancel();
+            }
+            catch (ObjectDisposedException)
+            {
+                // Already disposed during concurrent teardown
+            }
+        }
+    }
+
+    private void ScheduleLifecycleCtsDispose()
+    {
+        Task? activation = _cameraActivationTask;
+        if (activation is null || activation.IsCompleted)
+        {
+            DisposeLifecycleCtsSafely();
+            return;
+        }
+
+        _ = activation.ContinueWith(
+            _ => DisposeLifecycleCtsSafely(),
+            CancellationToken.None,
+            TaskContinuationOptions.ExecuteSynchronously,
+            TaskScheduler.Default);
+    }
+
+    private void DisposeLifecycleCtsSafely()
+    {
+        lock (_ctsLock)
+        {
+            if (_ctsDisposed)
+            {
+                return;
+            }
+
+            _ctsDisposed = true;
+            try
+            {
+                _lifecycleCts.Cancel();
+            }
+            catch (ObjectDisposedException)
+            {
+                // Already disposed
+            }
+            finally
+            {
+                try
+                {
+                    _lifecycleCts.Dispose();
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Already disposed
+                }
+            }
+        }
     }
 
     private void DetachCameraReaderSafely()

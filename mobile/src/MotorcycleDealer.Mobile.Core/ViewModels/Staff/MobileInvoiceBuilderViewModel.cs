@@ -225,8 +225,15 @@ public sealed partial class MobileInvoiceBuilderViewModel : MobileViewModelBase
 
     protected override void OnCultureChanged(string cultureCode)
     {
+        var appliedVoucher = AppliedVoucher;
+        RefreshCollection(CompatibleSpareParts);
+        RefreshCollection(EligibleCustomerVouchers);
+        RefreshCollection(LoyaltyTiers);
+        AppliedVoucher = appliedVoucher;
+
         RecalculateTotalsAndLoyaltyPreview();
         OnPropertyChanged(nameof(EarnMultiplierBadgeLabel));
+        OnPropertyChanged(nameof(ActiveBooking));
     }
 
     [RelayCommand]
@@ -402,7 +409,9 @@ public sealed partial class MobileInvoiceBuilderViewModel : MobileViewModelBase
     [RelayCommand]
     public async Task ScanVoucherQrAsync()
     {
-        var raw = await _navigationService.RequestBarcodeScanAsync(Loc.InvoiceScanVoucherPrompt).ConfigureAwait(false);
+        var raw = await _navigationService
+            .RequestBarcodeScanAsync(Loc.InvoiceScanVoucherPrompt, requireIso3779Vin: false)
+            .ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(raw))
         {
             return;

@@ -91,6 +91,18 @@ public sealed partial class StaffWarrantyCsatViewModel : MobileViewModelBase, ID
 
     protected override void OnCultureChanged(string cultureCode)
     {
+        var selectedClaim = SelectedClaim;
+        var selectedReview = SelectedReview;
+        var selectedPart = SelectedCoveredPart;
+
+        RefreshCollection(WarrantyClaims);
+        RefreshCollection(ServiceReviews);
+        RefreshCollection(SpareParts);
+
+        SelectedClaim = selectedClaim;
+        SelectedReview = selectedReview;
+        SelectedCoveredPart = selectedPart;
+
         OnPropertyChanged(nameof(AverageCsatDisplay));
         OnPropertyChanged(nameof(ReplyingToHeading));
     }

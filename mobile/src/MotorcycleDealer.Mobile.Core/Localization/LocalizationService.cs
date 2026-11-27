@@ -192,14 +192,9 @@ public sealed partial class LocalizationService : ObservableObject
 
     public string GetErrorLabel(string? errorCode, string? fallback = null)
     {
-        if (!string.IsNullOrWhiteSpace(errorCode))
+        if (TryResolveErrorCode(errorCode, out var localized))
         {
-            var normalizedCode = errorCode.Trim().ToUpperInvariant().Replace('-', '_');
-            var key = $"Err_{normalizedCode}";
-            if (AppResources.TryGetString(key, out var localized, _currentCulture))
-            {
-                return localized;
-            }
+            return localized;
         }
 
         if (!string.IsNullOrWhiteSpace(fallback))
@@ -216,13 +211,9 @@ public sealed partial class LocalizationService : ObservableObject
 
         if (result.Problem is not null)
         {
-            if (!string.IsNullOrWhiteSpace(result.Problem.ErrorCode))
+            if (TryResolveErrorCode(result.Problem.ErrorCode, out var codeMessage))
             {
-                var normalizedCode = result.Problem.ErrorCode.Trim().ToUpperInvariant().Replace('-', '_');
-                if (AppResources.TryGetString($"Err_{normalizedCode}", out var codeMessage, _currentCulture))
-                {
-                    return codeMessage;
-                }
+                return codeMessage;
             }
 
             if (result.Problem.Errors is { Count: > 0 })
@@ -253,6 +244,32 @@ public sealed partial class LocalizationService : ObservableObject
         }
 
         return AppResources.GetString("Err_REQUEST_FAILED", _currentCulture);
+    }
+
+    private bool TryResolveErrorCode(string? errorCode, out string message)
+    {
+        if (!string.IsNullOrWhiteSpace(errorCode))
+        {
+            var normalizedCode = errorCode.Trim().ToUpperInvariant().Replace('-', '_');
+            switch (normalizedCode)
+            {
+                case "NETWORK_UNREACHABLE":
+                    message = AppResources.GetString("Err_NETWORK_UNREACHABLE", _currentCulture);
+                    return true;
+                case "REQUEST_TIMEOUT":
+                    message = AppResources.GetString("Err_REQUEST_TIMEOUT", _currentCulture);
+                    return true;
+            }
+
+            if (AppResources.TryGetString($"Err_{normalizedCode}", out var localized, _currentCulture))
+            {
+                message = localized;
+                return true;
+            }
+        }
+
+        message = string.Empty;
+        return false;
     }
 
     public string FormatQuantity(string key, int count) =>
