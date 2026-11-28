@@ -16,6 +16,13 @@ public partial class CustomerWarrantyPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await ViewModel.LoadWarrantyDataCommand.ExecuteAsync(null);
+        try
+        {
+            await ViewModel.LoadWarrantyDataCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 }

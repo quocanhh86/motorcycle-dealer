@@ -11,7 +11,7 @@
           '<route-progress-bar></route-progress-bar>' +
           '<a class="sr-only" href="#mainViewport">{{ \'a11y.skipToMain\' | t }}</a>' +
 
-          '<header class="top-navbar">' +
+          '<header class="top-navbar" ng-class="{\'is-authenticated\': $ctrl.isAuthenticated}">' +
             '<div class="navbar-brand-cluster">' +
               '<button type="button" class="btn btn-ghost-dark mobile-menu-btn" ' +
                       'ng-if="$ctrl.isAuthenticated" ' +
@@ -71,7 +71,7 @@
               /* Compact VI | EN Locale Hot-Switch Pill */
               '<button type="button" class="btn btn-ghost-dark btn-sm" ' +
                       'style="gap:6px;padding:4px 10px;border-radius:var(--radius-full);" ' +
-                      'ng-attr-aria-label="{{ \'a11y.toggleLocale\' | t }}" ' +
+                      'ng-attr-title="{{ \'a11y.toggleLocale\' | t }}" ' +
                       'ng-attr-aria-pressed="{{ $ctrl.localeCode === \'en\' ? \'true\' : \'false\' }}" ' +
                       'ng-click="$ctrl.toggleLocale()">' +
                 '<app-icon name="translate" weight="regular" size="14"></app-icon>' +
@@ -80,16 +80,18 @@
                   '<span style="opacity:0.4;" aria-hidden="true">|</span>' +
                   '<span ng-style="{\'font-weight\': $ctrl.localeCode === \'en\' ? \'700\' : \'500\', \'opacity\': $ctrl.localeCode === \'en\' ? \'1\' : \'0.55\'}">{{ \'nav.localeEn\' | t }}</span>' +
                 '</span>' +
+                '<span class="sr-only"> — {{ \'a11y.toggleLocale\' | t }}</span>' +
               '</button>' +
 
               /* Light Showroom / Dark Pit-Lane Theme Toggle */
               '<button type="button" class="btn btn-ghost-dark btn-sm" ' +
                       'style="gap:6px;padding:4px 10px;border-radius:var(--radius-full);" ' +
-                      'ng-attr-aria-label="{{ \'a11y.toggleTheme\' | t }}" ' +
+                      'ng-attr-title="{{ \'a11y.toggleTheme\' | t }}" ' +
                       'ng-attr-aria-pressed="{{ $ctrl.isDarkTheme ? \'true\' : \'false\' }}" ' +
                       'ng-click="$ctrl.toggleTheme()">' +
                 '<app-icon name="{{ $ctrl.isDarkTheme ? \'sun\' : \'moon\' }}" weight="duotone" size="15"></app-icon>' +
                 '<span style="font-size:11px;">{{ $ctrl.isDarkTheme ? (\'nav.themeLight\' | t) : (\'nav.themeDark\' | t) }}</span>' +
+                '<span class="sr-only"> — {{ \'a11y.toggleTheme\' | t }}</span>' +
               '</button>' +
 
               '<notification-bell ng-if="$ctrl.isAuthenticated"></notification-bell>' +
@@ -107,7 +109,7 @@
               '</div>' +
 
               '<div ng-if="$ctrl.isAuthenticated" style="display:flex;align-items:center;gap:8px;">' +
-                '<span style="font-size:12px;color:var(--clr-slate-50);opacity:0.9;">{{ $ctrl.user.fullName }}</span>' +
+                '<span class="navbar-user-name" style="font-size:12px;color:var(--clr-slate-50);opacity:0.9;">{{ $ctrl.user.fullName }}</span>' +
                 '<button type="button" class="btn btn-ghost-dark btn-sm" ng-click="$ctrl.logout()">' +
                   '<app-icon name="sign-out" weight="regular" size="14"></app-icon>' +
                   '<span>{{ \'nav.signOut\' | t }}</span>' +
@@ -237,7 +239,8 @@
         { state: 'app.staff.timeSlots', labelKey: 'nav.staffTimeSlots', code: 'STF-04', icon: 'clock' },
         { state: 'app.staff.customers', labelKey: 'nav.staffCustomers', code: 'STF-05', icon: 'users' },
         { state: 'app.staff.testDrives', labelKey: 'nav.staffTestDrives', code: 'STF-06', icon: 'motorcycle' },
-        { state: 'app.staff.warrantyReviews', labelKey: 'nav.staffWarrantyReviews', code: 'STF-07', icon: 'seal-check' }
+        { state: 'app.staff.warrantyReviews', labelKey: 'nav.staffWarrantyReviews', code: 'STF-07', icon: 'seal-check' },
+        { state: 'app.public.showroom', labelKey: 'nav.showroom', code: 'PUB-01', icon: 'storefront' }
       ],
       Admin: [
         { state: 'app.admin.analytics', labelKey: 'nav.adminAnalytics', code: 'ADM-01', icon: 'chart-bar' },
@@ -247,7 +250,8 @@
         { state: 'app.admin.loyaltyTiers', labelKey: 'nav.adminLoyaltyTiers', code: 'ADM-05', icon: 'medal' },
         { state: 'app.admin.voucherCatalog', labelKey: 'nav.adminVoucherCatalog', code: 'ADM-06', icon: 'ticket' },
         { state: 'app.admin.spareParts', labelKey: 'nav.adminSpareParts', code: 'ADM-07', icon: 'gear-six' },
-        { state: 'app.admin.qualityWarranty', labelKey: 'nav.adminQualityWarranty', code: 'ADM-08', icon: 'shield-star' }
+        { state: 'app.admin.qualityWarranty', labelKey: 'nav.adminQualityWarranty', code: 'ADM-08', icon: 'shield-star' },
+        { state: 'app.public.showroom', labelKey: 'nav.showroom', code: 'PUB-01', icon: 'storefront' }
       ]
     };
 

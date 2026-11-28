@@ -19,11 +19,18 @@ public partial class StaffTestDrivePage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
-        WeakReferenceMessenger.Default.Register<StaffTestDrivePage, CultureChangedMessage>(
-            this,
-            static (page, _) => page.RefreshLocalizedChips());
-        await ViewModel.LoadTestDrivesCommand.ExecuteAsync(null);
+        try
+        {
+            WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
+            WeakReferenceMessenger.Default.Register<StaffTestDrivePage, CultureChangedMessage>(
+                this,
+                static (page, _) => page.RefreshLocalizedChips());
+            await ViewModel.LoadTestDrivesCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 
     protected override void OnDisappearing()

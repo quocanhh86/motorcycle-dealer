@@ -53,29 +53,83 @@ public sealed class MauiSecureTokenStore : ISecureTokenStore
 
     public async Task<string> GetOrCreateSqlCipherKeyHexAsync(CancellationToken cancellationToken = default)
     {
-        string? existing = await GetAsync(SqlCipherKeyHexKey).ConfigureAwait(false);
+        (bool readOk, string? existing) = await TryReadSecureValueAsync(SqlCipherKeyHexKey).ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(existing))
         {
             return existing;
         }
 
+        if (!readOk)
+        {
+            throw new InvalidOperationException("Hardware SecureStorage/Keychain is temporarily unavailable; refusing to regenerate SQLCipher key.");
+        }
+
         await _cipherKeyLock.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            existing = await GetAsync(SqlCipherKeyHexKey).ConfigureAwait(false);
+            (readOk, existing) = await TryReadSecureValueAsync(SqlCipherKeyHexKey).ConfigureAwait(false);
             if (!string.IsNullOrWhiteSpace(existing))
             {
                 return existing;
             }
 
+            if (!readOk)
+            {
+                throw new InvalidOperationException("Hardware SecureStorage/Keychain is temporarily unavailable; refusing to regenerate SQLCipher key.");
+            }
+
             byte[] keyBytes = RandomNumberGenerator.GetBytes(32);
             string hex = Convert.ToHexString(keyBytes);
-            await SetAsync(SqlCipherKeyHexKey, hex).ConfigureAwait(false);
+            try
+            {
+                await SecureStorage.Default.SetAsync(SqlCipherKeyHexKey, hex).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    "Hardware SecureStorage/Keychain write failed; refusing to encrypt offline SQLCipher DB with an ephemeral RAM-only key.",
+                    ex);
+            }
+
+            lock (_memoryFallback)
+            {
+                _memoryFallback[SqlCipherKeyHexKey] = hex;
+            }
+
             return hex;
         }
         finally
         {
             _cipherKeyLock.Release();
+        }
+    }
+
+    private async Task<(bool Ok, string? Value)> TryReadSecureValueAsync(string key)
+    {
+        try
+        {
+            string? persisted = await SecureStorage.Default.GetAsync(key).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(persisted))
+            {
+                lock (_memoryFallback)
+                {
+                    _memoryFallback[key] = persisted;
+                }
+            }
+
+            return (true, persisted);
+        }
+        catch
+        {
+            lock (_memoryFallback)
+            {
+                if (_memoryFallback.TryGetValue(key, out string? cached) && !string.IsNullOrWhiteSpace(cached))
+                {
+                    return (true, cached);
+                }
+            }
+
+            return (false, null);
         }
     }
 

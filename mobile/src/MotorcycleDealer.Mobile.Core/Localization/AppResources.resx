@@ -2450,4 +2450,22 @@ Verify Hash: {8}</value>
   <data name="Err_IMMUTABLE_FINANCIAL_RECORD_VIOLATION" xml:space="preserve">
     <value>Finalized financial records are strictly immutable.</value>
   </data>
+  <data name="ShowroomAngleFront" xml:space="preserve">
+    <value>Front 3/4</value>
+  </data>
+  <data name="ShowroomAngleSide" xml:space="preserve">
+    <value>Side Profile</value>
+  </data>
+  <data name="ShowroomAngleRear" xml:space="preserve">
+    <value>Rear &amp; LED</value>
+  </data>
+  <data name="ShowroomAngleCockpit" xml:space="preserve">
+    <value>Cockpit</value>
+  </data>
+  <data name="ShowroomPrevAngle" xml:space="preserve">
+    <value>Previous studio angle</value>
+  </data>
+  <data name="ShowroomNextAngle" xml:space="preserve">
+    <value>Next studio angle</value>
+  </data>
 </root>

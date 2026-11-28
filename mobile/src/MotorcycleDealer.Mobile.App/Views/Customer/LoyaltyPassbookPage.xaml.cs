@@ -17,8 +17,15 @@ public partial class LoyaltyPassbookPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        PassbookCard.ResumeSheen();
-        await ViewModel.LoadPassbookCommand.ExecuteAsync(null);
+        try
+        {
+            PassbookCard.ResumeSheen();
+            await ViewModel.LoadPassbookCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 
     protected override void OnDisappearing()

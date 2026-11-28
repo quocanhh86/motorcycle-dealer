@@ -73,6 +73,24 @@ public sealed class WebApiSkeletonIntegrationTests : IClassFixture<DealerWebAppl
     }
 
     [Fact]
+    public async Task GetOpenApiV1Document_ShouldReturn200WithValidOpenApi3Json()
+    {
+        using var client = _factory.CreateClient();
+
+        using var response = await client.GetAsync("/openapi/v1.json");
+        var body = await response.Content.ReadAsStringAsync();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        using var doc = JsonDocument.Parse(body);
+        var version = doc.RootElement.GetProperty("openapi").GetString();
+        Assert.NotNull(version);
+        Assert.StartsWith("3.", version, StringComparison.Ordinal);
+
+        var paths = doc.RootElement.GetProperty("paths");
+        Assert.True(paths.EnumerateObject().Count() > 30);
+    }
+
+    [Fact]
     public async Task GetApiV1Health_ShouldReturn200OkWithSystemHealthDto()
     {
         using var client = _factory.CreateClient();

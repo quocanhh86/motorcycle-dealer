@@ -8198,32 +8198,39 @@ async function main() {
       pass(`Verified v1.4.0 UI Hygiene Guard across ${uiComponentFiles.length} feature/shared components (0 UI emojis/Unicode icons, 0 inline light hex styles, 0 ASCII arrows).`);
     }
 
+    const studioModelSlugs = [
+      'honda-airblade-160',
+      'honda-sh160i-sport',
+      'honda-winner-x',
+      'yamaha-exciter-155',
+      'honda-cb300r',
+      'honda-nx500'
+    ];
+    const studioAngleSuffixes = ['', '-side', '-rear', '-cockpit'];
     const expectedStudioAssets = [
-      'assets/models/honda-airblade-160.jpg', 'assets/models/honda-airblade-160.webp',
-      'assets/models/honda-sh160i-sport.jpg', 'assets/models/honda-sh160i-sport.webp',
-      'assets/models/honda-winner-x.jpg', 'assets/models/honda-winner-x.webp',
-      'assets/models/yamaha-exciter-155.jpg', 'assets/models/yamaha-exciter-155.webp',
-      'assets/models/honda-cb300r.jpg', 'assets/models/honda-cb300r.webp',
-      'assets/models/honda-nx500.jpg', 'assets/models/honda-nx500.webp',
       'assets/editorial/showroom-hero-apex.jpg', 'assets/editorial/showroom-hero-apex.webp',
       'assets/editorial/workshop-bay-apex.jpg', 'assets/editorial/workshop-bay-apex.webp'
     ];
+    for (const slug of studioModelSlugs) {
+      for (const suffix of studioAngleSuffixes) {
+        expectedStudioAssets.push(`assets/models/${slug}${suffix}.jpg`, `assets/models/${slug}${suffix}.webp`);
+      }
+    }
     const missingAssets = expectedStudioAssets.filter((rel) => !fs.existsSync(path.join(SRC_ROOT, rel)));
     if (missingAssets.length > 0) {
       fail(`Missing v1.4.0 studio media assets: ${missingAssets.join(', ')}`);
     } else {
-      pass('Verified all 8 studio motorcycle & editorial assets (.jpg + .webp = 16 files) present under frontend/src/assets/.');
+      pass(`Verified all 26 studio motorcycle (6x4 angles) & editorial assets (.jpg + .webp = ${expectedStudioAssets.length} files) present under frontend/src/assets/.`);
     }
 
-    // P0-3 wwwroot .webp mirror parity check (when running inside monorepo)
+    // P0-3 wwwroot .jpg + .webp mirror parity check (when running inside monorepo)
     const webApiWwwroot = path.join(REPO_ROOT, 'backend', 'src', 'MotorcycleDealer.WebApi', 'wwwroot');
     if (fs.existsSync(webApiWwwroot)) {
-      const expectedWwwrootWebps = expectedStudioAssets.filter((rel) => rel.endsWith('.webp'));
-      const missingWwwrootWebps = expectedWwwrootWebps.filter((rel) => !fs.existsSync(path.join(webApiWwwroot, rel)));
-      if (missingWwwrootWebps.length > 0) {
-        fail(`Missing P0-3 WebApi wwwroot .webp assets: ${missingWwwrootWebps.join(', ')}`);
+      const missingWwwrootAssets = expectedStudioAssets.filter((rel) => !fs.existsSync(path.join(webApiWwwroot, rel)));
+      if (missingWwwrootAssets.length > 0) {
+        fail(`Missing P0-3 WebApi wwwroot studio assets: ${missingWwwrootAssets.join(', ')}`);
       } else {
-        pass('Verified P0-3: all 8 studio .webp assets mirrored in backend/src/MotorcycleDealer.WebApi/wwwroot/assets/.');
+        pass(`Verified P0-3: all ${expectedStudioAssets.length} studio (.jpg + .webp) assets mirrored in backend/src/MotorcycleDealer.WebApi/wwwroot/assets/.`);
       }
     }
 

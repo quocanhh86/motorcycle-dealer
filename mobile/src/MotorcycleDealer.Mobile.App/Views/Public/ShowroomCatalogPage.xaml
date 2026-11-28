@@ -9,6 +9,7 @@
     xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
     SafeAreaEdges="All"
     x:Name="PageRoot"
@@ -31,11 +32,11 @@
                     StrokeShape="RoundRectangle 16"
                     Padding="0">
                     <VerticalStackLayout Spacing="0">
-                        <Grid HeightRequest="164" IsClippedToBounds="True">
+                        <Grid HeightRequest="178" IsClippedToBounds="True">
                             <Image
                                 Source="{Binding HeroShowroomImageSource}"
                                 Aspect="AspectFill"
-                                HeightRequest="164"
+                                HeightRequest="178"
                                 HorizontalOptions="Fill"
                                 VerticalOptions="Fill" />
                             <BoxView>
@@ -48,13 +49,18 @@
                                 </BoxView.Background>
                             </BoxView>
                             <Grid RowDefinitions="Auto,*,Auto" Padding="14,12">
-                                <!-- Top Bar: Eyebrow + 1-Tap VI|EN & Light/Dark Toggles -->
+                                <!-- Top Bar: Brand Crest + 1-Tap VI|EN & Light/Dark Toggles (Zero Crowding on 412dp Phones) -->
                                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                    <Label
-                                        Text="{Binding Loc.ShowroomEyebrow}"
-                                        Style="{StaticResource EyebrowLabel}"
-                                        VerticalTextAlignment="Center"
-                                        LineBreakMode="TailTruncation" />
+                                    <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                        <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="{StaticResource BrandPrimary}" VerticalOptions="Center" />
+                                        <Label
+                                            Text="APEX MOTO"
+                                            FontFamily="SpaceGroteskBold"
+                                            FontSize="12"
+                                            CharacterSpacing="1.2"
+                                            TextColor="{StaticResource Slate100}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
                                     <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
                                         <Border
                                             BackgroundColor="#CC1E293B"
@@ -65,7 +71,7 @@
                                             MinimumHeightRequest="48"
                                             SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
                                             <Border.Behaviors>
-                                                <toolkit:TouchBehavior
+                                                <behaviors:ApexPressBehavior
                                                     PressedScale="0.95"
                                                     PressedAnimationDuration="110"
                                                     Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=pub:ShowroomCatalogPage}"
@@ -95,7 +101,7 @@
                                             MinimumHeightRequest="48"
                                             SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
                                             <Border.Behaviors>
-                                                <toolkit:TouchBehavior
+                                                <behaviors:ApexPressBehavior
                                                     PressedScale="0.95"
                                                     PressedAnimationDuration="110"
                                                     Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=pub:ShowroomCatalogPage}"
@@ -125,8 +131,12 @@
                                     </HorizontalStackLayout>
                                 </Grid>
 
-                                <!-- Bottom Headline & Caption -->
-                                <VerticalStackLayout Grid.Row="2" Spacing="3">
+                                <!-- Bottom Eyebrow, Headline & Caption -->
+                                <VerticalStackLayout Grid.Row="2" Spacing="2">
+                                    <Label
+                                        Text="{Binding Loc.ShowroomEyebrow}"
+                                        Style="{StaticResource EyebrowLabel}"
+                                        LineBreakMode="TailTruncation" />
                                     <Label
                                         Text="{Binding Loc.ShowroomTitle}"
                                         FontFamily="SpaceGroteskBold"
@@ -249,17 +259,54 @@
                     IsVisible="{Binding SelectedModel, Converter={StaticResource IsNotNull}}">
                     <Border Style="{StaticResource DoubleBezelInner}">
                         <VerticalStackLayout Spacing="12">
-                            <!-- Studio Motorcycle Hero Image -->
+                            <!-- 4-Angle Real HD Gallery vs Interactive Real HD 360° Inspector Switcher -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button
+                                    x:Name="ShowroomMode2dButton"
+                                    Text="Ảnh Thật 4 Góc"
+                                    Clicked="OnShowroom2dModeClicked"
+                                    MinimumHeightRequest="44"
+                                    CornerRadius="10"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="12"
+                                    BackgroundColor="{StaticResource BrandPrimary}"
+                                    TextColor="{StaticResource PureWhite}" />
+                                <Button
+                                    x:Name="ShowroomMode3dButton"
+                                    Grid.Column="1"
+                                    Text="Soi HD 360°"
+                                    Clicked="OnShowroom3dModeClicked"
+                                    MinimumHeightRequest="44"
+                                    CornerRadius="10"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="12"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceSunkenLight}, Dark={StaticResource Slate800}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource Slate100}}"
+                                    BorderColor="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource Slate700}}"
+                                    BorderWidth="1" />
+                            </Grid>
+
+                            <controls:Moto3dStudioView
+                                x:Name="Showroom3dStudio"
+                                IsVisible="False"
+                                ModelCode="{Binding SelectedModel.ModelCode}"
+                                ImageUrl="{Binding SelectedModel.ImageUrl}"
+                                ModelName="{Binding SelectedModel.ModelName}"
+                                Category="{Binding SelectedModel.Category}"
+                                EngineDisplacementCc="{Binding SelectedModel.EngineDisplacementCc}" />
+
+                            <VerticalStackLayout x:Name="Showroom2dMediaBlock" Spacing="10">
+                            <!-- Studio Motorcycle Hero Image + Multi-Angle Controls -->
                             <Border
                                 StrokeShape="RoundRectangle 12"
                                 Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
                                 StrokeThickness="1"
                                 Padding="0">
-                                <Grid HeightRequest="188" IsClippedToBounds="True">
+                                <Grid HeightRequest="204" IsClippedToBounds="True">
                                     <Image
                                         Source="{Binding SelectedModelImageSource}"
                                         Aspect="AspectFill"
-                                        HeightRequest="188"
+                                        HeightRequest="204"
                                         HorizontalOptions="Fill"
                                         VerticalOptions="Fill" />
                                     <Border
@@ -281,9 +328,151 @@
                                         HorizontalOptions="End"
                                         VerticalOptions="Start"
                                         Margin="10"
-                                        Status="Available" />
+                                        Status="{Binding SelectedModelStockStatus}" />
+                                    <!-- Prev / Next Angle Overlay Buttons (48dp touch targets) -->
+                                    <Button
+                                        IsVisible="{Binding HasMultipleGalleryAngles}"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="Center"
+                                        Margin="8,0,0,0"
+                                        WidthRequest="48"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="48"
+                                        MinimumHeightRequest="48"
+                                        CornerRadius="24"
+                                        Padding="0"
+                                        BackgroundColor="#B8020617"
+                                        BorderColor="{StaticResource Slate600}"
+                                        BorderWidth="1"
+                                        FontFamily="Phosphor"
+                                        FontSize="18"
+                                        TextColor="{StaticResource Slate50}"
+                                        Text="{x:Static icons:PhosphorIcons.CaretLeft}"
+                                        SemanticProperties.Description="{Binding Loc.ShowroomPrevAngle}"
+                                        Command="{Binding PreviousGalleryAngleCommand}" />
+                                    <Button
+                                        IsVisible="{Binding HasMultipleGalleryAngles}"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,8,0"
+                                        WidthRequest="48"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="48"
+                                        MinimumHeightRequest="48"
+                                        CornerRadius="24"
+                                        Padding="0"
+                                        BackgroundColor="#B8020617"
+                                        BorderColor="{StaticResource Slate600}"
+                                        BorderWidth="1"
+                                        FontFamily="Phosphor"
+                                        FontSize="18"
+                                        TextColor="{StaticResource Slate50}"
+                                        Text="{x:Static icons:PhosphorIcons.CaretRight}"
+                                        SemanticProperties.Description="{Binding Loc.ShowroomNextAngle}"
+                                        Command="{Binding NextGalleryAngleCommand}" />
+                                    <!-- Active Angle Counter & Caption Pill -->
+                                    <Border
+                                        IsVisible="{Binding HasMultipleGalleryAngles}"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="End"
+                                        Margin="10"
+                                        BackgroundColor="#DD020617"
+                                        Stroke="{StaticResource Slate700}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 12"
+                                        Padding="10,5">
+                                        <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                            <Label
+                                                Text="{x:Static icons:PhosphorIcons.Camera}"
+                                                FontFamily="Phosphor"
+                                                FontSize="13"
+                                                TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                                AutomationProperties.IsInAccessibleTree="False"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Text="{Binding SelectedGalleryCounter}"
+                                                FontFamily="JetBrainsMonoSemiBold"
+                                                FontSize="11"
+                                                TextColor="{StaticResource Slate50}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Text="·"
+                                                FontSize="11"
+                                                TextColor="{StaticResource Slate400}"
+                                                VerticalTextAlignment="Center" />
+                                            <Label
+                                                Text="{Binding SelectedGalleryAngleLabel}"
+                                                FontFamily="BeVietnamProSemiBold"
+                                                FontSize="11"
+                                                TextColor="{StaticResource Slate100}"
+                                                VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                    </Border>
                                 </Grid>
                             </Border>
+
+                            <!-- 4-Angle Interactive Studio Filmstrip Thumbnails -->
+                            <ScrollView
+                                IsVisible="{Binding HasMultipleGalleryAngles}"
+                                Orientation="Horizontal"
+                                HorizontalScrollBarVisibility="Never">
+                                <HorizontalStackLayout
+                                    BindableLayout.ItemsSource="{Binding SelectedModelGallery}"
+                                    Spacing="8">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:ShowroomGalleryThumb">
+                                            <Border
+                                                x:Name="GalleryThumbRoot"
+                                                WidthRequest="96"
+                                                MinimumHeightRequest="48"
+                                                Padding="4"
+                                                StrokeShape="RoundRectangle 10"
+                                                StrokeThickness="1.5"
+                                                SemanticProperties.Description="{Binding Label}"
+                                                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceSunkenLight}, Dark={StaticResource Slate900}}"
+                                                Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource Slate700}}">
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectGalleryAngleCommand, x:DataType=pub:ShowroomCatalogPage}"
+                                                        CommandParameter="{Binding Source={x:Reference GalleryThumbRoot}, Path=BindingContext, x:DataType=Border}" />
+                                                </Border.GestureRecognizers>
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border" Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                                <Binding Path="AngleKey" />
+                                                                <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedGalleryAngleKey" x:DataType="pub:ShowroomCatalogPage" />
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="Stroke" Value="{StaticResource BrandPrimary}" />
+                                                        <Setter Property="StrokeThickness" Value="2" />
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                                <VerticalStackLayout Spacing="4">
+                                                    <Border StrokeShape="RoundRectangle 7" StrokeThickness="0" Padding="0">
+                                                        <Grid HeightRequest="54" IsClippedToBounds="True">
+                                                            <Image
+                                                                Source="{Binding ImageSource}"
+                                                                Aspect="AspectFill"
+                                                                HeightRequest="54"
+                                                                HorizontalOptions="Fill"
+                                                                VerticalOptions="Fill" />
+                                                        </Grid>
+                                                    </Border>
+                                                    <Label
+                                                        Text="{Binding Label}"
+                                                        FontFamily="BeVietnamProSemiBold"
+                                                        FontSize="10"
+                                                        HorizontalTextAlignment="Center"
+                                                        LineBreakMode="TailTruncation"
+                                                        TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource Slate200}}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+                            </ScrollView>
+                            </VerticalStackLayout>
 
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                 <VerticalStackLayout Spacing="2">
@@ -356,6 +545,35 @@
                                     </VerticalStackLayout>
                                 </Border>
                             </Grid>
+
+                            <!-- Estimated Loyalty Points Strip (Canonical Two-Step Floor Formula) -->
+                            <Border
+                                Style="{StaticResource AlertSuccessBanner}"
+                                Padding="12,9"
+                                IsVisible="{Binding SelectedModelEstimatedPointsLabel, Converter={StaticResource IsNotNullOrEmpty}}">
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                    <Label
+                                        Text="{x:Static icons:PhosphorIcons.Crown}"
+                                        FontFamily="PhosphorFill"
+                                        FontSize="16"
+                                        TextColor="{AppThemeBinding Light={StaticResource SuccessAccent}, Dark={StaticResource SuccessFgDark}}"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="{Binding Loc.LoyaltyPageTitle}"
+                                        FontFamily="BeVietnamProSemiBold"
+                                        FontSize="12"
+                                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        Grid.Column="2"
+                                        Text="{Binding SelectedModelEstimatedPointsLabel}"
+                                        FontFamily="JetBrainsMonoSemiBold"
+                                        FontSize="12"
+                                        TextColor="{AppThemeBinding Light={StaticResource SuccessFg}, Dark={StaticResource SuccessFgDark}}"
+                                        VerticalTextAlignment="Center" />
+                                </Grid>
+                            </Border>
 
                             <!-- Collapsible OEM Coverage & Live Branch Stock Breakdown -->
                             <Border Style="{StaticResource SunkenPanel}">
@@ -432,12 +650,12 @@
                                 </toolkit:Expander>
                             </Border>
 
-                            <!-- Tactile Editorial Pill CTA (CommunityToolkit.Maui TouchBehavior) -->
+                            <!-- Tactile Editorial Pill CTA (theme-safe ApexPressBehavior) -->
                             <Border
                                 Style="{StaticResource PrimaryPillCta}"
                                 SemanticProperties.Description="{Binding Loc.ShowroomBookCta}">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.97"
                                         PressedOpacity="0.90"
                                         PressedAnimationDuration="110"
@@ -489,7 +707,7 @@
                         <DataTemplate x:DataType="dto:MotorcycleModelDto">
                             <Border x:Name="ModelCardRoot" Style="{StaticResource DoubleBezelOuter}">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.97"
                                         PressedOpacity="0.92"
                                         PressedAnimationDuration="110"
@@ -499,17 +717,48 @@
                                 </Border.Behaviors>
                                 <Border Style="{StaticResource DoubleBezelInner}">
                                     <VerticalStackLayout Spacing="10">
-                                        <!-- Offline-First Studio Model Image -->
+                                        <!-- Offline-First Real DSLR Motorcycle Photograph + Subtle Telemetry Feather -->
                                         <Border
-                                            StrokeShape="RoundRectangle 10"
+                                            StrokeShape="RoundRectangle 12"
                                             Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
                                             StrokeThickness="1"
                                             Padding="0">
-                                            <Image
-                                                Source="{Binding ResolvedImageSource}"
-                                                Aspect="AspectFill"
-                                                HeightRequest="176"
-                                                HorizontalOptions="Fill" />
+                                            <Grid HeightRequest="184" IsClippedToBounds="True">
+                                                <Image
+                                                    Source="{Binding ResolvedImageSource}"
+                                                    Aspect="AspectFill"
+                                                    HorizontalOptions="Fill"
+                                                    VerticalOptions="Fill" />
+                                                <BoxView VerticalOptions="End" HeightRequest="54" InputTransparent="True">
+                                                    <BoxView.Background>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                            <GradientStop Color="#00020617" Offset="0.0" />
+                                                            <GradientStop Color="#CC020617" Offset="1.0" />
+                                                        </LinearGradientBrush>
+                                                    </BoxView.Background>
+                                                </BoxView>
+                                                <HorizontalStackLayout
+                                                    HorizontalOptions="Start"
+                                                    VerticalOptions="End"
+                                                    Margin="10,0,10,8"
+                                                    Spacing="8"
+                                                    InputTransparent="True">
+                                                    <Label
+                                                        Text="{Binding EngineDisplacementCc, StringFormat='{0} cc'}"
+                                                        FontFamily="JetBrainsMonoSemiBold"
+                                                        FontSize="11"
+                                                        TextColor="{StaticResource Slate50}" />
+                                                    <Label
+                                                        Text="·"
+                                                        FontSize="11"
+                                                        TextColor="{StaticResource Slate400}" />
+                                                    <Label
+                                                        Text="{Binding Brand}"
+                                                        FontFamily="SpaceGroteskSemiBold"
+                                                        FontSize="11"
+                                                        TextColor="{StaticResource Slate200}" />
+                                                </HorizontalStackLayout>
+                                            </Grid>
                                         </Border>
 
                                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">

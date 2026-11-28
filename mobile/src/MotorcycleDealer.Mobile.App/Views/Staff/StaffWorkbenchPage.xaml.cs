@@ -23,12 +23,19 @@ public partial class StaffWorkbenchPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        ViewModel.AttachEventSubscriptions();
-        WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
-        WeakReferenceMessenger.Default.Register<StaffWorkbenchPage, CultureChangedMessage>(
-            this,
-            static (page, _) => page.RefreshLocalizedChips());
-        await ViewModel.LoadWorkbenchCommand.ExecuteAsync(null);
+        try
+        {
+            ViewModel.AttachEventSubscriptions();
+            WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
+            WeakReferenceMessenger.Default.Register<StaffWorkbenchPage, CultureChangedMessage>(
+                this,
+                static (page, _) => page.RefreshLocalizedChips());
+            await ViewModel.LoadWorkbenchCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 
     protected override void OnDisappearing()
@@ -54,8 +61,26 @@ public partial class StaffWorkbenchPage : ContentPage
     }
 
     private async void OnAlertsClicked(object? sender, EventArgs e)
-        => await _shellViewModel.OpenNotificationsCommand.ExecuteAsync(null);
+    {
+        try
+        {
+            await _shellViewModel.OpenNotificationsCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void toolbar handler crash-safe
+        }
+    }
 
     private async void OnSignOutClicked(object? sender, EventArgs e)
-        => await _shellViewModel.SignOutCommand.ExecuteAsync(null);
+    {
+        try
+        {
+            await _shellViewModel.SignOutCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void toolbar handler crash-safe
+        }
+    }
 }

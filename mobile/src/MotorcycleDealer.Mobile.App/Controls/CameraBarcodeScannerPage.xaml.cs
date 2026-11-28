@@ -333,8 +333,15 @@ public partial class CameraBarcodeScannerPage : ContentPage
 
         MainThread.BeginInvokeOnMainThread(async () =>
         {
-            TryHapticConfirm();
-            await CompleteAndCloseAsync(candidate);
+            try
+            {
+                TryHapticConfirm();
+                await CompleteAndCloseAsync(candidate);
+            }
+            catch
+            {
+                // Guard modal close race conditions during barcode detection
+            }
         });
     }
 
@@ -345,8 +352,15 @@ public partial class CameraBarcodeScannerPage : ContentPage
             return;
         }
 
-        _cameraReader.IsTorchOn = !_cameraReader.IsTorchOn;
-        OnPropertyChanged(nameof(TorchButtonText));
+        try
+        {
+            _cameraReader.IsTorchOn = !_cameraReader.IsTorchOn;
+            OnPropertyChanged(nameof(TorchButtonText));
+        }
+        catch
+        {
+            // Some emulators or rear-less devices do not expose a controllable camera flash
+        }
     }
 
     private async void OnEnableCameraClicked(object? sender, EventArgs e)
@@ -361,39 +375,53 @@ public partial class CameraBarcodeScannerPage : ContentPage
         {
             await _cameraActivationTask;
         }
-        catch (OperationCanceledException)
+        catch
         {
-            // Expected on cancel
+            // Expected on cancel or hardware failure
         }
     }
 
     private async void OnManualSubmitClicked(object? sender, EventArgs e)
     {
-        string value = ManualInput.Trim();
-        if (string.IsNullOrWhiteSpace(value) || HasValidationHint)
+        try
         {
-            OnPropertyChanged(nameof(ManualValidationHint));
-            OnPropertyChanged(nameof(HasValidationHint));
-            return;
-        }
+            string value = ManualInput.Trim();
+            if (string.IsNullOrWhiteSpace(value) || HasValidationHint)
+            {
+                OnPropertyChanged(nameof(ManualValidationHint));
+                OnPropertyChanged(nameof(HasValidationHint));
+                return;
+            }
 
-        if (Interlocked.Exchange(ref _completed, 1) != 0)
+            if (Interlocked.Exchange(ref _completed, 1) != 0)
+            {
+                return;
+            }
+
+            TryHapticConfirm();
+            await CompleteAndCloseAsync(value);
+        }
+        catch
         {
-            return;
+            // Keep manual entry resilient
         }
-
-        TryHapticConfirm();
-        await CompleteAndCloseAsync(value);
     }
 
     private async void OnCancelClicked(object? sender, EventArgs e)
     {
-        if (Interlocked.Exchange(ref _completed, 1) != 0)
+        try
         {
-            return;
-        }
+            if (Interlocked.Exchange(ref _completed, 1) != 0)
+            {
+                return;
+            }
 
-        await CompleteAndCloseAsync(null);
+            await CompleteAndCloseAsync(null);
+        }
+        catch
+        {
+            // Keep cancel resilient
+        }
     }
 
     private async Task CompleteAndCloseAsync(string? result)

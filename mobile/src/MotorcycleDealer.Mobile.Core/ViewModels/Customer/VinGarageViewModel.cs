@@ -14,6 +14,7 @@ using MotorcycleDealer.Mobile.Core.Persistence;
 using MotorcycleDealer.Mobile.Core.Realtime;
 using MotorcycleDealer.Mobile.Core.Security;
 using MotorcycleDealer.Mobile.Core.Validation;
+using MotorcycleDealer.Mobile.Core.ViewModels.Public;
 
 namespace MotorcycleDealer.Mobile.Core.ViewModels.Customer;
 
@@ -69,6 +70,7 @@ public sealed partial class VinGarageViewModel : MobileViewModelBase, IDisposabl
         NewColorName = string.Empty;
         VinCounterLabel = "0/17";
         VinValidationMessage = string.Empty;
+        SelectedVehicleAngleKey = "front";
 
         _messenger.Register<VinGarageViewModel, BookingMutatedMessage>(this, static (r, _) => r.TriggerCrossTabRefresh());
     }
@@ -76,9 +78,42 @@ public sealed partial class VinGarageViewModel : MobileViewModelBase, IDisposabl
     public ObservableCollection<CustomerVehicleDto> Vehicles { get; } = [];
     public ObservableCollection<MotorcycleModelDto> AvailableModels { get; } = [];
     public ObservableCollection<MaintenanceReminderDto> SelectedVehicleReminders { get; } = [];
+    public ObservableCollection<ShowroomGalleryThumb> SelectedVehicleGallery { get; } = [];
 
-    public string SelectedVehicleImageSource => _imageResolver.ResolveForVehicle(SelectedVehicle);
+    public string SelectedVehicleImageSource =>
+        GetActiveVehicleThumb()?.ImageSource ?? _imageResolver.ResolveForVehicle(SelectedVehicle);
+    public bool HasMultipleVehicleGalleryAngles => SelectedVehicleGallery.Count > 1;
+    public string SelectedVehicleGalleryCounter
+    {
+        get
+        {
+            if (SelectedVehicleGallery.Count == 0)
+            {
+                return string.Empty;
+            }
+            var active = GetActiveVehicleThumb();
+            return $"{(active?.Index ?? 0) + 1} / {SelectedVehicleGallery.Count}";
+        }
+    }
+    public string SelectedVehicleAngleLabel => GetActiveVehicleThumb()?.Label ?? Loc.ShowroomAngleFront;
+    public double SelectedVehicleWearRatio
+    {
+        get
+        {
+            if (SelectedVehicle is null || SelectedVehicle.NextDueMileageKm <= 0)
+            {
+                return 0.08d;
+            }
+
+            int span = Math.Max(1, SelectedVehicle.NextDueMileageKm - SelectedVehicle.LastServiceMileageKm);
+            int covered = Math.Max(0, SelectedVehicle.CurrentMileageKm - SelectedVehicle.LastServiceMileageKm);
+            return Math.Clamp((double)covered / span, 0.05d, 1.0d);
+        }
+    }
     public string OfflineGarageBannerText => Loc.Format("GarageOfflineBanner", SyncAgeLabel);
+
+    [ObservableProperty]
+    public partial string SelectedVehicleAngleKey { get; set; }
 
     [ObservableProperty]
     public partial CustomerVehicleDto? SelectedVehicle { get; set; }
@@ -113,8 +148,13 @@ public sealed partial class VinGarageViewModel : MobileViewModelBase, IDisposabl
     [ObservableProperty]
     public partial int UpdatedOdometerKm { get; set; }
 
-    partial void OnSelectedVehicleChanged(CustomerVehicleDto? value) =>
-        OnPropertyChanged(nameof(SelectedVehicleImageSource));
+    partial void OnSelectedVehicleChanged(CustomerVehicleDto? value)
+    {
+        RebuildSelectedVehicleGallery();
+        OnPropertyChanged(nameof(SelectedVehicleWearRatio));
+    }
+
+    partial void OnSelectedVehicleAngleKeyChanged(string value) => NotifyVehicleGalleryChanged();
 
     partial void OnNewVehicleVinChanged(string value)
     {
@@ -150,6 +190,12 @@ public sealed partial class VinGarageViewModel : MobileViewModelBase, IDisposabl
         SelectedRegistrationModel = selectedModel;
         UpdatedOdometerKm = savedOdometer;
 
+        foreach (var thumb in SelectedVehicleGallery)
+        {
+            thumb.Label = Loc.GetString(thumb.LabelResourceKey);
+        }
+
+        NotifyVehicleGalleryChanged();
         OnPropertyChanged(nameof(OfflineGarageBannerText));
     }
 
@@ -394,6 +440,75 @@ public sealed partial class VinGarageViewModel : MobileViewModelBase, IDisposabl
         {
             ErrorMessage = FormatApiError(result);
         }
+    }
+
+    [RelayCommand]
+    private void SelectVehicleGalleryAngle(ShowroomGalleryThumb? thumb)
+    {
+        if (thumb is not null && !string.IsNullOrWhiteSpace(thumb.AngleKey))
+        {
+            SelectedVehicleAngleKey = thumb.AngleKey;
+        }
+    }
+
+    [RelayCommand]
+    private void NextVehicleGalleryAngle() => StepVehicleGalleryAngle(1);
+
+    [RelayCommand]
+    private void PreviousVehicleGalleryAngle() => StepVehicleGalleryAngle(-1);
+
+    private void StepVehicleGalleryAngle(int delta)
+    {
+        if (SelectedVehicleGallery.Count <= 1)
+        {
+            return;
+        }
+
+        var current = GetActiveVehicleThumb()?.Index ?? 0;
+        var next = ((current + delta) % SelectedVehicleGallery.Count + SelectedVehicleGallery.Count) % SelectedVehicleGallery.Count;
+        SelectedVehicleAngleKey = SelectedVehicleGallery[next].AngleKey;
+    }
+
+    private ShowroomGalleryThumb? GetActiveVehicleThumb()
+    {
+        if (SelectedVehicleGallery.Count == 0)
+        {
+            return null;
+        }
+
+        return SelectedVehicleGallery.FirstOrDefault(
+                   g => string.Equals(g.AngleKey, SelectedVehicleAngleKey, StringComparison.OrdinalIgnoreCase))
+               ?? SelectedVehicleGallery[0];
+    }
+
+    private void RebuildSelectedVehicleGallery()
+    {
+        SelectedVehicleGallery.Clear();
+        if (SelectedVehicle is not null)
+        {
+            var resolved = MotorcycleImageResolver.ResolveModelGallery(SelectedVehicle.ModelCode, SelectedVehicle.ImageUrl);
+            for (var i = 0; i < resolved.Count; i++)
+            {
+                var item = resolved[i];
+                SelectedVehicleGallery.Add(new ShowroomGalleryThumb(
+                    item.AngleKey,
+                    item.ImageSource,
+                    item.LabelResourceKey,
+                    Loc.GetString(item.LabelResourceKey),
+                    i));
+            }
+        }
+
+        SelectedVehicleAngleKey = SelectedVehicleGallery.FirstOrDefault()?.AngleKey ?? "front";
+        NotifyVehicleGalleryChanged();
+    }
+
+    private void NotifyVehicleGalleryChanged()
+    {
+        OnPropertyChanged(nameof(SelectedVehicleImageSource));
+        OnPropertyChanged(nameof(HasMultipleVehicleGalleryAngles));
+        OnPropertyChanged(nameof(SelectedVehicleGalleryCounter));
+        OnPropertyChanged(nameof(SelectedVehicleAngleLabel));
     }
 
     [RelayCommand]

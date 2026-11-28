@@ -10,6 +10,7 @@ using MotorcycleDealer.Mobile.Core.DependencyInjection;
 using MotorcycleDealer.Mobile.Core.Domain;
 using MotorcycleDealer.Mobile.Core.Localization;
 using MotorcycleDealer.Mobile.Core.Logging;
+using MotorcycleDealer.Mobile.Core.Media;
 using MotorcycleDealer.Mobile.Core.Messaging;
 using MotorcycleDealer.Mobile.Core.Persistence;
 using MotorcycleDealer.Mobile.Core.Realtime;
@@ -721,6 +722,172 @@ public sealed class SignalRAndViewModelTests
         {
             MobileViewModelBase.MainThreadInvoker = previousInvoker;
         }
+    }
+
+    [Fact]
+    public async Task ShowroomCatalogViewModel_MultiAngleGallery_SwitchesCyclesAndReactsToCultureChange()
+    {
+        using var tempPath = new TempDatabasePathProvider();
+        var tokenStore = new InMemorySecureTokenStore();
+        await using var db = new MobileOfflineDb(tempPath, tokenStore);
+        var session = new MobileSessionState();
+        var messenger = new WeakReferenceMessenger();
+        var loc = new LocalizationService(new InMemoryAppPreferencesStore(), messenger);
+        loc.SetCulture(LocalizationService.VietnameseCultureCode);
+
+        try
+        {
+            var apiClient = CreateMockApiClient((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+            var vm = new ShowroomCatalogViewModel(
+                apiClient,
+                db,
+                session,
+                new FakeNavigationService(),
+                new FakeMainThreadDispatcher(),
+                new MotorcycleImageResolver(),
+                loc,
+                new InMemoryAppPreferencesStore(),
+                messenger);
+
+            var sh160i = TestDataFactory.SampleModel();
+            vm.SelectedModel = sh160i;
+
+            Assert.True(vm.HasMultipleGalleryAngles);
+            Assert.Equal(4, vm.SelectedModelGallery.Count);
+            Assert.Equal("front", vm.SelectedGalleryAngleKey);
+            Assert.Equal("1 / 4", vm.SelectedGalleryCounter);
+            Assert.Equal(MotorcycleImageResolver.ModelHondaSh160iSport, vm.SelectedModelImageSource);
+            Assert.Equal("3/4 Trước", vm.SelectedGalleryAngleLabel);
+
+            // Step forward through all 4 angles and wrap around
+            vm.NextGalleryAngleCommand.Execute(null);
+            Assert.Equal("side", vm.SelectedGalleryAngleKey);
+            Assert.Equal("2 / 4", vm.SelectedGalleryCounter);
+            Assert.Equal(MotorcycleImageResolver.ModelHondaSh160iSportSide, vm.SelectedModelImageSource);
+
+            vm.NextGalleryAngleCommand.Execute(null);
+            Assert.Equal("rear", vm.SelectedGalleryAngleKey);
+            Assert.Equal("3 / 4", vm.SelectedGalleryCounter);
+            Assert.Equal(MotorcycleImageResolver.ModelHondaSh160iSportRear, vm.SelectedModelImageSource);
+
+            vm.NextGalleryAngleCommand.Execute(null);
+            Assert.Equal("cockpit", vm.SelectedGalleryAngleKey);
+            Assert.Equal("4 / 4", vm.SelectedGalleryCounter);
+            Assert.Equal(MotorcycleImageResolver.ModelHondaSh160iSportCockpit, vm.SelectedModelImageSource);
+
+            // Hot-switch VI -> EN preserves active angle ('cockpit') and updates localized labels
+            loc.SetCulture(LocalizationService.EnglishCultureCode);
+            Assert.Equal("cockpit", vm.SelectedGalleryAngleKey);
+            Assert.Equal("4 / 4", vm.SelectedGalleryCounter);
+            Assert.Equal("Cockpit", vm.SelectedGalleryAngleLabel);
+
+            // Wrap forward to front, then step backward to cockpit
+            vm.NextGalleryAngleCommand.Execute(null);
+            Assert.Equal("front", vm.SelectedGalleryAngleKey);
+            vm.PreviousGalleryAngleCommand.Execute(null);
+            Assert.Equal("cockpit", vm.SelectedGalleryAngleKey);
+
+            // Direct thumbnail selection
+            vm.SelectGalleryAngleCommand.Execute(vm.SelectedModelGallery[1]);
+            Assert.Equal("side", vm.SelectedGalleryAngleKey);
+            Assert.Equal("Side Profile", vm.SelectedGalleryAngleLabel);
+
+            // L-3: SelectedModelStockStatus reflects live stock count
+            Assert.Equal("Available", vm.SelectedModelStockStatus);
+            vm.SelectedModel = sh160i with { AvailableStockCount = 0 };
+            Assert.Equal("OutOfStock", vm.SelectedModelStockStatus);
+        }
+        finally
+        {
+            loc.SetCulture(LocalizationService.VietnameseCultureCode);
+        }
+    }
+
+    [Fact]
+    public async Task VinGarageViewModel_SelectedVehicleWearRatio_MeasuresCurrentMaintenanceIntervalProgress()
+    {
+        using var tempPath = new TempDatabasePathProvider();
+        var tokenStore = new InMemorySecureTokenStore();
+        await using var db = new MobileOfflineDb(tempPath, tokenStore);
+        var session = new MobileSessionState();
+        session.ApplyAuthenticatedUser(TestDataFactory.CustomerUser());
+        var apiClient = CreateMockApiClient((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+        var connectivity = new FakeConnectivityMonitor(true);
+        var outbox = new OfflineOutboxSyncService(db, apiClient, connectivity);
+
+        using var vm = new VinGarageViewModel(
+            apiClient, db, session, connectivity, outbox,
+            new FakeNavigationService(), new FakeHapticService(), new FakeMainThreadDispatcher(),
+            new RegisterVehicleInputValidator(), new WeakReferenceMessenger(), new FakeUserFeedbackService());
+
+        var baseVehicle = TestDataFactory.SampleVehicle();
+        // Just serviced at 12,000 km, next due at 16,000 km -> 12,100 km is 2.5% -> clamped to 0.05 floor (not 75.6%!)
+        vm.SelectedVehicle = baseVehicle with { LastServiceMileageKm = 12_000, CurrentMileageKm = 12_100, NextDueMileageKm = 16_000 };
+        Assert.Equal(0.05, vm.SelectedVehicleWearRatio, precision: 3);
+
+        // Halfway through interval (14,000 km between 12,000 and 16,000) -> 0.50
+        vm.SelectedVehicle = baseVehicle with { LastServiceMileageKm = 12_000, CurrentMileageKm = 14_000, NextDueMileageKm = 16_000 };
+        Assert.Equal(0.50, vm.SelectedVehicleWearRatio, precision: 3);
+
+        // Overdue (17,500 km >= 16,000 km) -> clamped to 1.0
+        vm.SelectedVehicle = baseVehicle with { LastServiceMileageKm = 12_000, CurrentMileageKm = 17_500, NextDueMileageKm = 16_000 };
+        Assert.Equal(1.0, vm.SelectedVehicleWearRatio, precision: 3);
+    }
+
+    [Fact]
+    public async Task AppShellViewModel_HandleExternalDeepLink_EnforcesAllowlistRbacAndColdStartBuffer()
+    {
+        using var tempPath = new TempDatabasePathProvider();
+        var tokenStore = new InMemorySecureTokenStore();
+        await tokenStore.SaveTokensAsync(new AuthTokens("jwt-cus", "rt-cus", DateTimeOffset.UtcNow.AddMinutes(15)));
+        var endpoint = new DefaultApiEndpointProvider(tokenStore, "http://127.0.0.1:1");
+        var session = new MobileSessionState();
+        await using var db = new MobileOfflineDb(tempPath, tokenStore);
+        var nav = new FakeNavigationService();
+        var dispatcher = new FakeMainThreadDispatcher();
+        var connectivity = new FakeConnectivityMonitor(true);
+
+        var apiClient = CreateMockApiClient((req, _) =>
+        {
+            if (req.RequestUri!.AbsolutePath == "/api/v1/auth/me")
+            {
+                return Task.FromResult(TestJsonResponses.JsonOk(
+                    new ApiEnvelope<CurrentUserDto>(true, TestDataFactory.CustomerUser(), TestDataFactory.Meta()),
+                    MobileJsonSerializerContext.Default.ApiEnvelopeCurrentUserDto));
+            }
+
+            return Task.FromResult(TestJsonResponses.JsonOk(
+                new NotificationFeedEnvelope(true, [], 0, new PaginationMeta(1, 50, 0, 0, false, false), new NotificationFeedMeta(DateTimeOffset.UtcNow, "t", 0)),
+                MobileJsonSerializerContext.Default.NotificationFeedEnvelope));
+        });
+
+        var logout = new LogoutCoordinator(tokenStore, new AuthRefreshClient(new StubHttpClientFactory(_ => new HttpClient()), endpoint), db, session);
+        await using var signalR = new SignalRMobileService(endpoint, tokenStore, session, apiClient, db, new FakeLocalNotificationService(), dispatcher, logout);
+        var outbox = new OfflineOutboxSyncService(db, apiClient, connectivity);
+
+        using var shellVm = new AppShellViewModel(
+            session, tokenStore, endpoint, apiClient, logout, signalR, connectivity, outbox, nav, dispatcher, db);
+
+        // 1. Unknown/malicious external route rejected even before bootstrap
+        Assert.False(await shellVm.HandleExternalDeepLinkAsync("//evil/route"));
+        Assert.False(await shellVm.HandleExternalDeepLinkAsync(MobileRoutes.MobileInvoiceBuilder));
+
+        // 2. Valid customer notification route buffered during cold start before BootstrapSessionAsync
+        Assert.True(await shellVm.HandleExternalDeepLinkAsync(MobileRoutes.LoyaltyPassbook));
+        Assert.Empty(nav.Navigations);
+
+        // 3. Bootstrap authenticates Customer and consumes buffered LoyaltyPassbook deep link
+        await shellVm.BootstrapSessionAsync();
+        Assert.Contains(nav.Navigations, n => n.Route == MobileRoutes.LoyaltyPassbook);
+
+        // 4. Cross-role injection (Staff route while logged in as Customer) MUST be denied
+        var countBefore = nav.Navigations.Count;
+        Assert.False(await shellVm.HandleExternalDeepLinkAsync(MobileRoutes.StaffWorkbench));
+        Assert.Equal(countBefore, nav.Navigations.Count);
+
+        // 5. Same-role valid deep link succeeds live
+        Assert.True(await shellVm.HandleExternalDeepLinkAsync(MobileRoutes.VinGarage));
+        Assert.Equal(MobileRoutes.VinGarage, nav.Navigations[^1].Route);
     }
 
     private static IDealerMobileApiClient CreateMockApiClient(

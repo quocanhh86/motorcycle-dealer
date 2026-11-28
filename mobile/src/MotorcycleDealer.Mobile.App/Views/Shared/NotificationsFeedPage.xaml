@@ -11,6 +11,7 @@
     xmlns:logging="clr-namespace:MotorcycleDealer.Mobile.Core.Logging;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:shared="clr-namespace:MotorcycleDealer.Mobile.App.Views.Shared"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     SafeAreaEdges="All"
     x:Name="PageRoot"
     x:DataType="vm:NotificationsFeedViewModel"
@@ -62,7 +63,7 @@
                                 MinimumHeightRequest="48"
                                 Padding="12,8">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.97"
                                         PressedAnimationDuration="110"
                                         Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=shared:NotificationsFeedPage}"
@@ -93,7 +94,7 @@
                                 MinimumHeightRequest="48"
                                 Padding="12,8">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.97"
                                         PressedAnimationDuration="110"
                                         Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=shared:NotificationsFeedPage}"

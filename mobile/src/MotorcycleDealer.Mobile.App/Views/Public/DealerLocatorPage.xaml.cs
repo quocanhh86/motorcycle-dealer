@@ -19,13 +19,20 @@ public partial class DealerLocatorPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
-        WeakReferenceMessenger.Default.Register<DealerLocatorPage, CultureChangedMessage>(
-            this,
-            static (page, _) => page.RefreshLocalizedChips());
-        if (ViewModel.Dealers.Count == 0)
+        try
         {
-            await ViewModel.LoadDealersCommand.ExecuteAsync(null);
+            WeakReferenceMessenger.Default.Unregister<CultureChangedMessage>(this);
+            WeakReferenceMessenger.Default.Register<DealerLocatorPage, CultureChangedMessage>(
+                this,
+                static (page, _) => page.RefreshLocalizedChips());
+            if (ViewModel.Dealers.Count == 0)
+            {
+                await ViewModel.LoadDealersCommand.ExecuteAsync(null);
+            }
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
         }
     }
 

@@ -117,7 +117,8 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
     private readonly IDatabasePathProvider _pathProvider;
     private readonly ISecureTokenStore _tokenStore;
     private readonly SemaphoreSlim _initLock = new(1, 1);
-    private SQLiteAsyncConnection? _connection;
+    private volatile SQLiteAsyncConnection? _connection;
+    private int _disposed;
 
     public MobileOfflineDb(IDatabasePathProvider pathProvider, ISecureTokenStore tokenStore)
     {
@@ -135,6 +136,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
 
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
+        ObjectDisposedException.ThrowIf(Volatile.Read(ref _disposed) == 1, this);
         if (_connection is not null)
         {
             return;
@@ -143,6 +145,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
         await _initLock.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
+            ObjectDisposedException.ThrowIf(Volatile.Read(ref _disposed) == 1, this);
             if (_connection is not null)
             {
                 return;
@@ -171,6 +174,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
 
             var conn = new SQLiteAsyncConnection(connString);
             _ = await conn.ExecuteScalarAsync<string>("PRAGMA journal_mode=WAL;").ConfigureAwait(false);
+            _ = await conn.ExecuteScalarAsync<string>("PRAGMA busy_timeout=5000;").ConfigureAwait(false);
             await conn.ExecuteAsync("PRAGMA foreign_keys=ON;").ConfigureAwait(false);
 
             await conn.CreateTableAsync<CacheSyncState>().ConfigureAwait(false);
@@ -386,12 +390,8 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
         var rows = await conn.Table<CachedMotorcycleModel>().ToListAsync().ConfigureAwait(false);
         return rows.Select(r =>
         {
-            var rules = string.IsNullOrWhiteSpace(r.MaintenanceRulesJson)
-                ? []
-                : JsonSerializer.Deserialize(r.MaintenanceRulesJson, MobileJsonSerializerContext.Default.IReadOnlyListMaintenanceRuleDto) ?? [];
-            var stock = string.IsNullOrWhiteSpace(r.DealerStockJson)
-                ? []
-                : JsonSerializer.Deserialize(r.DealerStockJson, MobileJsonSerializerContext.Default.IReadOnlyListDealerModelStockSummaryDto) ?? [];
+            var rules = SafeDeserialize(r.MaintenanceRulesJson, MobileJsonSerializerContext.Default.IReadOnlyListMaintenanceRuleDto) ?? [];
+            var stock = SafeDeserialize(r.DealerStockJson, MobileJsonSerializerContext.Default.IReadOnlyListDealerModelStockSummaryDto) ?? [];
 
             return new MotorcycleModelDto(
                 Id: Guid.Parse(r.Id),
@@ -505,7 +505,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
         var list = new List<CustomerVehicleDto>(rows.Count);
         foreach (var row in rows)
         {
-            var dto = JsonSerializer.Deserialize(row.PayloadJson, MobileJsonSerializerContext.Default.CustomerVehicleDto);
+            var dto = SafeDeserialize(row.PayloadJson, MobileJsonSerializerContext.Default.CustomerVehicleDto);
             if (dto is not null)
             {
                 list.Add(dto);
@@ -554,7 +554,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
             return null;
         }
 
-        return JsonSerializer.Deserialize(row.PayloadJson, MobileJsonSerializerContext.Default.LoyaltyAccountSummaryDto);
+        return SafeDeserialize(row.PayloadJson, MobileJsonSerializerContext.Default.LoyaltyAccountSummaryDto);
     }
 
     public async Task SaveCustomerVouchersAsync(
@@ -605,7 +605,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
         var list = new List<CustomerVoucherDto>(rows.Count);
         foreach (var row in rows)
         {
-            var dto = JsonSerializer.Deserialize(row.PayloadJson, MobileJsonSerializerContext.Default.CustomerVoucherDto);
+            var dto = SafeDeserialize(row.PayloadJson, MobileJsonSerializerContext.Default.CustomerVoucherDto);
             if (dto is not null)
             {
                 list.Add(dto);
@@ -667,7 +667,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
         var list = new List<BookingDto>(rows.Count);
         foreach (var row in rows)
         {
-            var dto = JsonSerializer.Deserialize(row.PayloadJson, MobileJsonSerializerContext.Default.BookingDto);
+            var dto = SafeDeserialize(row.PayloadJson, MobileJsonSerializerContext.Default.BookingDto);
             if (dto is not null)
             {
                 list.Add(dto);
@@ -729,7 +729,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
         var list = new List<TestDriveBookingDto>(rows.Count);
         foreach (var row in rows)
         {
-            var dto = JsonSerializer.Deserialize(row.PayloadJson, MobileJsonSerializerContext.Default.TestDriveBookingDto);
+            var dto = SafeDeserialize(row.PayloadJson, MobileJsonSerializerContext.Default.TestDriveBookingDto);
             if (dto is not null)
             {
                 list.Add(dto);
@@ -774,7 +774,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
         var row = await conn.FindAsync<CachedReceiptSnapshot>(key).ConfigureAwait(false);
         return row is null
             ? null
-            : JsonSerializer.Deserialize(row.PayloadJson, MobileJsonSerializerContext.Default.PrintableServiceReceiptDto);
+            : SafeDeserialize(row.PayloadJson, MobileJsonSerializerContext.Default.PrintableServiceReceiptDto);
     }
 
     public async Task SaveSalesReceiptAsync(
@@ -812,7 +812,7 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
         var row = await conn.FindAsync<CachedReceiptSnapshot>(key).ConfigureAwait(false);
         return row is null
             ? null
-            : JsonSerializer.Deserialize(row.PayloadJson, MobileJsonSerializerContext.Default.PrintableSalesOrderReceiptDto);
+            : SafeDeserialize(row.PayloadJson, MobileJsonSerializerContext.Default.PrintableSalesOrderReceiptDto);
     }
 
     public async Task<IReadOnlyList<CachedReceiptSnapshot>> ListCachedReceiptSnapshotsAsync(
@@ -900,23 +900,55 @@ public sealed class MobileOfflineDb : IMobileOfflineDb
 
     private async Task<SQLiteAsyncConnection> GetConnectionAsync(CancellationToken cancellationToken)
     {
+        ObjectDisposedException.ThrowIf(Volatile.Read(ref _disposed) == 1, this);
         if (_connection is null)
         {
             await InitializeAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        ObjectDisposedException.ThrowIf(Volatile.Read(ref _disposed) == 1, this);
         return _connection!;
     }
 
     public async ValueTask DisposeAsync()
     {
-        if (_connection is not null)
+        if (Interlocked.Exchange(ref _disposed, 1) == 1)
         {
-            await _connection.CloseAsync().ConfigureAwait(false);
-            _connection = null;
+            return;
         }
 
-        _initLock.Dispose();
+        await _initLock.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+        try
+        {
+            var conn = _connection;
+            _connection = null;
+            if (conn is not null)
+            {
+                await conn.CloseAsync().ConfigureAwait(false);
+            }
+        }
+        finally
+        {
+            _initLock.Release();
+            _initLock.Dispose();
+        }
+    }
+
+    private static T? SafeDeserialize<T>(string? json, System.Text.Json.Serialization.Metadata.JsonTypeInfo<T> typeInfo)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return default;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize(json, typeInfo);
+        }
+        catch (JsonException)
+        {
+            return default;
+        }
     }
 
     private sealed class TableNameRow

@@ -16,6 +16,24 @@
         Padding="0">
 
         <Grid IsClippedToBounds="True">
+            <!-- Chromatic Telemetry Precision Corner Registration Mark -->
+            <BoxView
+                WidthRequest="16"
+                HeightRequest="1.5"
+                Color="#66FFFFFF"
+                HorizontalOptions="End"
+                VerticalOptions="Start"
+                Margin="0,10,10,0"
+                InputTransparent="True" />
+            <BoxView
+                WidthRequest="1.5"
+                HeightRequest="16"
+                Color="#66FFFFFF"
+                HorizontalOptions="End"
+                VerticalOptions="Start"
+                Margin="0,10,10,0"
+                InputTransparent="True" />
+
             <!-- Diagonal Specular Metallic Foil Sheen (auto-paused when hidden or reduced-motion) -->
             <Border
                 x:Name="SpecularSheenOverlay"
@@ -78,12 +96,14 @@
                     </HorizontalStackLayout>
                 </Grid>
 
+                <BoxView HeightRequest="1" Color="#26FFFFFF" InputTransparent="True" />
+
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                     <Border
-                        BackgroundColor="#1F020617"
-                        Stroke="#33FFFFFF"
+                        BackgroundColor="#2E020617"
+                        Stroke="#42FFFFFF"
                         StrokeThickness="1"
-                        StrokeShape="RoundRectangle 10"
+                        StrokeShape="RoundRectangle 12"
                         Padding="12,10">
                         <VerticalStackLayout Spacing="2">
                             <Label
@@ -102,10 +122,10 @@
 
                     <Border
                         Grid.Column="1"
-                        BackgroundColor="#1F020617"
-                        Stroke="#33FFFFFF"
+                        BackgroundColor="#2E020617"
+                        Stroke="#42FFFFFF"
                         StrokeThickness="1"
-                        StrokeShape="RoundRectangle 10"
+                        StrokeShape="RoundRectangle 12"
                         Padding="12,10">
                         <VerticalStackLayout Spacing="2">
                             <Label

@@ -107,8 +107,17 @@ public sealed class SingleFlightTokenRefreshHandler : DelegatingHandler
             return response;
         }
 
-        var newAccessToken = await AcquireFreshAccessTokenSingleFlightAsync(usedBearerToken, cancellationToken)
+        var (newAccessToken, isTransientNetworkError) = await AcquireFreshAccessTokenSingleFlightAsync(usedBearerToken, cancellationToken)
             .ConfigureAwait(false);
+
+        if (isTransientNetworkError)
+        {
+            response.Dispose();
+            throw new HttpRequestException(
+                "Transient network/server error during token refresh; offline session preserved.",
+                null,
+                HttpStatusCode.ServiceUnavailable);
+        }
 
         if (string.IsNullOrWhiteSpace(newAccessToken))
         {
@@ -128,7 +137,7 @@ public sealed class SingleFlightTokenRefreshHandler : DelegatingHandler
         return retriedResponse;
     }
 
-    private async Task<string?> AcquireFreshAccessTokenSingleFlightAsync(
+    private async Task<(string? AccessToken, bool IsTransientNetworkError)> AcquireFreshAccessTokenSingleFlightAsync(
         string failedBearerToken,
         CancellationToken cancellationToken)
     {
@@ -140,7 +149,7 @@ public sealed class SingleFlightTokenRefreshHandler : DelegatingHandler
             if (!string.IsNullOrWhiteSpace(latestAccessToken) &&
                 !string.Equals(latestAccessToken, failedBearerToken, StringComparison.Ordinal))
             {
-                return latestAccessToken;
+                return (latestAccessToken, false);
             }
 
             var refreshToken = await _tokenStore.GetRefreshTokenAsync(cancellationToken).ConfigureAwait(false);
@@ -150,7 +159,7 @@ public sealed class SingleFlightTokenRefreshHandler : DelegatingHandler
                     "REFRESH_TOKEN_MISSING",
                     "Your session has expired. Please sign in again.",
                     cancellationToken).ConfigureAwait(false);
-                return null;
+                return (null, false);
             }
 
             var refreshResult = await _authRefreshClient.RefreshAsync(refreshToken, cancellationToken)
@@ -158,12 +167,22 @@ public sealed class SingleFlightTokenRefreshHandler : DelegatingHandler
 
             if (!refreshResult.IsSuccess || refreshResult.Data is null)
             {
+                // Preserve tokens & encrypted SQLCipher offline cache when refresh fails due to transient offline/network or 429/5xx server error
+                bool isTransientRefreshFailure =
+                    (refreshResult.IsNetworkError || refreshResult.StatusCode == 429 || refreshResult.StatusCode >= 500) &&
+                    !refreshResult.IsUnauthorized401 &&
+                    !refreshResult.IsForbidden403;
+                if (isTransientRefreshFailure)
+                {
+                    return (null, true);
+                }
+
                 var errorCode = refreshResult.Problem?.ErrorCode ?? "SESSION_EXPIRED";
                 await _sessionResetCoordinator.ForceSignOutAsync(
                     errorCode,
                     refreshResult.ErrorMessage,
                     cancellationToken).ConfigureAwait(false);
-                return null;
+                return (null, false);
             }
 
             var tokenData = refreshResult.Data;
@@ -172,7 +191,7 @@ public sealed class SingleFlightTokenRefreshHandler : DelegatingHandler
                 cancellationToken).ConfigureAwait(false);
 
             _sessionState.ApplyAuthenticatedUser(tokenData.User);
-            return tokenData.AccessToken;
+            return (tokenData.AccessToken, false);
         }
         finally
         {

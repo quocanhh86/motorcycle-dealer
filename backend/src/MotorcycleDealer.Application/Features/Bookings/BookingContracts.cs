@@ -57,7 +57,7 @@ public sealed record BookingDto(
     string RowVersion,
     DateTimeOffset CreatedAtUtc,
     DateTimeOffset? UpdatedAtUtc,
-    Guid MotorcycleModelId = default);
+    Guid MotorcycleModelId);
 
 public sealed record BookingQuery(
     Guid? DealerId = null,

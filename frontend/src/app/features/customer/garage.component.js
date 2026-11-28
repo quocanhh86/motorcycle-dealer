@@ -59,7 +59,19 @@
       drawerDueDate: 'Hạn dự kiến',
       drawerDedupKey: 'Mã chống trùng',
       drawerRulesHeading: 'Lịch bảo dưỡng định kỳ chuẩn OEM ({{count}})',
-      drawerMonthsShort: 'tháng'
+      drawerMonthsShort: 'tháng',
+      kpiTotalBikes: 'Tổng xe trong Garage',
+      kpiOnTrack: 'Đúng lịch OEM',
+      kpiNeedAttention: 'Cần bảo dưỡng',
+      kpiWarrantyCovered: 'Còn bảo hành OEM',
+      angleFront: '3/4 Trước',
+      angleSide: 'Thân xe',
+      angleRear: 'Đuôi LED',
+      angleCockpit: 'Đồng hồ',
+      inspect3dCta: 'HD 360°',
+      drawerModePhotos: 'Ảnh Thật 4 Góc HD',
+      drawerMode3d: 'Soi HD 360° Xe Thật & Linh Kiện',
+      drawerMediaModeAria: 'Chế độ xem hình ảnh xe trong Garage'
     }
   };
 
@@ -121,9 +133,46 @@
       drawerDueDate: 'Due Date',
       drawerDedupKey: 'Dedup Key',
       drawerRulesHeading: 'OEM Model Maintenance Rules ({{count}})',
-      drawerMonthsShort: 'mo'
+      drawerMonthsShort: 'mo',
+      kpiTotalBikes: 'Total Garage VINs',
+      kpiOnTrack: 'On OEM Schedule',
+      kpiNeedAttention: 'Service Due / Overdue',
+      kpiWarrantyCovered: 'Active OEM Warranty',
+      angleFront: 'Front 3/4',
+      angleSide: 'Side',
+      angleRear: 'Rear LED',
+      angleCockpit: 'Cockpit',
+      inspect3dCta: 'HD 360°',
+      drawerModePhotos: '4-Angle Real HD Photos',
+      drawerMode3d: 'Interactive Real HD 360°',
+      drawerMediaModeAria: 'Garage inspection media mode'
     }
   };
+
+  var GARAGE_MULTI_ANGLE_SLUGS = {
+    'honda-airblade-160': true,
+    'honda-sh160i-sport': true,
+    'honda-winner-x': true,
+    'yamaha-exciter-155': true,
+    'honda-cb300r': true,
+    'honda-nx500': true
+  };
+
+  var GARAGE_CODE_TO_SLUG = {
+    'HND-AB160-2026': 'honda-airblade-160',
+    'HND-SH160I-2026': 'honda-sh160i-sport',
+    'HND-WINX-2026': 'honda-winner-x',
+    'YMH-EXC155-2026': 'yamaha-exciter-155',
+    'HND-CB300R-2026': 'honda-cb300r',
+    'HND-NX500-2026': 'honda-nx500'
+  };
+
+  var GARAGE_ANGLE_DEFS = [
+    { key: 'front', suffix: '', labelKey: 'customerGarage.angleFront', fallback: 'Front 3/4' },
+    { key: 'side', suffix: '-side', labelKey: 'customerGarage.angleSide', fallback: 'Side' },
+    { key: 'rear', suffix: '-rear', labelKey: 'customerGarage.angleRear', fallback: 'Rear LED' },
+    { key: 'cockpit', suffix: '-cockpit', labelKey: 'customerGarage.angleCockpit', fallback: 'Cockpit' }
+  ];
 
   registerCustomerGarageI18n.$inject = ['I18nService'];
   function registerCustomerGarageI18n(I18nService) {
@@ -203,6 +252,26 @@
                        'on-action="$ctrl.openRegisterModal()">' +
           '</empty-state>' +
 
+          /* Fleet Health Telemetry Bento Strip */
+          '<div class="bento-grid fade-slide-up" ng-if="$ctrl.vehicles.length > 0" style="margin-bottom:20px;">' +
+            '<div class="col-3 bento-kpi">' +
+              '<span class="kpi-label">{{ \'customerGarage.kpiTotalBikes\' | t }}</span>' +
+              '<div class="kpi-value mono-num">{{ $ctrl.fleetStats.total }}</div>' +
+            '</div>' +
+            '<div class="col-3 bento-kpi">' +
+              '<span class="kpi-label">{{ \'customerGarage.kpiOnTrack\' | t }}</span>' +
+              '<div class="kpi-value mono-num" style="color:var(--clr-success-fg);">{{ $ctrl.fleetStats.onTrack }}</div>' +
+            '</div>' +
+            '<div class="col-3 bento-kpi">' +
+              '<span class="kpi-label">{{ \'customerGarage.kpiNeedAttention\' | t }}</span>' +
+              '<div class="kpi-value mono-num" ng-style="$ctrl.fleetStats.dueCount > 0 ? {\'color\': \'var(--clr-warning-fg)\'} : {}">{{ $ctrl.fleetStats.dueCount }}</div>' +
+            '</div>' +
+            '<div class="col-3 bento-kpi">' +
+              '<span class="kpi-label">{{ \'customerGarage.kpiWarrantyCovered\' | t }}</span>' +
+              '<div class="kpi-value mono-num">{{ $ctrl.fleetStats.warrantyCovered }}</div>' +
+            '</div>' +
+          '</div>' +
+
           /* Double-Bezel Vehicle Cards Grid */
           '<div class="grid-12" ng-if="$ctrl.vehicles.length > 0">' +
             '<article class="col-6 bezel-card stagger-item" ' +
@@ -210,12 +279,27 @@
                      'ng-attr-style="--i:{{ $index }};">' +
               '<div class="bezel-card-inner" style="display:flex;flex-direction:column;justify-content:space-between;gap:14px;">' +
                 '<div>' +
-                  '<div style="margin-bottom:14px;">' +
-                    '<bike-image src="bike.imageUrl" ' +
-                                'alt="{{ bike.motorcycleModelName }}" ' +
-                                'variant="card" ' +
-                                'badge="{{ bike.licensePlate || bike.modelCode || \'\' }}">' +
-                    '</bike-image>' +
+                  '<div class="card-gallery-wrap" style="margin-bottom:14px;">' +
+                    '<div class="card-gallery-stage">' +
+                      '<bike-image src="$ctrl.getVehicleActiveImageUrl(bike)" ' +
+                                  'alt="{{ bike.motorcycleModelName }}" ' +
+                                  'variant="card" ' +
+                                  'badge="{{ bike.licensePlate || bike.modelCode || \'\' }}">' +
+                      '</bike-image>' +
+                      '<span class="card-gallery-count-pill mono-num" aria-hidden="true" ng-if="$ctrl.getVehicleGallery(bike).length > 1">' +
+                        '<app-icon name="images" weight="duotone" size="12"></app-icon>' +
+                        '<span>{{ $ctrl.getVehicleAngleIndex(bike) + 1 }}/{{ $ctrl.getVehicleGallery(bike).length }}</span>' +
+                      '</span>' +
+                    '</div>' +
+                    '<div class="card-angle-strip" ng-if="$ctrl.getVehicleGallery(bike).length > 1" role="group" ng-attr-aria-label="{{ bike.motorcycleModelName }}">' +
+                      '<button type="button" class="card-angle-pill" ' +
+                              'ng-repeat="ang in $ctrl.getVehicleGallery(bike) track by ang.key" ' +
+                              'ng-class="{\'is-active\': $ctrl.getVehicleAngleIndex(bike) === $index}" ' +
+                              'ng-attr-aria-pressed="{{ $ctrl.getVehicleAngleIndex(bike) === $index ? \'true\' : \'false\' }}" ' +
+                              'ng-click="$ctrl.selectVehicleAngle(bike, $index)">' +
+                        '{{ ang.labelKey | t }}' +
+                      '</button>' +
+                    '</div>' +
                   '</div>' +
 
                   '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">' +
@@ -249,7 +333,7 @@
                         '<span ng-if="bike.nextDueDateUtc" class="text-muted"> ({{ bike.nextDueDateUtc | utcToLocal:\'date\' }})</span>' +
                       '</span>' +
                     '</div>' +
-                    '<div class="progress-track" ng-attr-aria-label="{{ \'customerGarage.wearAriaLabel\' | t }}">' +
+                    '<div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" ng-attr-aria-valuenow="{{ bike.wearProgressPct || 0 }}" ng-attr-aria-label="{{ \'customerGarage.wearAriaLabel\' | t }}">' +
                       '<div class="progress-fill" ' +
                            'ng-class="{\'is-due\': bike.maintenanceStatus === \'DueSoon\', \'is-overdue\': bike.maintenanceStatus === \'Overdue\'}" ' +
                            'style="width:100%;transform-origin:left center;transition:transform var(--dur-emphasis) var(--ease-expo);" ' +
@@ -274,6 +358,10 @@
                     '<button type="button" class="btn btn-secondary btn-sm" ng-click="$ctrl.openRemindersDrawer(bike)">' +
                       '<app-icon name="bell" weight="regular" size="14"></app-icon>' +
                       '<span>{{ \'customerGarage.remindersScheduleCta\' | t }}</span>' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-secondary btn-sm" ng-click="$ctrl.openRemindersDrawer(bike, \'3d\')">' +
+                      '<app-icon name="camera" weight="duotone" size="14"></app-icon>' +
+                      '<span>{{ \'customerGarage.inspect3dCta\' | t }}</span>' +
                     '</button>' +
                     '<a class="btn btn-secondary btn-sm" ' +
                        'has-permission="Permissions.Warranty.CreateOwn" ' +
@@ -451,13 +539,37 @@
               '</div>' +
 
               '<div class="notification-drawer-list">' +
-                /* Studio Showcase Header inside Detail Drawer */
+                /* Studio Showcase Header inside Detail Drawer (4-Angle Photos OR Interactive 3D 360°) */
                 '<div class="surface-sunken fade-slide-up" style="padding:12px;margin-bottom:4px;">' +
-                  '<bike-image src="$ctrl.drawerVehicle.imageUrl" ' +
-                              'alt="{{ $ctrl.drawerVehicle.motorcycleModelName }}" ' +
-                              'variant="modal" ' +
-                              'badge="{{ $ctrl.drawerVehicle.licensePlate || $ctrl.drawerVehicle.modelCode || \'\' }}">' +
-                  '</bike-image>' +
+                  '<div class="moto3d-mode-switch" role="group" ng-attr-aria-label="{{ \'customerGarage.drawerMediaModeAria\' | t }}">' +
+                    '<button type="button" class="moto3d-mode-btn" ng-class="{\'is-active\': $ctrl.drawerMediaMode !== \'3d\'}" ng-attr-aria-pressed="{{ $ctrl.drawerMediaMode !== \'3d\' ? \'true\' : \'false\' }}" ng-click="$ctrl.setDrawerMediaMode(\'photos\')">' +
+                      '<app-icon name="images" weight="duotone" size="14"></app-icon>' +
+                      '<span>{{ \'customerGarage.drawerModePhotos\' | t }}</span>' +
+                    '</button>' +
+                    '<button type="button" class="moto3d-mode-btn" ng-class="{\'is-active\': $ctrl.drawerMediaMode === \'3d\'}" ng-attr-aria-pressed="{{ $ctrl.drawerMediaMode === \'3d\' ? \'true\' : \'false\' }}" ng-click="$ctrl.setDrawerMediaMode(\'3d\')">' +
+                      '<app-icon name="camera" weight="duotone" size="14"></app-icon>' +
+                      '<span>{{ \'customerGarage.drawerMode3d\' | t }}</span>' +
+                    '</button>' +
+                  '</div>' +
+                  '<div ng-if="$ctrl.drawerMediaMode === \'3d\'">' +
+                    '<moto-3d-viewer model="$ctrl.drawerVehicle"></moto-3d-viewer>' +
+                  '</div>' +
+                  '<div ng-if="$ctrl.drawerMediaMode !== \'3d\'">' +
+                    '<bike-image src="$ctrl.getVehicleActiveImageUrl($ctrl.drawerVehicle)" ' +
+                                'alt="{{ $ctrl.drawerVehicle.motorcycleModelName }}" ' +
+                                'variant="modal" ' +
+                                'badge="{{ $ctrl.drawerVehicle.licensePlate || $ctrl.drawerVehicle.modelCode || \'\' }}">' +
+                    '</bike-image>' +
+                    '<div class="card-angle-strip" style="margin-top:8px;" ng-if="$ctrl.getVehicleGallery($ctrl.drawerVehicle).length > 1" role="group" ng-attr-aria-label="{{ $ctrl.drawerVehicle.motorcycleModelName }}">' +
+                      '<button type="button" class="card-angle-pill" ' +
+                              'ng-repeat="ang in $ctrl.getVehicleGallery($ctrl.drawerVehicle) track by ang.key" ' +
+                              'ng-class="{\'is-active\': $ctrl.getVehicleAngleIndex($ctrl.drawerVehicle) === $index}" ' +
+                              'ng-attr-aria-pressed="{{ $ctrl.getVehicleAngleIndex($ctrl.drawerVehicle) === $index ? \'true\' : \'false\' }}" ' +
+                              'ng-click="$ctrl.selectVehicleAngle($ctrl.drawerVehicle, $index)">' +
+                        '{{ ang.labelKey | t }}' +
+                      '</button>' +
+                    '</div>' +
+                  '</div>' +
                   '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:12px;">' +
                     '<span class="text-secondary">{{ \'customerGarage.currentOdometer\' | t }}: <strong class="mono-num text-primary">{{ $ctrl.drawerVehicle.currentMileageKm | number }} km</strong></span>' +
                     '<span class="badge" ng-class="$ctrl.drawerVehicle.isWarrantyCovered ? \'badge-success\' : \'badge-warning\'">' +
@@ -553,6 +665,74 @@
     var $ctrl = this;
     var offReminder = angular.noop;
     var isDestroyed = false;
+    var galleryCache = Object.create(null);
+
+    function resolveVehicleSlug(bike) {
+      if (!bike) {
+        return null;
+      }
+      var code = String(bike.modelCode || '').trim().toUpperCase();
+      if (code && GARAGE_CODE_TO_SLUG[code]) {
+        return GARAGE_CODE_TO_SLUG[code];
+      }
+      var raw = String(bike.imageUrl || '').trim();
+      var match = raw.match(/\/assets\/models\/([a-z0-9-]+)\.(?:jpe?g|webp|png)(?:\?.*)?$/i);
+      if (match && GARAGE_MULTI_ANGLE_SLUGS[match[1].toLowerCase()]) {
+        return match[1].toLowerCase();
+      }
+      return null;
+    }
+
+    function buildVehicleGallery(bike) {
+      if (!bike) {
+        return [];
+      }
+      var slug = resolveVehicleSlug(bike);
+      var key = slug || (String(bike.id || '') + '::' + String(bike.imageUrl || ''));
+      if (galleryCache[key]) {
+        return galleryCache[key];
+      }
+      var items;
+      if (slug && GARAGE_MULTI_ANGLE_SLUGS[slug]) {
+        items = GARAGE_ANGLE_DEFS.map(function (def) {
+          return {
+            key: def.key,
+            url: '/assets/models/' + slug + def.suffix + '.jpg',
+            labelKey: def.labelKey,
+            fallback: def.fallback
+          };
+        });
+      } else {
+        items = [{
+          key: 'front',
+          url: String(bike.imageUrl || '').trim(),
+          labelKey: 'customerGarage.angleFront',
+          fallback: 'Front 3/4'
+        }];
+      }
+      galleryCache[key] = items;
+      return items;
+    }
+
+    function computeFleetStats(list) {
+      var rows = list || [];
+      var dueCount = 0;
+      var warrantyCovered = 0;
+      for (var i = 0; i < rows.length; i++) {
+        if (rows[i].maintenanceStatus === 'Overdue' || rows[i].maintenanceStatus === 'DueSoon') {
+          dueCount++;
+        }
+        if (rows[i].isWarrantyCovered) {
+          warrantyCovered++;
+        }
+      }
+      $ctrl.fleetStats = {
+        total: rows.length,
+        onTrack: Math.max(0, rows.length - dueCount),
+        dueCount: dueCount,
+        warrantyCovered: warrantyCovered
+      };
+    }
 
     function t(key, params, fallback) {
       if (I18nService && angular.isFunction(I18nService.t)) {
@@ -605,6 +785,7 @@
       $ctrl.odometerFieldErrors = {};
 
       $ctrl.drawerVehicle = null;
+      $ctrl.drawerMediaMode = 'photos';
       $ctrl.isLoadingReminders = false;
       $ctrl.drawerProblem = null;
       $ctrl.drawerReminders = [];
@@ -612,6 +793,8 @@
 
       $ctrl.loadProblem = null;
       $ctrl.vehicles = [];
+      $ctrl.vehicleAngleIndexById = Object.create(null);
+      computeFleetStats([]);
 
       offReminder = SignalRClientService.on('MaintenanceReminderTriggered', function (payload) {
         if (!payload) {
@@ -629,6 +812,7 @@
           }
         }
         $ctrl.vehicles = sortVehicles($ctrl.vehicles);
+        computeFleetStats($ctrl.vehicles);
       });
 
       $ctrl.loadGarage();
@@ -668,6 +852,7 @@
             return rows;
           }
           $ctrl.vehicles = sortVehicles(rows);
+          computeFleetStats($ctrl.vehicles);
           return $ctrl.vehicles;
         })
         .catch(function (rejection) {
@@ -812,6 +997,7 @@
             }
           }
           $ctrl.vehicles = sortVehicles($ctrl.vehicles);
+          computeFleetStats($ctrl.vehicles);
           ToastService.success(
             t('customerGarage.odoToastTitle', null, 'Odometer Updated'),
             t(
@@ -839,11 +1025,16 @@
         });
     };
 
-    $ctrl.openRemindersDrawer = function (bike) {
+    $ctrl.setDrawerMediaMode = function (mode) {
+      $ctrl.drawerMediaMode = mode === '3d' ? '3d' : 'photos';
+    };
+
+    $ctrl.openRemindersDrawer = function (bike, initialMode) {
       if (!bike) {
         return $q.resolve(null);
       }
       $ctrl.drawerVehicle = bike;
+      $ctrl.drawerMediaMode = initialMode === '3d' ? '3d' : 'photos';
       $ctrl.drawerProblem = null;
       $ctrl.drawerReminders = [];
       $ctrl.drawerRules = [];
@@ -886,7 +1077,7 @@
           return null;
         })
         .finally(function () {
-          if (!isDestroyed) {
+          if (!isDestroyed && $ctrl.drawerVehicle && $ctrl.drawerVehicle.id === bike.id) {
             $ctrl.isLoadingReminders = false;
           }
         });
@@ -897,6 +1088,35 @@
       $ctrl.drawerProblem = null;
       $ctrl.drawerReminders = [];
       $ctrl.drawerRules = [];
+    };
+
+    $ctrl.getVehicleGallery = function (bike) {
+      return buildVehicleGallery(bike);
+    };
+
+    $ctrl.getVehicleAngleIndex = function (bike) {
+      if (!bike || !bike.id) {
+        return 0;
+      }
+      var gallery = buildVehicleGallery(bike);
+      var idx = Number($ctrl.vehicleAngleIndexById[bike.id]) || 0;
+      return (idx >= 0 && idx < gallery.length) ? idx : 0;
+    };
+
+    $ctrl.selectVehicleAngle = function (bike, index) {
+      if (!bike || !bike.id) {
+        return;
+      }
+      var gallery = buildVehicleGallery(bike);
+      if (index >= 0 && index < gallery.length) {
+        $ctrl.vehicleAngleIndexById[bike.id] = index;
+      }
+    };
+
+    $ctrl.getVehicleActiveImageUrl = function (bike) {
+      var gallery = buildVehicleGallery(bike);
+      var idx = $ctrl.getVehicleAngleIndex(bike);
+      return gallery[idx] ? gallery[idx].url : (bike && bike.imageUrl) || '';
     };
   }
 })();

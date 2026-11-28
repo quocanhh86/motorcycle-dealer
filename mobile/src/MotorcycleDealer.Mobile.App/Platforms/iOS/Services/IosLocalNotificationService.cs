@@ -12,8 +12,8 @@ public sealed class IosLocalNotificationService : ILocalNotificationService
 {
     private static int _nextNotificationId = 3000;
     private readonly SemaphoreSlim _authorizationLock = new(1, 1);
-    private bool _categoriesRegistered;
-    private bool? _isAuthorized;
+    private int _categoriesRegistered;
+    private volatile bool _isAuthorized;
 
     public async Task ShowAsync(LocalNotificationRequest notification, CancellationToken cancellationToken = default)
     {
@@ -77,50 +77,56 @@ public sealed class IosLocalNotificationService : ILocalNotificationService
 
     private void EnsureCategoriesRegistered(UNUserNotificationCenter center)
     {
-        if (_categoriesRegistered)
+        if (Interlocked.Exchange(ref _categoriesRegistered, 1) == 1)
         {
             return;
         }
 
-        var bookingCategory = UNNotificationCategory.FromIdentifier(
-            NotificationChannels.BookingAlerts,
-            Array.Empty<UNNotificationAction>(),
-            Array.Empty<string>(),
-            UNNotificationCategoryOptions.CustomDismissAction);
+        try
+        {
+            var bookingCategory = UNNotificationCategory.FromIdentifier(
+                NotificationChannels.BookingAlerts,
+                Array.Empty<UNNotificationAction>(),
+                Array.Empty<string>(),
+                UNNotificationCategoryOptions.CustomDismissAction);
 
-        var loyaltyCategory = UNNotificationCategory.FromIdentifier(
-            NotificationChannels.LoyaltyRewards,
-            Array.Empty<UNNotificationAction>(),
-            Array.Empty<string>(),
-            UNNotificationCategoryOptions.CustomDismissAction);
+            var loyaltyCategory = UNNotificationCategory.FromIdentifier(
+                NotificationChannels.LoyaltyRewards,
+                Array.Empty<UNNotificationAction>(),
+                Array.Empty<string>(),
+                UNNotificationCategoryOptions.CustomDismissAction);
 
-        var warrantyCategory = UNNotificationCategory.FromIdentifier(
-            NotificationChannels.WarrantyUpdates,
-            Array.Empty<UNNotificationAction>(),
-            Array.Empty<string>(),
-            UNNotificationCategoryOptions.CustomDismissAction);
+            var warrantyCategory = UNNotificationCategory.FromIdentifier(
+                NotificationChannels.WarrantyUpdates,
+                Array.Empty<UNNotificationAction>(),
+                Array.Empty<string>(),
+                UNNotificationCategoryOptions.CustomDismissAction);
 
-        center.SetNotificationCategories(new NSSet<UNNotificationCategory>(
-            bookingCategory,
-            loyaltyCategory,
-            warrantyCategory));
-
-        _categoriesRegistered = true;
+            center.SetNotificationCategories(new NSSet<UNNotificationCategory>(
+                bookingCategory,
+                loyaltyCategory,
+                warrantyCategory));
+        }
+        catch
+        {
+            Volatile.Write(ref _categoriesRegistered, 0);
+            throw;
+        }
     }
 
     private async Task<bool> EnsureAuthorizedAsync(UNUserNotificationCenter center, CancellationToken ct)
     {
-        if (_isAuthorized.HasValue)
+        if (_isAuthorized)
         {
-            return _isAuthorized.Value;
+            return true;
         }
 
         await _authorizationLock.WaitAsync(ct).ConfigureAwait(false);
         try
         {
-            if (_isAuthorized.HasValue)
+            if (_isAuthorized)
             {
-                return _isAuthorized.Value;
+                return true;
             }
 
             (bool approved, NSError? _) = await center.RequestAuthorizationAsync(
@@ -128,7 +134,11 @@ public sealed class IosLocalNotificationService : ILocalNotificationService
                 UNAuthorizationOptions.Badge |
                 UNAuthorizationOptions.Sound).ConfigureAwait(false);
 
-            _isAuthorized = approved;
+            if (approved)
+            {
+                _isAuthorized = true;
+            }
+
             return approved;
         }
         finally

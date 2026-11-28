@@ -16,6 +16,13 @@ public partial class ShowroomVinSalesPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await ViewModel.LoadSalesDeskCommand.ExecuteAsync(null);
+        try
+        {
+            await ViewModel.LoadSalesDeskCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 }

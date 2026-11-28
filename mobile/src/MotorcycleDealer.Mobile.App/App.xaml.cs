@@ -64,8 +64,10 @@ public partial class App : Application
             actionLogger.Track("App.Backgrounded", "Lifecycle", actionLogger.CurrentScreen);
             try
             {
-                await actionLogger.FlushPendingAsync();
+                // Suspend SignalR & persist watermark first so OS background time limits never truncate hub teardown
                 await signalR.OnAppBackgroundedAsync();
+                using var flushCts = new CancellationTokenSource(TimeSpan.FromMilliseconds(1500));
+                await actionLogger.FlushPendingAsync(flushCts.Token);
             }
             catch
             {

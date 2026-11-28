@@ -51,7 +51,24 @@ public sealed class MauiMotionPreferencesService : IMotionPreferencesService
 #elif IOS
         try
         {
-            return UIKit.UIAccessibility.IsReduceMotionEnabled;
+            if (MainThread.IsMainThread)
+            {
+                _cachedIosReduceMotion = UIKit.UIAccessibility.IsReduceMotionEnabled;
+                return _cachedIosReduceMotion;
+            }
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    _cachedIosReduceMotion = UIKit.UIAccessibility.IsReduceMotionEnabled;
+                }
+                catch
+                {
+                    // Ignore simulator edge cases
+                }
+            });
+            return _cachedIosReduceMotion;
         }
         catch
         {
@@ -60,4 +77,8 @@ public sealed class MauiMotionPreferencesService : IMotionPreferencesService
 #endif
         return false;
     }
+
+#if IOS
+    private static volatile bool _cachedIosReduceMotion;
+#endif
 }

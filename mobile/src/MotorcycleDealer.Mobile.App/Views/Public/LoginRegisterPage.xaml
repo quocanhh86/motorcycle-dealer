@@ -7,6 +7,7 @@
     xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
     SafeAreaEdges="All"
     x:Name="PageRoot"
@@ -20,94 +21,115 @@
     <ScrollView>
         <VerticalStackLayout Padding="16" Spacing="16">
 
-            <!-- Motorsport Cockpit Brand Banner with 1-Tap VI|EN & Light/Dark Toggles -->
-            <Border Style="{StaticResource CarbonHeaderCard}">
-                <VerticalStackLayout Spacing="8">
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+            <!-- Editorial Motorsport Cockpit Brand Banner with Real Showroom Backdrop & 1-Tap VI|EN + Light/Dark Toggles -->
+            <Border
+                BackgroundColor="{StaticResource Slate950}"
+                Stroke="{StaticResource Slate800}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 16"
+                Padding="0">
+                <Grid MinimumHeightRequest="156" IsClippedToBounds="True">
+                    <Image
+                        Source="hero_showroom_apex.jpg"
+                        Aspect="AspectFill"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill"
+                        Opacity="0.34" />
+                    <BoxView InputTransparent="True">
+                        <BoxView.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#CC020617" Offset="0.0" />
+                                <GradientStop Color="#EB020617" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </BoxView.Background>
+                    </BoxView>
+                    <VerticalStackLayout Padding="16" Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label
+                                Text="{Binding Loc.AuthEyebrow}"
+                                Style="{StaticResource EyebrowLabel}"
+                                VerticalTextAlignment="Center"
+                                LineBreakMode="TailTruncation" />
+                            <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                                <Border
+                                    BackgroundColor="#CC1E293B"
+                                    Stroke="{StaticResource Slate700}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 16"
+                                    Padding="10,6"
+                                    MinimumHeightRequest="48"
+                                    SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
+                                    <Border.Behaviors>
+                                        <behaviors:ApexPressBehavior
+                                            PressedScale="0.95"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=pub:LoginRegisterPage}"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Translate}"
+                                            FontFamily="Phosphor"
+                                            FontSize="14"
+                                            TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                            VerticalTextAlignment="Center" />
+                                        <Label
+                                            Text="{Binding LanguageToggleText}"
+                                            FontFamily="JetBrainsMonoSemiBold"
+                                            FontSize="11"
+                                            TextColor="{StaticResource Slate50}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border
+                                    BackgroundColor="#CC1E293B"
+                                    Stroke="{StaticResource Slate700}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 16"
+                                    Padding="10,6"
+                                    MinimumHeightRequest="48"
+                                    SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
+                                    <Border.Behaviors>
+                                        <behaviors:ApexPressBehavior
+                                            PressedScale="0.95"
+                                            PressedAnimationDuration="110"
+                                            Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=pub:LoginRegisterPage}"
+                                            ShouldMakeChildrenInputTransparent="True" />
+                                    </Border.Behaviors>
+                                    <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                                        <Label
+                                            Text="{x:Static icons:PhosphorIcons.Moon}"
+                                            FontFamily="Phosphor"
+                                            FontSize="14"
+                                            TextColor="{StaticResource TierGoldAccentDark}"
+                                            VerticalTextAlignment="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsDarkTheme}" Value="True">
+                                                    <Setter Property="Text" Value="{x:Static icons:PhosphorIcons.Sun}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label
+                                            Text="{Binding ThemeToggleText}"
+                                            FontFamily="BeVietnamProSemiBold"
+                                            FontSize="11"
+                                            TextColor="{StaticResource Slate50}"
+                                            VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </HorizontalStackLayout>
+                        </Grid>
                         <Label
-                            Text="{Binding Loc.AuthEyebrow}"
-                            Style="{StaticResource EyebrowLabel}"
-                            VerticalTextAlignment="Center"
-                            LineBreakMode="TailTruncation" />
-                        <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
-                            <Border
-                                BackgroundColor="{StaticResource Slate800}"
-                                Stroke="{StaticResource Slate700}"
-                                StrokeThickness="1"
-                                StrokeShape="RoundRectangle 16"
-                                Padding="10,6"
-                                MinimumHeightRequest="48"
-                                SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
-                                <Border.Behaviors>
-                                    <toolkit:TouchBehavior
-                                        PressedScale="0.95"
-                                        PressedAnimationDuration="110"
-                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=pub:LoginRegisterPage}"
-                                        ShouldMakeChildrenInputTransparent="True" />
-                                </Border.Behaviors>
-                                <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
-                                    <Label
-                                        Text="{x:Static icons:PhosphorIcons.Translate}"
-                                        FontFamily="Phosphor"
-                                        FontSize="14"
-                                        TextColor="{StaticResource BrandPrimaryHoverDark}"
-                                        VerticalTextAlignment="Center" />
-                                    <Label
-                                        Text="{Binding LanguageToggleText}"
-                                        FontFamily="JetBrainsMonoSemiBold"
-                                        FontSize="11"
-                                        TextColor="{StaticResource Slate50}"
-                                        VerticalTextAlignment="Center" />
-                                </HorizontalStackLayout>
-                            </Border>
-                            <Border
-                                BackgroundColor="{StaticResource Slate800}"
-                                Stroke="{StaticResource Slate700}"
-                                StrokeThickness="1"
-                                StrokeShape="RoundRectangle 16"
-                                Padding="10,6"
-                                MinimumHeightRequest="48"
-                                SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
-                                <Border.Behaviors>
-                                    <toolkit:TouchBehavior
-                                        PressedScale="0.95"
-                                        PressedAnimationDuration="110"
-                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=pub:LoginRegisterPage}"
-                                        ShouldMakeChildrenInputTransparent="True" />
-                                </Border.Behaviors>
-                                <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
-                                    <Label
-                                        Text="{x:Static icons:PhosphorIcons.Moon}"
-                                        FontFamily="Phosphor"
-                                        FontSize="14"
-                                        TextColor="{StaticResource TierGoldAccentDark}"
-                                        VerticalTextAlignment="Center">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label" Binding="{Binding IsDarkTheme}" Value="True">
-                                                <Setter Property="Text" Value="{x:Static icons:PhosphorIcons.Sun}" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label
-                                        Text="{Binding ThemeToggleText}"
-                                        FontFamily="BeVietnamProSemiBold"
-                                        FontSize="11"
-                                        TextColor="{StaticResource Slate50}"
-                                        VerticalTextAlignment="Center" />
-                                </HorizontalStackLayout>
-                            </Border>
-                        </HorizontalStackLayout>
-                    </Grid>
-                    <Label
-                        Text="{Binding Loc.AuthTitle}"
-                        FontFamily="SpaceGroteskBold"
-                        FontSize="22"
-                        TextColor="{StaticResource Slate50}" />
-                    <Label
-                        Text="{Binding Loc.AuthSubtitle}"
-                        FontSize="12"
-                        TextColor="{StaticResource Slate300}" />
-                </VerticalStackLayout>
+                            Text="{Binding Loc.AuthTitle}"
+                            FontFamily="SpaceGroteskBold"
+                            FontSize="22"
+                            TextColor="{StaticResource Slate50}" />
+                        <Label
+                            Text="{Binding Loc.AuthSubtitle}"
+                            FontSize="12"
+                            TextColor="{StaticResource Slate300}" />
+                    </VerticalStackLayout>
+                </Grid>
             </Border>
 
             <!-- Status Banners -->
@@ -194,11 +216,29 @@
                         </Label>
 
                         <Label Text="{Binding Loc.AuthPasswordLabel}" Style="{StaticResource CaptionLabel}" />
-                        <Border Style="{StaticResource InputContainer}">
-                            <Entry
-                                Text="{Binding Password}"
-                                Placeholder="{Binding Loc.AuthPasswordPlaceholder}"
-                                IsPassword="True" />
+                        <Border Style="{StaticResource InputContainer}" Padding="12,0,4,0">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+                                <Entry
+                                    x:Name="PasswordEntry"
+                                    Text="{Binding Password}"
+                                    Placeholder="{Binding Loc.AuthPasswordPlaceholder}"
+                                    IsPassword="True" />
+                                <Button
+                                    x:Name="PasswordToggleBtn"
+                                    Grid.Column="1"
+                                    Text="{x:Static icons:PhosphorIcons.Eye}"
+                                    FontFamily="Phosphor"
+                                    FontSize="20"
+                                    WidthRequest="48"
+                                    HeightRequest="48"
+                                    MinimumWidthRequest="48"
+                                    MinimumHeightRequest="48"
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextMutedLight}, Dark={StaticResource TextMutedDark}}"
+                                    Clicked="OnTogglePasswordVisibilityClicked"
+                                    SemanticProperties.Description="{Binding Loc.AuthPasswordLabel}" />
+                            </Grid>
                         </Border>
 
                         <Label
@@ -216,7 +256,7 @@
                             Style="{StaticResource PrimaryPillCta}"
                             SemanticProperties.Description="{Binding SubmitButtonText}">
                             <Border.Behaviors>
-                                <toolkit:TouchBehavior
+                                <behaviors:ApexPressBehavior
                                     PressedScale="0.97"
                                     PressedOpacity="0.90"
                                     PressedAnimationDuration="110"

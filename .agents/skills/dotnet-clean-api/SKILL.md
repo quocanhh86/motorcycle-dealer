@@ -29,7 +29,7 @@ Always combine workspace Stdio MCP servers and global MCP servers in this exact 
 
 1. **Phase Gate & RBAC Pre-Flight (`motorcycle-dealer-guardrails` MCP)**:
    - Call `check_phase_gate` before creating or editing any file under `backend/` (application code is gated until **Phase 3+** is unlocked in [PROGRESS.md](../../../PROGRESS.md)).
-   - Call `lookup_rbac_permission` (filtering by `module`, `role`, or `permission`) to verify the exact `Permissions.<Module>.<Action>` constant across all `40` policies, allowed roles (`Customer`, `DealerStaff`, `Admin`), and `6`-table `IDealerScoped` enforcement rules before wiring `[HasPermission(...)]`.
+   - Call `lookup_rbac_permission` (filtering by `module`, `role`, or `permission`) to verify the exact `Permissions.<Module>.<Action>` constant across all `48` policies, allowed roles (`Customer`, `DealerStaff`, `Admin`), and `8`-table `IDealerScoped` enforcement rules before wiring `[HasPermission(...)]`.
 2. **Up-to-Date `.NET 10` & Library Reference (`context7_context7` MCP)**:
    - Call `resolve-library-id` -> `query-docs` (passing `language: "C#"`) for **ASP.NET Core 10** (`IExceptionHandler`, `AddProblemDetails`, `RateLimiter`, `IAuthorizationPolicyProvider`, `JwtBearerHandler`) and **FluentValidation** to ensure modern `net10.0` idioms.
 3. **REST API Contract & Role Environment Sync (`postman_postman` MCP)**:
@@ -37,7 +37,7 @@ Always combine workspace Stdio MCP servers and global MCP servers in this exact 
 
 ---
 
-## 3. Authentication, Rotating Refresh Tokens & 40-Permission RBAC (`FR-01`, `ADR-002`)
+## 3. Authentication, Rotating Refresh Tokens & 48-Permission RBAC (`FR-01`, `ADR-002`)
 
 ### 3.1 JWT Access Token & Token-Family Refresh Rotation (`ADR-006`)
 - **Signing Secret**: Load `Jwt:SigningKey` (`>= 256-bit` / 32+ UTF-8 bytes) strictly from `dotnet user-secrets` or `Jwt__SigningKey` environment variable — **never** commit real keys to `appsettings.json`.
@@ -129,13 +129,13 @@ Map every failure deterministically without leaking SQL or stack traces outside 
 
 ## 6. Verification & Mandatory Post-Task Sync Checklist
 
-Run these checks before marking any backend API task (`T-301`..`T-808` in [TASKS.md](../../../TASKS.md)) complete:
+Run these checks before marking any backend API task (`T-301`..`T-1008` in [TASKS.md](../../../TASKS.md)) complete:
 
 1. **Architecture, Phase-Gate & Secret Guardrails**:
    - Command: `powershell -NoProfile -ExecutionPolicy Bypass -File .agents/scripts/audit-dealer-guardrails.ps1`
 2. **SQL Server LocalDB Readiness**:
    - Command: `powershell -NoProfile -ExecutionPolicy Bypass -File .agents/scripts/ensure-sqlserver-db.ps1`
-3. **Zero-Warning Build & Automated Tests (Phases 3–8+)**:
+3. **Zero-Warning Build & Automated Tests (Phases 3–10)**:
    - Command: `dotnet build backend/MotorcycleDealer.sln -c Release --warnaserror && dotnet test backend/MotorcycleDealer.sln -c Release --no-build`
 4. **Full-Stack HTTP, RBAC & SignalR Smoke Suite**:
    - Command: `powershell -NoProfile -ExecutionPolicy Bypass -File .agents/scripts/smoke-fullstack.ps1`

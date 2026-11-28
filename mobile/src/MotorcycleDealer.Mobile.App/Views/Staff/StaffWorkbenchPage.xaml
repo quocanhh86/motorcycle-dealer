@@ -10,6 +10,7 @@
     xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     SafeAreaEdges="All"
     x:Name="PageRoot"
     x:DataType="vm:StaffWorkbenchViewModel"
@@ -126,7 +127,7 @@
                                     MinimumHeightRequest="48"
                                     Padding="12,8">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.97"
                                             PressedAnimationDuration="110"
                                             Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=stf:StaffWorkbenchPage}"
@@ -158,7 +159,7 @@
                                     MinimumHeightRequest="48"
                                     Padding="12,8">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.97"
                                             PressedAnimationDuration="110"
                                             Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=stf:StaffWorkbenchPage}"
@@ -196,7 +197,7 @@
                                     StrokeShape="RoundRectangle 10"
                                     Padding="12,10">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.97"
                                             PressedAnimationDuration="110"
                                             Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectLaneCommand, x:DataType=stf:StaffWorkbenchPage}"
@@ -234,7 +235,7 @@
                                     StrokeShape="RoundRectangle 10"
                                     Padding="12,10">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.97"
                                             PressedAnimationDuration="110"
                                             Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectLaneCommand, x:DataType=stf:StaffWorkbenchPage}"
@@ -337,7 +338,7 @@
                         Grid.Column="1"
                         Style="{StaticResource PrimaryCtaTouchCard}">
                         <Border.Behaviors>
-                            <toolkit:TouchBehavior
+                            <behaviors:ApexPressBehavior
                                 PressedScale="0.97"
                                 PressedAnimationDuration="110"
                                 Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ScanForIntakeCommand, x:DataType=stf:StaffWorkbenchPage}"

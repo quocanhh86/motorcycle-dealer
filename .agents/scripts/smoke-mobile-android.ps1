@@ -3,7 +3,7 @@
     End-to-end Android Emulator Smoke Runner for MotorcycleDealer.Mobile.App (.NET 10 MAUI):
       1) Builds MotorcycleDealer.Mobile.App (-f net10.0-android) with explicit AndroidSdkDirectory & JavaSdkDirectory
       2) Ensures Pixel_8_API_35 AVD is booted (sys.boot_completed=1) and configures `adb reverse tcp:5080 tcp:5080`
-      3) Installs the compiled APK via `adb install -r`
+      3) Installs the compiled APK via `adb install --no-incremental -r`
       4) Launches the MainActivity via `am start` and verifies process is alive via `pidof`
       5) Dumps live UI hierarchy via `uiautomator dump` and captures a real PNG screenshot via `adb exec-out screencap -p`
 #>
@@ -17,7 +17,7 @@ param(
     [string]$PackageId = "vn.motorcycledealer.mobile",
     [int]$ApiPort = 5080,
     [string]$ScreenshotDir = "",
-    [int]$LaunchWaitSeconds = 5,
+    [int]$LaunchWaitSeconds = 8,
     [switch]$SkipBuild,
     [switch]$Headless,
     [switch]$DryRun
@@ -105,7 +105,7 @@ if (-not (Test-Path $AdbExe)) {
 if ($DryRun) {
     Write-Info "[DRY-RUN] 1) dotnet build '$AppCsproj' -c $Configuration -f net10.0-android -p:AndroidSdkDirectory='$AndroidSdkDirectory' -p:JavaSdkDirectory='$JavaSdkDirectory' -p:EmbedAssembliesIntoApk=true --warnaserror"
     Write-Info "[DRY-RUN] 2) ensure-maui-android.ps1 -AvdName '$AvdName' -ApiPort $ApiPort -BootEmulator -SetupAdbReverse"
-    Write-Info "[DRY-RUN] 3) adb install -r <signed-apk> && adb shell pm grant $PackageId android.permission.POST_NOTIFICATIONS && am start && pidof $PackageId && uiautomator dump && adb exec-out screencap -p -> '$ScreenshotDir\app-launch.png'"
+    Write-Info "[DRY-RUN] 3) adb install --no-incremental -r <signed-apk> && adb shell pm grant $PackageId android.permission.POST_NOTIFICATIONS && am start && pidof $PackageId && uiautomator dump && adb exec-out screencap -p -> '$ScreenshotDir\app-launch.png'"
     Write-Pass "Android smoke runner dry-run validated cleanly."
     exit 0
 }
@@ -180,9 +180,9 @@ if ([string]::IsNullOrWhiteSpace($Serial)) {
 
 # 3. Install APK & Pre-Grant Runtime Notification Permission (Android 13+ API 33+)
 Write-Info "[Step 3/6] Installing APK onto $Serial..."
-$installRes = Invoke-NativeCapture -FilePath $AdbExe -Arguments @("-s", $Serial, "install", "-r", $ApkFile.FullName)
+$installRes = Invoke-NativeCapture -FilePath $AdbExe -Arguments @("-s", $Serial, "install", "--no-incremental", "-r", $ApkFile.FullName)
 if ($installRes.ExitCode -ne 0 -or $installRes.Text -notmatch "Success") {
-    Write-FailMsg "adb install -r failed: $($installRes.Text)"
+    Write-FailMsg "adb install --no-incremental -r failed: $($installRes.Text)"
     exit 1
 }
 Write-Pass "Installed $PackageId onto $Serial."
@@ -222,7 +222,7 @@ if ($activityComponent) {
 Start-Sleep -Seconds $LaunchWaitSeconds
 
 $appPid = ""
-for ($attempt = 1; $attempt -le 5; $attempt++) {
+for ($attempt = 1; $attempt -le 10; $attempt++) {
     $pidRes = Invoke-NativeCapture -FilePath $AdbExe -Arguments @("-s", $Serial, "shell", "pidof", $PackageId)
     $candidatePid = $pidRes.Text.Trim()
     if ($candidatePid -match '^\d+') {

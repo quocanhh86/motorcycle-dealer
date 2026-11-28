@@ -40,7 +40,42 @@
       staffToastTitle: 'Điều phối Lái thử Chi nhánh',
       staffToastMsg: 'Đang mở hàng đợi lịch lái thử của chi nhánh.',
       customerOnlyToastTitle: 'Thao tác Cổng Khách hàng',
-      customerOnlyToastMsg: 'Vui lòng đăng nhập bằng tài khoản Khách hàng để đặt lịch lái thử showroom.'
+      customerOnlyToastMsg: 'Vui lòng đăng nhập bằng tài khoản Khách hàng để đặt lịch lái thử showroom.',
+      angleFront: '3/4 Trước',
+      angleSide: 'Ngang thân xe',
+      angleRear: 'Đuôi & Đèn LED',
+      angleCockpit: 'Đồng hồ & Tay lái',
+      angleFrontShort: '3/4 Trước',
+      angleSideShort: 'Thân xe',
+      angleRearShort: 'Đuôi LED',
+      angleCockpitShort: 'Đồng hồ',
+      prevAngle: 'Xem góc chụp trước',
+      nextAngle: 'Xem góc chụp tiếp theo',
+      openGalleryHint: 'Mở bộ ảnh đa góc và thông số chi tiết',
+      compareAdd: 'So sánh',
+      compareSelected: 'Đã chọn',
+      compareDockTitle: 'So sánh trực quan',
+      compareClear: 'Xóa chọn',
+      compareNowCta: 'So sánh ({{count}}/3)',
+      compareModalEyebrow: 'SO SÁNH THÔNG SỐ & ĐIỂM HỘI VIÊN',
+      compareModalTitle: 'Đặt cạnh {{count}} mẫu xe Showroom',
+      compareSyncAngleLabel: 'Xoay đồng bộ 4 góc:',
+      compareTierSimLabel: 'Ước tính điểm theo hạng:',
+      compareRowCategory: 'Phân khúc',
+      compareRowEngine: 'Dung tích động cơ',
+      compareRowMsrp: 'Giá bán niêm yết',
+      compareRowLoyalty: 'Điểm tích lũy ước tính',
+      compareRowWarranty: 'Bảo hành OEM',
+      compareRowStock: 'Tồn kho VIN sẵn sàng',
+      compareRowAction: 'Trải nghiệm thực tế',
+      compareMaxToastTitle: 'Tối đa 3 mẫu xe',
+      compareMaxToastMsg: 'Hãy bỏ chọn 1 mẫu trong thanh So sánh để thêm mẫu xe khác.',
+      compareRemoveAria: 'Bỏ {{model}} khỏi danh sách so sánh',
+      open3dCta: 'HD 360°',
+      spotlightEyebrow: 'TIÊU ĐIỂM SHOWROOM · ẢNH THẬT HD',
+      modePhotosTab: 'Ảnh Thật 4 Góc HD',
+      mode3dTab: 'Soi HD 360° Xe Thật & Linh Kiện',
+      mediaModeAria: 'Chế độ xem hình ảnh xe Showroom'
     }
   };
 
@@ -83,9 +118,69 @@
       staffToastTitle: 'Staff Test-Drive Desk',
       staffToastMsg: 'Opening branch test-drive queue.',
       customerOnlyToastTitle: 'Customer Portal Action',
-      customerOnlyToastMsg: 'Sign in with a Customer account to schedule a showroom test drive.'
+      customerOnlyToastMsg: 'Sign in with a Customer account to schedule a showroom test drive.',
+      angleFront: 'Front 3/4',
+      angleSide: 'Side Profile',
+      angleRear: 'Rear & LED',
+      angleCockpit: 'Cockpit & Dash',
+      angleFrontShort: 'Front 3/4',
+      angleSideShort: 'Side',
+      angleRearShort: 'Rear LED',
+      angleCockpitShort: 'Cockpit',
+      prevAngle: 'Previous studio angle',
+      nextAngle: 'Next studio angle',
+      openGalleryHint: 'Open multi-angle gallery and specifications',
+      compareAdd: 'Compare',
+      compareSelected: 'Compared',
+      compareDockTitle: 'Visual Spec Compare',
+      compareClear: 'Clear',
+      compareNowCta: 'Compare ({{count}}/3)',
+      compareModalEyebrow: 'SIDE-BY-SIDE SPEC & LOYALTY COMPARE',
+      compareModalTitle: 'Comparing {{count}} Showroom Motorcycles',
+      compareSyncAngleLabel: 'Sync 4 studio angles:',
+      compareTierSimLabel: 'Simulate loyalty tier:',
+      compareRowCategory: 'Segment',
+      compareRowEngine: 'Engine Displacement',
+      compareRowMsrp: 'Retail MSRP',
+      compareRowLoyalty: 'Est. Loyalty Earned',
+      compareRowWarranty: 'OEM Warranty',
+      compareRowStock: 'Live VIN Stock',
+      compareRowAction: 'Book Experience',
+      compareMaxToastTitle: 'Maximum 3 Motorcycles',
+      compareMaxToastMsg: 'Remove one motorcycle from the compare dock before adding another.',
+      compareRemoveAria: 'Remove {{model}} from comparison',
+      open3dCta: 'HD 360°',
+      spotlightEyebrow: 'SHOWROOM SPOTLIGHT · REAL HD PHOTO',
+      modePhotosTab: '4-Angle Real HD Photos',
+      mode3dTab: 'Interactive Real HD 360°',
+      mediaModeAria: 'Showroom media view mode'
     }
   };
+
+  var BUNDLED_MULTI_ANGLE_SLUGS = {
+    'honda-airblade-160': true,
+    'honda-sh160i-sport': true,
+    'honda-winner-x': true,
+    'yamaha-exciter-155': true,
+    'honda-cb300r': true,
+    'honda-nx500': true
+  };
+
+  var MODEL_CODE_TO_STUDIO_SLUG = {
+    'HND-AB160-2026': 'honda-airblade-160',
+    'HND-SH160I-2026': 'honda-sh160i-sport',
+    'HND-WINX-2026': 'honda-winner-x',
+    'YMH-EXC155-2026': 'yamaha-exciter-155',
+    'HND-CB300R-2026': 'honda-cb300r',
+    'HND-NX500-2026': 'honda-nx500'
+  };
+
+  var GALLERY_ANGLE_DEFS = [
+    { key: 'front', suffix: '', labelKey: 'showroomExtra.angleFront', shortLabelKey: 'showroomExtra.angleFrontShort', fallback: 'Front 3/4' },
+    { key: 'side', suffix: '-side', labelKey: 'showroomExtra.angleSide', shortLabelKey: 'showroomExtra.angleSideShort', fallback: 'Side Profile' },
+    { key: 'rear', suffix: '-rear', labelKey: 'showroomExtra.angleRear', shortLabelKey: 'showroomExtra.angleRearShort', fallback: 'Rear & LED' },
+    { key: 'cockpit', suffix: '-cockpit', labelKey: 'showroomExtra.angleCockpit', shortLabelKey: 'showroomExtra.angleCockpitShort', fallback: 'Cockpit & Dash' }
+  ];
 
   angular
     .module('app.features.public')
@@ -95,70 +190,99 @@
       controller: PublicShowroomController,
       template:
         '<section>' +
-          /* 1. Flagship Atelier Showroom Hero with GPU Scroll & Hover Parallax */
+          /* 1. Flagship Asymmetric Atelier Showroom Hero + Live Flagship Spotlight Plate */
           '<header class="atelier-hero">' +
             '<picture aria-hidden="true">' +
               '<source srcset="/assets/editorial/showroom-hero-apex.webp" type="image/webp" />' +
               '<img class="atelier-hero-bg" src="/assets/editorial/showroom-hero-apex.jpg" alt="" loading="eager" decoding="async" />' +
             '</picture>' +
             '<div class="atelier-hero-overlay" aria-hidden="true"></div>' +
+            '<div class="atelier-hero-gridlines" aria-hidden="true"></div>' +
 
-            '<div class="atelier-hero-content fade-slide-up">' +
-              '<span class="atelier-hero-eyebrow">' +
-                '<app-icon name="sparkle" weight="fill" size="13"></app-icon>' +
-                '<span>{{ \'showroom.eyebrow\' | t }}</span>' +
-              '</span>' +
+            '<div class="atelier-hero-grid">' +
+              '<div class="atelier-hero-content fade-slide-up">' +
+                '<span class="atelier-hero-eyebrow">' +
+                  '<app-icon name="sparkle" weight="fill" size="13"></app-icon>' +
+                  '<span>{{ \'showroom.eyebrow\' | t }}</span>' +
+                '</span>' +
 
-              '<h1 class="atelier-hero-title">{{ \'showroom.heroTitle\' | t }}</h1>' +
-              '<p class="atelier-hero-subtitle">{{ \'showroom.heroSubtitle\' | t }}</p>' +
+                '<h1 class="atelier-hero-title">{{ \'showroom.heroTitle\' | t }}</h1>' +
+                '<p class="atelier-hero-subtitle">{{ \'showroom.heroSubtitle\' | t }}</p>' +
 
-              '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:4px;">' +
-                '<button type="button" class="btn-pill-cta" ' +
-                        'ng-if="!$ctrl.isAuthenticated || $ctrl.userRole === \'Customer\'" ' +
-                        'ng-click="$ctrl.bookTestDrive($ctrl.filteredModels[0] || $ctrl.models[0])">' +
-                  '<span>{{ \'showroom.bookTestDriveCta\' | t }}</span>' +
-                  '<span class="btn-pill-well" aria-hidden="true">' +
-                    '<app-icon name="arrow-right" weight="regular" size="15"></app-icon>' +
-                  '</span>' +
-                '</button>' +
-                '<a class="btn-pill-cta btn-pill-secondary" ' +
-                   'ng-if="!$ctrl.isAuthenticated || $ctrl.userRole === \'Customer\'" ' +
-                   'ui-sref="app.customer.bookingNew({ dealerId: $ctrl.filters.dealerId || undefined })">' +
-                  '<span>{{ \'showroomExtra.bookWorkshopService\' | t }}</span>' +
-                  '<span class="btn-pill-well" aria-hidden="true">' +
-                    '<app-icon name="wrench" weight="duotone" size="15"></app-icon>' +
-                  '</span>' +
-                '</a>' +
-                '<a class="btn-pill-cta btn-pill-secondary" ng-if="!$ctrl.isAuthenticated" ui-sref="app.public.login">' +
-                  '<span>{{ \'showroomExtra.rolePortalSignIn\' | t }}</span>' +
-                  '<span class="btn-pill-well" aria-hidden="true">' +
-                    '<app-icon name="sign-in" weight="regular" size="15"></app-icon>' +
-                  '</span>' +
-                '</a>' +
-                '<a class="btn-pill-cta btn-pill-secondary" ng-if="$ctrl.userRole === \'DealerStaff\'" ui-sref="app.staff.testDrives">' +
-                  '<span>{{ \'showroomExtra.staffTestDriveDesk\' | t }}</span>' +
-                  '<span class="btn-pill-well" aria-hidden="true">' +
-                    '<app-icon name="motorcycle" weight="duotone" size="15"></app-icon>' +
-                  '</span>' +
-                '</a>' +
+                '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:4px;">' +
+                  '<button type="button" class="btn-pill-cta" ' +
+                          'ng-if="!$ctrl.isAuthenticated || $ctrl.userRole === \'Customer\'" ' +
+                          'ng-click="$ctrl.bookTestDrive($ctrl.getSpotlightModel())">' +
+                    '<span>{{ \'showroom.bookTestDriveCta\' | t }}</span>' +
+                    '<span class="btn-pill-well" aria-hidden="true">' +
+                      '<app-icon name="arrow-right" weight="regular" size="15"></app-icon>' +
+                    '</span>' +
+                  '</button>' +
+                  '<a class="btn-pill-cta btn-pill-secondary" ' +
+                     'ng-if="!$ctrl.isAuthenticated || $ctrl.userRole === \'Customer\'" ' +
+                     'ui-sref="app.customer.bookingNew({ dealerId: $ctrl.filters.dealerId || undefined })">' +
+                    '<span>{{ \'showroomExtra.bookWorkshopService\' | t }}</span>' +
+                    '<span class="btn-pill-well" aria-hidden="true">' +
+                      '<app-icon name="wrench" weight="duotone" size="15"></app-icon>' +
+                    '</span>' +
+                  '</a>' +
+                  '<a class="btn-pill-cta btn-pill-secondary" ng-if="$ctrl.userRole === \'DealerStaff\'" ui-sref="app.staff.testDrives">' +
+                    '<span>{{ \'showroomExtra.staffTestDriveDesk\' | t }}</span>' +
+                    '<span class="btn-pill-well" aria-hidden="true">' +
+                      '<app-icon name="motorcycle" weight="duotone" size="15"></app-icon>' +
+                    '</span>' +
+                  '</a>' +
+                '</div>' +
+
+                '<div class="atelier-hero-stats">' +
+                  '<div class="atelier-hero-stat">' +
+                    '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.78;">{{ \'showroom.statModels\' | t }}</div>' +
+                    '<div class="mono-num" style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-top:2px;" kpi-counter="$ctrl.heroStats.totalModels">0</div>' +
+                  '</div>' +
+                  '<div class="atelier-hero-stat">' +
+                    '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.78;">{{ \'showroom.statDealers\' | t }}</div>' +
+                    '<div class="mono-num" style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-top:2px;" kpi-counter="$ctrl.heroStats.totalDealers">0</div>' +
+                  '</div>' +
+                  '<div class="atelier-hero-stat">' +
+                    '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.78;">{{ \'showroom.statAvailableVins\' | t }}</div>' +
+                    '<div class="mono-num" style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-top:2px;" kpi-counter="$ctrl.heroStats.totalAvailableVins">0</div>' +
+                  '</div>' +
+                  '<div class="atelier-hero-stat">' +
+                    '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.78;">{{ \'showroom.statWarranty\' | t }}</div>' +
+                    '<div style="font-family:var(--font-display);font-size:14px;font-weight:700;margin-top:6px;">{{ \'showroom.warrantyStandardValue\' | t }}</div>' +
+                  '</div>' +
+                '</div>' +
               '</div>' +
 
-              '<div class="atelier-hero-stats">' +
-                '<div class="atelier-hero-stat">' +
-                  '<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;opacity:0.78;">{{ \'showroom.statModels\' | t }}</div>' +
-                  '<div class="mono-num" style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-top:2px;" kpi-counter="$ctrl.heroStats.totalModels">0</div>' +
+              /* Right Asymmetric Flagship Real-Photo Spotlight Card */
+              '<div class="atelier-spotlight-card fade-slide-up" ng-if="$ctrl.getSpotlightModel()">' +
+                '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
+                  '<span class="mono-num atelier-spotlight-eyebrow">' +
+                    '{{ \'showroomExtra.spotlightEyebrow\' | t }}' +
+                  '</span>' +
+                  '<span class="mono-num atelier-spotlight-cc">{{ $ctrl.getSpotlightModel().engineDisplacementCc }} cc</span>' +
                 '</div>' +
-                '<div class="atelier-hero-stat">' +
-                  '<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;opacity:0.78;">{{ \'showroom.statDealers\' | t }}</div>' +
-                  '<div class="mono-num" style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-top:2px;" kpi-counter="$ctrl.heroStats.totalDealers">0</div>' +
-                '</div>' +
-                '<div class="atelier-hero-stat">' +
-                  '<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;opacity:0.78;">{{ \'showroom.statAvailableVins\' | t }}</div>' +
-                  '<div class="mono-num" style="font-family:var(--font-display);font-size:24px;font-weight:700;margin-top:2px;" kpi-counter="$ctrl.heroStats.totalAvailableVins">0</div>' +
-                '</div>' +
-                '<div class="atelier-hero-stat">' +
-                  '<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;opacity:0.78;">{{ \'showroom.statWarranty\' | t }}</div>' +
-                  '<div style="font-family:var(--font-display);font-size:15px;font-weight:700;margin-top:6px;">{{ \'showroom.warrantyStandardValue\' | t }}</div>' +
+                '<button type="button" class="atelier-spotlight-trigger" ' +
+                        'ng-attr-aria-label="{{ $ctrl.getSpotlightModel().modelName }} · {{ \'showroomExtra.open3dCta\' | t }}" ' +
+                        'ng-click="$ctrl.openScheduleModal($ctrl.getSpotlightModel(), null, \'3d\')">' +
+                  '<bike-image src="$ctrl.getCardActiveImageUrl($ctrl.getSpotlightModel())" ' +
+                              'alt="{{ $ctrl.getSpotlightModel().modelName }}" ' +
+                              'category="{{ $ctrl.getSpotlightModel().category }}" ' +
+                              'variant="card"></bike-image>' +
+                '</button>' +
+                '<div class="atelier-spotlight-meta">' +
+                  '<div style="min-width:0;">' +
+                    '<div class="atelier-spotlight-title">' +
+                      '{{ $ctrl.getSpotlightModel().modelName }}' +
+                    '</div>' +
+                    '<div class="mono-num atelier-spotlight-price">' +
+                      '{{ $ctrl.getSpotlightModel().baseRetailPrice | vndCurrency }}' +
+                    '</div>' +
+                  '</div>' +
+                  '<button type="button" class="btn btn-primary btn-sm" style="white-space:nowrap;" ng-click="$ctrl.openScheduleModal($ctrl.getSpotlightModel(), null, \'3d\')">' +
+                    '<app-icon name="camera" weight="duotone" size="14"></app-icon>' +
+                    '<span>{{ \'showroomExtra.open3dCta\' | t }}</span>' +
+                  '</button>' +
                 '</div>' +
               '</div>' +
             '</div>' +
@@ -274,18 +398,39 @@
                        'on-action="$ctrl.resetFilters()"></empty-state>' +
 
           '<div class="grid-12" ng-if="$ctrl.filteredModels.length > 0">' +
-            '<article class="col-4 bezel-card stagger-item" ng-attr-style="--i:{{ $index }}" ng-repeat="model in $ctrl.filteredModels track by model.id">' +
+            '<article class="col-4 bezel-card showroom-model-card stagger-item" ng-attr-style="--i:{{ $index }}" ng-repeat="model in $ctrl.filteredModels track by model.id">' +
               '<div class="bezel-card-inner" style="display:flex;flex-direction:column;justify-content:space-between;gap:14px;">' +
                 '<div>' +
-                  '<bike-image src="model.imageUrl" ' +
-                              'alt="{{ model.modelName }}" ' +
-                              'category="{{ model.category }}" ' +
-                              'variant="card" ' +
-                              'badge="{{ model.category | enumT:\'MotorcycleCategory\' }}"></bike-image>' +
+                  '<div class="card-gallery-wrap">' +
+                    '<div class="card-gallery-stage">' +
+                      '<button type="button" class="card-gallery-trigger" ' +
+                              'ng-attr-aria-label="{{ model.modelName }} · {{ \'showroomExtra.openGalleryHint\' | t }}" ' +
+                              'ng-click="$ctrl.openScheduleModal(model, $ctrl.getCardAngleIndex(model))">' +
+                        '<bike-image src="$ctrl.getCardActiveImageUrl(model)" ' +
+                                    'alt="{{ model.modelName }} · {{ $ctrl.getCardActiveAngleLabel(model) }}" ' +
+                                    'category="{{ model.category }}" ' +
+                                    'variant="card"></bike-image>' +
+                      '</button>' +
+                      '<span class="card-gallery-count-pill mono-num" aria-hidden="true" ng-if="$ctrl.getModelGallery(model).length > 1">' +
+                        '<app-icon name="images" weight="duotone" size="12"></app-icon>' +
+                        '<span>{{ $ctrl.getCardAngleIndex(model) + 1 }}/{{ $ctrl.getModelGallery(model).length }}</span>' +
+                      '</span>' +
+                    '</div>' +
+                    '<div class="card-angle-strip" ng-if="$ctrl.getModelGallery(model).length > 1" role="group" ng-attr-aria-label="{{ model.modelName }}">' +
+                      '<button type="button" class="card-angle-pill" ' +
+                              'ng-repeat="ang in $ctrl.getModelGallery(model) track by ang.key" ' +
+                              'ng-class="{\'is-active\': $ctrl.getCardAngleIndex(model) === $index}" ' +
+                              'ng-attr-aria-pressed="{{ $ctrl.getCardAngleIndex(model) === $index ? \'true\' : \'false\' }}" ' +
+                              'ng-attr-title="{{ ang.labelKey | t }}" ' +
+                              'ng-click="$ctrl.selectCardAngle(model, $index)">' +
+                        '{{ ang.shortLabelKey | t }}' +
+                      '</button>' +
+                    '</div>' +
+                  '</div>' +
 
                   '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap;">' +
                     '<span class="text-muted" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">' +
-                      '{{ model.brand }} • <span class="mono-num">{{ model.modelCode }}</span>' +
+                      '{{ model.brand }} · {{ model.category | enumT:\'MotorcycleCategory\' }} · <span class="mono-num">{{ model.modelCode }}</span>' +
                     '</span>' +
                     '<span class="badge" ng-class="$ctrl.getModelStockCount(model) > 0 ? \'badge-status-available\' : \'badge-neutral\'">' +
                       '<app-icon name="{{ $ctrl.getModelStockCount(model) > 0 ? \'check-circle\' : \'prohibit\' }}" weight="fill" size="12"></app-icon>' +
@@ -306,10 +451,10 @@
                     '</span>' +
                   '</div>' +
 
-                  '<div class="surface-sunken" style="padding:12px;">' +
+                  '<div class="showroom-price-plate">' +
                     '<div class="text-muted" style="font-size:11px;text-transform:uppercase;font-weight:700;letter-spacing:0.04em;">{{ \'showroom.msrpLabel\' | t }}</div>' +
-                    '<div class="mono-num text-primary" style="font-size:19px;font-weight:700;margin-top:2px;">{{ model.baseRetailPrice | vndCurrency }}</div>' +
-                    '<div style="font-size:12px;color:var(--clr-success-fg);margin-top:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;">' +
+                    '<div class="mono-num text-primary" style="font-size:19px;font-weight:700;">{{ model.baseRetailPrice | vndCurrency }}</div>' +
+                    '<div style="font-size:12px;color:var(--clr-success-fg);display:flex;align-items:center;gap:4px;flex-wrap:wrap;">' +
                       '<app-icon name="medal" weight="fill" size="13"></app-icon>' +
                       '<span>{{ \'showroomExtra.estLoyaltyLabel\' | t }}: <strong class="mono-num">+{{ $ctrl.estimatePoints(model.baseRetailPrice) | number }} {{ \'common.ptsShort\' | t }}</strong> ({{ \'showroomExtra.rateLabel\' | t:{ mult: $ctrl.activeMultiplier } }})</span>' +
                     '</div>' +
@@ -317,10 +462,23 @@
                 '</div>' +
 
                 '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--clr-border-subtle);">' +
-                  '<button type="button" class="btn btn-secondary btn-sm" ng-click="$ctrl.openScheduleModal(model)">' +
-                    '<app-icon name="wrench" weight="duotone" size="14"></app-icon>' +
-                    '<span>{{ \'showroom.inspectSpecsCta\' | t }}</span>' +
-                  '</button>' +
+                  '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
+                    '<button type="button" class="btn btn-secondary btn-sm" ng-click="$ctrl.openScheduleModal(model)">' +
+                      '<app-icon name="wrench" weight="duotone" size="14"></app-icon>' +
+                      '<span>{{ \'showroom.inspectSpecsCta\' | t }}</span>' +
+                    '</button>' +
+                    '<button type="button" class="compare-toggle-btn" ng-click="$ctrl.openScheduleModal(model, null, \'3d\')">' +
+                      '<app-icon name="camera" weight="duotone" size="14"></app-icon>' +
+                      '<span>{{ \'showroomExtra.open3dCta\' | t }}</span>' +
+                    '</button>' +
+                    '<button type="button" class="compare-toggle-btn" ' +
+                            'ng-class="{\'is-selected\': $ctrl.isInCompare(model)}" ' +
+                            'ng-attr-aria-pressed="{{ $ctrl.isInCompare(model) ? \'true\' : \'false\' }}" ' +
+                            'ng-click="$ctrl.toggleCompare(model)">' +
+                      '<app-icon name="{{ $ctrl.isInCompare(model) ? \'check-circle\' : \'scales\' }}" weight="{{ $ctrl.isInCompare(model) ? \'fill\' : \'regular\' }}" size="14"></app-icon>' +
+                      '<span>{{ $ctrl.isInCompare(model) ? (\'showroomExtra.compareSelected\' | t) : (\'showroomExtra.compareAdd\' | t) }}</span>' +
+                    '</button>' +
+                  '</div>' +
                   '<button type="button" class="btn-pill-cta book-test-drive-btn" ' +
                           'style="min-height:36px;padding:3px 4px 3px 14px;font-size:12px;" ' +
                           'ng-if="!$ctrl.isAuthenticated || $ctrl.userRole === \'Customer\'" ' +
@@ -349,7 +507,7 @@
               '<div class="modal-header">' +
                 '<div>' +
                   '<span class="badge badge-info mono-num">{{ $ctrl.selectedModel.modelCode }} • {{ $ctrl.selectedModel.category | enumT:\'MotorcycleCategory\' }}</span>' +
-                  '<h2 id="showroomModalTitle" class="surface-card-title" style="margin-top:4px;">{{ $ctrl.selectedModel.modelName }} — {{ \'showroomExtra.modalTitleSuffix\' | t }}</h2>' +
+                  '<h2 id="showroomModalTitle" class="surface-card-title" style="margin-top:4px;">{{ $ctrl.selectedModel.modelName }} · {{ \'showroomExtra.modalTitleSuffix\' | t }}</h2>' +
                 '</div>' +
                 '<button type="button" class="btn btn-secondary btn-sm" ng-attr-aria-label="{{ \'a11y.closeModal\' | t }}" ng-click="$ctrl.closeScheduleModal()">' +
                   '<app-icon name="x" weight="regular" size="16"></app-icon>' +
@@ -357,12 +515,57 @@
               '</div>' +
 
               '<div class="modal-body">' +
-                '<div style="margin-bottom:16px;">' +
-                  '<bike-image src="$ctrl.selectedModel.imageUrl" ' +
-                              'alt="{{ $ctrl.selectedModel.modelName }}" ' +
-                              'category="{{ $ctrl.selectedModel.category }}" ' +
-                              'variant="modal" ' +
-                              'badge="{{ $ctrl.selectedModel.category | enumT:\'MotorcycleCategory\' }}"></bike-image>' +
+                '<div class="moto3d-mode-switch" role="group" ng-attr-aria-label="{{ \'showroomExtra.mediaModeAria\' | t }}">' +
+                  '<button type="button" class="moto3d-mode-btn" ng-class="{\'is-active\': $ctrl.modalMediaMode === \'photos\'}" ng-attr-aria-pressed="{{ $ctrl.modalMediaMode === \'photos\' ? \'true\' : \'false\' }}" ng-click="$ctrl.setModalMediaMode(\'photos\')">' +
+                    '<app-icon name="images" weight="duotone" size="15"></app-icon>' +
+                    '<span>{{ \'showroomExtra.modePhotosTab\' | t }}</span>' +
+                  '</button>' +
+                  '<button type="button" class="moto3d-mode-btn" ng-class="{\'is-active\': $ctrl.modalMediaMode === \'3d\'}" ng-attr-aria-pressed="{{ $ctrl.modalMediaMode === \'3d\' ? \'true\' : \'false\' }}" ng-click="$ctrl.setModalMediaMode(\'3d\')">' +
+                    '<app-icon name="camera" weight="duotone" size="15"></app-icon>' +
+                    '<span>{{ \'showroomExtra.mode3dTab\' | t }}</span>' +
+                  '</button>' +
+                '</div>' +
+
+                '<div ng-if="$ctrl.modalMediaMode === \'3d\'" style="margin-bottom:16px;">' +
+                  '<moto-3d-viewer model="$ctrl.selectedModel"></moto-3d-viewer>' +
+                '</div>' +
+
+                '<div class="studio-gallery-wrap" ng-if="$ctrl.modalMediaMode !== \'3d\'" style="margin-bottom:16px;">' +
+                  '<div class="studio-gallery-stage">' +
+                    '<bike-image src="$ctrl.getSelectedModalAngleUrl()" ' +
+                                'alt="{{ $ctrl.selectedModel.modelName }} · {{ $ctrl.getSelectedModalAngleLabel() }}" ' +
+                                'category="{{ $ctrl.selectedModel.category }}" ' +
+                                'variant="modal" ' +
+                                'badge="{{ $ctrl.selectedModel.category | enumT:\'MotorcycleCategory\' }}"></bike-image>' +
+                    '<button type="button" class="studio-gallery-nav is-prev" ' +
+                            'ng-if="$ctrl.selectedModelGallery.length > 1" ' +
+                            'ng-attr-aria-label="{{ \'showroomExtra.prevAngle\' | t }}" ' +
+                            'ng-click="$ctrl.stepModalGallery(-1)">' +
+                      '<app-icon name="caret-left" weight="regular" size="18"></app-icon>' +
+                    '</button>' +
+                    '<button type="button" class="studio-gallery-nav is-next" ' +
+                            'ng-if="$ctrl.selectedModelGallery.length > 1" ' +
+                            'ng-attr-aria-label="{{ \'showroomExtra.nextAngle\' | t }}" ' +
+                            'ng-click="$ctrl.stepModalGallery(1)">' +
+                      '<app-icon name="caret-right" weight="regular" size="18"></app-icon>' +
+                    '</button>' +
+                    '<div class="studio-gallery-caption mono-num" ng-if="$ctrl.selectedModelGallery.length > 0">' +
+                      '<app-icon name="camera" weight="duotone" size="13"></app-icon>' +
+                      '<span>{{ $ctrl.selectedGalleryIndex + 1 }} / {{ $ctrl.selectedModelGallery.length }}</span>' +
+                      '<span aria-hidden="true">•</span>' +
+                      '<span>{{ $ctrl.getSelectedModalAngleLabel() }}</span>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div class="studio-gallery-thumbs" ng-if="$ctrl.selectedModelGallery.length > 1">' +
+                    '<button type="button" class="studio-gallery-thumb" ' +
+                            'ng-repeat="ang in $ctrl.selectedModelGallery track by ang.key" ' +
+                            'ng-class="{\'is-active\': $ctrl.selectedGalleryIndex === $index}" ' +
+                            'ng-attr-aria-pressed="{{ $ctrl.selectedGalleryIndex === $index ? \'true\' : \'false\' }}" ' +
+                            'ng-click="$ctrl.selectModalGalleryIndex($index)">' +
+                      '<bike-image src="ang.url" decorative="true" variant="card"></bike-image>' +
+                      '<span class="studio-gallery-thumb-label">{{ ang.labelKey | t }}</span>' +
+                    '</button>' +
+                  '</div>' +
                 '</div>' +
 
                 '<div class="grid-12" style="margin-bottom:16px;gap:var(--space-4);">' +
@@ -452,6 +655,154 @@
               '</div>' +
             '</div>' +
           '</div>' +
+
+          /* 7. Floating Bottom Compare Dock (Visible when 1..3 motorcycles selected) */
+          '<div class="compare-dock fade-slide-up" role="region" ng-attr-aria-label="{{ \'showroomExtra.compareDockTitle\' | t }}" ng-if="$ctrl.compareModels.length > 0">' +
+            '<div class="compare-dock-chips">' +
+              '<span class="compare-dock-label">' +
+                '<app-icon name="scales" weight="duotone" size="15"></app-icon>' +
+                '<span>{{ \'showroomExtra.compareDockTitle\' | t }}</span>' +
+              '</span>' +
+              '<span class="compare-dock-chip" ng-repeat="cm in $ctrl.compareModels track by cm.id">' +
+                '<img class="compare-dock-thumb" ng-src="{{ $ctrl.getCompareAngleUrl(cm) }}" alt="" width="34" height="24" />' +
+                '<span>{{ cm.modelName }}</span>' +
+                '<button type="button" class="compare-dock-remove" ' +
+                        'ng-attr-aria-label="{{ \'showroomExtra.compareRemoveAria\' | t:{ model: cm.modelName } }}" ' +
+                        'ng-click="$ctrl.removeFromCompare(cm.id)">' +
+                  '<app-icon name="x" weight="regular" size="11"></app-icon>' +
+                '</button>' +
+              '</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:8px;">' +
+              '<button type="button" class="btn btn-ghost-dark btn-sm" ng-click="$ctrl.clearCompare()">{{ \'showroomExtra.compareClear\' | t }}</button>' +
+              '<button type="button" class="btn-pill-cta" style="min-height:36px;padding:3px 4px 3px 14px;font-size:12px;" ng-click="$ctrl.openCompareModal()">' +
+                '<span>{{ \'showroomExtra.compareNowCta\' | t:{ count: $ctrl.compareModels.length } }}</span>' +
+                '<span class="btn-pill-well" style="width:26px;height:26px;" aria-hidden="true">' +
+                  '<app-icon name="arrow-right" weight="regular" size="13"></app-icon>' +
+                '</span>' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+
+          /* 8. Side-by-Side Spec & Loyalty Comparison Modal with Synced 4-Angle Switcher */
+          '<div class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="compareModalTitle" ng-if="$ctrl.compareModalOpen && $ctrl.compareModels.length > 0" ng-click="$ctrl.closeCompareModal()">' +
+            '<div class="modal-dialog modal-dialog-wide modal-spring-in motion-modal" style="max-width:960px;" ng-click="$event.stopPropagation()">' +
+              '<div class="modal-header">' +
+                '<div>' +
+                  '<span class="badge badge-info mono-num">{{ \'showroomExtra.compareModalEyebrow\' | t }}</span>' +
+                  '<h2 id="compareModalTitle" class="surface-card-title" style="margin-top:4px;">{{ \'showroomExtra.compareModalTitle\' | t:{ count: $ctrl.compareModels.length } }}</h2>' +
+                '</div>' +
+                '<button type="button" class="btn btn-secondary btn-sm" ng-attr-aria-label="{{ \'a11y.closeModal\' | t }}" ng-click="$ctrl.closeCompareModal()">' +
+                  '<app-icon name="x" weight="regular" size="16"></app-icon>' +
+                '</button>' +
+              '</div>' +
+
+              '<div class="modal-body">' +
+                '<div class="surface-sunken" style="padding:12px 14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">' +
+                  '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
+                    '<span class="text-secondary" style="font-size:12px;font-weight:700;">{{ \'showroomExtra.compareSyncAngleLabel\' | t }}</span>' +
+                    '<button type="button" class="btn btn-sm" ' +
+                            'ng-repeat="angDef in $ctrl.compareAngleDefs track by angDef.key" ' +
+                            'ng-class="$ctrl.compareAngleIndex === $index ? \'btn-primary\' : \'btn-secondary\'" ' +
+                            'ng-click="$ctrl.setCompareAngleIndex($index)">' +
+                      '{{ angDef.shortLabelKey | t }}' +
+                    '</button>' +
+                  '</div>' +
+                  '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
+                    '<span class="text-secondary" style="font-size:12px;font-weight:700;">{{ \'showroomExtra.compareTierSimLabel\' | t }}</span>' +
+                    '<button type="button" class="btn btn-sm mono-num" ' +
+                            'ng-repeat="tierOpt in $ctrl.compareTierOptions track by tierOpt.code" ' +
+                            'ng-class="$ctrl.compareTierCode === tierOpt.code ? \'btn-primary\' : \'btn-secondary\'" ' +
+                            'ng-click="$ctrl.setCompareTier(tierOpt)">' +
+                      '{{ tierOpt.code | enumT:\'LoyaltyTierCode\' }} {{ tierOpt.mult | number:1 }}x' +
+                    '</button>' +
+                  '</div>' +
+                '</div>' +
+
+                '<div class="table-wrap">' +
+                  '<table class="compare-table tabular-nums">' +
+                    '<thead>' +
+                      '<tr>' +
+                        '<th scope="col" style="width:175px;">{{ \'showroomExtra.compareDockTitle\' | t }}</th>' +
+                        '<th scope="col" ng-repeat="cm in $ctrl.compareModels track by cm.id" style="min-width:210px;vertical-align:top;">' +
+                          '<div style="margin-bottom:8px;">' +
+                            '<bike-image src="$ctrl.getCompareAngleUrl(cm)" alt="{{ cm.modelName }}" category="{{ cm.category }}" variant="card"></bike-image>' +
+                          '</div>' +
+                          '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">' +
+                            '<div>' +
+                              '<div class="text-muted mono-num" style="font-size:11px;">{{ cm.brand }} • {{ cm.modelCode }}</div>' +
+                              '<div class="text-primary" style="font-family:var(--font-display);font-size:15px;font-weight:700;">{{ cm.modelName }}</div>' +
+                            '</div>' +
+                            '<button type="button" class="btn btn-secondary btn-sm" ' +
+                                    'ng-attr-aria-label="{{ \'showroomExtra.compareRemoveAria\' | t:{ model: cm.modelName } }}" ' +
+                                    'ng-click="$ctrl.removeFromCompare(cm.id)">' +
+                              '<app-icon name="x" weight="regular" size="13"></app-icon>' +
+                            '</button>' +
+                          '</div>' +
+                        '</th>' +
+                      '</tr>' +
+                    '</thead>' +
+                    '<tbody>' +
+                      '<tr>' +
+                        '<th scope="row">{{ \'showroomExtra.compareRowCategory\' | t }}</th>' +
+                        '<td ng-repeat="cm in $ctrl.compareModels track by cm.id">' +
+                          '<span class="badge badge-info">{{ cm.category | enumT:\'MotorcycleCategory\' }}</span>' +
+                        '</td>' +
+                      '</tr>' +
+                      '<tr>' +
+                        '<th scope="row">{{ \'showroomExtra.compareRowEngine\' | t }}</th>' +
+                        '<td ng-repeat="cm in $ctrl.compareModels track by cm.id">' +
+                          '<strong class="mono-num text-primary">{{ cm.engineDisplacementCc }} cc</strong>' +
+                          '<div class="compare-cc-bar"><div class="compare-cc-fill" ng-style="{transform: \'scaleX(\' + $ctrl.getCompareCcRatio(cm) + \')\'}"></div></div>' +
+                        '</td>' +
+                      '</tr>' +
+                      '<tr>' +
+                        '<th scope="row">{{ \'showroomExtra.compareRowMsrp\' | t }}</th>' +
+                        '<td ng-repeat="cm in $ctrl.compareModels track by cm.id">' +
+                          '<strong class="mono-num text-primary" style="font-size:16px;">{{ cm.baseRetailPrice | vndCurrency }}</strong>' +
+                        '</td>' +
+                      '</tr>' +
+                      '<tr>' +
+                        '<th scope="row">{{ \'showroomExtra.compareRowLoyalty\' | t }}</th>' +
+                        '<td ng-repeat="cm in $ctrl.compareModels track by cm.id">' +
+                          '<span class="badge badge-success mono-num">+{{ $ctrl.estimatePointsWithMult(cm.baseRetailPrice, $ctrl.compareTierMult) | number }} {{ \'common.ptsShort\' | t }}</span>' +
+                          '<div class="text-muted" style="font-size:11px;margin-top:3px;">{{ $ctrl.compareTierCode | enumT:\'LoyaltyTierCode\' }} ({{ $ctrl.compareTierMult | number:2 }}x)</div>' +
+                        '</td>' +
+                      '</tr>' +
+                      '<tr>' +
+                        '<th scope="row">{{ \'showroomExtra.compareRowWarranty\' | t }}</th>' +
+                        '<td ng-repeat="cm in $ctrl.compareModels track by cm.id" class="mono-num">' +
+                          '{{ cm.warrantyMonths }} {{ \'showroomExtra.monthsShort\' | t }} / {{ cm.warrantyMileageKm | number }} km' +
+                        '</td>' +
+                      '</tr>' +
+                      '<tr>' +
+                        '<th scope="row">{{ \'showroomExtra.compareRowStock\' | t }}</th>' +
+                        '<td ng-repeat="cm in $ctrl.compareModels track by cm.id">' +
+                          '<span class="badge mono-num" ng-class="$ctrl.getModelStockCount(cm) > 0 ? \'badge-status-available\' : \'badge-neutral\'">' +
+                            '{{ $ctrl.getModelStockCount(cm) }} VIN' +
+                          '</span>' +
+                        '</td>' +
+                      '</tr>' +
+                      '<tr ng-if="!$ctrl.isAuthenticated || $ctrl.userRole === \'Customer\'">' +
+                        '<th scope="row">{{ \'showroomExtra.compareRowAction\' | t }}</th>' +
+                        '<td ng-repeat="cm in $ctrl.compareModels track by cm.id">' +
+                          '<button type="button" class="btn btn-primary btn-sm" ng-click="$ctrl.bookComparedModelTestDrive(cm)">' +
+                            '<app-icon name="motorcycle" weight="duotone" size="14"></app-icon>' +
+                            '<span>{{ \'showroom.bookTestDriveCta\' | t }}</span>' +
+                          '</button>' +
+                        '</td>' +
+                      '</tr>' +
+                    '</tbody>' +
+                  '</table>' +
+                '</div>' +
+              '</div>' +
+
+              '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-secondary" ng-click="$ctrl.clearCompare()">{{ \'showroomExtra.compareClear\' | t }}</button>' +
+                '<button type="button" class="btn btn-primary" ng-click="$ctrl.closeCompareModal()">{{ \'common.close\' | t }}</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
         '</section>'
     });
 
@@ -498,7 +849,57 @@
     var stockByDealerAndModel = Object.create(null);
     var stockTotalByModel = Object.create(null);
     var stockTotalByDealer = Object.create(null);
+    var galleryCacheByKey = Object.create(null);
     var parallaxRafId = null;
+
+    function resolveStudioSlug(model) {
+      if (!model) {
+        return null;
+      }
+      var code = String(model.modelCode || '').trim().toUpperCase();
+      if (code && MODEL_CODE_TO_STUDIO_SLUG[code]) {
+        return MODEL_CODE_TO_STUDIO_SLUG[code];
+      }
+      var rawUrl = String(model.imageUrl || '').trim();
+      var match = rawUrl.match(/\/assets\/models\/([a-z0-9-]+)\.(?:jpe?g|webp|png)(?:\?.*)?$/i);
+      if (match && BUNDLED_MULTI_ANGLE_SLUGS[match[1].toLowerCase()]) {
+        return match[1].toLowerCase();
+      }
+      return null;
+    }
+
+    function buildModelGallery(model) {
+      if (!model) {
+        return [];
+      }
+      var slug = resolveStudioSlug(model);
+      var cacheKey = slug || (String(model.id || '') + '::' + String(model.imageUrl || ''));
+      if (galleryCacheByKey[cacheKey]) {
+        return galleryCacheByKey[cacheKey];
+      }
+      var items;
+      if (slug && BUNDLED_MULTI_ANGLE_SLUGS[slug]) {
+        items = GALLERY_ANGLE_DEFS.map(function (def) {
+          return {
+            key: def.key,
+            url: '/assets/models/' + slug + def.suffix + '.jpg',
+            labelKey: def.labelKey,
+            shortLabelKey: def.shortLabelKey,
+            fallback: def.fallback
+          };
+        });
+      } else {
+        items = [{
+          key: 'front',
+          url: String(model.imageUrl || '').trim(),
+          labelKey: 'showroomExtra.angleFront',
+          shortLabelKey: 'showroomExtra.angleFrontShort',
+          fallback: 'Front 3/4'
+        }];
+      }
+      galleryCacheByKey[cacheKey] = items;
+      return items;
+    }
 
     if (I18nService && angular.isFunction(I18nService.extend)) {
       I18nService.extend(SHOWROOM_I18N_VI, SHOWROOM_I18N_EN);
@@ -520,6 +921,16 @@
       }
       return fallback || code;
     }
+
+    $ctrl.getSpotlightModel = function () {
+      if ($ctrl.filteredModels && $ctrl.filteredModels.length > 0) {
+        return $ctrl.filteredModels[0];
+      }
+      if ($ctrl.models && $ctrl.models.length > 0) {
+        return $ctrl.models[0];
+      }
+      return null;
+    };
 
     function syncUserContext() {
       var user = AuthService.getCurrentUser();
@@ -777,6 +1188,22 @@
       $ctrl.selectedModelRules = [];
       $ctrl.selectedModelSpecEntries = [];
       $ctrl.selectedModelBranchStocks = [];
+      $ctrl.selectedModelGallery = [];
+      $ctrl.selectedGalleryIndex = 0;
+      $ctrl.modalMediaMode = 'photos';
+      $ctrl.cardAngleIndexByModelId = Object.create(null);
+      $ctrl.compareModels = [];
+      $ctrl.compareModalOpen = false;
+      $ctrl.compareAngleIndex = 0;
+      $ctrl.compareAngleDefs = GALLERY_ANGLE_DEFS;
+      $ctrl.compareTierOptions = [
+        { code: 'Bronze', mult: 1.0 },
+        { code: 'Silver', mult: 1.2 },
+        { code: 'Gold', mult: 1.5 },
+        { code: 'Platinum', mult: 2.0 }
+      ];
+      $ctrl.compareTierCode = ($ctrl.activeMultiplier >= 2.0) ? 'Platinum' : ($ctrl.activeMultiplier >= 1.5 ? 'Gold' : ($ctrl.activeMultiplier >= 1.2 ? 'Silver' : 'Bronze'));
+      $ctrl.compareTierMult = $ctrl.activeMultiplier || 1.0;
       $ctrl.sortBy = 'default';
       $ctrl.heroStats = {
         totalModels: 0,
@@ -820,6 +1247,45 @@
 
     $ctrl.$postLink = function () {
       setupHeroParallax();
+      if ($window && angular.isFunction($window.addEventListener)) {
+        var onGalleryKeyDown = function (ev) {
+          if (isDestroyed || (!$ctrl.selectedModel && !$ctrl.compareModalOpen) || !ev || ev.defaultPrevented) {
+            return;
+          }
+          if (ev.altKey || ev.ctrlKey || ev.metaKey) {
+            return;
+          }
+          var tag = ev.target && ev.target.tagName ? String(ev.target.tagName).toUpperCase() : '';
+          if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (ev.target && ev.target.isContentEditable)) {
+            return;
+          }
+          if ($ctrl.compareModalOpen) {
+            if (ev.key === 'Escape') {
+              $rootScope.$applyAsync(function () { if (!isDestroyed) { $ctrl.closeCompareModal(); } });
+            } else if (ev.key === 'ArrowRight') {
+              ev.preventDefault();
+              $rootScope.$applyAsync(function () { if (!isDestroyed) { $ctrl.setCompareAngleIndex(($ctrl.compareAngleIndex + 1) % GALLERY_ANGLE_DEFS.length); } });
+            } else if (ev.key === 'ArrowLeft') {
+              ev.preventDefault();
+              $rootScope.$applyAsync(function () { if (!isDestroyed) { $ctrl.setCompareAngleIndex(($ctrl.compareAngleIndex - 1 + GALLERY_ANGLE_DEFS.length) % GALLERY_ANGLE_DEFS.length); } });
+            }
+            return;
+          }
+          if ($ctrl.modalMediaMode !== '3d' && ev.key === 'ArrowRight' && ($ctrl.selectedModelGallery || []).length > 1) {
+            ev.preventDefault();
+            $rootScope.$applyAsync(function () { if (!isDestroyed) { $ctrl.stepModalGallery(1); } });
+          } else if ($ctrl.modalMediaMode !== '3d' && ev.key === 'ArrowLeft' && ($ctrl.selectedModelGallery || []).length > 1) {
+            ev.preventDefault();
+            $rootScope.$applyAsync(function () { if (!isDestroyed) { $ctrl.stepModalGallery(-1); } });
+          } else if (ev.key === 'Escape') {
+            $rootScope.$applyAsync(function () { if (!isDestroyed) { $ctrl.closeScheduleModal(); } });
+          }
+        };
+        $window.addEventListener('keydown', onGalleryKeyDown);
+        cleanupFns.push(function () {
+          $window.removeEventListener('keydown', onGalleryKeyDown);
+        });
+      }
     };
 
     $ctrl.$onDestroy = function () {
@@ -967,11 +1433,176 @@
       return LoyaltyCalculator.calculatePoints(priceVnd, $ctrl.activeMultiplier);
     };
 
-    $ctrl.openScheduleModal = function (model) {
+    $ctrl.estimatePointsWithMult = function (priceVnd, mult) {
+      return LoyaltyCalculator.calculatePoints(priceVnd, mult);
+    };
+
+    $ctrl.isInCompare = function (model) {
+      if (!model || !model.id) {
+        return false;
+      }
+      for (var i = 0; i < $ctrl.compareModels.length; i++) {
+        if ($ctrl.compareModels[i].id === model.id) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    $ctrl.toggleCompare = function (model) {
+      if (!model || !model.id) {
+        return;
+      }
+      if ($ctrl.isInCompare(model)) {
+        $ctrl.removeFromCompare(model.id);
+        return;
+      }
+      if ($ctrl.compareModels.length >= 3) {
+        if (ToastService && angular.isFunction(ToastService.info)) {
+          ToastService.info(
+            t('showroomExtra.compareMaxToastTitle', null, 'Maximum 3 Motorcycles'),
+            t('showroomExtra.compareMaxToastMsg', null, 'Remove one motorcycle from the compare dock before adding another.')
+          );
+        }
+        return;
+      }
+      $ctrl.compareModels = $ctrl.compareModels.concat([model]);
+    };
+
+    $ctrl.removeFromCompare = function (modelId) {
+      $ctrl.compareModels = ($ctrl.compareModels || []).filter(function (m) {
+        return m.id !== modelId;
+      });
+      if ($ctrl.compareModels.length === 0) {
+        $ctrl.compareModalOpen = false;
+      }
+    };
+
+    $ctrl.clearCompare = function () {
+      $ctrl.compareModels = [];
+      $ctrl.compareModalOpen = false;
+    };
+
+    $ctrl.openCompareModal = function () {
+      if ($ctrl.compareModels.length > 0) {
+        $ctrl.compareModalOpen = true;
+      }
+    };
+
+    $ctrl.closeCompareModal = function () {
+      $ctrl.compareModalOpen = false;
+    };
+
+    $ctrl.setCompareAngleIndex = function (idx) {
+      $ctrl.compareAngleIndex = Math.max(0, Math.min(GALLERY_ANGLE_DEFS.length - 1, Number(idx) || 0));
+    };
+
+    $ctrl.setCompareTier = function (tierOpt) {
+      if (!tierOpt) {
+        return;
+      }
+      $ctrl.compareTierCode = tierOpt.code;
+      $ctrl.compareTierMult = tierOpt.mult;
+    };
+
+    $ctrl.getCompareAngleUrl = function (model) {
+      var gallery = buildModelGallery(model);
+      var item = gallery[$ctrl.compareAngleIndex] || gallery[0];
+      return (item && item.url) || (model && model.imageUrl) || '/assets/editorial/showroom-hero-apex.jpg';
+    };
+
+    $ctrl.getCompareCcRatio = function (model) {
+      var maxCc = 1;
+      for (var i = 0; i < $ctrl.compareModels.length; i++) {
+        var cc = Number($ctrl.compareModels[i].engineDisplacementCc) || 0;
+        if (cc > maxCc) {
+          maxCc = cc;
+        }
+      }
+      return Math.max(0.12, Math.min(1, (Number(model && model.engineDisplacementCc) || 0) / maxCc));
+    };
+
+    $ctrl.bookComparedModelTestDrive = function (model) {
+      $ctrl.closeCompareModal();
+      $ctrl.bookTestDrive(model);
+    };
+
+    $ctrl.getModelGallery = function (model) {
+      return buildModelGallery(model);
+    };
+
+    $ctrl.getCardAngleIndex = function (model) {
+      if (!model || !model.id) {
+        return 0;
+      }
+      var gallery = buildModelGallery(model);
+      var idx = Number($ctrl.cardAngleIndexByModelId[model.id]) || 0;
+      if (idx < 0 || idx >= gallery.length) {
+        return 0;
+      }
+      return idx;
+    };
+
+    $ctrl.selectCardAngle = function (model, index) {
+      if (!model || !model.id) {
+        return;
+      }
+      var gallery = buildModelGallery(model);
+      if (index >= 0 && index < gallery.length) {
+        $ctrl.cardAngleIndexByModelId[model.id] = index;
+      }
+    };
+
+    $ctrl.getCardActiveImageUrl = function (model) {
+      var gallery = buildModelGallery(model);
+      var idx = $ctrl.getCardAngleIndex(model);
+      return gallery[idx] ? gallery[idx].url : (model && model.imageUrl) || '';
+    };
+
+    $ctrl.getCardActiveAngleLabel = function (model) {
+      var gallery = buildModelGallery(model);
+      var idx = $ctrl.getCardAngleIndex(model);
+      var item = gallery[idx];
+      return item ? t(item.labelKey, null, item.fallback) : '';
+    };
+
+    $ctrl.selectModalGalleryIndex = function (index) {
+      var total = ($ctrl.selectedModelGallery || []).length;
+      if (total === 0) {
+        $ctrl.selectedGalleryIndex = 0;
+        return;
+      }
+      $ctrl.selectedGalleryIndex = ((index % total) + total) % total;
+    };
+
+    $ctrl.stepModalGallery = function (delta) {
+      $ctrl.selectModalGalleryIndex(($ctrl.selectedGalleryIndex || 0) + (Number(delta) || 0));
+    };
+
+    $ctrl.getSelectedModalAngleUrl = function () {
+      var item = ($ctrl.selectedModelGallery || [])[$ctrl.selectedGalleryIndex || 0];
+      return item ? item.url : ($ctrl.selectedModel && $ctrl.selectedModel.imageUrl) || '';
+    };
+
+    $ctrl.getSelectedModalAngleLabel = function () {
+      var item = ($ctrl.selectedModelGallery || [])[$ctrl.selectedGalleryIndex || 0];
+      return item ? t(item.labelKey, null, item.fallback) : '';
+    };
+
+    $ctrl.setModalMediaMode = function (mode) {
+      $ctrl.modalMediaMode = mode === '3d' ? '3d' : 'photos';
+    };
+
+    $ctrl.openScheduleModal = function (model, initialAngleIndex, initialMode) {
       if (!model) {
         return;
       }
       $ctrl.selectedModel = model;
+      $ctrl.modalMediaMode = initialMode === '3d' ? '3d' : 'photos';
+      $ctrl.selectedModelGallery = buildModelGallery(model);
+      $ctrl.selectedGalleryIndex = (typeof initialAngleIndex === 'number' && initialAngleIndex >= 0 && initialAngleIndex < $ctrl.selectedModelGallery.length)
+        ? initialAngleIndex
+        : $ctrl.getCardAngleIndex(model);
       $ctrl.selectedModelRules = angular.isArray(model.maintenanceRules) ? model.maintenanceRules.slice() : [];
       $ctrl.selectedModelSpecEntries = buildSpecEntries(model);
       $ctrl.selectedModelBranchStocks = buildBranchStocksForModel(model);
@@ -986,6 +1617,10 @@
         }
         if (res.detail) {
           $ctrl.selectedModel = res.detail;
+          $ctrl.selectedModelGallery = buildModelGallery(res.detail);
+          if ($ctrl.selectedGalleryIndex >= $ctrl.selectedModelGallery.length) {
+            $ctrl.selectedGalleryIndex = 0;
+          }
           $ctrl.selectedModelSpecEntries = buildSpecEntries(res.detail);
           $ctrl.selectedModelBranchStocks = buildBranchStocksForModel(res.detail);
         }
@@ -995,7 +1630,7 @@
           $ctrl.selectedModelRules = res.detail.maintenanceRules;
         }
       }).finally(function () {
-        if (!isDestroyed) {
+        if (!isDestroyed && $ctrl.selectedModel && $ctrl.selectedModel.id === model.id) {
           $ctrl.isLoadingRules = false;
         }
       });
@@ -1003,6 +1638,9 @@
 
     $ctrl.closeScheduleModal = function () {
       $ctrl.selectedModel = null;
+      $ctrl.selectedModelGallery = [];
+      $ctrl.selectedGalleryIndex = 0;
+      $ctrl.modalMediaMode = 'photos';
       $ctrl.selectedModelRules = [];
     };
 

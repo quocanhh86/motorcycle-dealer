@@ -38,6 +38,29 @@ public sealed class OfflineDbAndOutboxTests
     }
 
     [Fact]
+    public async Task MobileOfflineDb_ConcurrentWalWrites_SucceedWithBusyTimeoutConfigured()
+    {
+        using var tempPath = new TempDatabasePathProvider();
+        var tokenStore = new InMemorySecureTokenStore();
+
+        await using var db = new MobileOfflineDb(tempPath, tokenStore);
+        await db.InitializeAsync();
+
+        var scope = "concurrent-user:Customer:global";
+        var writes = Enumerable.Range(0, 12).Select(i =>
+            db.UpsertSyncStateAsync(scope, $"res_{i}", DateTimeOffset.UtcNow, $"token-{i}"));
+
+        await Task.WhenAll(writes);
+
+        for (var i = 0; i < 12; i++)
+        {
+            var state = await db.GetSyncStateAsync(scope, $"res_{i}");
+            Assert.NotNull(state);
+            Assert.Equal($"token-{i}", state.CursorToken);
+        }
+    }
+
+    [Fact]
     public async Task MobileOfflineDb_SqlCipherEncryptsFileOnDiskAndRejectsWrongKey()
     {
         using var tempPath = new TempDatabasePathProvider();
@@ -259,6 +282,21 @@ public sealed class OfflineDbAndOutboxTests
         Assert.Equal(10, OfflineOutboxSyncService.ComputeExponentialBackoffSeconds(2));
         Assert.Equal(20, OfflineOutboxSyncService.ComputeExponentialBackoffSeconds(3));
         Assert.Equal(300, OfflineOutboxSyncService.ComputeExponentialBackoffSeconds(10));
+    }
+
+    [Fact]
+    public async Task MobileOfflineDb_DisposeAsync_IsIdempotentAndRejectsPostDisposeAccess()
+    {
+        using var tempPath = new TempDatabasePathProvider();
+        var tokenStore = new InMemorySecureTokenStore();
+        var db = new MobileOfflineDb(tempPath, tokenStore);
+        await db.InitializeAsync();
+
+        await db.DisposeAsync();
+        await db.DisposeAsync(); // Second dispose MUST NOT throw ObjectDisposedException
+
+        await Assert.ThrowsAsync<ObjectDisposedException>(() => db.InitializeAsync());
+        await Assert.ThrowsAsync<ObjectDisposedException>(() => db.ListTableNamesAsync());
     }
 
     private static IDealerMobileApiClient CreateMockApiClient(

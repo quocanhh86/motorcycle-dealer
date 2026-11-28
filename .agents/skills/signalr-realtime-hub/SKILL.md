@@ -96,7 +96,7 @@ Implement `SignalRClientService` at `frontend/src/app/core/realtime/signalr-clie
 1. **Automatic Reconnect & Token Factory**:
    - Build connection with `.withUrl(hubUrl, { accessTokenFactory: () => AuthService.getAccessToken() }).withAutomaticReconnect([0, 2000, 5000, 10000, 30000]).build()`.
 2. **Always Bridge via `$rootScope.$applyAsync()`**:
-   - WebSocket callbacks run outside AngularJS's turn. Wrap **every** `connection.on(...)` state update across all `7` events in `$rootScope.$applyAsync(...)` — never call raw `$scope.$apply()`.
+   - WebSocket callbacks run outside AngularJS's turn. Wrap **every** `connection.on(...)` state update across all `10` events in `$rootScope.$applyAsync(...)` — never call raw `$scope.$apply()`.
 3. **Reconnect Delta Reconciliation (`onreconnected`)**:
    - On `connection.onreconnected()`, refresh unread notifications and active `app.staff.workbench` / `app.staff.testDrives` queues silently to reconcile alerts created during transient disconnects.
 4. **Mandatory `$onDestroy` & Logout Teardown**:
@@ -115,7 +115,7 @@ Verify real-time push end-to-end across both Workshop Bookings and Showroom Test
    - Open Tab 1 signed in as `staff.hcm@motorcycledealer.vn` (`DLR-HCM-01`) on `/#!/staff/workbench` (or `/#!/staff/test-drives`) and Tab 0 signed in as `customer.silver@motorcycledealer.vn`.
    - Submit a booking (`POST /api/v1/bookings`) or test-drive (`POST /api/v1/test-drives`) in Tab 0, switch back to Tab 1 **without reloading**, and verify instant `BookingCreated` / `TestDriveCreated` rendering while `staff.hn@motorcycledealer.vn` (`DLR-HN-01`) receives **zero** cross-dealer events.
 3. **WebSocket Frame & Memory-Leak Inspection (`chrome-devtools-plugin_chrome-devtools` MCP)**:
-   - Inspect `POST /hubs/notifications/negotiate` (`200 OK`), `101 Switching Protocols`, zero console `$digest` errors, and zero `$onDestroy` listener leaks (`RISK-04`) across all `27` routes.
+   - Inspect `POST /hubs/notifications/negotiate` (`200 OK`), `101 Switching Protocols`, zero console `$digest` errors, and zero `$onDestroy` listener leaks (`RISK-04`) across all `30` routes.
 
 ---
 
@@ -123,7 +123,7 @@ Verify real-time push end-to-end across both Workshop Bookings and Showroom Test
 
 1. **Architecture & Guardrail Audit**:
    - Command: `powershell -NoProfile -ExecutionPolicy Bypass -File .agents/scripts/audit-dealer-guardrails.ps1`
-2. **SignalR Hub Negotiate & Full-Stack Smoke Verification (`SMK-01`..`SMK-09`)**:
+2. **SignalR Hub Negotiate & Full-Stack Smoke Verification (`SMK-01`..`SMK-10`)**:
    - Command: `powershell -NoProfile -ExecutionPolicy Bypass -File .agents/scripts/smoke-fullstack.ps1`
 3. **Mandatory Post-Task Docs, Snapshot & Git Schedule Sync Gate**:
    - Command: `node .agents/scripts/verify-post-task-sync.mjs`

@@ -9,6 +9,7 @@
     xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
     SafeAreaEdges="All"
     x:Name="PageRoot"
@@ -442,7 +443,7 @@
                                 <!-- Star 1 -->
                                 <Border Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="1">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.93"
                                             PressedOpacity="0.88"
                                             PressedAnimationDuration="110"
@@ -470,7 +471,7 @@
                                 <!-- Star 2 -->
                                 <Border Grid.Column="1" Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="2">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.93"
                                             PressedOpacity="0.88"
                                             PressedAnimationDuration="110"
@@ -505,7 +506,7 @@
                                 <!-- Star 3 -->
                                 <Border Grid.Column="2" Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="3">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.93"
                                             PressedOpacity="0.88"
                                             PressedAnimationDuration="110"
@@ -544,7 +545,7 @@
                                 <!-- Star 4 -->
                                 <Border Grid.Column="3" Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="4">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.93"
                                             PressedOpacity="0.88"
                                             PressedAnimationDuration="110"
@@ -583,7 +584,7 @@
                                 <!-- Star 5 -->
                                 <Border Grid.Column="4" Style="{StaticResource SecondaryTouchCard}" Padding="4,0" SemanticProperties.Description="5">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.93"
                                             PressedOpacity="0.88"
                                             PressedAnimationDuration="110"

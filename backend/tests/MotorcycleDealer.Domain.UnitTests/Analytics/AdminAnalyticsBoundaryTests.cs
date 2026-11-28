@@ -424,7 +424,14 @@ public sealed class AdminAnalyticsBoundaryTests
     [Fact]
     public void AuthRateLimitOptions_ShouldEnforcePartitionBounds_WhitespaceFallback_AndSecurityHeaderConstants()
     {
-        Assert.Equal(["Content-Disposition", "Retry-After", "Location"], AuthRateLimitOptions.ExposedCorsHeaders);
+        Assert.Equal(
+            [
+                AuthRateLimitOptions.ContentDispositionHeaderName,
+                AuthRateLimitOptions.RetryAfterHeaderName,
+                AuthRateLimitOptions.LocationHeaderName,
+                AuthRateLimitOptions.CorrelationIdHeaderName
+            ],
+            AuthRateLimitOptions.ExposedCorsHeaders);
 
         var context = new DefaultHttpContext();
         AuthRateLimitOptions.ApplySecurityResponseHeaders(context.Response.Headers);

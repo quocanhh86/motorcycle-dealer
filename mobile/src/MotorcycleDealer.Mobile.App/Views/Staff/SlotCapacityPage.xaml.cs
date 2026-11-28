@@ -16,9 +16,16 @@ public partial class SlotCapacityPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        FromDatePicker.Date = ViewModel.FromDate.ToDateTime(TimeOnly.MinValue);
-        ToDatePicker.Date = ViewModel.ToDate.ToDateTime(TimeOnly.MinValue);
-        await ViewModel.LoadSlotsCommand.ExecuteAsync(null);
+        try
+        {
+            FromDatePicker.Date = ViewModel.FromDate.ToDateTime(TimeOnly.MinValue);
+            ToDatePicker.Date = ViewModel.ToDate.ToDateTime(TimeOnly.MinValue);
+            await ViewModel.LoadSlotsCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 
     private void OnFromDateSelected(object? sender, DateChangedEventArgs e)

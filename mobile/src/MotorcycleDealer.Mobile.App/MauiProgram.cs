@@ -173,7 +173,10 @@ public static class MauiProgram
     private static void ConfigureIosNativeStyling()
     {
         UIKit.UIColor crimsonTint = UIKit.UIColor.FromRGB(0xDC, 0x26, 0x26);
-        UIKit.UIColor slateUnselected = UIKit.UIColor.FromRGB(0x64, 0x74, 0x8B);
+        UIKit.UIColor slateUnselected = new(traits =>
+            traits.UserInterfaceStyle == UIKit.UIUserInterfaceStyle.Dark
+                ? UIKit.UIColor.FromRGB(0x94, 0xA3, 0xB8)
+                : UIKit.UIColor.FromRGB(0x52, 0x60, 0x75));
         UIKit.UIColor slateWhite = UIKit.UIColor.FromRGB(0xF8, 0xFA, 0xFC);
 
         UIKit.UIColor adaptiveTabBackground = new(traits =>
@@ -231,7 +234,7 @@ public static class MauiProgram
         UIKit.UINavigationBar.Appearance.StandardAppearance = navAppearance;
         UIKit.UINavigationBar.Appearance.ScrollEdgeAppearance = navAppearance;
         UIKit.UINavigationBar.Appearance.CompactAppearance = navAppearance;
-        UIKit.UINavigationBar.Appearance.TintColor = crimsonTint;
+        UIKit.UINavigationBar.Appearance.TintColor = slateWhite;
 
         // Crisp translucent Light/Dark adaptive TabBar with Crimson (#DC2626) selected & Slate (#64748B) unselected
         var tabAppearance = new UIKit.UITabBarAppearance();

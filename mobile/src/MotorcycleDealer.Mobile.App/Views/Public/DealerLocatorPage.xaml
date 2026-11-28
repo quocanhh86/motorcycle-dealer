@@ -9,6 +9,7 @@
     xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
     SafeAreaEdges="All"
     x:Name="PageRoot"
@@ -23,38 +24,59 @@
         <ScrollView>
             <VerticalStackLayout Padding="16" Spacing="14">
 
-                <!-- Carbon Dealership Network Header -->
-                <Border Style="{StaticResource CarbonHeaderCard}">
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                        <VerticalStackLayout Spacing="4">
-                            <Label Text="{Binding Loc.DealerEyebrow}" Style="{StaticResource EyebrowLabel}" />
-                            <Label
-                                Text="{Binding Loc.DealerTitle}"
-                                FontFamily="SpaceGroteskBold"
-                                FontSize="20"
-                                TextColor="{StaticResource Slate50}" />
-                            <Label
-                                Text="{Binding Loc.DealerSubtitle}"
-                                FontSize="12"
-                                TextColor="{StaticResource Slate300}" />
-                        </VerticalStackLayout>
-                        <Border
-                            Grid.Column="1"
-                            BackgroundColor="{StaticResource Slate800}"
-                            Stroke="{StaticResource Slate700}"
-                            StrokeThickness="1"
-                            StrokeShape="RoundRectangle 12"
-                            WidthRequest="44"
-                            HeightRequest="44"
-                            VerticalOptions="Center">
-                            <Label
-                                Text="{x:Static icons:PhosphorIcons.MapPin}"
-                                FontFamily="Phosphor"
-                                FontSize="22"
-                                TextColor="{StaticResource BrandPrimaryHoverDark}"
-                                HorizontalTextAlignment="Center"
-                                VerticalTextAlignment="Center" />
-                        </Border>
+                <!-- Editorial Dealership Network Header with Real DSLR Workshop Backdrop -->
+                <Border
+                    BackgroundColor="{StaticResource Slate950}"
+                    Stroke="{StaticResource Slate800}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="0">
+                    <Grid MinimumHeightRequest="136" IsClippedToBounds="True">
+                        <Image
+                            Source="hero_workshop_bay.jpg"
+                            Aspect="AspectFill"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            Opacity="0.32" />
+                        <BoxView InputTransparent="True">
+                            <BoxView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#E6020617" Offset="0.0" />
+                                    <GradientStop Color="#B3020617" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </BoxView.Background>
+                        </BoxView>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" Padding="16">
+                            <VerticalStackLayout Spacing="4" VerticalOptions="Center">
+                                <Label Text="{Binding Loc.DealerEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                                <Label
+                                    Text="{Binding Loc.DealerTitle}"
+                                    FontFamily="SpaceGroteskBold"
+                                    FontSize="20"
+                                    TextColor="{StaticResource Slate50}" />
+                                <Label
+                                    Text="{Binding Loc.DealerSubtitle}"
+                                    FontSize="12"
+                                    TextColor="{StaticResource Slate300}" />
+                            </VerticalStackLayout>
+                            <Border
+                                Grid.Column="1"
+                                BackgroundColor="#CC1E293B"
+                                Stroke="{StaticResource Slate700}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 12"
+                                WidthRequest="44"
+                                HeightRequest="44"
+                                VerticalOptions="Center">
+                                <Label
+                                    Text="{x:Static icons:PhosphorIcons.MapPin}"
+                                    FontFamily="Phosphor"
+                                    FontSize="22"
+                                    TextColor="{StaticResource BrandPrimaryHoverDark}"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                        </Grid>
                     </Grid>
                 </Border>
 
@@ -215,7 +237,7 @@
                                         <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
                                             <Border x:Name="DirectionsCard" Style="{StaticResource PrimaryCtaTouchCard}">
                                                 <Border.Behaviors>
-                                                    <toolkit:TouchBehavior
+                                                    <behaviors:ApexPressBehavior
                                                         PressedScale="0.97"
                                                         PressedOpacity="0.90"
                                                         PressedAnimationDuration="110"
@@ -240,7 +262,7 @@
                                             </Border>
                                             <Border x:Name="CallCard" Grid.Column="1" Style="{StaticResource SecondaryTouchCard}">
                                                 <Border.Behaviors>
-                                                    <toolkit:TouchBehavior
+                                                    <behaviors:ApexPressBehavior
                                                         PressedScale="0.97"
                                                         PressedOpacity="0.88"
                                                         PressedAnimationDuration="110"

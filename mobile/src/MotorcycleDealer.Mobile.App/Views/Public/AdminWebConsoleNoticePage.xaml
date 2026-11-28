@@ -7,6 +7,7 @@
     xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:pub="clr-namespace:MotorcycleDealer.Mobile.App.Views.Public"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
     SafeAreaEdges="All"
     x:Name="PageRoot"
@@ -38,7 +39,7 @@
                                 MinimumHeightRequest="48"
                                 SemanticProperties.Description="{Binding Loc.ToolbarLanguage}">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.95"
                                         PressedAnimationDuration="110"
                                         Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleLanguageCommand, x:DataType=pub:AdminWebConsoleNoticePage}"
@@ -68,7 +69,7 @@
                                 MinimumHeightRequest="48"
                                 SemanticProperties.Description="{Binding Loc.ToolbarTheme}">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.95"
                                         PressedAnimationDuration="110"
                                         Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.ToggleThemeCommand, x:DataType=pub:AdminWebConsoleNoticePage}"
@@ -155,7 +156,7 @@
                             Style="{StaticResource PrimaryPillCta}"
                             SemanticProperties.Description="{Binding Loc.AdminNoticeOpenWebCta}">
                             <Border.Behaviors>
-                                <toolkit:TouchBehavior
+                                <behaviors:ApexPressBehavior
                                     PressedScale="0.97"
                                     PressedOpacity="0.90"
                                     PressedAnimationDuration="110"

@@ -9,7 +9,7 @@ description: >-
 
 # Master 9-Server MCP Orchestrator Playbook (`mcp-devtools-orchestrator`)
 
-Authoritative runbook for combining the **2 Workspace Plugin Stdio MCP Servers** and **7 Global MCP Servers** across **Phases 2–9+** of the **Motorcycle Dealer & Loyalty Management Platform** (`https://github.com/quocanhh86/motorcycle-dealer`).
+Authoritative runbook for combining the **2 Workspace Plugin Stdio MCP Servers** and **7 Global MCP Servers** across **Phases 1–10+** of the **Motorcycle Dealer & Loyalty Management Platform** (`v1.4.0`, `https://github.com/quocanhh86/motorcycle-dealer`).
 
 > [!WARNING]
 > **Critical Database MCP Routing Rule (`sqlserver-localdb-inspector` vs `dbhub`)**:
@@ -25,17 +25,17 @@ Registered in [mcp_config.json](../../plugins/motorcycle-dealer-suite/mcp_config
 
 | MCP Server Name | Script Path | Exposed Tools (`9` Total) | Primary Engineering Purpose |
 | :--- | :--- | :--- | :--- |
-| **`motorcycle-dealer-guardrails`** | [mcp-dealer-guardrails-server.mjs](../../scripts/mcp-dealer-guardrails-server.mjs) | 1. `check_phase_gate`<br>2. `lookup_rbac_permission`<br>3. `lookup_db_table_spec`<br>4. `calculate_loyalty_preview`<br>5. `get_wbs_tasks` | Enforces `9`-phase file boundaries (`Phases 1..9`), queries the `48` `Permissions.<Module>.<Action>` RBAC matrix & `8` `IDealerScoped` rules, pulls `27`-table specs from `docs/DATABASE_DESIGN.md`, computes deterministic two-step floor loyalty points/tiers, and queries `80` WBS tasks (`T-101`..`T-908`). |
+| **`motorcycle-dealer-guardrails`** | [mcp-dealer-guardrails-server.mjs](../../scripts/mcp-dealer-guardrails-server.mjs) | 1. `check_phase_gate`<br>2. `lookup_rbac_permission`<br>3. `lookup_db_table_spec`<br>4. `calculate_loyalty_preview`<br>5. `get_wbs_tasks` | Enforces `10`-phase file boundaries (`Phases 1..10`), queries the `48` `Permissions.<Module>.<Action>` RBAC matrix & `8` `IDealerScoped` rules, pulls `27`-table specs from `docs/DATABASE_DESIGN.md`, computes deterministic two-step floor loyalty points/tiers, and queries `88` WBS tasks (`T-101`..`T-1008`). |
 | **`sqlserver-localdb-inspector`** | [mcp-sqlserver-localdb-server.mjs](../../scripts/mcp-sqlserver-localdb-server.mjs) | 1. `sqlserver_status`<br>2. `list_sqlserver_tables`<br>3. `inspect_sqlserver_schema`<br>4. `query_readonly_sql` | Inspects `(localdb)\MSSQLLocalDB` readiness, lists the `27` `MotorcycleDealerDb` tables & row counts, inspects SQL types (`DECIMAL(18,2)`, `8` `ROWVERSION` columns) & B-tree indexes, and runs sanitized `TOP 200` `SELECT`/`WITH` queries (blocking all DML/DDL & multi-statement `;` injection). |
 
 #### Canonical Workspace MCP Tool Call Examples
 
 ```json
-// 1. Verify active phase boundary (Phases 1..8) before scaffolding new folders
+// 1. Verify active phase boundary (Phases 1..10) before scaffolding new folders
 {
   "ServerName": "motorcycle-dealer-guardrails",
   "ToolName": "check_phase_gate",
-  "Arguments": { "phase": 8 }
+  "Arguments": { "phase": 10 }
 }
 
 // 2. Oracle preview for Loyalty accrual (455,000 VND at Gold 1.50x -> 67 pts)
@@ -49,7 +49,7 @@ Registered in [mcp_config.json](../../plugins/motorcycle-dealer-suite/mcp_config
   }
 }
 
-// 3. Lookup DealerStaff RBAC permissions (18 of 40) & 6-table IDealerScoped constraints
+// 3. Lookup DealerStaff RBAC permissions (22 of 48) & 8-table IDealerScoped constraints
 {
   "ServerName": "motorcycle-dealer-guardrails",
   "ToolName": "lookup_rbac_permission",
@@ -75,35 +75,35 @@ Registered in [mcp_config.json](../../plugins/motorcycle-dealer-suite/mcp_config
 
 | Global MCP Server | Core Tools Used in This Project | Domain / Phase Scope |
 | :--- | :--- | :--- |
-| **`context7_context7`** | `resolve-library-id` -> `query-docs` | Authoritative up-to-date docs for `.NET 10`, `EF Core 10`, `ASP.NET Core SignalR`, `FluentValidation`, `AngularJS 1.8.3`, `@uirouter/angularjs`, and `Chart.js v4` (`Phases 3–8+`). |
-| **`playwright`** | `browser_navigate`, `browser_tabs`, `browser_snapshot`, `browser_fill_form`, `browser_click`, `browser_wait_for`, `browser_take_screenshot`, `browser_console_messages`, `browser_network_requests` | Multi-tab `Customer` + `DealerStaff` SignalR zero-refresh E2E proof (`BookingCreated`, `TestDriveCreated`), `27`-route RBAC guard tests, printable receipts, and responsive screenshots (`Phases 4–8+`). |
-| **`chrome-devtools-plugin_chrome-devtools`** | `navigate_page`, `list_network_requests`, `get_network_request`, `list_console_messages`, `evaluate_script`, `take_heapsnapshot`, `lighthouse_audit` | WebSocket `/hubs/notifications` frame inspection (`7` events), AngularJS `$digest` & `Chart.js` `destroy()` memory-leak audits (`RISK-04`), `RFC 7807` payload inspection, and Lighthouse `>= 90` audits (`Phases 6–8+`). |
-| **`postman_postman`** | `createWorkspace`, `createCollection`, `createCollectionRequest`, `createEnvironment`, `syncCollectionWithSpec`, `runMonitor` | Synchronizes `/api/v1/*` OpenAPI specs into automated Postman collections with `Customer`, `DealerStaff`, and `Admin` environments and `40`-permission `ProblemDetails` contract monitors (`Phases 4–8+`). |
-| **`github`** | `create_repository`, `create_branch`, `issue_write`, `create_pull_request`, `pull_request_review_write` | Manages issues, milestone branches, traceable PRs (`FR-*` / `ADR-*` / `T-*`), and `v1.0.0` / `v1.1.0` releases on `https://github.com/quocanhh86/motorcycle-dealer` (`Phases 3–8+`). |
-| **`figma_figma`** | `generate_diagram`, `get_design_context`, `get_screenshot` | Generates C4/sequence architecture diagrams and extracts design tokens/frames across all `21` screens (`SCR-PUB-01`..`SCR-ADM-07`). |
+| **`context7_context7`** | `resolve-library-id` -> `query-docs` | Authoritative up-to-date docs for `.NET 10`, `EF Core 10`, `.NET MAUI`, `ASP.NET Core SignalR`, `FluentValidation`, `AngularJS 1.8.3`, `@uirouter/angularjs`, and `Chart.js v4` (`Phases 3–10+`). |
+| **`playwright`** | `browser_navigate`, `browser_tabs`, `browser_snapshot`, `browser_fill_form`, `browser_click`, `browser_wait_for`, `browser_take_screenshot`, `browser_console_messages`, `browser_network_requests` | Multi-tab `Customer` + `DealerStaff` SignalR zero-refresh E2E proof (`BookingCreated`, `TestDriveCreated`), `30`-route RBAC guard tests, printable receipts, and responsive screenshots (`Phases 4–10+`). |
+| **`chrome-devtools-plugin_chrome-devtools`** | `navigate_page`, `list_network_requests`, `get_network_request`, `list_console_messages`, `evaluate_script`, `take_heapsnapshot`, `lighthouse_audit` | WebSocket `/hubs/notifications` frame inspection (`10` events), AngularJS `$digest` & `Chart.js` `destroy()` memory-leak audits (`RISK-04`), `RFC 7807` payload inspection, and Lighthouse `>= 90` audits (`Phases 6–10+`). |
+| **`postman_postman`** | `createWorkspace`, `createCollection`, `createCollectionRequest`, `createEnvironment`, `syncCollectionWithSpec`, `runMonitor` | Synchronizes `/api/v1/*` OpenAPI specs into automated Postman collections with `Customer`, `DealerStaff`, and `Admin` environments and `48`-permission `ProblemDetails` contract monitors (`Phases 4–10+`). |
+| **`github`** | `create_repository`, `create_branch`, `issue_write`, `create_pull_request`, `pull_request_review_write` | Manages issues, milestone branches, traceable PRs (`FR-*` / `ADR-*` / `T-*`), and `v1.0.0`..`v1.4.0` releases on `https://github.com/quocanhh86/motorcycle-dealer` (`Phases 3–10+`). |
+| **`figma_figma`** | `generate_diagram`, `get_design_context`, `get_screenshot` | Generates C4/sequence architecture diagrams and extracts design tokens/frames across `24` web (`SCR-PUB-01`..`SCR-ADM-08`) + `16` mobile screens. |
 | **`notion_notion`** | `notion-search`, `notion-create-pages`, `notion-update-page` | Publishes sprint retrospectives, ADR summaries, and phase-gate sign-off notes to the developer's engineering workspace. |
 
 ---
 
 ## 2. Concrete Multi-Server MCP Orchestration Recipes
 
-### Recipe 1 — Spec-to-API-to-Postman Contract Sync (`40` Permissions)
+### Recipe 1 — Spec-to-API-to-Postman Contract Sync (`48` Permissions)
 1. **`motorcycle-dealer-guardrails`**: Run `check_phase_gate`, `lookup_rbac_permission`, and `lookup_db_table_spec`.
 2. **`context7_context7`**: Query `.NET 10` `IExceptionHandler` / `ProblemDetails` or `EF Core 10` configuration syntax.
 3. **Implement & Test**: Build the Clean Architecture handler/controller and pass `dotnet test`.
-4. **`postman_postman`**: Sync `/api/v1/*` OpenAPI routes and run `40`-permission contract monitors.
+4. **`postman_postman`**: Sync `/api/v1/*` OpenAPI routes and run `48`-permission contract monitors.
 
-### Recipe 2 — Dual-Tab SignalR Instant Booking & Test-Drive Alert Proof (`FR-06`, `7` Events)
-1. **`playwright`**: Open Tab 1 (`DealerStaff` at `DLR-HCM-01`) on `/#!/staff/workbench` or `/#!/staff/test-drives` and Tab 0 (`Customer`). Submit `POST /api/v1/bookings` or `POST /api/v1/test-drives` in Tab 0, switch back to Tab 1 **without reloading**, and verify instant `BookingCreated` / `TestDriveCreated` card rendering (`dealer-{dealerId}`).
+### Recipe 2 — Dual-Tab SignalR Instant Booking & Test-Drive Alert Proof (`FR-06`, `10` Events)
+1. **`playwright`**: Open Tab 1 (`DealerStaff` at `DLR-HCM-01`) on `/staff/workbench` or `/staff/test-drives` and Tab 0 (`Customer`). Submit `POST /api/v1/bookings` or `POST /api/v1/test-drives` in Tab 0, switch back to Tab 1 **without reloading**, and verify instant `BookingCreated` / `TestDriveCreated` card rendering (`dealer-{dealerId}`).
 2. **`chrome-devtools-plugin_chrome-devtools`**: Inspect `101 Switching Protocols` frames on `/hubs/notifications?access_token=...` and verify zero `$onDestroy` listener leaks.
 
-### Recipe 3 — 25-Table Loyalty, Itemized Invoice & `RowVersion` DB Audit (`FR-04`, `FR-05`)
+### Recipe 3 — 27-Table Loyalty, Itemized Invoice & `RowVersion` DB Audit (`FR-04`, `FR-05`)
 1. **`motorcycle-dealer-guardrails`**: Call `calculate_loyalty_preview` for oracle `pointsEarned` and tier progression.
-2. **`sqlserver-localdb-inspector`**: Call `list_sqlserver_tables` (`25` tables) and `query_readonly_sql` to assert `BookedCount <= MaxCapacity`, `GrossAmount == SUM(LineTotalVnd)` on `ServiceInvoiceLineItems`, and `SUM(PointLedgerEntries.PointsDelta) == LoyaltyAccounts.AvailablePoints`.
+2. **`sqlserver-localdb-inspector`**: Call `list_sqlserver_tables` (`27` tables) and `query_readonly_sql` to assert `BookedCount <= MaxCapacity`, `GrossAmount == SUM(LineTotalVnd)` on `ServiceInvoiceLineItems`, and `SUM(PointLedgerEntries.PointsDelta) == LoyaltyAccounts.AvailablePoints`.
 
 ### Recipe 4 — Post-Task Sync & Release Automation (`quocanhh86/motorcycle-dealer`)
 1. **`motorcycle-dealer-guardrails`**: Call `check_phase_gate` and `get_wbs_tasks` (`status: "pending"`).
-2. **Local Verification & Mandatory Post-Task Sync Gate**: Run `powershell -NoProfile -ExecutionPolicy Bypass -File .agents/scripts/verify-dealer-platform.ps1 -Phase 8`, `node .agents/scripts/sync-progress.mjs --check`, and `node .agents/scripts/verify-post-task-sync.mjs`.
+2. **Local Verification & Mandatory Post-Task Sync Gate**: Run `powershell -NoProfile -ExecutionPolicy Bypass -File .agents/scripts/verify-dealer-platform.ps1 -Phase 10`, `node .agents/scripts/sync-progress.mjs --check`, and `node .agents/scripts/verify-post-task-sync.mjs`.
 3. **`github` / `notion_notion`**: Publish traceable PRs/releases once scheduled slices ship cleanly.
 
 ---

@@ -8,6 +8,11 @@ namespace MotorcycleDealer.Mobile.Core.Media;
 /// Resolves seeded showroom models to bundled MAUI resource filenames at 0ms with zero network traffic,
 /// and resolves Admin-created custom relative/HTTPS URLs cleanly with safe showroom hero fallback.
 /// </summary>
+public sealed record MotorcycleGalleryAngle(
+    string AngleKey,
+    string ImageSource,
+    string LabelResourceKey);
+
 public interface IMotorcycleImageResolver
 {
     string ResolveHeroShowroom();
@@ -16,6 +21,7 @@ public interface IMotorcycleImageResolver
     string ResolveForModel(MotorcycleModelDto? model);
     string ResolveForVehicle(CustomerVehicleDto? vehicle);
     string ResolveForInventory(DealerInventoryDto? inventory);
+    IReadOnlyList<MotorcycleGalleryAngle> ResolveGalleryForModel(MotorcycleModelDto? model);
 }
 
 public sealed class MotorcycleImageResolver : IMotorcycleImageResolver
@@ -24,11 +30,81 @@ public sealed class MotorcycleImageResolver : IMotorcycleImageResolver
     public const string HeroWorkshopImage = "hero_workshop_bay.jpg";
 
     public const string ModelHondaAirblade160 = "model_honda_airblade_160.jpg";
+    public const string ModelHondaAirblade160Side = "model_honda_airblade_160_side.jpg";
+    public const string ModelHondaAirblade160Rear = "model_honda_airblade_160_rear.jpg";
+    public const string ModelHondaAirblade160Cockpit = "model_honda_airblade_160_cockpit.jpg";
+
     public const string ModelHondaSh160iSport = "model_honda_sh160i_sport.jpg";
+    public const string ModelHondaSh160iSportSide = "model_honda_sh160i_sport_side.jpg";
+    public const string ModelHondaSh160iSportRear = "model_honda_sh160i_sport_rear.jpg";
+    public const string ModelHondaSh160iSportCockpit = "model_honda_sh160i_sport_cockpit.jpg";
+
     public const string ModelHondaWinnerX = "model_honda_winner_x.jpg";
+    public const string ModelHondaWinnerXSide = "model_honda_winner_x_side.jpg";
+    public const string ModelHondaWinnerXRear = "model_honda_winner_x_rear.jpg";
+    public const string ModelHondaWinnerXCockpit = "model_honda_winner_x_cockpit.jpg";
+
     public const string ModelYamahaExciter155 = "model_yamaha_exciter_155.jpg";
+    public const string ModelYamahaExciter155Side = "model_yamaha_exciter_155_side.jpg";
+    public const string ModelYamahaExciter155Rear = "model_yamaha_exciter_155_rear.jpg";
+    public const string ModelYamahaExciter155Cockpit = "model_yamaha_exciter_155_cockpit.jpg";
+
     public const string ModelHondaCb300r = "model_honda_cb300r.jpg";
+    public const string ModelHondaCb300rSide = "model_honda_cb300r_side.jpg";
+    public const string ModelHondaCb300rRear = "model_honda_cb300r_rear.jpg";
+    public const string ModelHondaCb300rCockpit = "model_honda_cb300r_cockpit.jpg";
+
     public const string ModelHondaNx500 = "model_honda_nx500.jpg";
+    public const string ModelHondaNx500Side = "model_honda_nx500_side.jpg";
+    public const string ModelHondaNx500Rear = "model_honda_nx500_rear.jpg";
+    public const string ModelHondaNx500Cockpit = "model_honda_nx500_cockpit.jpg";
+
+    private static readonly Dictionary<string, IReadOnlyList<MotorcycleGalleryAngle>> BundledGalleriesByPrimary =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            [ModelHondaAirblade160] =
+            [
+                new("front", ModelHondaAirblade160, "ShowroomAngleFront"),
+                new("side", ModelHondaAirblade160Side, "ShowroomAngleSide"),
+                new("rear", ModelHondaAirblade160Rear, "ShowroomAngleRear"),
+                new("cockpit", ModelHondaAirblade160Cockpit, "ShowroomAngleCockpit")
+            ],
+            [ModelHondaSh160iSport] =
+            [
+                new("front", ModelHondaSh160iSport, "ShowroomAngleFront"),
+                new("side", ModelHondaSh160iSportSide, "ShowroomAngleSide"),
+                new("rear", ModelHondaSh160iSportRear, "ShowroomAngleRear"),
+                new("cockpit", ModelHondaSh160iSportCockpit, "ShowroomAngleCockpit")
+            ],
+            [ModelHondaWinnerX] =
+            [
+                new("front", ModelHondaWinnerX, "ShowroomAngleFront"),
+                new("side", ModelHondaWinnerXSide, "ShowroomAngleSide"),
+                new("rear", ModelHondaWinnerXRear, "ShowroomAngleRear"),
+                new("cockpit", ModelHondaWinnerXCockpit, "ShowroomAngleCockpit")
+            ],
+            [ModelYamahaExciter155] =
+            [
+                new("front", ModelYamahaExciter155, "ShowroomAngleFront"),
+                new("side", ModelYamahaExciter155Side, "ShowroomAngleSide"),
+                new("rear", ModelYamahaExciter155Rear, "ShowroomAngleRear"),
+                new("cockpit", ModelYamahaExciter155Cockpit, "ShowroomAngleCockpit")
+            ],
+            [ModelHondaCb300r] =
+            [
+                new("front", ModelHondaCb300r, "ShowroomAngleFront"),
+                new("side", ModelHondaCb300rSide, "ShowroomAngleSide"),
+                new("rear", ModelHondaCb300rRear, "ShowroomAngleRear"),
+                new("cockpit", ModelHondaCb300rCockpit, "ShowroomAngleCockpit")
+            ],
+            [ModelHondaNx500] =
+            [
+                new("front", ModelHondaNx500, "ShowroomAngleFront"),
+                new("side", ModelHondaNx500Side, "ShowroomAngleSide"),
+                new("rear", ModelHondaNx500Rear, "ShowroomAngleRear"),
+                new("cockpit", ModelHondaNx500Cockpit, "ShowroomAngleCockpit")
+            ]
+        };
 
     private static readonly Dictionary<string, string> ModelCodeMap = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -69,12 +145,12 @@ public sealed class MotorcycleImageResolver : IMotorcycleImageResolver
 
     private static readonly HashSet<string> BundledResourceFilenames = new(StringComparer.OrdinalIgnoreCase)
     {
-        ModelHondaAirblade160,
-        ModelHondaSh160iSport,
-        ModelHondaWinnerX,
-        ModelYamahaExciter155,
-        ModelHondaCb300r,
-        ModelHondaNx500,
+        ModelHondaAirblade160, ModelHondaAirblade160Side, ModelHondaAirblade160Rear, ModelHondaAirblade160Cockpit,
+        ModelHondaSh160iSport, ModelHondaSh160iSportSide, ModelHondaSh160iSportRear, ModelHondaSh160iSportCockpit,
+        ModelHondaWinnerX, ModelHondaWinnerXSide, ModelHondaWinnerXRear, ModelHondaWinnerXCockpit,
+        ModelYamahaExciter155, ModelYamahaExciter155Side, ModelYamahaExciter155Rear, ModelYamahaExciter155Cockpit,
+        ModelHondaCb300r, ModelHondaCb300rSide, ModelHondaCb300rRear, ModelHondaCb300rCockpit,
+        ModelHondaNx500, ModelHondaNx500Side, ModelHondaNx500Rear, ModelHondaNx500Cockpit,
         HeroShowroomImage,
         HeroWorkshopImage
     };
@@ -111,6 +187,23 @@ public sealed class MotorcycleImageResolver : IMotorcycleImageResolver
 
     public string ResolveForInventory(DealerInventoryDto? inventory) =>
         inventory is null ? HeroShowroomImage : Resolve(inventory.ModelCode, null);
+
+    public IReadOnlyList<MotorcycleGalleryAngle> ResolveGalleryForModel(MotorcycleModelDto? model) =>
+        ResolveModelGallery(model?.ModelCode, model?.ImageUrl, _endpointProvider ?? _ambientEndpointProvider);
+
+    public static IReadOnlyList<MotorcycleGalleryAngle> ResolveModelGallery(
+        string? modelCode,
+        string? imageUrl = null,
+        IApiEndpointProvider? endpointProvider = null)
+    {
+        var primary = ResolveModelImage(modelCode, imageUrl, endpointProvider);
+        if (BundledGalleriesByPrimary.TryGetValue(primary, out var gallery))
+        {
+            return gallery;
+        }
+
+        return [new MotorcycleGalleryAngle("front", primary, "ShowroomAngleFront")];
+    }
 
     /// <summary>
     /// Deterministic resolution order:

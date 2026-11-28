@@ -12,7 +12,7 @@ description: >-
 
 # AngularJS 1.8 Enterprise SPA Playbook (`30` Routes · `48` Permissions · `10` SignalR Events)
 
-Authoritative frontend engineering guide for the **Motorcycle Dealer & Loyalty Management Platform** (`FR-01`..`FR-07`, `ADR-006`, `RISK-04`). All frontend work resides strictly inside `frontend/src/` across **Phases 3–8+** (`T-307`, `T-408`, `T-508`, `T-509`, `T-606`..`T-608`, `T-702`, `T-703`, `T-805`, `T-806`).
+Authoritative frontend engineering guide for the **Motorcycle Dealer & Loyalty Management Platform** (`v1.4.0`, `FR-01`..`FR-09`, `ADR-006`, `RISK-04`). All frontend work resides strictly inside `frontend/src/` across **Phases 3–10+** (`30` navigable routes: `26` primary + `4` aliases, `48` permissions, `10` SignalR events, Light/Dark themes & `vi-VN`/`en-US` i18n).
 
 ---
 
@@ -29,11 +29,11 @@ frontend/
     ├── styles/                                  # CSS custom properties, responsive layout & @media print rules
     └── app/
         ├── app.module.js                        # Root motorcycleDealerApp bootstrap & $compileProvider config
-        ├── app.routes.js                        # 27 navigable UI-Router routes (23 primary + 4 aliases)
+        ├── app.routes.js                        # 30 navigable UI-Router routes (26 primary + 4 aliases)
         ├── core/
-        │   ├── auth/                            # auth.service.js, permissions.constants.js (40 permissions), auth.interceptor.js
+        │   ├── auth/                            # auth.service.js, permissions.constants.js (48 permissions), auth.interceptor.js
         │   ├── guards/                          # route-guard.run.js ($transitions.onBefore RBAC hooks)
-        │   ├── realtime/                        # signalr-client.service.js (7 events via $rootScope.$applyAsync)
+        │   ├── realtime/                        # signalr-client.service.js (10 events via $rootScope.$applyAsync)
         │   └── http/                            # api-client.service.js & problem-details.mapper.js
         ├── shared/                              # app-shell, has-permission, vin-input, vndCurrency, utcToLocal, dealerChart, printableReceiptModal
         └── features/
@@ -72,9 +72,9 @@ frontend/
 | `app.admin.*` (`8`) | `['Admin']` (`32` perms) | `app.admin.analytics` | `analytics` (`/admin/analytics`, `SCR-ADM-01`), `dealers` (`/admin/dealers`, `SCR-ADM-02`), `staff` (`/admin/staff`, `SCR-ADM-03`), `models` (`/admin/models`, `SCR-ADM-04`), `loyaltyTiers` (`/admin/loyalty/tiers`, `SCR-ADM-05`), `voucherCatalog` (`/admin/loyalty/vouchers`, `SCR-ADM-06`), `spareParts` (`/admin/spare-parts`, `SCR-ADM-07`), `qualityWarranty` (`/admin/quality-warranty`, `SCR-ADM-08`) |
 
 ### 3.2 Deterministic Transition Guard (`frontend/src/app/core/guards/route-guard.run.js`)
-- Enforces `data.requiresAuth`, `data.roles`, and all **`40` canonical `Permissions.<Module>.<Action>`** strings defined in `permissions.constants.js`.
+- Enforces `data.requiresAuth`, `data.roles`, and all **`48` canonical `Permissions.<Module>.<Action>`** strings defined in `permissions.constants.js`.
 - Redirects unauthenticated visitors to `app.public.login` (preserving `returnTo` / `returnUrl`) and unauthorized visitors to `app.public.forbidden` (`/403`).
-- `has-permission` directive (`frontend/src/app/shared/has-permission.directive.js`) hides unauthorized UI controls and deregisters its `auth:changed` listener inside `$scope.$on('$destroy', ...)`. Server `[HasPermission]` and `6`-table `IDealerScoped` remain authoritative.
+- `has-permission` directive (`frontend/src/app/shared/has-permission.directive.js`) hides unauthorized UI controls and deregisters its `auth:changed` listener inside `$scope.$on('$destroy', ...)`. Server `[HasPermission]` and `8`-table `IDealerScoped` remain authoritative.
 
 ---
 
@@ -88,7 +88,7 @@ Queue concurrent `401` API responses in `auth.interceptor.js` behind a single `/
 
 1. **`<dealer-chart>` (`dealer-chart.component.js`)**: Powers the 4 executive visualizations on `app.admin.analytics` (`revenue-by-dealer` Stacked Bar, `monthly-trends` Multi-Line, `bookings-by-dealer` Status Bar/Doughnut, `loyalty-distribution` Tier Doughnut). Always updates via `chartInstance.update('none')` and calls `chartInstance.destroy()` in `$onDestroy`.
 2. **`<printable-receipt-modal>`**: Renders itemized `ServiceInvoices` (`ServiceInvoiceLineItems` parts + labor breakdown, voucher discount, `NetPaidAmount`, loyalty `PointsEarned`) and `SalesOrders` vehicle delivery receipts (`GET /api/v1/service-invoices/{id}/receipt`, `GET /api/v1/sales-orders/{id}/receipt`) with clean `@media print` isolation (`window.print()`).
-3. **7-Event SignalR Teardown**: Bridge `BookingCreated`, `BookingStatusChanged`, `MaintenanceReminderTriggered`, `LoyaltyPointsUpdated`, `TierUpgraded`, `TestDriveCreated`, and `TestDriveStatusChanged` via `$rootScope.$applyAsync()` and invoke every unsubscribe handle inside `$onDestroy`.
+3. **10-Event SignalR Teardown**: Bridge `BookingCreated`, `BookingStatusChanged`, `MaintenanceReminderTriggered`, `LoyaltyPointsUpdated`, `TierUpgraded`, `TestDriveCreated`, `TestDriveStatusChanged`, `ServiceReviewSubmitted`, `WarrantyClaimCreated`, and `WarrantyClaimStatusChanged` via `$rootScope.$applyAsync()` and invoke every unsubscribe handle inside `$onDestroy`.
 4. **UTC -> `Asia/Ho_Chi_Minh` & VND Formatting**: Format timestamps via `Intl.DateTimeFormat('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })` and `DECIMAL(18,2)` VND amounts via `Intl.NumberFormat('vi-VN')` strictly in presentation filters.
 
 ---

@@ -12,7 +12,7 @@ Authoritative domain logic and transactional orchestration runbook for `Motorcyc
 
 ## 1. MCP-Accelerated Domain Verification Workflow
 
-Before hardcoding math assertions or committing multi-aggregate transactions across the `25` 3NF tables, leverage the workspace MCP servers:
+Before hardcoding math assertions or committing multi-aggregate transactions across the `27` 3NF tables, leverage the workspace MCP servers:
 
 1. **Canonical Loyalty Math & Tier Oracle (`motorcycle-dealer-guardrails` MCP)**:
    - Call `calculate_loyalty_preview` (`netPaidAmountVnd`, `tierMultiplier`, `currentLifetimeQualifyingPoints`) to verify exact two-step floor point outcomes and automatic tier jumps (e.g., `455,000 VND` at `Gold 1.50x` -> `67` pts; `101,000,000 VND` at `Bronze 1.00x` -> `10,100` pts + instant `Bronze -> Platinum` promotion).
@@ -65,7 +65,7 @@ public static int CalculatePointsEarned(decimal netPaidAmountVnd, decimal tierMu
 
 ---
 
-## 4. Transactional Workflows & `6`-Table `RowVersion` Concurrency (`ADR-005`, `FR-04`)
+## 4. Transactional Workflows & `8`-Table `RowVersion` Concurrency (`ADR-005`, `FR-04`)
 
 ### 4.1 Atomic Showroom Sale & Printable Delivery Receipt (`POST /api/v1/sales-orders`, `GET /api/v1/sales-orders/{id}/receipt`)
 Execute inside one `BeginTransactionAsync` scope:

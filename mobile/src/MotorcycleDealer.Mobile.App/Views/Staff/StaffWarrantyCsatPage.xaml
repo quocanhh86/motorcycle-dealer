@@ -10,6 +10,7 @@
     xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:stf="clr-namespace:MotorcycleDealer.Mobile.App.Views.Staff"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     SafeAreaEdges="All"
     x:Name="PageRoot"
     x:DataType="vm:StaffWarrantyCsatViewModel"
@@ -39,7 +40,7 @@
                                 StrokeShape="RoundRectangle 10"
                                 Padding="12,10">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.97"
                                         PressedAnimationDuration="110"
                                         Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectTabCommand, x:DataType=stf:StaffWarrantyCsatPage}"
@@ -77,7 +78,7 @@
                                 StrokeShape="RoundRectangle 10"
                                 Padding="12,10">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.97"
                                         PressedAnimationDuration="110"
                                         Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectTabCommand, x:DataType=stf:StaffWarrantyCsatPage}"

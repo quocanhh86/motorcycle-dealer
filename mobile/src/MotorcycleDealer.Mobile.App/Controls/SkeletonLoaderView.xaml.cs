@@ -1,5 +1,7 @@
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Maui.Controls.Shapes;
 using MotorcycleDealer.Mobile.App.Motion;
+using MotorcycleDealer.Mobile.Core.Messaging;
 
 namespace MotorcycleDealer.Mobile.App.Controls;
 
@@ -12,6 +14,7 @@ public partial class SkeletonLoaderView : ContentView
 {
     private const string ShimmerAnimationName = "ApexSkeletonShimmerSweep";
     private readonly List<VisualElement> _sweepOverlays = [];
+    private bool _themeDirty;
 
     public static readonly BindableProperty VariantProperty = BindableProperty.Create(
         nameof(Variant),
@@ -53,16 +56,39 @@ public partial class SkeletonLoaderView : ContentView
         base.OnPropertyChanged(propertyName);
         if (propertyName == IsVisibleProperty.PropertyName)
         {
+            if (IsVisible && IsLoaded && _themeDirty)
+            {
+                _themeDirty = false;
+                RebuildSkeletons();
+                return;
+            }
+
             UpdateAnimationState();
         }
     }
 
     private void OnLoaded(object? sender, EventArgs e)
     {
+        WeakReferenceMessenger.Default.Unregister<ThemeChangedMessage>(this);
+        WeakReferenceMessenger.Default.Register<SkeletonLoaderView, ThemeChangedMessage>(
+            this,
+            static (view, msg) =>
+            {
+                bool isDark = string.Equals(msg.ThemeMode?.Trim(), "dark", StringComparison.OrdinalIgnoreCase);
+                view.HandleThemeUpdated(isDark);
+            });
+
         if (Application.Current is not null)
         {
             Application.Current.RequestedThemeChanged -= OnRequestedThemeChanged;
             Application.Current.RequestedThemeChanged += OnRequestedThemeChanged;
+        }
+
+        if (_themeDirty && IsVisible)
+        {
+            _themeDirty = false;
+            RebuildSkeletons();
+            return;
         }
 
         UpdateAnimationState();
@@ -70,6 +96,7 @@ public partial class SkeletonLoaderView : ContentView
 
     private void OnUnloaded(object? sender, EventArgs e)
     {
+        WeakReferenceMessenger.Default.Unregister<ThemeChangedMessage>(this);
         if (Application.Current is not null)
         {
             Application.Current.RequestedThemeChanged -= OnRequestedThemeChanged;
@@ -79,19 +106,42 @@ public partial class SkeletonLoaderView : ContentView
     }
 
     private void OnRequestedThemeChanged(object? sender, AppThemeChangedEventArgs e)
+        => HandleThemeUpdated(isDarkOverride: null);
+
+    private void HandleThemeUpdated(bool? isDarkOverride)
     {
-        MainThread.BeginInvokeOnMainThread(RebuildSkeletons);
+        if (!IsLoaded || !IsVisible)
+        {
+            _themeDirty = true;
+            return;
+        }
+
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            if (!IsLoaded || !IsVisible)
+            {
+                _themeDirty = true;
+                return;
+            }
+
+            _themeDirty = false;
+            RebuildSkeletons(isDarkOverride);
+        });
     }
 
     private bool ShouldAnimate => IsLoaded && IsVisible && !MotionHelper.IsReducedMotionEnabled && _sweepOverlays.Count > 0;
 
-    private void RebuildSkeletons()
+    private static bool ResolveIsDarkTheme() =>
+        Application.Current?.UserAppTheme == AppTheme.Dark ||
+        (Application.Current?.UserAppTheme == AppTheme.Unspecified && Application.Current?.RequestedTheme == AppTheme.Dark);
+
+    private void RebuildSkeletons(bool? isDarkOverride = null)
     {
         StopShimmer();
         ItemsHost.Children.Clear();
         _sweepOverlays.Clear();
 
-        bool isDark = Application.Current?.RequestedTheme == AppTheme.Dark;
+        bool isDark = isDarkOverride ?? ResolveIsDarkTheme();
         Color cardBg = isDark ? Color.FromArgb("#0F172A") : Color.FromArgb("#FFFFFF");
         Color cardStroke = isDark ? Color.FromArgb("#334155") : Color.FromArgb("#E2E8F0");
         Color boneColor = isDark ? Color.FromArgb("#1E293B") : Color.FromArgb("#E2E8F0");

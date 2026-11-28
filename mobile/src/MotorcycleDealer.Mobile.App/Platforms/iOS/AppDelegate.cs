@@ -1,4 +1,5 @@
 using Foundation;
+using MotorcycleDealer.Mobile.Core.ViewModels;
 using UIKit;
 using UserNotifications;
 
@@ -36,6 +37,35 @@ public class AppDelegate : MauiUIApplicationDelegate
             UNNotificationResponse response,
             Action completionHandler)
         {
+            try
+            {
+                NSDictionary? userInfo = response?.Notification?.Request?.Content?.UserInfo;
+                NSObject? rawRoute = userInfo is not null ? userInfo.ObjectForKey((NSString)"target_route") : null;
+                string? targetRoute = rawRoute?.ToString();
+                if (!string.IsNullOrWhiteSpace(targetRoute))
+                {
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        try
+                        {
+                            AppShellViewModel? shellViewModel = IPlatformApplication.Current?.Services.GetService<AppShellViewModel>();
+                            if (shellViewModel is not null)
+                            {
+                                await shellViewModel.HandleExternalDeepLinkAsync(targetRoute);
+                            }
+                        }
+                        catch
+                        {
+                            // Ignore deep-link routing failures during cold start or logged-out state
+                        }
+                    });
+                }
+            }
+            catch
+            {
+                // Always invoke completionHandler
+            }
+
             completionHandler();
         }
     }

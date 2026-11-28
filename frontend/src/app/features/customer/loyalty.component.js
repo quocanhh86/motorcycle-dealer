@@ -94,7 +94,7 @@
       syncing: 'Syncing...',
       refreshWallet: 'Refresh Wallet',
       tierPromotionTitle: 'LIVE TIER PROMOTION UNLOCKED!',
-      tierPromotionBody: 'Congratulations — your membership upgraded to {{tier}} ({{mult}}x multiplier).',
+      tierPromotionBody: 'Congratulations, your membership upgraded to {{tier}} ({{mult}}x multiplier).',
       dismiss: 'Dismiss',
       mintedTitle: 'Voucher Minted:',
       mintedReady: 'is now Available in your wallet.',
@@ -218,7 +218,7 @@
               '<div>' +
                 '<strong>{{ \'customerLoyalty.mintedTitle\' | t }}</strong> ' +
                 '<code class="mono-num" style="font-weight:700;">{{ $ctrl.lastRedeemedVoucher.voucherCode }}</code> ' +
-                '({{ $ctrl.lastRedeemedVoucher.title }}) — {{ \'customerLoyalty.mintedReady\' | t }}' +
+                '({{ $ctrl.lastRedeemedVoucher.title }}) · {{ \'customerLoyalty.mintedReady\' | t }}' +
               '</div>' +
             '</div>' +
             '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +

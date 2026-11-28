@@ -51,11 +51,16 @@
           '<div class="col-6 bezel-card">' +
             '<div class="bezel-card-inner" style="display:flex;flex-direction:column;justify-content:space-between;gap:16px;">' +
               '<div>' +
-                '<div style="position:relative;overflow:hidden;border-radius:var(--radius-lg);aspect-ratio:16/10;border:1px solid var(--clr-border-subtle);margin-bottom:16px;">' +
+                '<div class="login-showcase-stage">' +
                   '<picture>' +
                     '<source srcset="/assets/editorial/workshop-bay-apex.webp" type="image/webp" />' +
                     '<img src="/assets/editorial/workshop-bay-apex.jpg" alt="" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" decoding="async" />' +
                   '</picture>' +
+                  '<div class="login-showcase-scrim" aria-hidden="true"></div>' +
+                  '<div class="login-showcase-crest" aria-hidden="true">' +
+                    '<span class="brand-accent-bar" style="height:16px;width:7px;"></span>' +
+                    '<span>APEX MOTO</span>' +
+                  '</div>' +
                 '</div>' +
                 '<span class="badge badge-info mono-num" style="margin-bottom:8px;">' +
                   '<app-icon name="shield-check" weight="duotone" size="13"></app-icon>' +
@@ -87,7 +92,7 @@
             '<div class="bezel-card-inner" style="display:flex;flex-direction:column;justify-content:center;">' +
               '<div class="surface-card-header">' +
                 '<div>' +
-                  '<span class="badge badge-neutral mono-num">SCR-PUB-02A</span>' +
+                  '<span class="badge badge-neutral mono-num">APEX MOTO · ID</span>' +
                   '<h1 class="surface-card-title" style="margin-top:6px;font-size:22px;">{{ \'auth.loginTitle\' | t }}</h1>' +
                 '</div>' +
                 '<app-icon name="lock-key-open" weight="duotone" size="26"></app-icon>' +

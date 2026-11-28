@@ -12,6 +12,13 @@
   --clr-brand-primary-border: #FECACA;
   --clr-brand-on-soft: #991B1B;
   --clr-brand-glow: rgba(220, 38, 38, 0.22);
+  --clr-brand-hairline: rgba(220, 38, 38, 0.42);
+  --clr-focus-halo: rgba(220, 38, 38, 0.16);
+
+  /* Frosted-Glass Web Approximation Tokens (Solid Fallback in reduced-transparency) */
+  --glass-surface-dark: rgba(2, 6, 23, 0.72);
+  --glass-border-refract: rgba(255, 255, 255, 0.18);
+  --glass-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.22);
 
   /* Carbon Slate Structural Palette (Always-Dark Chrome & Reference Scale) */
   --clr-slate-950: #020617;
@@ -25,7 +32,7 @@
   /* Semantic Text Tokens (Light Showroom — WCAG AA >= 4.5:1) */
   --clr-text-primary: #0F172A;
   --clr-text-secondary: #334155;
-  --clr-text-muted: #64748B;
+  --clr-text-muted: #526075;
   --clr-text-inverse: #F8FAFC;
 
   /* Borders (Strong 3.75:1 AA Non-Text Contrast on #FFFFFF / #F8FAFC) */
@@ -191,6 +198,13 @@
   --clr-brand-primary-border: rgba(248, 113, 113, 0.45);
   --clr-brand-on-soft: #FCA5A5;
   --clr-brand-glow: rgba(239, 68, 68, 0.30);
+  --clr-brand-hairline: rgba(248, 113, 113, 0.48);
+  --clr-focus-halo: rgba(248, 113, 113, 0.24);
+
+  /* Frosted-Glass Web Approximation Tokens (Dark Pit-Lane) */
+  --glass-surface-dark: rgba(15, 23, 42, 0.76);
+  --glass-border-refract: rgba(255, 255, 255, 0.16);
+  --glass-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.16);
 
   /* Semantic Text Tokens (Dark Pit-Lane) */
   --clr-text-primary: #F8FAFC;

@@ -52,21 +52,25 @@ public partial class AppShell : Shell
             StaffTabBar.IsVisible = false;
             AdminTabBar.IsVisible = false;
         }
-        else if (normalized.StartsWith("//customer/", StringComparison.OrdinalIgnoreCase))
+        else if (normalized.StartsWith("//customer/", StringComparison.OrdinalIgnoreCase) &&
+                 _sessionState.IsAuthenticated && _sessionState.IsCustomer)
         {
             PublicTabBar.IsVisible = false;
             CustomerTabBar.IsVisible = true;
             StaffTabBar.IsVisible = false;
             AdminTabBar.IsVisible = false;
         }
-        else if (normalized.StartsWith("//staff/", StringComparison.OrdinalIgnoreCase))
+        else if (normalized.StartsWith("//staff/", StringComparison.OrdinalIgnoreCase) &&
+                 _sessionState.IsAuthenticated && _sessionState.IsDealerStaff &&
+                 _sessionState.DealerId.HasValue && _sessionState.DealerId.Value != Guid.Empty)
         {
             PublicTabBar.IsVisible = false;
             CustomerTabBar.IsVisible = false;
             StaffTabBar.IsVisible = true;
             AdminTabBar.IsVisible = false;
         }
-        else if (normalized.StartsWith("//admin/", StringComparison.OrdinalIgnoreCase))
+        else if (normalized.StartsWith("//admin/", StringComparison.OrdinalIgnoreCase) &&
+                 _sessionState.IsAuthenticated && _sessionState.IsAdminWebOnly)
         {
             PublicTabBar.IsVisible = false;
             CustomerTabBar.IsVisible = false;

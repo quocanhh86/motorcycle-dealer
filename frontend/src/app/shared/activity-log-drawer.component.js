@@ -64,7 +64,7 @@
       template:
         '<div class="activity-log-anchor">' +
           '<button type="button" class="btn btn-ghost-dark btn-sm" ' +
-                  'ng-attr-aria-label="{{ \'a11y.openActivityLog\' | t }}" ' +
+                  'ng-attr-title="{{ \'a11y.openActivityLog\' | t }}" ' +
                   'ng-attr-aria-expanded="{{ $ctrl.isOpen ? \'true\' : \'false\' }}" ' +
                   'data-action="Open Activity Log Drawer" ' +
                   'ng-click="$ctrl.toggleDrawer()">' +

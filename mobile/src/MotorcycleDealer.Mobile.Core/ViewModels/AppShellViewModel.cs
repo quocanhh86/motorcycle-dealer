@@ -17,6 +17,24 @@ namespace MotorcycleDealer.Mobile.Core.ViewModels;
 /// </summary>
 public sealed partial class AppShellViewModel : MobileViewModelBase, IDisposable
 {
+    private static readonly HashSet<string> AllowedExternalDeepLinkRoutes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        MobileRoutes.ShowroomCatalog,
+        MobileRoutes.DealerLocator,
+        MobileRoutes.LoginRegister,
+        MobileRoutes.CustomerHome,
+        MobileRoutes.VinGarage,
+        MobileRoutes.BookingWizard,
+        MobileRoutes.LoyaltyPassbook,
+        MobileRoutes.CustomerWarranty,
+        MobileRoutes.StaffWorkbench,
+        MobileRoutes.ShowroomVinSales,
+        MobileRoutes.StaffTestDrive,
+        MobileRoutes.StaffWarrantyCsat,
+        MobileRoutes.SlotCapacity,
+        MobileRoutes.NotificationsFeed
+    };
+
     private readonly MobileSessionState _sessionState;
     private readonly ISecureTokenStore _tokenStore;
     private readonly IApiEndpointProvider _endpointProvider;
@@ -30,6 +48,8 @@ public sealed partial class AppShellViewModel : MobileViewModelBase, IDisposable
     private readonly IMobileOfflineDb? _offlineDb;
 
     private SignalRConnectionStatus _lastConnectionStatus = SignalRConnectionStatus.Disconnected;
+    private volatile bool _hasBootstrapped;
+    private string? _pendingDeepLinkRoute;
 
     public AppShellViewModel(
         MobileSessionState sessionState,
@@ -136,7 +156,9 @@ public sealed partial class AppShellViewModel : MobileViewModelBase, IDisposable
             var existingToken = await _tokenStore.GetAccessTokenAsync().ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(existingToken))
             {
+                _hasBootstrapped = true;
                 RefreshRoleVisibility();
+                await TryConsumePendingDeepLinkAsync(defaultRouteAlreadyLoaded: true).ConfigureAwait(false);
                 return;
             }
 
@@ -148,6 +170,8 @@ public sealed partial class AppShellViewModel : MobileViewModelBase, IDisposable
 
                 if (decision.Mode == MobileAccessMode.StaffDealerUnassigned)
                 {
+                    Interlocked.Exchange(ref _pendingDeepLinkRoute, null);
+                    _hasBootstrapped = true;
                     await _logoutCoordinator.ForceSignOutAsync(
                         decision.BlockingReasonCode ?? "STAFF_DEALER_UNASSIGNED",
                         decision.BlockingMessage).ConfigureAwait(false);
@@ -165,8 +189,8 @@ public sealed partial class AppShellViewModel : MobileViewModelBase, IDisposable
                     await FlushOutboxIfConnectedAsync().ConfigureAwait(false);
                 }
 
-                await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(decision.DefaultRoute))
-                    .ConfigureAwait(false);
+                _hasBootstrapped = true;
+                await NavigateAfterBootstrapAsync(decision.DefaultRoute).ConfigureAwait(false);
                 return;
             }
 
@@ -180,6 +204,8 @@ public sealed partial class AppShellViewModel : MobileViewModelBase, IDisposable
 
                     if (offlineDecision.Mode == MobileAccessMode.StaffDealerUnassigned)
                     {
+                        Interlocked.Exchange(ref _pendingDeepLinkRoute, null);
+                        _hasBootstrapped = true;
                         await _logoutCoordinator.ForceSignOutAsync(
                             offlineDecision.BlockingReasonCode ?? "STAFF_DEALER_UNASSIGNED",
                             offlineDecision.BlockingMessage).ConfigureAwait(false);
@@ -187,18 +213,125 @@ public sealed partial class AppShellViewModel : MobileViewModelBase, IDisposable
                     }
 
                     _mainThreadDispatcher.BeginInvokeOnMainThread(() => IsOfflineBannerVisible = true);
-                    await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(offlineDecision.DefaultRoute))
-                        .ConfigureAwait(false);
+                    _hasBootstrapped = true;
+                    await NavigateAfterBootstrapAsync(offlineDecision.DefaultRoute).ConfigureAwait(false);
                     return;
                 }
             }
 
+            _hasBootstrapped = true;
             RefreshRoleVisibility();
+            await TryConsumePendingDeepLinkAsync(defaultRouteAlreadyLoaded: true).ConfigureAwait(false);
         }
         finally
         {
+            _hasBootstrapped = true;
             IsBusy = false;
         }
+    }
+
+    /// <summary>
+    /// Validates and routes OS notification / external deep links strictly against the canonical
+    /// <see cref="MobileRoutes"/> allowlist and <see cref="MobileRoleGuard.CanAccessRoute"/>.
+    /// Buffers cold-start deep links until <see cref="BootstrapSessionAsync"/> completes so
+    /// authenticated role state is settled before navigation.
+    /// </summary>
+    public async Task<bool> HandleExternalDeepLinkAsync(string? rawRoute)
+    {
+        if (!TryNormalizeExternalRoute(rawRoute, out var normalizedRoute, out var baseRoute))
+        {
+            return false;
+        }
+
+        if (!_hasBootstrapped)
+        {
+            Interlocked.Exchange(ref _pendingDeepLinkRoute, normalizedRoute);
+            return true;
+        }
+
+        if (!MobileRoleGuard.CanAccessRoute(_sessionState, baseRoute))
+        {
+            return false;
+        }
+
+        await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(normalizedRoute))
+            .ConfigureAwait(false);
+        return true;
+    }
+
+    private async Task NavigateAfterBootstrapAsync(string defaultRoute)
+    {
+        var pending = Interlocked.Exchange(ref _pendingDeepLinkRoute, null);
+        if (pending is not null &&
+            TryNormalizeExternalRoute(pending, out var normalizedRoute, out var baseRoute) &&
+            MobileRoleGuard.CanAccessRoute(_sessionState, baseRoute))
+        {
+            if (baseRoute.StartsWith("//", StringComparison.Ordinal))
+            {
+                await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(normalizedRoute))
+                    .ConfigureAwait(false);
+                return;
+            }
+
+            // Pushed/modal routes require the role's Shell tab hierarchy to be active first
+            await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(defaultRoute))
+                .ConfigureAwait(false);
+            await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(normalizedRoute))
+                .ConfigureAwait(false);
+            return;
+        }
+
+        await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(defaultRoute))
+            .ConfigureAwait(false);
+    }
+
+    private async Task TryConsumePendingDeepLinkAsync(bool defaultRouteAlreadyLoaded)
+    {
+        var pending = Interlocked.Exchange(ref _pendingDeepLinkRoute, null);
+        if (pending is null ||
+            !TryNormalizeExternalRoute(pending, out var normalizedRoute, out var baseRoute) ||
+            !MobileRoleGuard.CanAccessRoute(_sessionState, baseRoute))
+        {
+            return;
+        }
+
+        if (!defaultRouteAlreadyLoaded && !baseRoute.StartsWith("//", StringComparison.Ordinal))
+        {
+            var decision = MobileRoleGuard.EvaluateSession(_sessionState);
+            await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(decision.DefaultRoute))
+                .ConfigureAwait(false);
+        }
+
+        await _mainThreadDispatcher.InvokeOnMainThreadAsync(() => _navigationService.GoToAsync(normalizedRoute))
+            .ConfigureAwait(false);
+    }
+
+    private static bool TryNormalizeExternalRoute(string? rawRoute, out string normalizedRoute, out string baseRoute)
+    {
+        normalizedRoute = string.Empty;
+        baseRoute = string.Empty;
+        if (string.IsNullOrWhiteSpace(rawRoute))
+        {
+            return false;
+        }
+
+        var trimmed = rawRoute.Trim();
+        if (trimmed.Contains("..", StringComparison.Ordinal) ||
+            trimmed.Contains("://", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var queryIdx = trimmed.IndexOf('?');
+        var candidateBase = queryIdx >= 0 ? trimmed[..queryIdx] : trimmed;
+        if (!AllowedExternalDeepLinkRoutes.Contains(candidateBase))
+        {
+            return false;
+        }
+
+        normalizedRoute = trimmed;
+        baseRoute = candidateBase;
+        return true;
     }
 
     [RelayCommand]
@@ -275,34 +408,49 @@ public sealed partial class AppShellViewModel : MobileViewModelBase, IDisposable
 
     private async void OnConnectivityChanged(object? sender, bool isConnected)
     {
-        _mainThreadDispatcher.BeginInvokeOnMainThread(() => IsOfflineBannerVisible = !isConnected);
-        if (isConnected)
+        try
         {
-            await FlushOutboxIfConnectedAsync().ConfigureAwait(false);
-            if (_sessionState.IsAuthenticated && !_sessionState.IsAdminWebOnly)
+            _mainThreadDispatcher.BeginInvokeOnMainThread(() => IsOfflineBannerVisible = !isConnected);
+            if (isConnected)
             {
-                await _signalRService.OnAppResumedAsync().ConfigureAwait(false);
+                await FlushOutboxIfConnectedAsync().ConfigureAwait(false);
+                if (_sessionState.IsAuthenticated && !_sessionState.IsAdminWebOnly)
+                {
+                    await _signalRService.OnAppResumedAsync().ConfigureAwait(false);
+                }
             }
+        }
+        catch
+        {
+            // Never allow unhandled async void exception during connectivity flaps
         }
     }
 
     private async void OnSessionReset(object? sender, SessionResetEventArgs e)
     {
-        RefreshRoleVisibility();
-        _mainThreadDispatcher.BeginInvokeOnMainThread(() =>
+        try
         {
-            UnreadNotificationCount = 0;
-            PendingOutboxCount = 0;
-            if (e.WasForced)
+            Interlocked.Exchange(ref _pendingDeepLinkRoute, null);
+            RefreshRoleVisibility();
+            _mainThreadDispatcher.BeginInvokeOnMainThread(() =>
             {
-                ErrorMessage = !string.IsNullOrWhiteSpace(e.ReasonCode)
-                    ? Loc.GetErrorLabel(e.ReasonCode, e.Message)
-                    : (e.Message ?? string.Empty);
-            }
-        });
+                UnreadNotificationCount = 0;
+                PendingOutboxCount = 0;
+                if (e.WasForced)
+                {
+                    ErrorMessage = !string.IsNullOrWhiteSpace(e.ReasonCode)
+                        ? Loc.GetErrorLabel(e.ReasonCode, e.Message)
+                        : (e.Message ?? string.Empty);
+                }
+            });
 
-        await _mainThreadDispatcher.InvokeOnMainThreadAsync(() =>
-            _navigationService.GoToAsync(MobileRoutes.LoginRegister)).ConfigureAwait(false);
+            await _mainThreadDispatcher.InvokeOnMainThreadAsync(() =>
+                _navigationService.GoToAsync(MobileRoutes.LoginRegister)).ConfigureAwait(false);
+        }
+        catch
+        {
+            // Never allow unhandled async void exception during forced sign-out routing
+        }
     }
 
     private async Task FlushOutboxIfConnectedAsync()

@@ -17,8 +17,15 @@ public partial class NotificationsFeedPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        ViewModel.AttachEventSubscriptions();
-        await ViewModel.LoadNotificationsCommand.ExecuteAsync(null);
+        try
+        {
+            ViewModel.AttachEventSubscriptions();
+            await ViewModel.LoadNotificationsCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 
     protected override void OnDisappearing()
@@ -32,9 +39,16 @@ public partial class NotificationsFeedPage : ContentPage
 
     private async void OnFilterToggled(object? sender, ToggledEventArgs e)
     {
-        if (IsLoaded)
+        try
         {
-            await ViewModel.LoadNotificationsCommand.ExecuteAsync(null);
+            if (IsLoaded)
+            {
+                await ViewModel.LoadNotificationsCommand.ExecuteAsync(null);
+            }
+        }
+        catch
+        {
+            // Keep async void event handler crash-safe
         }
     }
 }

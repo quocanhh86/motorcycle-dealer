@@ -1,4 +1,5 @@
 using MotorcycleDealer.Mobile.Core.Domain;
+using MotorcycleDealer.Mobile.Core.Media;
 using Xunit;
 
 namespace MotorcycleDealer.Mobile.UnitTests.Domain;
@@ -213,5 +214,45 @@ public sealed class DomainRulesAndFormattingTests
         Assert.Equal("Synced 12m ago", VietnamFormatting.FormatRelativeSyncAge(now.AddMinutes(-12), now));
         Assert.Equal("Synced 4h ago", VietnamFormatting.FormatRelativeSyncAge(now.AddHours(-4), now));
         Assert.Equal("Synced 2d ago", VietnamFormatting.FormatRelativeSyncAge(now.AddDays(-2), now));
+    }
+
+    // =========================================================================
+    // Multi-Angle Studio Motorcycle Gallery Resolver (6 Flagship Models x 4 Angles)
+    // =========================================================================
+
+    [Theory]
+    [InlineData("HND-AB160-2026", MotorcycleImageResolver.ModelHondaAirblade160, MotorcycleImageResolver.ModelHondaAirblade160Side, MotorcycleImageResolver.ModelHondaAirblade160Rear, MotorcycleImageResolver.ModelHondaAirblade160Cockpit)]
+    [InlineData("HND-SH160I-2026", MotorcycleImageResolver.ModelHondaSh160iSport, MotorcycleImageResolver.ModelHondaSh160iSportSide, MotorcycleImageResolver.ModelHondaSh160iSportRear, MotorcycleImageResolver.ModelHondaSh160iSportCockpit)]
+    [InlineData("HND-WINX-2026", MotorcycleImageResolver.ModelHondaWinnerX, MotorcycleImageResolver.ModelHondaWinnerXSide, MotorcycleImageResolver.ModelHondaWinnerXRear, MotorcycleImageResolver.ModelHondaWinnerXCockpit)]
+    [InlineData("YMH-EXC155-2026", MotorcycleImageResolver.ModelYamahaExciter155, MotorcycleImageResolver.ModelYamahaExciter155Side, MotorcycleImageResolver.ModelYamahaExciter155Rear, MotorcycleImageResolver.ModelYamahaExciter155Cockpit)]
+    [InlineData("HND-CB300R-2026", MotorcycleImageResolver.ModelHondaCb300r, MotorcycleImageResolver.ModelHondaCb300rSide, MotorcycleImageResolver.ModelHondaCb300rRear, MotorcycleImageResolver.ModelHondaCb300rCockpit)]
+    [InlineData("HND-NX500-2026", MotorcycleImageResolver.ModelHondaNx500, MotorcycleImageResolver.ModelHondaNx500Side, MotorcycleImageResolver.ModelHondaNx500Rear, MotorcycleImageResolver.ModelHondaNx500Cockpit)]
+    public void MotorcycleImageResolver_ResolveModelGallery_ReturnsAll4StudioAnglesForFlagshipModels(
+        string modelCode,
+        string expectedFront,
+        string expectedSide,
+        string expectedRear,
+        string expectedCockpit)
+    {
+        var gallery = MotorcycleImageResolver.ResolveModelGallery(modelCode);
+
+        Assert.Equal(4, gallery.Count);
+        Assert.Equal(["front", "side", "rear", "cockpit"], gallery.Select(g => g.AngleKey).ToArray());
+        Assert.Equal([expectedFront, expectedSide, expectedRear, expectedCockpit], gallery.Select(g => g.ImageSource).ToArray());
+        Assert.Equal(
+            ["ShowroomAngleFront", "ShowroomAngleSide", "ShowroomAngleRear", "ShowroomAngleCockpit"],
+            gallery.Select(g => g.LabelResourceKey).ToArray());
+    }
+
+    [Fact]
+    public void MotorcycleImageResolver_ResolveModelGallery_CustomExternalUrlFallsBackToSingleFrontAngle()
+    {
+        const string customUrl = "https://cdn.example.vn/models/custom-tourer-2027.jpg";
+        var gallery = MotorcycleImageResolver.ResolveModelGallery("CUSTOM-2027", customUrl);
+
+        var single = Assert.Single(gallery);
+        Assert.Equal("front", single.AngleKey);
+        Assert.Equal(customUrl, single.ImageSource);
+        Assert.Equal("ShowroomAngleFront", single.LabelResourceKey);
     }
 }

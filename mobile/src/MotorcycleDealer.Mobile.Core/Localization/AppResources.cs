@@ -874,4 +874,10 @@ public static class AppResources
     public static string Err_PAST_TEST_DRIVE_DATE => GetString("Err_PAST_TEST_DRIVE_DATE");
     public static string Err_IMMUTABLE_LEDGER_VIOLATION => GetString("Err_IMMUTABLE_LEDGER_VIOLATION");
     public static string Err_IMMUTABLE_FINANCIAL_RECORD_VIOLATION => GetString("Err_IMMUTABLE_FINANCIAL_RECORD_VIOLATION");
+    public static string ShowroomAngleFront => GetString("ShowroomAngleFront");
+    public static string ShowroomAngleSide => GetString("ShowroomAngleSide");
+    public static string ShowroomAngleRear => GetString("ShowroomAngleRear");
+    public static string ShowroomAngleCockpit => GetString("ShowroomAngleCockpit");
+    public static string ShowroomPrevAngle => GetString("ShowroomPrevAngle");
+    public static string ShowroomNextAngle => GetString("ShowroomNextAngle");
 }

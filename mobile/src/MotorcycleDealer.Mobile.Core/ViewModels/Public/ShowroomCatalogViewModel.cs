@@ -14,6 +14,31 @@ using MotorcycleDealer.Mobile.Core.Security;
 
 namespace MotorcycleDealer.Mobile.Core.ViewModels.Public;
 
+public sealed partial class ShowroomGalleryThumb : ObservableObject
+{
+    public ShowroomGalleryThumb(
+        string angleKey,
+        string imageSource,
+        string labelResourceKey,
+        string label,
+        int index)
+    {
+        AngleKey = angleKey;
+        ImageSource = imageSource;
+        LabelResourceKey = labelResourceKey;
+        Label = label;
+        Index = index;
+    }
+
+    public string AngleKey { get; }
+    public string ImageSource { get; }
+    public string LabelResourceKey { get; }
+    public int Index { get; }
+
+    [ObservableProperty]
+    public partial string Label { get; set; }
+}
+
 public sealed partial class ShowroomCatalogViewModel : MobileViewModelBase
 {
     private readonly IDealerMobileApiClient _apiClient;
@@ -46,15 +71,57 @@ public sealed partial class ShowroomCatalogViewModel : MobileViewModelBase
 
         SearchText = string.Empty;
         SelectedCategory = "All";
+        SelectedGalleryAngleKey = "front";
     }
 
     public ObservableCollection<MotorcycleModelDto> Models { get; } = [];
+    public ObservableCollection<ShowroomGalleryThumb> SelectedModelGallery { get; } = [];
 
     public IReadOnlyList<string> CategoryFilters { get; } =
         ["All", "Scooter", "Sport", "Naked", "Cruiser", "Adventure", "Underbone"];
 
     public string HeroShowroomImageSource => _imageResolver.ResolveHeroShowroom();
-    public string SelectedModelImageSource => _imageResolver.ResolveForModel(SelectedModel);
+    public string SelectedModelImageSource =>
+        GetActiveGalleryThumb()?.ImageSource ?? _imageResolver.ResolveForModel(SelectedModel);
+    public string SelectedModelStockStatus =>
+        SelectedModel is { AvailableStockCount: > 0 } ? "Available" : "OutOfStock";
+
+    public bool HasMultipleGalleryAngles => SelectedModelGallery.Count > 1;
+
+    public string SelectedGalleryCounter
+    {
+        get
+        {
+            if (SelectedModelGallery.Count == 0)
+            {
+                return string.Empty;
+            }
+            var active = GetActiveGalleryThumb();
+            var idx = active?.Index ?? 0;
+            return $"{idx + 1} / {SelectedModelGallery.Count}";
+        }
+    }
+
+    public string SelectedGalleryAngleLabel =>
+        GetActiveGalleryThumb()?.Label ?? Loc.ShowroomAngleFront;
+
+    public string SelectedModelEstimatedPointsLabel
+    {
+        get
+        {
+            if (SelectedModel is null)
+            {
+                return string.Empty;
+            }
+
+            var mult = _sessionState.TierMultiplier is > 0m ? _sessionState.TierMultiplier.Value : 1.00m;
+            var pts = TwoStepLoyaltyPreviewCalculator.CalculatePointsEarned(SelectedModel.BaseRetailPrice, mult);
+            return $"{VietnamFormatting.FormatPointsLocalized(pts, signed: true, culture: Loc.CurrentCulture)} ({mult:0.00}x)";
+        }
+    }
+
+    [ObservableProperty]
+    public partial string SelectedGalleryAngleKey { get; set; }
 
     [ObservableProperty]
     public partial string SearchText { get; set; }
@@ -81,7 +148,15 @@ public sealed partial class ShowroomCatalogViewModel : MobileViewModelBase
 
     partial void OnTotalModelsCountChanged(int value) => OnPropertyChanged(nameof(ShowroomSummarySubtitle));
     partial void OnActiveDealerCountChanged(int value) => OnPropertyChanged(nameof(ShowroomSummarySubtitle));
-    partial void OnSelectedModelChanged(MotorcycleModelDto? value) => OnPropertyChanged(nameof(SelectedModelImageSource));
+    partial void OnSelectedModelChanged(MotorcycleModelDto? value)
+    {
+        RebuildSelectedModelGallery(resetToFront: true);
+    }
+
+    partial void OnSelectedGalleryAngleKeyChanged(string value)
+    {
+        NotifyGalleryPresentationChanged();
+    }
 
     protected override void OnCultureChanged(string cultureCode)
     {
@@ -93,12 +168,16 @@ public sealed partial class ShowroomCatalogViewModel : MobileViewModelBase
 
         OnPropertyChanged(nameof(OfflineCatalogBannerText));
 
-        var selected = SelectedModel;
-        RefreshCollection(Models);
-        if (selected is not null)
+        // Update gallery thumbnail labels in-place (zero Image/BindableLayout teardown or JPEG re-decode on UI thread)
+        foreach (var thumb in SelectedModelGallery)
         {
-            SelectedModel = null;
-            SelectedModel = selected;
+            thumb.Label = Loc.GetString(thumb.LabelResourceKey);
+        }
+
+        NotifyGalleryPresentationChanged();
+        if (SelectedModel is not null)
+        {
+            OnPropertyChanged(nameof(SelectedModel));
         }
     }
 
@@ -198,6 +277,94 @@ public sealed partial class ShowroomCatalogViewModel : MobileViewModelBase
         {
             TrackUserAction("Showroom.SelectModel", "Showroom", $"{model.Brand} {model.ModelName} ({model.ModelCode})");
         }
+    }
+
+    [RelayCommand]
+    private void SelectGalleryAngle(ShowroomGalleryThumb? thumb)
+    {
+        if (thumb is null || string.IsNullOrWhiteSpace(thumb.AngleKey))
+        {
+            return;
+        }
+
+        SelectedGalleryAngleKey = thumb.AngleKey;
+        TrackUserAction("Showroom.SelectAngle", "Showroom", $"{SelectedModel?.ModelCode}:{thumb.AngleKey}");
+    }
+
+    [RelayCommand]
+    private void NextGalleryAngle()
+    {
+        StepGalleryAngle(1);
+    }
+
+    [RelayCommand]
+    private void PreviousGalleryAngle()
+    {
+        StepGalleryAngle(-1);
+    }
+
+    private void StepGalleryAngle(int delta)
+    {
+        if (SelectedModelGallery.Count <= 1)
+        {
+            return;
+        }
+
+        var current = GetActiveGalleryThumb()?.Index ?? 0;
+        var nextIndex = ((current + delta) % SelectedModelGallery.Count + SelectedModelGallery.Count) % SelectedModelGallery.Count;
+        SelectedGalleryAngleKey = SelectedModelGallery[nextIndex].AngleKey;
+    }
+
+    private ShowroomGalleryThumb? GetActiveGalleryThumb()
+    {
+        if (SelectedModelGallery.Count == 0)
+        {
+            return null;
+        }
+
+        return SelectedModelGallery.FirstOrDefault(
+                   g => string.Equals(g.AngleKey, SelectedGalleryAngleKey, StringComparison.OrdinalIgnoreCase))
+               ?? SelectedModelGallery[0];
+    }
+
+    private void RebuildSelectedModelGallery(bool resetToFront)
+    {
+        var previousKey = SelectedGalleryAngleKey;
+        SelectedModelGallery.Clear();
+
+        if (SelectedModel is not null)
+        {
+            var resolved = _imageResolver.ResolveGalleryForModel(SelectedModel);
+            for (var i = 0; i < resolved.Count; i++)
+            {
+                var item = resolved[i];
+                SelectedModelGallery.Add(new ShowroomGalleryThumb(
+                    item.AngleKey,
+                    item.ImageSource,
+                    item.LabelResourceKey,
+                    Loc.GetString(item.LabelResourceKey),
+                    i));
+            }
+        }
+
+        var targetKey = resetToFront || string.IsNullOrWhiteSpace(previousKey)
+            ? (SelectedModelGallery.FirstOrDefault()?.AngleKey ?? "front")
+            : (SelectedModelGallery.Any(g => string.Equals(g.AngleKey, previousKey, StringComparison.OrdinalIgnoreCase))
+                ? previousKey
+                : (SelectedModelGallery.FirstOrDefault()?.AngleKey ?? "front"));
+
+        SelectedGalleryAngleKey = targetKey;
+        NotifyGalleryPresentationChanged();
+    }
+
+    private void NotifyGalleryPresentationChanged()
+    {
+        OnPropertyChanged(nameof(SelectedModelImageSource));
+        OnPropertyChanged(nameof(SelectedModelStockStatus));
+        OnPropertyChanged(nameof(HasMultipleGalleryAngles));
+        OnPropertyChanged(nameof(SelectedGalleryCounter));
+        OnPropertyChanged(nameof(SelectedGalleryAngleLabel));
+        OnPropertyChanged(nameof(SelectedModelEstimatedPointsLabel));
     }
 
     [RelayCommand]

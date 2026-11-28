@@ -275,6 +275,83 @@ public sealed class TokenRefreshAndLogoutTests
     }
 
     [Fact]
+    public async Task SingleFlightHandler_TransientNetworkErrorDuringRefresh_PreservesTokensAndSkipsForceSignOut()
+    {
+        var tokenStore = new InMemorySecureTokenStore();
+        await tokenStore.SaveTokensAsync(new AuthTokens("stale-jwt", "valid-rt", DateTimeOffset.UtcNow.AddMinutes(-2)));
+
+        var session = new MobileSessionState();
+        session.ApplyAuthenticatedUser(TestDataFactory.CustomerUser());
+        var resetCoordinator = new RecordingSessionResetCoordinator();
+        using var refreshLock = new SingleFlightRefreshLock();
+        var refreshClient = new StubAuthRefreshClient
+        {
+            OnRefresh = _ => Task.FromResult(ApiResult<AuthTokenData>.Fail(
+                0,
+                new ProblemDetailsPayload { ErrorCode = "NETWORK_ERROR", Detail = "Temporary DNS timeout." },
+                isNetworkError: true))
+        };
+
+        var inner = new DelegateHttpMessageHandler((_, _) =>
+            Task.FromResult(TestJsonResponses.Problem(HttpStatusCode.Unauthorized, "UNAUTHORIZED", "Expired")));
+
+        using var handler = new SingleFlightTokenRefreshHandler(tokenStore, refreshClient, resetCoordinator, session, refreshLock)
+        {
+            InnerHandler = inner
+        };
+        using var client = new HttpClient(handler);
+
+        var ex = await Assert.ThrowsAsync<HttpRequestException>(() =>
+            client.GetAsync("http://10.0.2.2:5080/api/v1/loyalty/me"));
+
+        Assert.Equal(HttpStatusCode.ServiceUnavailable, ex.StatusCode);
+        Assert.Equal(1, refreshClient.RefreshCallCount);
+        Assert.Empty(resetCoordinator.Calls);
+        Assert.Equal("valid-rt", await tokenStore.GetRefreshTokenAsync());
+        Assert.True(session.IsAuthenticated);
+    }
+
+    [Theory]
+    [InlineData(429)]
+    [InlineData(502)]
+    [InlineData(503)]
+    [InlineData(504)]
+    public async Task SingleFlightHandler_Transient429Or5xxDuringRefresh_PreservesTokensAndTriggersOfflineFallback(int transientStatusCode)
+    {
+        var tokenStore = new InMemorySecureTokenStore();
+        await tokenStore.SaveTokensAsync(new AuthTokens("stale-jwt", "valid-rt", DateTimeOffset.UtcNow.AddMinutes(-2)));
+
+        var session = new MobileSessionState();
+        session.ApplyAuthenticatedUser(TestDataFactory.CustomerUser());
+        var resetCoordinator = new RecordingSessionResetCoordinator();
+        using var refreshLock = new SingleFlightRefreshLock();
+        var refreshClient = new StubAuthRefreshClient
+        {
+            OnRefresh = _ => Task.FromResult(ApiResult<AuthTokenData>.Fail(
+                transientStatusCode,
+                new ProblemDetailsPayload { ErrorCode = "TRANSIENT_UPSTREAM", Detail = "Temporary upstream overload." }))
+        };
+
+        var inner = new DelegateHttpMessageHandler((_, _) =>
+            Task.FromResult(TestJsonResponses.Problem(HttpStatusCode.Unauthorized, "UNAUTHORIZED", "Expired")));
+
+        using var handler = new SingleFlightTokenRefreshHandler(tokenStore, refreshClient, resetCoordinator, session, refreshLock)
+        {
+            InnerHandler = inner
+        };
+        using var client = new HttpClient(handler);
+
+        var ex = await Assert.ThrowsAsync<HttpRequestException>(() =>
+            client.GetAsync("http://10.0.2.2:5080/api/v1/loyalty/me"));
+
+        Assert.Equal(HttpStatusCode.ServiceUnavailable, ex.StatusCode);
+        Assert.Equal(1, refreshClient.RefreshCallCount);
+        Assert.Empty(resetCoordinator.Calls);
+        Assert.Equal("valid-rt", await tokenStore.GetRefreshTokenAsync());
+        Assert.True(session.IsAuthenticated);
+    }
+
+    [Fact]
     public async Task SingleFlightHandler_MissingRefreshToken_TriggersForceSignOutWithoutCallingRefresh()
     {
         var tokenStore = new InMemorySecureTokenStore();

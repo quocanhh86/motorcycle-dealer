@@ -38,7 +38,7 @@ node .agents/scripts/build-spec-docx.mjs
 
 Every completed phase, feature, or fix requires updating [build-spec-docx.mjs](../../scripts/build-spec-docx.mjs) and regenerating the `.docx` artifact with 100% parity across all Single Source of Truth documents:
 
-1. **Metadata & Roadmap Counts**: Match [README.md](../../../README.md), [TASKS.md](../../../TASKS.md), and [PROGRESS.md](../../../PROGRESS.md) (`80` total WBS tasks `T-101`..`T-908` across `9` phases, exact completed/pending counts, Timeline `02/2026 - 08/2026`, Solo Full-Stack Developer, `https://github.com/quocanhh86/motorcycle-dealer`).
+1. **Metadata & Roadmap Counts**: Match [README.md](../../../README.md), [TASKS.md](../../../TASKS.md), and [PROGRESS.md](../../../PROGRESS.md) (`88` total WBS tasks `T-101`..`T-1008` across `10` phases, exact completed/pending counts, Timeline `03/2026 - 09/2026`, Solo Full-Stack Developer, `https://github.com/quocanhh86/motorcycle-dealer`).
 2. **Product, UX & Domain Rules**: Match [docs/PRD.md](../../../docs/PRD.md) (`FR-01`..`FR-09`), [docs/DESIGN.md](../../../docs/DESIGN.md), `docs/screens/*.md`, `docs/basic-design/BD_00_*.md`, and `docs/detail-design/DD_01..04_*.md` (`48` granular permissions: `Customer=20`, `DealerStaff=22`, `Admin=32`; `/api/v1/*` endpoints including test-drives, spare-parts, printable receipts, CSAT reviews & VIN warranty claims; `/hubs/notifications` `10` SignalR events; `30` navigable UI-Router routes across `24` screens `SCR-PUB-01`..`SCR-ADM-08`; two-step floor loyalty formula `Floor(Floor(NetPaidAmount / 10000m) * TierMultiplier)` + `+25` `AvailablePoints` CSAT review bonus across `Bronze`/`Silver`/`Gold`/`Platinum`).
 3. **Architecture & `.agents/` Automation Suite**: Match [docs/ARCHITECTURE.md](../../../docs/ARCHITECTURE.md) (`ADR-001`..`ADR-006`, `8` `.agents/skills/*/SKILL.md` playbooks, lifecycle hooks, `verify-post-task-sync.mjs`, `183`-day `git-6month-schedule-plan.json` shipper, and the **9-Server MCP Ecosystem**).
 4. **Database Data Dictionary**: Match [docs/DATABASE_DESIGN.md](../../../docs/DATABASE_DESIGN.md) (exact **`27` normalized 3NF tables** in `MotorcycleDealerDb`, `8` `RowVersion` tables, `8` `IDealerScoped` entities, `4` immutable financial/audit tables, and B-tree indexes).
@@ -79,6 +79,6 @@ node .agents/scripts/verify-post-task-sync.mjs
 
 ## 5. MCP-Accelerated Workflows
 
-1. **Spec Data Extraction (`motorcycle-dealer-guardrails` MCP)**: Call `get_wbs_tasks` (`80` tasks across `Phases 1–9`), `lookup_rbac_permission` (`48` permissions), `lookup_db_table_spec` (`27` tables), and `check_phase_gate`.
+1. **Spec Data Extraction (`motorcycle-dealer-guardrails` MCP)**: Call `get_wbs_tasks` (`88` tasks across `Phases 1–10`), `lookup_rbac_permission` (`48` permissions), `lookup_db_table_spec` (`27` tables), and `check_phase_gate`.
 2. **Live Database Schema Cross-Check (`sqlserver-localdb-inspector` MCP)**: Call `list_sqlserver_tables` (`27` tables) and `inspect_sqlserver_schema` on `(localdb)\MSSQLLocalDB` (`MotorcycleDealerDb`) to verify 1-for-1 Data Dictionary parity.
 3. **Executive Diagram & Stakeholder Publishing (`figma_figma` & `notion_notion` MCP)**: Render companion visuals and sync milestone release notes when requested.

@@ -21,8 +21,15 @@ public partial class CustomerHomePage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        PassbookCard.ResumeSheen();
-        await ViewModel.LoadDashboardCommand.ExecuteAsync(null);
+        try
+        {
+            PassbookCard.ResumeSheen();
+            await ViewModel.LoadDashboardCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 
     protected override void OnDisappearing()
@@ -35,5 +42,14 @@ public partial class CustomerHomePage : ContentPage
         => PassbookCard.PauseSheen();
 
     private async void OnSignOutClicked(object? sender, EventArgs e)
-        => await _shellViewModel.SignOutCommand.ExecuteAsync(null);
+    {
+        try
+        {
+            await _shellViewModel.SignOutCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void toolbar handler crash-safe
+        }
+    }
 }

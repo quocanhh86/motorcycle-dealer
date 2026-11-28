@@ -5,10 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Customer;assembly=MotorcycleDealer.Mobile.Core"
+    xmlns:pubvm="clr-namespace:MotorcycleDealer.Mobile.Core.ViewModels.Public;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:dto="clr-namespace:MotorcycleDealer.Mobile.Core.Contracts;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
     SafeAreaEdges="All"
     x:Name="PageRoot"
@@ -131,7 +133,7 @@
                         <DataTemplate x:DataType="dto:CustomerVehicleDto">
                             <Border x:Name="VehicleCardRoot" Style="{StaticResource DoubleBezelOuter}">
                                 <Border.Behaviors>
-                                    <toolkit:TouchBehavior
+                                    <behaviors:ApexPressBehavior
                                         PressedScale="0.97"
                                         PressedOpacity="0.92"
                                         PressedAnimationDuration="110"
@@ -207,24 +209,170 @@
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
 
-                <!-- Selected Vehicle Odometer Update & Reminders -->
+                <!-- Selected Vehicle 4-Angle Studio Inspection, Odometer Update & Reminders -->
                 <Border Style="{StaticResource DoubleBezelOuter}" IsVisible="{Binding SelectedVehicle, Converter={StaticResource IsNotNull}}">
                     <Border Style="{StaticResource DoubleBezelInner}">
-                        <VerticalStackLayout Spacing="10">
-                            <Grid ColumnDefinitions="96,*" ColumnSpacing="12">
-                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="0" Padding="0" VerticalOptions="Center">
+                        <VerticalStackLayout Spacing="12">
+                            <!-- 4-Angle Real HD Gallery vs Interactive Real HD 360° Inspector Switcher -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button
+                                    x:Name="GarageMode2dButton"
+                                    Text="Ảnh Thật 4 Góc"
+                                    Clicked="OnGarage2dModeClicked"
+                                    MinimumHeightRequest="44"
+                                    CornerRadius="10"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="12"
+                                    BackgroundColor="{StaticResource BrandPrimary}"
+                                    TextColor="{StaticResource PureWhite}" />
+                                <Button
+                                    x:Name="GarageMode3dButton"
+                                    Grid.Column="1"
+                                    Text="Soi HD 360°"
+                                    Clicked="OnGarage3dModeClicked"
+                                    MinimumHeightRequest="44"
+                                    CornerRadius="10"
+                                    FontFamily="BeVietnamProSemiBold"
+                                    FontSize="12"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceSunkenLight}, Dark={StaticResource Slate800}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource Slate100}}"
+                                    BorderColor="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource Slate700}}"
+                                    BorderWidth="1" />
+                            </Grid>
+
+                            <controls:Moto3dStudioView
+                                x:Name="Garage3dStudio"
+                                IsVisible="False"
+                                ModelCode="{Binding SelectedVehicle.ModelCode}"
+                                ImageUrl="{Binding SelectedVehicle.ImageUrl}"
+                                ModelName="{Binding SelectedVehicle.MotorcycleModelName}"
+                                Category="{Binding SelectedVehicle.Category}"
+                                EngineDisplacementCc="{Binding SelectedVehicle.EngineDisplacementCc}" />
+
+                            <VerticalStackLayout x:Name="Garage2dMediaBlock" Spacing="10">
+                            <!-- 4-Angle Interactive Studio Stage for Customer's Own Motorcycle -->
+                            <Border
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}"
+                                StrokeThickness="1"
+                                Padding="0">
+                                <Grid HeightRequest="184" IsClippedToBounds="True">
                                     <Image
                                         Source="{Binding SelectedVehicleImageSource}"
                                         Aspect="AspectFill"
-                                        WidthRequest="96"
-                                        HeightRequest="72" />
-                                </Border>
-                                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
-                                    <Label Text="{Binding Loc.GarageActiveOdometerEyebrow}" Style="{StaticResource EyebrowLabel}" />
-                                    <Label Text="{Binding SelectedVehicle.MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
-                                    <Label Text="{Binding SelectedVehicle.Vin}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
-                                </VerticalStackLayout>
-                            </Grid>
+                                        HeightRequest="184"
+                                        HorizontalOptions="Fill"
+                                        VerticalOptions="Fill" />
+                                    <Button
+                                        IsVisible="{Binding HasMultipleVehicleGalleryAngles}"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="Center"
+                                        Margin="8,0,0,0"
+                                        WidthRequest="48"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="48"
+                                        MinimumHeightRequest="48"
+                                        CornerRadius="24"
+                                        Padding="0"
+                                        BackgroundColor="#B8020617"
+                                        BorderColor="{StaticResource Slate600}"
+                                        BorderWidth="1"
+                                        FontFamily="Phosphor"
+                                        FontSize="18"
+                                        TextColor="{StaticResource Slate50}"
+                                        Text="{x:Static icons:PhosphorIcons.CaretLeft}"
+                                        SemanticProperties.Description="{Binding Loc.ShowroomPrevAngle}"
+                                        Command="{Binding PreviousVehicleGalleryAngleCommand}" />
+                                    <Button
+                                        IsVisible="{Binding HasMultipleVehicleGalleryAngles}"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,8,0"
+                                        WidthRequest="48"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="48"
+                                        MinimumHeightRequest="48"
+                                        CornerRadius="24"
+                                        Padding="0"
+                                        BackgroundColor="#B8020617"
+                                        BorderColor="{StaticResource Slate600}"
+                                        BorderWidth="1"
+                                        FontFamily="Phosphor"
+                                        FontSize="18"
+                                        TextColor="{StaticResource Slate50}"
+                                        Text="{x:Static icons:PhosphorIcons.CaretRight}"
+                                        SemanticProperties.Description="{Binding Loc.ShowroomNextAngle}"
+                                        Command="{Binding NextVehicleGalleryAngleCommand}" />
+                                    <Border
+                                        IsVisible="{Binding HasMultipleVehicleGalleryAngles}"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="End"
+                                        Margin="10"
+                                        BackgroundColor="#DD020617"
+                                        Stroke="{StaticResource Slate700}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 12"
+                                        Padding="10,5">
+                                        <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                            <Label Text="{x:Static icons:PhosphorIcons.Camera}" FontFamily="Phosphor" FontSize="13" TextColor="{StaticResource BrandPrimaryHoverDark}" VerticalTextAlignment="Center" />
+                                            <Label Text="{Binding SelectedVehicleGalleryCounter}" FontFamily="JetBrainsMonoSemiBold" FontSize="11" TextColor="{StaticResource Slate50}" VerticalTextAlignment="Center" />
+                                            <Label Text="·" FontSize="11" TextColor="{StaticResource Slate400}" VerticalTextAlignment="Center" />
+                                            <Label Text="{Binding SelectedVehicleAngleLabel}" FontFamily="BeVietnamProSemiBold" FontSize="11" TextColor="{StaticResource Slate100}" VerticalTextAlignment="Center" />
+                                        </HorizontalStackLayout>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <ScrollView IsVisible="{Binding HasMultipleVehicleGalleryAngles}" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding SelectedVehicleGallery}" Spacing="8">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="pubvm:ShowroomGalleryThumb">
+                                            <Border
+                                                x:Name="GarageThumbRoot"
+                                                WidthRequest="92"
+                                                MinimumHeightRequest="48"
+                                                Padding="4"
+                                                StrokeShape="RoundRectangle 10"
+                                                StrokeThickness="1.5"
+                                                SemanticProperties.Description="{Binding Label}"
+                                                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceSunkenLight}, Dark={StaticResource Slate900}}"
+                                                Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource Slate700}}">
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                                        Command="{Binding Source={x:Reference PageRoot}, Path=ViewModel.SelectVehicleGalleryAngleCommand, x:DataType=cus:VinGaragePage}"
+                                                        CommandParameter="{Binding Source={x:Reference GarageThumbRoot}, Path=BindingContext, x:DataType=Border}" />
+                                                </Border.GestureRecognizers>
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border" Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                                <Binding Path="AngleKey" />
+                                                                <Binding Source="{x:Reference PageRoot}" Path="ViewModel.SelectedVehicleAngleKey" x:DataType="cus:VinGaragePage" />
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="Stroke" Value="{StaticResource BrandPrimary}" />
+                                                        <Setter Property="StrokeThickness" Value="2" />
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                                <VerticalStackLayout Spacing="4">
+                                                    <Border StrokeShape="RoundRectangle 7" StrokeThickness="0" Padding="0">
+                                                        <Image Source="{Binding ImageSource}" Aspect="AspectFill" HeightRequest="50" HorizontalOptions="Fill" />
+                                                    </Border>
+                                                    <Label Text="{Binding Label}" FontFamily="BeVietnamProSemiBold" FontSize="10" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource Slate200}}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+                            </ScrollView>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="{Binding Loc.GarageActiveOdometerEyebrow}" Style="{StaticResource EyebrowLabel}" />
+                                <Label Text="{Binding SelectedVehicle.MotorcycleModelName}" Style="{StaticResource CardTitleLabel}" />
+                                <Label Text="{Binding SelectedVehicle.Vin}" Style="{StaticResource MonoCodeLabel}" FontSize="12" />
+                                <ProgressBar Progress="{Binding SelectedVehicleWearRatio}" ProgressColor="{StaticResource BrandPrimary}" HeightRequest="6" Margin="0,6,0,0" />
+                            </VerticalStackLayout>
 
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                 <Border Style="{StaticResource InputContainer}">

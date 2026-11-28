@@ -17,12 +17,14 @@
         alt: '@',
         category: '@',
         variant: '@',
-        badge: '@'
+        badge: '@',
+        decorative: '<'
       },
       controllerAs: '$ctrl',
       controller: BikeImageController,
       template:
-        '<figure class="bike-image-frame" ng-class="\'variant-\' + $ctrl.resolvedVariant" style="margin:0;">' +
+        '<span class="bike-image-frame" ng-class="\'variant-\' + $ctrl.resolvedVariant" ' +
+              'ng-attr-aria-hidden="{{ $ctrl.isDecorative ? \'true\' : undefined }}" style="margin:0;">' +
           '<picture>' +
             '<source ng-if="$ctrl.webpSrc && !$ctrl.usedFallback" ng-attr-srcset="{{ $ctrl.webpSrc }}" type="image/webp" />' +
             '<img class="bike-image-img" ' +
@@ -31,8 +33,8 @@
                  'loading="lazy" ' +
                  'decoding="async" />' +
           '</picture>' +
-          '<span class="bike-image-badge" ng-if="$ctrl.badgeText">{{ $ctrl.badgeText }}</span>' +
-        '</figure>'
+          '<span class="bike-image-badge" aria-hidden="true" ng-if="$ctrl.badgeText">{{ $ctrl.badgeText }}</span>' +
+        '</span>'
     });
 
   BikeImageController.$inject = ['$element', '$scope', 'I18nService'];
@@ -70,7 +72,10 @@
     }
 
     function syncAlt() {
-      $ctrl.resolvedAlt = String($ctrl.alt || $ctrl.category || resolveDefaultAlt()).trim();
+      $ctrl.isDecorative = Boolean($ctrl.decorative);
+      $ctrl.resolvedAlt = $ctrl.isDecorative
+        ? ''
+        : String($ctrl.alt || $ctrl.category || resolveDefaultAlt()).trim();
     }
 
     function syncBindings() {

@@ -9,6 +9,7 @@
     xmlns:loc="clr-namespace:MotorcycleDealer.Mobile.Core.Localization;assembly=MotorcycleDealer.Mobile.Core"
     xmlns:cus="clr-namespace:MotorcycleDealer.Mobile.App.Views.Customer"
     xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:behaviors="clr-namespace:MotorcycleDealer.Mobile.App.Behaviors"
     xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
     SafeAreaEdges="All"
     x:Name="PageRoot"
@@ -45,6 +46,42 @@
                         <Label Text="{Binding Loc.LoyaltyFormulaCaption}" Style="{StaticResource CaptionLabel}" FontSize="11" />
                     </VerticalStackLayout>
                 </Border>
+
+                <!-- 4-Tier Loyalty Multiplier Roadmap Strip -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" IsVisible="{Binding Tiers.Count, Converter={StaticResource IsGreaterThanZero}}">
+                    <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Tiers}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:LoyaltyTierDto">
+                                <Border
+                                    Padding="12,8"
+                                    StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="1.5"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceCardLight}, Dark={StaticResource SurfaceCardDark}}"
+                                    Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}">
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource StringEqualsMulti}">
+                                                    <Binding Path="TierCode" />
+                                                    <Binding Source="{x:Reference PageRoot}" Path="ViewModel.TierCode" x:DataType="cus:LoyaltyPassbookPage" />
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="Stroke" Value="{StaticResource BrandPrimary}" />
+                                            <Setter Property="StrokeThickness" Value="2" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <VerticalStackLayout Spacing="2">
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Label Text="{Binding TierCode, Converter={StaticResource HumanizeStatus}, ConverterParameter=LoyaltyTier}" FontFamily="SpaceGroteskSemiBold" FontSize="12" />
+                                            <Label Text="{Binding PointsMultiplier, StringFormat='{0:0.00}x'}" FontFamily="JetBrainsMonoSemiBold" FontSize="12" TextColor="{StaticResource BrandPrimary}" />
+                                        </HorizontalStackLayout>
+                                        <Label Text="{Binding MinQualifyingPoints, StringFormat='{0:N0}+'}" Style="{StaticResource CaptionLabel}" FontSize="10" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
 
                 <!-- Offline Passbook Mode Banner -->
                 <Border Style="{StaticResource AlertWarningBanner}" IsVisible="{Binding IsOfflineBannerVisible}">
@@ -185,7 +222,7 @@
                             <DataTemplate x:DataType="dto:CustomerVoucherDto">
                                 <Border x:Name="VoucherCardRoot" Style="{StaticResource DoubleBezelOuter}">
                                     <Border.Behaviors>
-                                        <toolkit:TouchBehavior
+                                        <behaviors:ApexPressBehavior
                                             PressedScale="0.97"
                                             PressedOpacity="0.92"
                                             PressedAnimationDuration="110"

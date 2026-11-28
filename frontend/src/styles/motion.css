@@ -140,7 +140,7 @@
 
 /* --- Declarative Motion Utility Classes --- */
 .view-enter {
-  animation: viewEnter var(--dur-emphasis) var(--ease-expo) both;
+  animation: viewEnter var(--dur-emphasis) var(--ease-expo) backwards;
 }
 
 .fade-slide-up {

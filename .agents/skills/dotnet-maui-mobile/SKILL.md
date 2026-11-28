@@ -12,7 +12,7 @@ description: >-
   "Cache offline SQLCipher", "Thông báo đẩy SignalR Android", "Chạy giả lập Pixel_8_API_35 ADB").
 ---
 
-# `.NET 10 MAUI` Android Field App Playbook (`v1.3.0` · `2`-Role Super-App · `16` Views · `9` SQLCipher Tables)
+# `.NET 10 MAUI` Android & Apple iOS Field App Playbook (`v1.4.0` · `2`-Role Super-App · `16` Views · `9` SQLCipher Tables)
 
 Authoritative mobile engineering skill for the **Motorcycle Dealer & Loyalty Management Platform** (`Phase 10`, `T-1001`..`T-1008`, `ADR-001`..`ADR-006`). Complements [AGENTS.md](../../../AGENTS.md) and [mobile/AGENTS.md](../../../mobile/AGENTS.md).
 

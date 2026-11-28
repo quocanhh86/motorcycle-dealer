@@ -37,7 +37,7 @@
         '<div style="display:inline-flex;align-items:center;">' +
           '<button type="button" class="bell-trigger-btn" ' +
                   'ng-class="{\'signalr-live-pulse is-signalr-pulse\': $ctrl.isPulsing}" ' +
-                  'ng-attr-aria-label="{{ \'a11y.openNotifications\' | t }}" ' +
+                  'ng-attr-title="{{ \'a11y.openNotifications\' | t }}" ' +
                   'ng-attr-aria-expanded="{{ $ctrl.isOpen ? \'true\' : \'false\' }}" ' +
                   'ng-click="$ctrl.toggleDrawer()">' +
             '<app-icon name="{{ $ctrl.isPulsing || $ctrl.unreadCount > 0 ? \'bell-ringing\' : \'bell\' }}" weight="duotone" size="16"></app-icon>' +

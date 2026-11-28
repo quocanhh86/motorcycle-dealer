@@ -813,4 +813,10 @@ public sealed partial class LocalizationService
     public string Err_PAST_TEST_DRIVE_DATE => GetString("Err_PAST_TEST_DRIVE_DATE");
     public string Err_IMMUTABLE_LEDGER_VIOLATION => GetString("Err_IMMUTABLE_LEDGER_VIOLATION");
     public string Err_IMMUTABLE_FINANCIAL_RECORD_VIOLATION => GetString("Err_IMMUTABLE_FINANCIAL_RECORD_VIOLATION");
+    public string ShowroomAngleFront => GetString("ShowroomAngleFront");
+    public string ShowroomAngleSide => GetString("ShowroomAngleSide");
+    public string ShowroomAngleRear => GetString("ShowroomAngleRear");
+    public string ShowroomAngleCockpit => GetString("ShowroomAngleCockpit");
+    public string ShowroomPrevAngle => GetString("ShowroomPrevAngle");
+    public string ShowroomNextAngle => GetString("ShowroomNextAngle");
 }

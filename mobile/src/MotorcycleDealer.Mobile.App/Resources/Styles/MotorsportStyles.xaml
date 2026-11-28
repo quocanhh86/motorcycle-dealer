@@ -126,13 +126,18 @@
         <Setter Property="Padding" Value="16" />
     </Style>
 
-    <!-- Double-Bezel Architectural Frame (Matches Web .bezel-card + .bezel-card-inner) -->
+    <!-- Double-Bezel Architectural Frame (Matches Web .bezel-card + .bezel-card-inner + Calibrated Elevation) -->
     <Style x:Key="DoubleBezelOuter" TargetType="Border">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceBezelLight}, Dark={StaticResource SurfaceBezelDark}}" />
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}" />
         <Setter Property="StrokeThickness" Value="1" />
         <Setter Property="StrokeShape" Value="RoundRectangle 20" />
         <Setter Property="Padding" Value="6" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="#0F172A" Offset="0,4" Radius="12" Opacity="0.08" />
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="DoubleBezelInner" TargetType="Border">
@@ -200,6 +205,11 @@
         <Setter Property="HeightRequest" Value="48" />
         <Setter Property="MinimumHeightRequest" Value="48" />
         <Setter Property="Padding" Value="18,4,6,4" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="#DC2626" Offset="0,4" Radius="12" Opacity="0.26" />
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="PrimaryPillCtaWell" TargetType="Border">
@@ -271,10 +281,27 @@
         <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource BorderStrongLight}, Dark={StaticResource BorderStrongDark}}" />
         <Setter Property="BorderWidth" Value="1" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="CornerRadius" Value="10" />
         <Setter Property="HeightRequest" Value="48" />
         <Setter Property="MinimumHeightRequest" Value="48" />
         <Setter Property="Padding" Value="14,0" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.82" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.45" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
     <Style x:Key="DarkCarbonButton" TargetType="Button">
@@ -284,10 +311,27 @@
         <Setter Property="BorderColor" Value="{StaticResource Slate700}" />
         <Setter Property="BorderWidth" Value="1" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="CornerRadius" Value="10" />
         <Setter Property="HeightRequest" Value="48" />
         <Setter Property="MinimumHeightRequest" Value="48" />
         <Setter Property="Padding" Value="14,0" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource Slate800}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.45" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
     <Style x:Key="DangerOutlineButton" TargetType="Button">
@@ -297,7 +341,7 @@
         <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource BrandPrimaryBorder}, Dark={StaticResource BrandPrimaryBorderDark}}" />
         <Setter Property="BorderWidth" Value="1" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="CornerRadius" Value="10" />
         <Setter Property="HeightRequest" Value="48" />
         <Setter Property="MinimumHeightRequest" Value="48" />
         <Setter Property="Padding" Value="14,0" />
@@ -310,10 +354,22 @@
         <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource BorderSubtleDark}}" />
         <Setter Property="BorderWidth" Value="1" />
         <Setter Property="FontSize" Value="13" />
-        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="CornerRadius" Value="12" />
         <Setter Property="HeightRequest" Value="48" />
         <Setter Property="MinimumHeightRequest" Value="48" />
         <Setter Property="Padding" Value="14,0" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.84" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
     <Style x:Key="ActiveChipButton" TargetType="Button" BasedOn="{StaticResource ChipButton}">
@@ -362,12 +418,12 @@
         <Setter Property="MinimumHeightRequest" Value="48" />
     </Style>
 
-    <!-- Inputs (6dp CornerRadius, >= 48dp Min Touch Height) -->
+    <!-- Inputs (10dp CornerRadius, >= 48dp Min Touch Height) -->
     <Style x:Key="InputContainer" TargetType="Border">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource PureWhite}, Dark={StaticResource Slate900}}" />
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource BorderStrongLight}, Dark={StaticResource BorderStrongDark}}" />
         <Setter Property="StrokeThickness" Value="1" />
-        <Setter Property="StrokeShape" Value="RoundRectangle 6" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
         <Setter Property="Padding" Value="12,2" />
         <Setter Property="MinimumHeightRequest" Value="48" />
     </Style>

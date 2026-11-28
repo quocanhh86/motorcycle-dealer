@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="MotorcycleDealer.Mobile.App.Controls.Moto3dStudioView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:MotorcycleDealer.Mobile.App.Controls"
+    xmlns:icons="clr-namespace:MotorcycleDealer.Mobile.App.Icons"
+    x:Name="StudioRoot"
+    x:DataType="controls:Moto3dStudioView">
+
+    <VerticalStackLayout Spacing="10">
+        <!-- Hardware-Accelerated Real-Photo HD 360° Showroom & OEM Component Inspector -->
+        <Border
+            StrokeShape="RoundRectangle 14"
+            Stroke="{AppThemeBinding Light={StaticResource BorderSubtleLight}, Dark={StaticResource Slate700}}"
+            StrokeThickness="1"
+            BackgroundColor="{StaticResource Slate950}"
+            Padding="0">
+            <Grid x:Name="PhotoViewport" HeightRequest="276" IsClippedToBounds="True">
+                <Grid.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="OnViewportPanUpdated" />
+                    <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="OnViewportDoubleTapped" />
+                </Grid.GestureRecognizers>
+
+                <!-- GPU Zoom & Pan Container Holding the Real-Life HD DSLR Photograph + Proportional Hotspot Pins -->
+                <Grid x:Name="ZoomLayer" AnchorX="0.5" AnchorY="0.5" InputTransparent="False">
+                    <Image
+                        x:Name="ActivePhotoImage"
+                        Source="{Binding Source={x:Reference StudioRoot}, Path=ActivePhotoSource, x:DataType=controls:Moto3dStudioView}"
+                        Aspect="AspectFill"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill"
+                        InputTransparent="True" />
+
+                    <!-- Subtle Showroom Atmosphere Tint / Evening Spotlight Vignette -->
+                    <BoxView
+                        x:Name="AtmosphereOverlay"
+                        Opacity="0"
+                        Color="#020617"
+                        InputTransparent="True" />
+
+                    <!-- Interactive Pulsing OEM Hotspot Pins Mapped to Real Motorcycle Anatomy -->
+                    <AbsoluteLayout
+                        x:Name="HotspotLayer"
+                        InputTransparent="False" />
+                </Grid>
+
+                <!-- Subtle Top/Bottom Readability Scrim -->
+                <BoxView InputTransparent="True">
+                    <BoxView.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#73020617" Offset="0.0" />
+                            <GradientStop Color="#00020617" Offset="0.26" />
+                            <GradientStop Color="#00020617" Offset="0.72" />
+                            <GradientStop Color="#99020617" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </BoxView.Background>
+                </BoxView>
+
+                <!-- Top HUD Badge + Zoom / Reset Controls (44dp accessible hit targets) -->
+                <Grid ColumnDefinitions="*,Auto" Padding="10" VerticalOptions="Start" InputTransparent="False">
+                    <Border
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        BackgroundColor="#CC020617"
+                        Stroke="{StaticResource Slate700}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="9,5"
+                        InputTransparent="True">
+                        <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                            <Label Text="{x:Static icons:PhosphorIcons.Camera}" FontFamily="Phosphor" FontSize="13" TextColor="{StaticResource BrandPrimaryHoverDark}" VerticalTextAlignment="Center" />
+                            <Label Text="{Binding Source={x:Reference StudioRoot}, Path=HudBadgeText, x:DataType=controls:Moto3dStudioView}" FontFamily="JetBrainsMonoSemiBold" FontSize="10" TextColor="{StaticResource Slate50}" VerticalTextAlignment="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                        <Button
+                            Text="-"
+                            Clicked="OnZoomOutClicked"
+                            WidthRequest="44"
+                            HeightRequest="44"
+                            MinimumWidthRequest="44"
+                            MinimumHeightRequest="44"
+                            CornerRadius="12"
+                            Padding="0"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="16"
+                            BackgroundColor="#CC0F172A"
+                            BorderColor="{StaticResource Slate600}"
+                            BorderWidth="1"
+                            TextColor="{StaticResource Slate50}"
+                            SemanticProperties.Description="{Binding Source={x:Reference StudioRoot}, Path=ZoomOutA11yLabel, x:DataType=controls:Moto3dStudioView}" />
+                        <Button
+                            Text="+"
+                            Clicked="OnZoomInClicked"
+                            WidthRequest="44"
+                            HeightRequest="44"
+                            MinimumWidthRequest="44"
+                            MinimumHeightRequest="44"
+                            CornerRadius="12"
+                            Padding="0"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="16"
+                            BackgroundColor="#CC0F172A"
+                            BorderColor="{StaticResource Slate600}"
+                            BorderWidth="1"
+                            TextColor="{StaticResource Slate50}"
+                            SemanticProperties.Description="{Binding Source={x:Reference StudioRoot}, Path=ZoomInA11yLabel, x:DataType=controls:Moto3dStudioView}" />
+                        <Button
+                            Text="1x"
+                            Clicked="OnResetCameraClicked"
+                            MinimumWidthRequest="44"
+                            HeightRequest="44"
+                            MinimumHeightRequest="44"
+                            CornerRadius="12"
+                            Padding="10,0"
+                            FontFamily="JetBrainsMonoSemiBold"
+                            FontSize="11"
+                            BackgroundColor="#CC0F172A"
+                            BorderColor="{StaticResource Slate600}"
+                            BorderWidth="1"
+                            TextColor="{StaticResource Slate50}"
+                            SemanticProperties.Description="{Binding Source={x:Reference StudioRoot}, Path=ResetZoomA11yLabel, x:DataType=controls:Moto3dStudioView}" />
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <!-- Left/Right Quick 360° Angle Stepper Arrows (44dp accessible hit targets) -->
+                <Button
+                    Text="‹"
+                    Clicked="OnPreviousAngleClicked"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Margin="8,0,0,0"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    MinimumWidthRequest="44"
+                    MinimumHeightRequest="44"
+                    CornerRadius="22"
+                    Padding="0"
+                    FontSize="20"
+                    BackgroundColor="#B3020617"
+                    BorderColor="{StaticResource Slate600}"
+                    BorderWidth="1"
+                    TextColor="{StaticResource Slate50}"
+                    SemanticProperties.Description="{Binding Source={x:Reference StudioRoot}, Path=PrevAngleA11yLabel, x:DataType=controls:Moto3dStudioView}" />
+                <Button
+                    Text="›"
+                    Clicked="OnNextAngleClicked"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Margin="0,0,8,0"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    MinimumWidthRequest="44"
+                    MinimumHeightRequest="44"
+                    CornerRadius="22"
+                    Padding="0"
+                    FontSize="20"
+                    BackgroundColor="#B3020617"
+                    BorderColor="{StaticResource Slate600}"
+                    BorderWidth="1"
+                    TextColor="{StaticResource Slate50}"
+                    SemanticProperties.Description="{Binding Source={x:Reference StudioRoot}, Path=NextAngleA11yLabel, x:DataType=controls:Moto3dStudioView}" />
+
+                <!-- Bottom Live Status & Drag Hint Pill -->
+                <Border
+                    HorizontalOptions="Center"
+                    VerticalOptions="End"
+                    Margin="10,0,10,8"
+                    BackgroundColor="#CC020617"
+                    Stroke="{StaticResource Slate700}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="10,4"
+                    InputTransparent="True">
+                    <Label
+                        Text="{Binding Source={x:Reference StudioRoot}, Path=HintText, x:DataType=controls:Moto3dStudioView}"
+                        FontFamily="BeVietnamProMedium"
+                        FontSize="10"
+                        TextColor="{StaticResource Slate100}"
+                        LineBreakMode="TailTruncation" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Active Real-Life OEM Component Spec Inspector Card -->
+        <Border
+            IsVisible="{Binding Source={x:Reference StudioRoot}, Path=HasSelectedPart, x:DataType=controls:Moto3dStudioView}"
+            BackgroundColor="{AppThemeBinding Light=#FEF2F2, Dark=#1F0D12}"
+            Stroke="{StaticResource BrandPrimary}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12"
+            Padding="12,10">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <VerticalStackLayout Spacing="3">
+                    <Label
+                        Text="{Binding Source={x:Reference StudioRoot}, Path=SelectedPartTitle, x:DataType=controls:Moto3dStudioView}"
+                        FontFamily="SpaceGroteskBold"
+                        FontSize="13"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource Slate50}}" />
+                    <Label
+                        Text="{Binding Source={x:Reference StudioRoot}, Path=SelectedPartDescription, x:DataType=controls:Moto3dStudioView}"
+                        FontFamily="BeVietnamProRegular"
+                        FontSize="12"
+                        TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource Slate200}}" />
+                </VerticalStackLayout>
+                <Button
+                    Grid.Column="1"
+                    Text="×"
+                    Clicked="OnClearPartClicked"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    MinimumWidthRequest="44"
+                    MinimumHeightRequest="44"
+                    CornerRadius="22"
+                    Padding="0"
+                    VerticalOptions="Start"
+                    BackgroundColor="{StaticResource BrandPrimary}"
+                    TextColor="{StaticResource PureWhite}"
+                    SemanticProperties.Description="{Binding Source={x:Reference StudioRoot}, Path=ClearPartA11yLabel, x:DataType=controls:Moto3dStudioView}" />
+            </Grid>
+        </Border>
+
+        <!-- 4 Real-Life HD Showroom Angle Switcher Chips -->
+        <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout x:Name="AngleChipRow" Spacing="6" Padding="2,2" />
+        </ScrollView>
+
+        <!-- Interactive Showroom Controls (Auto-Tour, Hotspots ON/OFF, Lighting Atmosphere) -->
+        <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout x:Name="FeatureToggleRow" Spacing="6" Padding="2,2" />
+        </ScrollView>
+
+        <!-- 8 Clickable Real OEM Component Inspection Chips -->
+        <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout x:Name="ComponentChipRow" Spacing="6" Padding="2,2" />
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentView>

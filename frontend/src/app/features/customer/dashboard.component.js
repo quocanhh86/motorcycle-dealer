@@ -12,7 +12,7 @@
       bookService: 'Đặt lịch bảo dưỡng',
       overdueBannerTitle: 'QUÁ HẠN BẢO DƯỠNG:',
       dueSoonBannerTitle: 'SẮP ĐẾN MỐC BẢO DƯỠNG:',
-      dueBannerDetail: '{{model}} (VIN {{vin}}) hiện đạt {{currentKm}} km — mốc kế tiếp {{targetKm}} km',
+      dueBannerDetail: '{{model}} (VIN {{vin}}) hiện đạt {{currentKm}} km · mốc kế tiếp {{targetKm}} km',
       bookNow: 'Đặt lịch ngay',
       kpiAvailablePoints: 'Điểm khả dụng',
       kpiAvailableMeta: 'Dùng để đổi voucher ưu đãi xưởng & showroom',
@@ -32,7 +32,14 @@
       recentBookingsTitle: 'Lịch hẹn bảo dưỡng gần đây',
       viewAllBookings: 'Xem tất cả',
       loadErrorTitle: 'Không thể tải dữ liệu tổng quan',
-      loadErrorDetail: 'Không thể kết nối máy chủ API. Vui lòng kiểm tra mạng và thử lại.'
+      loadErrorDetail: 'Không thể kết nối máy chủ API. Vui lòng kiểm tra mạng và thử lại.',
+      nextTierNeedPts: 'Còn {{remaining}} điểm xét hạng để lên hạng {{nextTier}}',
+      maxTierReached: 'Bạn đang ở hạng cao nhất Platinum (2.00x)',
+      launchpadGarageSub: 'Quản lý số khung VIN & ODO',
+      launchpadBookingSub: 'Đặt khoang xưởng ưu tiên',
+      launchpadLoyaltySub: 'Đổi voucher & sổ điểm',
+      launchpadWarrantyTitle: 'Bảo hành OEM',
+      launchpadWarrantySub: 'Gửi & theo dõi yêu cầu'
     }
   };
 
@@ -47,7 +54,7 @@
       bookService: 'Book Workshop Service',
       overdueBannerTitle: 'OVERDUE MAINTENANCE:',
       dueSoonBannerTitle: 'MAINTENANCE DUE SOON:',
-      dueBannerDetail: '{{model}} (VIN {{vin}}) is at {{currentKm}} km — target milestone {{targetKm}} km',
+      dueBannerDetail: '{{model}} (VIN {{vin}}) is at {{currentKm}} km · target milestone {{targetKm}} km',
       bookNow: 'Book Now',
       kpiAvailablePoints: 'Available Points',
       kpiAvailableMeta: 'Redeemable for workshop & showroom vouchers',
@@ -67,7 +74,14 @@
       recentBookingsTitle: 'Recent Workshop Appointments',
       viewAllBookings: 'View All',
       loadErrorTitle: 'Unable to Load Dashboard Data',
-      loadErrorDetail: 'Could not reach the backend API. Please verify connectivity and retry.'
+      loadErrorDetail: 'Could not reach the backend API. Please verify connectivity and retry.',
+      nextTierNeedPts: '{{remaining}} qualifying pts to unlock {{nextTier}}',
+      maxTierReached: 'Top Platinum tier unlocked (2.00x max earn rate)',
+      launchpadGarageSub: 'ISO 3779 VIN & Odometer',
+      launchpadBookingSub: 'Reserve priority service bay',
+      launchpadLoyaltySub: 'Redeem vouchers & ledger',
+      launchpadWarrantyTitle: 'OEM Warranty',
+      launchpadWarrantySub: 'Submit & track VIN claims'
     }
   };
 
@@ -86,34 +100,102 @@
       controller: CustomerDashboardController,
       template:
         '<section class="view-enter">' +
-          '<div class="page-header">' +
-            '<div>' +
-              '<span class="badge badge-info mono-num">' +
-                '<app-icon name="gauge" weight="duotone" size="14"></app-icon>' +
-                '<span>{{ \'customerDash.eyebrow\' | t }}</span>' +
-              '</span>' +
-              '<h1 class="page-title" style="margin-top:8px;">' +
-                '{{ $ctrl.user.fullName ? (\'customerDash.welcomeNamed\' | t:{ name: $ctrl.user.fullName }) : (\'customerDash.welcomeBack\' | t) }}' +
-              '</h1>' +
-              '<p class="page-subtitle">{{ \'customerDash.subtitle\' | t }}</p>' +
+          /* Asymmetric Editorial Rider Cockpit Hero + Embedded Metallic 4-Tier Passbook */
+          '<header class="rider-cockpit-hero fade-slide-up">' +
+            '<picture aria-hidden="true">' +
+              '<source srcset="/assets/editorial/showroom-hero-apex.webp" type="image/webp" />' +
+              '<img class="atelier-hero-bg" src="/assets/editorial/showroom-hero-apex.jpg" alt="" loading="eager" decoding="async" />' +
+            '</picture>' +
+            '<div class="atelier-hero-overlay" aria-hidden="true"></div>' +
+            '<div class="atelier-hero-gridlines" aria-hidden="true"></div>' +
+
+            '<div class="rider-cockpit-grid">' +
+              '<div class="atelier-hero-content">' +
+                '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">' +
+                  '<span class="atelier-hero-eyebrow">' +
+                    '<app-icon name="gauge" weight="duotone" size="13"></app-icon>' +
+                    '<span>{{ \'customerDash.eyebrow\' | t }}</span>' +
+                  '</span>' +
+                  '<button type="button" class="btn btn-ghost-dark btn-sm" ng-click="$ctrl.refreshOverview()" ng-disabled="$ctrl.isLoading">' +
+                    '<app-icon name="arrow-clockwise" weight="regular" size="14" extra-class="{{ $ctrl.isLoading ? \'spin-smooth\' : \'\' }}"></app-icon>' +
+                    '<span>{{ $ctrl.isLoading ? (\'customerDash.refreshing\' | t) : (\'common.refresh\' | t) }}</span>' +
+                  '</button>' +
+                '</div>' +
+
+                '<h1 class="atelier-hero-title">' +
+                  '{{ $ctrl.user.fullName ? (\'customerDash.welcomeNamed\' | t:{ name: $ctrl.user.fullName }) : (\'customerDash.welcomeBack\' | t) }}' +
+                '</h1>' +
+                '<p class="atelier-hero-subtitle">{{ \'customerDash.subtitle\' | t }}</p>' +
+
+                '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:4px;">' +
+                  '<a class="btn-pill-cta" ui-sref="app.customer.bookingNew">' +
+                    '<span>{{ \'customerDash.bookService\' | t }}</span>' +
+                    '<span class="btn-pill-well" aria-hidden="true">' +
+                      '<app-icon name="arrow-right" weight="regular" size="15"></app-icon>' +
+                    '</span>' +
+                  '</a>' +
+                  '<a class="btn-pill-cta btn-pill-secondary" ui-sref="app.customer.garage">' +
+                    '<span>{{ \'customerDash.openGarage\' | t }}</span>' +
+                    '<span class="btn-pill-well" aria-hidden="true">' +
+                      '<app-icon name="motorcycle" weight="duotone" size="15"></app-icon>' +
+                    '</span>' +
+                  '</a>' +
+                '</div>' +
+              '</div>' +
+
+              /* Brushed Metallic 4-Tier Passbook integrated directly in Rider Cockpit */
+              '<div class="passbook-card" ng-class="\'tier-\' + ($ctrl.user.tierCode || \'Bronze\').toLowerCase()" style="padding:var(--space-5);">' +
+                '<div class="passbook-sheen" aria-hidden="true"></div>' +
+                '<div style="position:relative;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">' +
+                  '<div style="display:flex;align-items:center;gap:12px;">' +
+                    '<div style="width:42px;height:42px;border-radius:var(--radius-full);background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.28);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+                      '<app-icon name="crown" weight="duotone" size="22"></app-icon>' +
+                    '</div>' +
+                    '<div>' +
+                      '<div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.84;">' +
+                        '{{ \'customerDash.tierBannerEyebrow\' | t }}' +
+                      '</div>' +
+                      '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px;">' +
+                        '<strong style="font-family:var(--font-display);font-size:20px;">' +
+                          '{{ ($ctrl.user.tierCode || \'Bronze\') | enumT:\'LoyaltyTierCode\' }}' +
+                        '</strong>' +
+                        '<span class="mono-num" style="padding:2px 9px;border-radius:var(--radius-full);background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.28);font-weight:700;font-size:12px;">' +
+                          '{{ ($ctrl.user.tierMultiplier || 1) | number:2 }}x' +
+                        '</span>' +
+                      '</div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<a class="btn btn-ghost-dark btn-sm" style="border-color:rgba(255,255,255,0.28);" ui-sref="app.customer.loyalty">' +
+                    '<span>{{ \'customerDash.openLoyaltyCta\' | t }}</span>' +
+                    '<app-icon name="arrow-right" weight="regular" size="13"></app-icon>' +
+                  '</a>' +
+                '</div>' +
+
+                '<div style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px;">' +
+                  '<div style="padding:10px 12px;border-radius:var(--radius-md);background:rgba(0,0,0,0.24);border:1px solid rgba(255,255,255,0.18);">' +
+                    '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.82;">{{ \'customerDash.kpiAvailablePoints\' | t }}</div>' +
+                    '<div class="mono-num" style="font-size:20px;font-weight:700;margin-top:2px;" kpi-counter="$ctrl.availablePoints" kpi-format="points"></div>' +
+                  '</div>' +
+                  '<div style="padding:10px 12px;border-radius:var(--radius-md);background:rgba(0,0,0,0.24);border:1px solid rgba(255,255,255,0.18);">' +
+                    '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.82;">{{ \'customerDash.kpiLifetimePoints\' | t }}</div>' +
+                    '<div class="mono-num" style="font-size:20px;font-weight:700;margin-top:2px;" kpi-counter="$ctrl.lifetimePoints" kpi-format="points"></div>' +
+                  '</div>' +
+                '</div>' +
+
+                '<div style="position:relative;z-index:2;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.18);">' +
+                  '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;margin-bottom:6px;">' +
+                    '<span ng-if="!$ctrl.tierProgress.isTopTier">{{ \'customerDash.nextTierNeedPts\' | t:{ remaining: ($ctrl.tierProgress.pointsToNext | number), nextTier: ($ctrl.tierProgress.nextTierCode | enumT:\'LoyaltyTierCode\') } }}</span>' +
+                    '<span ng-if="$ctrl.tierProgress.isTopTier">{{ \'customerDash.maxTierReached\' | t }}</span>' +
+                    '<strong class="mono-num">{{ $ctrl.tierProgress.progressPct }}%</strong>' +
+                  '</div>' +
+                  '<div style="width:100%;height:7px;border-radius:var(--radius-full);background:rgba(0,0,0,0.32);overflow:hidden;">' +
+                    '<div style="width:100%;height:100%;border-radius:var(--radius-full);background:rgba(255,255,255,0.92);transform-origin:left center;transition:transform var(--dur-emphasis) var(--ease-expo);" ' +
+                         'ng-style="{transform: \'scaleX(\' + (($ctrl.tierProgress.progressPct || 0) / 100) + \')\'}"></div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
             '</div>' +
-            '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">' +
-              '<button type="button" class="btn btn-secondary" ng-click="$ctrl.refreshOverview()" ng-disabled="$ctrl.isLoading">' +
-                '<app-icon name="arrow-clockwise" weight="regular" size="16" extra-class="{{ $ctrl.isLoading ? \'spin-smooth\' : \'\' }}"></app-icon>' +
-                '<span>{{ $ctrl.isLoading ? (\'customerDash.refreshing\' | t) : (\'common.refresh\' | t) }}</span>' +
-              '</button>' +
-              '<a class="btn btn-secondary" ui-sref="app.customer.garage">' +
-                '<app-icon name="motorcycle" weight="regular" size="16"></app-icon>' +
-                '<span>{{ \'customerDash.openGarage\' | t }}</span>' +
-              '</a>' +
-              '<a class="btn-pill-cta" ui-sref="app.customer.bookingNew">' +
-                '<span>{{ \'customerDash.bookService\' | t }}</span>' +
-                '<span class="btn-pill-well" aria-hidden="true">' +
-                  '<app-icon name="arrow-right" weight="regular" size="15"></app-icon>' +
-                '</span>' +
-              '</a>' +
-            '</div>' +
-          '</div>' +
+          '</header>' +
 
           '<error-retry-banner ' +
             'message="$ctrl.loadProblem ? ($ctrl.loadProblem.title + \': \' + $ctrl.loadProblem.detail) : \'\'" ' +
@@ -143,32 +225,46 @@
             '</button>' +
           '</div>' +
 
-          /* Initial Skeleton Shimmer for Bento KPI Strip */
+          /* Quick 4-Tile Rider Launchpad with Semantic Motorsport Accents */
+          '<nav class="rider-launchpad-grid fade-slide-up" ng-attr-aria-label="{{ \'customerDash.openGarage\' | t }}">' +
+            '<a class="rider-launchpad-tile tile-garage" ui-sref="app.customer.garage">' +
+              '<span class="rider-launchpad-lead">' +
+                '<span class="rider-launchpad-icon" aria-hidden="true"><app-icon name="motorcycle" weight="duotone" size="20"></app-icon></span>' +
+                '<span><strong style="display:block;font-size:14px;">{{ \'customerDash.openGarage\' | t }}</strong><span class="text-muted" style="font-size:12px;">{{ \'customerDash.launchpadGarageSub\' | t }}</span></span>' +
+              '</span>' +
+              '<span class="rider-launchpad-caret" aria-hidden="true"><app-icon name="caret-right" weight="regular" size="15"></app-icon></span>' +
+            '</a>' +
+            '<a class="rider-launchpad-tile tile-booking" ui-sref="app.customer.bookingNew">' +
+              '<span class="rider-launchpad-lead">' +
+                '<span class="rider-launchpad-icon" aria-hidden="true"><app-icon name="wrench" weight="duotone" size="20"></app-icon></span>' +
+                '<span><strong style="display:block;font-size:14px;">{{ \'customerDash.bookService\' | t }}</strong><span class="text-muted" style="font-size:12px;">{{ \'customerDash.launchpadBookingSub\' | t }}</span></span>' +
+              '</span>' +
+              '<span class="rider-launchpad-caret" aria-hidden="true"><app-icon name="caret-right" weight="regular" size="15"></app-icon></span>' +
+            '</a>' +
+            '<a class="rider-launchpad-tile tile-loyalty" ui-sref="app.customer.loyalty">' +
+              '<span class="rider-launchpad-lead">' +
+                '<span class="rider-launchpad-icon" aria-hidden="true"><app-icon name="crown" weight="duotone" size="20"></app-icon></span>' +
+                '<span><strong style="display:block;font-size:14px;">{{ \'customerDash.openLoyaltyCta\' | t }}</strong><span class="text-muted" style="font-size:12px;">{{ \'customerDash.launchpadLoyaltySub\' | t }}</span></span>' +
+              '</span>' +
+              '<span class="rider-launchpad-caret" aria-hidden="true"><app-icon name="caret-right" weight="regular" size="15"></app-icon></span>' +
+            '</a>' +
+            '<a class="rider-launchpad-tile tile-warranty" ui-sref="app.customer.warranty">' +
+              '<span class="rider-launchpad-lead">' +
+                '<span class="rider-launchpad-icon" aria-hidden="true"><app-icon name="shield-check" weight="duotone" size="20"></app-icon></span>' +
+                '<span><strong style="display:block;font-size:14px;">{{ \'customerDash.launchpadWarrantyTitle\' | t }}</strong><span class="text-muted" style="font-size:12px;">{{ \'customerDash.launchpadWarrantySub\' | t }}</span></span>' +
+              '</span>' +
+              '<span class="rider-launchpad-caret" aria-hidden="true"><app-icon name="caret-right" weight="regular" size="15"></app-icon></span>' +
+            '</a>' +
+          '</nav>' +
+
+          /* Initial Skeleton Shimmer for Live Operational Telemetry Strip */
           '<div ng-if="$ctrl.isLoading && !$ctrl.hasLoadedOnce" style="margin-bottom:24px;">' +
-            '<skeleton-loader variant="kpi" count="4"></skeleton-loader>' +
+            '<skeleton-loader variant="kpi" count="2"></skeleton-loader>' +
           '</div>' +
 
-          /* Bento 4-Metric KPI Strip with GPU-Friendly kpi-counter */
+          /* Focused 2-Metric Operational Fleet & Bay Strip (Exact Content Count, Zero Redundancy with Passbook) */
           '<div class="bento-grid fade-slide-up" ng-if="!$ctrl.isLoading || $ctrl.hasLoadedOnce" style="margin-bottom:24px;">' +
-            '<div class="col-3 bento-kpi stagger-item" style="--i:0;">' +
-              '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
-                '<span class="kpi-label">{{ \'customerDash.kpiAvailablePoints\' | t }}</span>' +
-                '<app-icon name="coins" weight="duotone" size="20" extra-class="text-muted"></app-icon>' +
-              '</div>' +
-              '<div class="kpi-value mono-num" kpi-counter="$ctrl.availablePoints" kpi-format="points"></div>' +
-              '<div class="kpi-meta text-muted">{{ \'customerDash.kpiAvailableMeta\' | t }}</div>' +
-            '</div>' +
-
-            '<div class="col-3 bento-kpi stagger-item" style="--i:1;">' +
-              '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
-                '<span class="kpi-label">{{ \'customerDash.kpiLifetimePoints\' | t }}</span>' +
-                '<app-icon name="trophy" weight="duotone" size="20" extra-class="text-muted"></app-icon>' +
-              '</div>' +
-              '<div class="kpi-value mono-num" kpi-counter="$ctrl.lifetimePoints" kpi-format="points"></div>' +
-              '<div class="kpi-meta text-muted">{{ \'customerDash.kpiLifetimeMeta\' | t }}</div>' +
-            '</div>' +
-
-            '<div class="col-3 bento-kpi stagger-item" style="--i:2;">' +
+            '<div class="col-6 bento-kpi stagger-item" style="--i:0;">' +
               '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
                 '<span class="kpi-label">{{ \'customerDash.kpiVehicles\' | t }}</span>' +
                 '<app-icon name="motorcycle" weight="duotone" size="20" extra-class="text-muted"></app-icon>' +
@@ -179,7 +275,7 @@
               '</div>' +
             '</div>' +
 
-            '<div class="col-3 bento-kpi stagger-item" style="--i:3;">' +
+            '<div class="col-6 bento-kpi stagger-item" style="--i:1;">' +
               '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
                 '<span class="kpi-label">{{ \'customerDash.kpiUpcoming\' | t }}</span>' +
                 '<app-icon name="calendar-check" weight="duotone" size="20" extra-class="text-muted"></app-icon>' +
@@ -189,40 +285,6 @@
                 '<span class="mono-num">{{ \'customerDash.kpiNextSlot\' | t:{ date: $ctrl.nextActiveBooking.slotDate, window: $ctrl.nextActiveBooking.slotWindow } }}</span>' +
               '</div>' +
               '<div class="kpi-meta text-muted" ng-if="!$ctrl.nextActiveBooking">{{ \'customerDash.kpiUpcomingNone\' | t }}</div>' +
-            '</div>' +
-          '</div>' +
-
-          /* Compact Metallic Tier Banner */
-          '<div class="bezel-card fade-slide-up" style="margin-bottom:24px;">' +
-            '<div class="passbook-card" ng-class="\'tier-\' + ($ctrl.user.tierCode || \'Bronze\').toLowerCase()" style="padding:var(--space-5) var(--space-6);">' +
-              '<div class="passbook-sheen" aria-hidden="true"></div>' +
-              '<div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">' +
-                '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">' +
-                  '<div style="width:46px;height:46px;border-radius:var(--radius-full);background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.28);display:inline-flex;align-items:center;justify-content:center;">' +
-                    '<app-icon name="crown" weight="duotone" size="24"></app-icon>' +
-                  '</div>' +
-                  '<div>' +
-                    '<div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.84;">' +
-                      '{{ \'customerDash.tierBannerEyebrow\' | t }}' +
-                    '</div>' +
-                    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px;">' +
-                      '<strong style="font-family:var(--font-display);font-size:20px;">' +
-                        '{{ ($ctrl.user.tierCode || \'Bronze\') | enumT:\'LoyaltyTierCode\' }}' +
-                      '</strong>' +
-                      '<span class="mono-num" style="padding:2px 10px;border-radius:var(--radius-full);background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.28);font-weight:700;">' +
-                        '{{ ($ctrl.user.tierMultiplier || 1) | number:2 }}x' +
-                      '</span>' +
-                    '</div>' +
-                    '<div style="font-size:13px;opacity:0.86;margin-top:4px;">{{ \'customerDash.tierBannerDesc\' | t }}</div>' +
-                  '</div>' +
-                '</div>' +
-                '<a class="btn-pill-cta btn-pill-secondary" ui-sref="app.customer.loyalty">' +
-                  '<span>{{ \'customerDash.openLoyaltyCta\' | t }}</span>' +
-                  '<span class="btn-pill-well" aria-hidden="true">' +
-                    '<app-icon name="arrow-right" weight="regular" size="15"></app-icon>' +
-                  '</span>' +
-                '</a>' +
-              '</div>' +
             '</div>' +
           '</div>' +
 
@@ -371,10 +433,40 @@
       return fallback !== undefined ? fallback : key;
     }
 
+    function computeTierProgress(lifetimePts) {
+      var pts = Math.max(0, Math.floor(Number(lifetimePts) || 0));
+      var ladder = [
+        { code: 'Bronze', min: 0 },
+        { code: 'Silver', min: 500 },
+        { code: 'Gold', min: 2000 },
+        { code: 'Platinum', min: 5000 }
+      ];
+      var currentIdx = 0;
+      for (var i = 0; i < ladder.length; i++) {
+        if (pts >= ladder[i].min) {
+          currentIdx = i;
+        }
+      }
+      if (currentIdx >= ladder.length - 1) {
+        return { isTopTier: true, nextTierCode: 'Platinum', pointsToNext: 0, progressPct: 100 };
+      }
+      var cur = ladder[currentIdx];
+      var next = ladder[currentIdx + 1];
+      var span = Math.max(1, next.min - cur.min);
+      var pct = Math.max(0, Math.min(100, Math.round(((pts - cur.min) / span) * 100)));
+      return {
+        isTopTier: false,
+        nextTierCode: next.code,
+        pointsToNext: Math.max(0, next.min - pts),
+        progressPct: pct
+      };
+    }
+
     function syncUser() {
       $ctrl.user = (AuthService && angular.isFunction(AuthService.getCurrentUser) && AuthService.getCurrentUser()) || {};
       $ctrl.availablePoints = Math.max(0, Math.floor(Number($ctrl.user.availablePoints) || 0));
       $ctrl.lifetimePoints = Math.max(0, Math.floor(Number($ctrl.user.lifetimeQualifyingPoints) || 0));
+      $ctrl.tierProgress = computeTierProgress($ctrl.lifetimePoints);
     }
 
     function recomputeDerivedState() {

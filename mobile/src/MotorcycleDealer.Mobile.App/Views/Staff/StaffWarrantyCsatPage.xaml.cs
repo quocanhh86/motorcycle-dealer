@@ -17,7 +17,14 @@ public partial class StaffWarrantyCsatPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await ViewModel.LoadDeskCommand.ExecuteAsync(null);
+        try
+        {
+            await ViewModel.LoadDeskCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 
     private void OnSelectReviewClicked(object? sender, EventArgs e)

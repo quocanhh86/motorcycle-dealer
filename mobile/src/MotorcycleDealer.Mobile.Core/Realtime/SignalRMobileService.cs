@@ -186,6 +186,7 @@ public sealed class SignalRMobileService : ISignalRMobileService
                 })
                 .AddJsonProtocol(options =>
                 {
+                    options.PayloadSerializerOptions.TypeInfoResolverChain.Insert(0, MobileJsonSerializerContext.Default);
                     options.PayloadSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                     options.PayloadSerializerOptions.PropertyNameCaseInsensitive = true;
                     options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());

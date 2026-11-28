@@ -16,9 +16,16 @@ public partial class MobileInvoiceBuilderPage : ContentPage, IQueryAttributable
         ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         RetryLoadCommand = new Command(async () =>
         {
-            if (_lastBookingId != Guid.Empty)
+            try
             {
-                await ViewModel.LoadForBookingCommand.ExecuteAsync(_lastBookingId);
+                if (_lastBookingId != Guid.Empty)
+                {
+                    await ViewModel.LoadForBookingCommand.ExecuteAsync(_lastBookingId);
+                }
+            }
+            catch
+            {
+                // Keep command delegate crash-safe
             }
         });
 
@@ -28,12 +35,19 @@ public partial class MobileInvoiceBuilderPage : ContentPage, IQueryAttributable
 
     public async void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue("bookingId", out object? raw) &&
-            Guid.TryParse(raw?.ToString(), out Guid bookingId) &&
-            bookingId != Guid.Empty)
+        try
         {
-            _lastBookingId = bookingId;
-            await ViewModel.LoadForBookingCommand.ExecuteAsync(bookingId);
+            if (query.TryGetValue("bookingId", out object? raw) &&
+                Guid.TryParse(raw?.ToString(), out Guid bookingId) &&
+                bookingId != Guid.Empty)
+            {
+                _lastBookingId = bookingId;
+                await ViewModel.LoadForBookingCommand.ExecuteAsync(bookingId);
+            }
+        }
+        catch
+        {
+            // Keep async void query navigation handler crash-safe
         }
     }
 }

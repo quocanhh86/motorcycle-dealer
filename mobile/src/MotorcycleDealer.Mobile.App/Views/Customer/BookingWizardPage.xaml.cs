@@ -6,6 +6,8 @@ namespace MotorcycleDealer.Mobile.App.Views.Customer;
 
 public partial class BookingWizardPage : ContentPage
 {
+    private bool _suppressDateChange;
+
     public BookingWizardViewModel ViewModel { get; }
 
     public ICommand SetRatingCommand { get; }
@@ -21,8 +23,24 @@ public partial class BookingWizardPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        SlotDatePicker.Date = ViewModel.SelectedDate.ToDateTime(TimeOnly.MinValue);
-        await ViewModel.LoadWizardDataCommand.ExecuteAsync(null);
+        try
+        {
+            _suppressDateChange = true;
+            try
+            {
+                SlotDatePicker.Date = ViewModel.SelectedDate.ToDateTime(TimeOnly.MinValue);
+            }
+            finally
+            {
+                _suppressDateChange = false;
+            }
+
+            await ViewModel.LoadWizardDataCommand.ExecuteAsync(null);
+        }
+        catch
+        {
+            // Keep async void page lifecycle handler crash-safe
+        }
     }
 
     private void OnStep1Clicked(object? sender, EventArgs e) => ViewModel.CurrentStep = 1;
@@ -31,21 +49,40 @@ public partial class BookingWizardPage : ContentPage
 
     private async void OnDealerChanged(object? sender, EventArgs e)
     {
-        if (IsLoaded && ViewModel.SelectedDealer is not null)
+        try
         {
-            await ViewModel.LoadAvailableSlotsCommand.ExecuteAsync(null);
+            if (IsLoaded && ViewModel.SelectedDealer is not null)
+            {
+                await ViewModel.LoadAvailableSlotsCommand.ExecuteAsync(null);
+            }
+        }
+        catch
+        {
+            // Keep async void event handler crash-safe
         }
     }
 
     private async void OnSlotDateSelected(object? sender, DateChangedEventArgs e)
     {
-        if (e.NewDate is DateTime dt)
+        if (_suppressDateChange)
         {
-            ViewModel.SelectedDate = DateOnly.FromDateTime(dt);
-            if (IsLoaded)
+            return;
+        }
+
+        try
+        {
+            if (e.NewDate is DateTime dt)
             {
-                await ViewModel.LoadAvailableSlotsCommand.ExecuteAsync(null);
+                ViewModel.SelectedDate = DateOnly.FromDateTime(dt);
+                if (IsLoaded)
+                {
+                    await ViewModel.LoadAvailableSlotsCommand.ExecuteAsync(null);
+                }
             }
+        }
+        catch
+        {
+            // Keep async void event handler crash-safe
         }
     }
 

@@ -65,8 +65,10 @@ public static class PhosphorIcons
     public const string Storefront = "\uE470"; // ph-storefront
     public const string ChartBar = "\uE150"; // ph-chart-bar
     public const string MapPin = "\uE316"; // ph-map-pin
+    public const string CaretLeft = "\uE138"; // ph-caret-left
     public const string CaretRight = "\uE13A"; // ph-caret-right
     public const string CaretUp = "\uE13C"; // ph-caret-up
+    public const string Images = "\uE836"; // ph-images
     public const string ShareNetwork = "\uE408"; // ph-share-network
     public const string Phone = "\uE3B8"; // ph-phone
     public const string User = "\uE4C2"; // ph-user
@@ -75,4 +77,5 @@ public static class PhosphorIcons
     public const string EyeSlash = "\uE224"; // ph-eye-slash
     public const string FileText = "\uE23A"; // ph-file-text
     public const string Warning = "\uE4E0"; // ph-warning
+    public const string Cube = "\uE1DA"; // ph-cube
 }

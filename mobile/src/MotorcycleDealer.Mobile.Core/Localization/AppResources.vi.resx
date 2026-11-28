@@ -2450,4 +2450,22 @@ Mã xác thực: {8}</value>
   <data name="Err_IMMUTABLE_FINANCIAL_RECORD_VIOLATION" xml:space="preserve">
     <value>Chứng từ tài chính đã chốt không cho phép sửa hoặc xóa.</value>
   </data>
+  <data name="ShowroomAngleFront" xml:space="preserve">
+    <value>3/4 Trước</value>
+  </data>
+  <data name="ShowroomAngleSide" xml:space="preserve">
+    <value>Ngang thân xe</value>
+  </data>
+  <data name="ShowroomAngleRear" xml:space="preserve">
+    <value>Đuôi &amp; Đèn LED</value>
+  </data>
+  <data name="ShowroomAngleCockpit" xml:space="preserve">
+    <value>Đồng hồ</value>
+  </data>
+  <data name="ShowroomPrevAngle" xml:space="preserve">
+    <value>Xem góc chụp trước</value>
+  </data>
+  <data name="ShowroomNextAngle" xml:space="preserve">
+    <value>Xem góc chụp tiếp theo</value>
+  </data>
 </root>
